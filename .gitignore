@@ -1,3 +1,5 @@
 .idea
 src/gmsh/gmsh
 src/gmsh/build
+src/occ/occt-V**/
+*.tgz
