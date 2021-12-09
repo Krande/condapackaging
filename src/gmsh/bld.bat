@@ -7,8 +7,7 @@ mkdir build
 cd build
 
 :: Configure.
-cmake -G "Visual Studio 16 2019" ^
-    -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
+cmake -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
     -D CMAKE_PREFIX_PATH=%PREFIX% ^
     -D ENABLE_BUILD_DYNAMIC=1 ^
     -D ENABLE_HXT=1 ^
