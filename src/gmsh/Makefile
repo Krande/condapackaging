@@ -2,7 +2,7 @@ clone:
 	git clone https://gitlab.onelab.info/gmsh/gmsh.git && mkdir output
 
 lbuild:
-	cp bld.bat gmsh/bld.bat && cp meta.yaml gmsh/meta.yaml && bld.bat
+	cp local_build.bat gmsh/local_build.bat && cp meta.yaml gmsh/meta.yaml && cd gmsh && local_build.bat
 
 env:
 	conda create -n condabuild -c conda-forge conda-build -y && activate condabuild

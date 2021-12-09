@@ -16,12 +16,12 @@ cmake -G "Visual Studio 16 2019" ^
     -D INSTALL_SDK_README=1 ^
     -D ENABLE_OPENMP=0 ^
     -D GMSH_RELEASE=1 ^
-    %SRC_DIR%
+    ..
 
 if errorlevel 1 exit 1
 
 :: Build.
-msbuild package.vcxproj
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe" package.vcxproj
 if errorlevel 1 exit 1
 
 :: Test.
