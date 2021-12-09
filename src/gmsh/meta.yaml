@@ -1,0 +1,75 @@
+{% set name = "gmsh" %}
+{% set version = "4.9.0" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  git_url: https://gitlab.onelab.info/gmsh/gmsh
+#  patches:
+#    - patches/occ_convert_signal.patch
+#    - patches/fltk_nominmax.patch
+#    - patches/disable_wmain.patch
+
+build:
+  number: 0
+
+outputs:
+  - name: gmsh
+    script: bld.bat  # [win]
+    requirements:
+      build:
+        - cmake
+        - make  # [unix]
+        - {{compiler('c')}}
+        - {{compiler('cxx')}}
+        - {{cdt('libselinux')}}        # [linux]
+        - {{cdt('libxcb')}}            # [linux]
+        - {{cdt('libxau')}}            # [linux]
+        - {{cdt('libxdamage')}}        # [linux]
+        - {{cdt('libxxf86vm')}}        # [linux]
+        - {{cdt('mesa-libgl-devel')}}  # [linux]
+        - {{cdt('mesa-dri-drivers')}}  # [linux]
+        - python *
+
+      host:
+        - libblas
+        - liblapack
+        - gmp  # [not win]
+        - occt
+        - fltk
+        - libpng
+        - jpeg
+        - libglu  # [linux]
+        - zlib
+        - xorg-libxfixes     # [linux]
+        - xorg-libxext       # [linux]
+        - xorg-libxrender    # [linux]
+        - xorg-libx11        # [linux]
+        - xorg-libxmu        # [linux]
+        
+      run:
+        - gmp  # [not win]
+        - occt
+        - libpng
+        - jpeg
+        - zlib
+        - libglu  # [linux]
+        - xorg-libxfixes     # [linux]
+        - xorg-libxext       # [linux]
+        - xorg-libxrender    # [linux]
+        - xorg-libx11        # [linux]
+        - xorg-libxmu        # [linux]
+
+
+about:
+  home: "https://gmsh.info"
+  license: "GNU General Public v2 or later (GPLv2+)"
+  license_family: GPL2
+  license_file: 
+  summary: "Gmsh app and SDK installer. Gmsh is a three-dimensional finite element mesh generator with built-in pre- and post-processing facilities."
+
+extra:
+  recipe-maintainers:
+    - krande
