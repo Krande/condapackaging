@@ -1,0 +1,5 @@
+name: occ-env
+channels:
+  - conda-forge
+dependencies:
+  - freetype==2.10.4

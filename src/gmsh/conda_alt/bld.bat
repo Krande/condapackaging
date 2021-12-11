@@ -7,7 +7,8 @@ mkdir build
 cd build
 
 :: Configure.
-cmake -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
+cmake -G Ninja ^
+    -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
     -D CMAKE_PREFIX_PATH=%PREFIX% ^
     -D ENABLE_BUILD_DYNAMIC=1 ^
     -D ENABLE_HXT=1 ^
@@ -20,7 +21,7 @@ cmake -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
 if errorlevel 1 exit 1
 
 :: Build.
-msbuild package.vcxproj
+ninja build
 if errorlevel 1 exit 1
 
 :: Test.
