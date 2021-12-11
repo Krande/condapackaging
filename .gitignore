@@ -3,6 +3,7 @@ src/gmsh/gmsh
 src/gmsh/build
 src/occ/occt-V**/
 src/freetype/freetype-**/
+src/fltk/fltk/
 
 *.tgz
 *.tar.gz

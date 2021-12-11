@@ -1,5 +1,10 @@
 set occt_v=7_5_1
-cd occt-V%occt_v%
+set OCC_DIR=occt-V%occt_v%
+if not exist %OCC_DIR%\ (
+    call download.bat
+) || goto :EOF
+
+cd %OCC_DIR%
 
 mkdir build
 cd build

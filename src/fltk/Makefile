@@ -1,2 +1,2 @@
 build:
-	bld.bat
+	conda activate gmsh-env && bld.bat
