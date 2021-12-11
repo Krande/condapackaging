@@ -1,6 +1,4 @@
-set occt_v=7_6_0
-curl -L -o occt.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V%occt_v%;sf=tgz"
-tar zxf occt.tgz
+set occt_v=7_5_1
 cd occt-V%occt_v%
 
 mkdir build

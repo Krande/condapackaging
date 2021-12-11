@@ -1,38 +1,17 @@
-:: Needed so we can find stdint.h from msinttypes.
-set LIB=%LIBRARY_LIB%;%LIB%
-set LIBPATH=%LIBRARY_LIB%;%LIBPATH%
-set INCLUDE=%LIBRARY_INC%;%INCLUDE%
+if not exist gmsh\ (
+    call download.bat
+) || goto :EOF
+git checkout e7dcf42f7218d1cddfbd03fe95321b9b56c5d08c
 
+cd gmsh
 mkdir build
+
 cd build
+cmake -G "Visual Studio 15 2017 Win64" ..
 
-:: Configure.
-cmake -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
-    -D CMAKE_PREFIX_PATH=%PREFIX% ^
-    -D ENABLE_BUILD_DYNAMIC=1 ^
-    -D ENABLE_HXT=1 ^
-    -D ENABLE_PETSC=1 ^
-    -D INSTALL_SDK_README=1 ^
-    -D ENABLE_OPENMP=0 ^
-    -D GMSH_RELEASE=1 ^
-    %SRC_DIR%
+:: Notes:
+:: * if you installed dependencies (e.g. OpenCASCADE and FLTK) in non-standard locations, add the option -DCMAKE_PREFIX_PATH=path-of-installed-dependencies
+:: * to build the Gmsh app as well as the dynamic Gmsh library (to develop e.g. using the C++ or the Python Gmsh API), add the option -DENABLE_BUILD_DYNAMIC=1
+:: * for a list of all available configuration options see http://gmsh.info/doc/texinfo/gmsh.html::Compiling-the-source-code
+..\..\..\msbuild64.cmd package.vcxproj
 
-if errorlevel 1 exit 1
-
-:: Build.
-msbuild package.vcxproj
-if errorlevel 1 exit 1
-
-:: Test.
-:: ctest
-:: if errorlevel 1 exit 1
-
-:: Install.
-make install
-if errorlevel 1 exit 1
-
-mkdir %SP_DIR%
-cp api\gmsh.py %SP_DIR%\gmsh.py
-
-rm %LIBRARY_PREFIX%\lib\gmsh.py
-move %LIBRARY_PREFIX%\lib\gmsh.dll %LIBRARY_PREFIX%\bin\

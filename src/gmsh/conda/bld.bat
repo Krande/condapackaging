@@ -7,8 +7,7 @@ mkdir build
 cd build
 
 :: Configure.
-cmake -G "Visual Studio 16 2019" ^
-    -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
+cmake -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
     -D CMAKE_PREFIX_PATH=%PREFIX% ^
     -D ENABLE_BUILD_DYNAMIC=1 ^
     -D ENABLE_HXT=1 ^
@@ -16,12 +15,12 @@ cmake -G "Visual Studio 16 2019" ^
     -D INSTALL_SDK_README=1 ^
     -D ENABLE_OPENMP=0 ^
     -D GMSH_RELEASE=1 ^
-    ..
+    %SRC_DIR%
 
 if errorlevel 1 exit 1
 
 :: Build.
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe" package.vcxproj
+msbuild package.vcxproj
 if errorlevel 1 exit 1
 
 :: Test.

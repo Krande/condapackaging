@@ -1,0 +1,7 @@
+name: gmsh-env
+channels:
+  - conda-forge
+dependencies:
+  - occt==7.5.1
+  - fltk
+  - python==3.9.7

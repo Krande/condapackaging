@@ -2,4 +2,7 @@
 src/gmsh/gmsh
 src/gmsh/build
 src/occ/occt-V**/
+src/freetype/freetype-**/
+
 *.tgz
+*.tar.gz
