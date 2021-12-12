@@ -35,4 +35,4 @@ jobs:
       - name: build local packages
         shell: bash -l {0} 
         run: |
-          cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && make build
+          cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && make compile
