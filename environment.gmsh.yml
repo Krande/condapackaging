@@ -2,6 +2,20 @@ name: gmsh-env
 channels:
   - conda-forge
 dependencies:
-  - occt==7.5.1
-  - fltk
+  - doxygen
   - python==3.9.7
+  - vs2017_win-64
+  - freetype==2.10.4
+  - ninja
+  - zlib
+  - jpeg
+  - libpng
+  - xorg-libxext
+  - xorg-libxdmcp
+  - xorg-libxau
+  - libxcb
+  - xorg-libxfixes
+  - xorg-libxrender
+  - xorg-libx11
+  - xorg-libice
+  - xorg-libsm

@@ -27,12 +27,13 @@ jobs:
           activate-environment: anaconda-client-env
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.yml
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          msbuild-architecture: x64
 
       - name: build conda package
         shell: bash -l {0}
         run: |
-          conda-build -c conda-forge src/${{ matrix.package.name }} --python=${{ matrix.pyver.distver }}
+          conda-build -c conda-forge src/${{ matrix.package.name }}/conda --python=${{ matrix.pyver.distver }}
+
+      - name: build Alternative conda package
+        shell: bash -l {0}
+        run: |
+          conda-build -c conda-forge src/${{ matrix.package.name }}/conda --python=${{ matrix.pyver.distver }}

@@ -1,0 +1,51 @@
+{% set version = "7.5.3" %}
+
+package:
+  name: pythonocc-core
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/tpaviot/pythonocc-core.git
+
+
+build:
+  number: {{ GIT_DESCRIBE_NUMBER }}
+  binary_relocation: false [osx]
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ cdt('libx11-devel') }}         # [linux]
+    - {{ cdt('xorg-x11-proto-devel') }} # [linux]
+    - {{ cdt('mesa-libgl-devel') }}     # [linux]
+    - {{ cdt('libxi-devel') }}          # [linux]
+    - ninja
+    - cmake
+    - swig >=3.0.11
+
+  host:
+    - python {{ python }}
+    - occt ==7.5.3
+    - numpy >=1.17
+
+  run:
+    - occt ==7.5.3
+    - python
+    - six
+    - numpy >=1.17
+
+test:
+  imports:
+    - OCC
+    - OCC.Core.BRepPrimAPI
+  requires:
+    - pyqt >=5
+    - mypy
+    - svgwrite
+    - wxpython >=4
+    - pyside2 >=5
+
+about:
+  home: https://github.com/tpaviot/pythonocc-core
+  license: LGPL
+  summary: An industrial strength 3D CAD python package

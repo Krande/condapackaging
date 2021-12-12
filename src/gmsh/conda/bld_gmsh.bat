@@ -21,6 +21,8 @@ cmake -G "NMake Makefiles" ^
       %SRC_DIR%
 if errorlevel 1 exit 1
 
+set CL=/MP
+
 :: Build.
 nmake package
 if errorlevel 1 exit 1

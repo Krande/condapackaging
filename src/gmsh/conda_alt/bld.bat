@@ -7,17 +7,18 @@ mkdir build
 cd build
 
 :: Configure.
-cmake -G Ninja ^
-    -D CMAKE_INSTALL_PREFIX=%PREFIX% ^
-    -D CMAKE_PREFIX_PATH=%PREFIX% ^
-    -D ENABLE_BUILD_DYNAMIC=1 ^
-    -D ENABLE_HXT=1 ^
-    -D ENABLE_PETSC=1 ^
-    -D INSTALL_SDK_README=1 ^
-    -D ENABLE_OPENMP=0 ^
-    -D GMSH_RELEASE=1 ^
-    %SRC_DIR%
-
+cmake -G "Ninja" ^
+      -D ENABLE_OPENMP=0 ^
+      -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+      -D ENABLE_OS_SPECIFIC_INSTALL=OFF ^
+      -D ENABLE_BUILD_DYNAMIC=ON ^
+      -D ENABLE_BUILD_SHARED=ON ^
+      -D ENABLE_PETSC=OFF ^
+      -D ENABLE_SLEPC=OFF ^
+      -D ENABLE_HXT=1 ^
+      -D BLAS_LAPACK_LIBRARIES=%LIBRARY_PREFIX%\lib\lapack.lib;%LIBRARY_PREFIX%\lib\blas.lib ^
+      -D GMSH_RELEASE=1 ^
+      %SRC_DIR%
 if errorlevel 1 exit 1
 
 :: Build.
@@ -29,11 +30,11 @@ if errorlevel 1 exit 1
 :: if errorlevel 1 exit 1
 
 :: Install.
-make install
+ninja install
 if errorlevel 1 exit 1
+
+::rm %LIBRARY_PREFIX%\lib\gmsh.py
+:: move %LIBRARY_PREFIX%\lib\gmsh.dll %LIBRARY_PREFIX%\bin\
 
 mkdir %SP_DIR%
 cp api\gmsh.py %SP_DIR%\gmsh.py
-
-rm %LIBRARY_PREFIX%\lib\gmsh.py
-move %LIBRARY_PREFIX%\lib\gmsh.dll %LIBRARY_PREFIX%\bin\

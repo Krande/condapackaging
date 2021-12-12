@@ -6,18 +6,17 @@ package:
   version: "{{ version }}"
 
 source:
-  git_url: https://gitlab.onelab.info/gmsh/gmsh
-#  patches:
-#    - patches/occ_convert_signal.patch
-#    - patches/fltk_nominmax.patch
-#    - patches/disable_wmain.patch
+  path: ..\local\gmsh
+  patches:
+    - patches/occ_convert_signal.patch
+    - patches/fltk_nominmax.patch
+    - patches/disable_wmain.patch
 
 build:
   number: 0
 
 outputs:
   - name: gmsh
-    script: bld.bat  # [win]
     requirements:
       build:
         - cmake
@@ -61,7 +60,11 @@ outputs:
         - xorg-libxrender    # [linux]
         - xorg-libx11        # [linux]
         - xorg-libxmu        # [linux]
-
+        - python
+        - numpy
+    test:
+      imports:
+        - gmsh
 
 about:
   home: "https://gmsh.info"
