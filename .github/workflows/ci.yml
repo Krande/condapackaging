@@ -20,20 +20,21 @@ jobs:
         platform: [
           { name: Windows, distver: windows-latest },
         ]
+        compiler: [
+          { name: ninja },
+          { name: nmake },
+        ]
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          activate-environment: anaconda-client-env
+          activate-environment: conda-build
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.yml
 
-      - name: build conda package
-        shell: bash -l {0}
+      - name: build local packages
         run: |
-          conda-build -c conda-forge src/${{ matrix.package.name }}/conda --python=${{ matrix.pyver.distver }}
-
-      - name: build Alternative conda package
-        shell: bash -l {0}
-        run: |
-          conda-build -c conda-forge src/${{ matrix.package.name }}/conda --python=${{ matrix.pyver.distver }}
+          cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && make build

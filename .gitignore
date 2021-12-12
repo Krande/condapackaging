@@ -1,9 +1,8 @@
 .idea
 src/gmsh/local/gmsh/
-src/gmsh/local_ninja/gmsh/
 src/occt/local/occt-V**/
 src/freetype/local/freetype-**/
 src/fltk/local/fltk/
-
+build/
 *.tgz
 *.tar.gz

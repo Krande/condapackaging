@@ -1,5 +1,8 @@
 compile_cmd=conda activate condabuild && conda-build . --python 3.9.7 -c conda-forge
 
+build-env:
+	conda env create -f environment.yml
+
 gmsh-env:
 	conda env create -f environment.gmsh.yml
 

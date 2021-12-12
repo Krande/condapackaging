@@ -1,14 +1,12 @@
 
-if not exist freetype-2.8\ (
+if not exist ..\freetype-2.8\ (
     call download.bat
 ) || goto :EOF
 
 set CXXFLAGS=
 set CFLAGS=
 
-cd freetype-2.8
-
-git apply ../patches/0003-Install-the-pkg-config-file-on-Windows-too.patch
+cd %cd%
 
 mkdir build
 cd build
