@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_test:
-    name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}
+    name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}
     runs-on: ${{ matrix.platform.distver }}
     strategy:
       fail-fast: false
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          activate-environment: conda-build
+          activate-environment: conda-build-env
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.yml
 
