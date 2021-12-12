@@ -12,9 +12,6 @@ jobs:
   build_test:
     name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}
     runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0} 
     strategy:
       fail-fast: false
       matrix:
@@ -36,5 +33,6 @@ jobs:
           environment-file: environment.yml
 
       - name: build local packages
+        shell: bash -l {0} 
         run: |
           cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && make build
