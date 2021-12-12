@@ -12,6 +12,9 @@ jobs:
   build_test:
     name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}
     runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0} 
     strategy:
       fail-fast: false
       matrix:
@@ -24,9 +27,6 @@ jobs:
           { name: ninja },
           { name: nmake },
         ]
-    defaults:
-      run:
-        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
