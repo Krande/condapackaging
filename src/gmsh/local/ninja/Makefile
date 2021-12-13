@@ -1,4 +1,4 @@
 # Make sure you are running this from a anaconda prompt
 
 compile:
-	conda activate conda-build-env && bld.bat
+	conda activate gmsh-build-env && bld.bat

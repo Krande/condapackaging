@@ -1,21 +1,16 @@
-name: gmsh-env
+name: gmsh-build-env
 channels:
   - conda-forge
 dependencies:
-  - doxygen
+  - conda-build
+  - conda-verify
+  - anaconda-client
+  - vs2019_win-64
   - python==3.9.7
-  - vs2017_win-64
-  - freetype==2.10.4
   - ninja
   - zlib
-  - jpeg
   - libpng
-  - xorg-libxext
-  - xorg-libxdmcp
-  - xorg-libxau
-  - libxcb
-  - xorg-libxfixes
-  - xorg-libxrender
-  - xorg-libx11
-  - xorg-libice
-  - xorg-libsm
+  - fltk
+  - hdf5
+  - freetype
+  - occt==7.5.3

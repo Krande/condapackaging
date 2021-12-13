@@ -8,20 +8,17 @@ cd build
 
 :: Configure.
 cmake -G "NMake Makefiles" ^
-      -D ENABLE_OPENMP=0 ^
       -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -D ENABLE_OS_SPECIFIC_INSTALL=OFF ^
       -D ENABLE_BUILD_DYNAMIC=ON ^
       -D ENABLE_BUILD_SHARED=ON ^
       -D ENABLE_PETSC=OFF ^
       -D ENABLE_SLEPC=OFF ^
-      -D ENABLE_HXT=1 ^
+      -D ENABLE_HXT=0 ^
       -D BLAS_LAPACK_LIBRARIES=%LIBRARY_PREFIX%\lib\lapack.lib;%LIBRARY_PREFIX%\lib\blas.lib ^
       -D GMSH_RELEASE=1 ^
       %SRC_DIR%
 if errorlevel 1 exit 1
-
-set CL=/MP
 
 :: Build.
 nmake package

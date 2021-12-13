@@ -28,14 +28,14 @@ jobs:
           { name: nmake },
         ]
     env:
-      compile_cmd: call bld.bat
+      compile_cmd: ./bld.bat
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          activate-environment: conda-build-env
+          activate-environment: gmsh-build-env
           python-version: ${{ matrix.pyver.distver }}
-          environment-file: environment.yml
+          environment-file: environment.gmsh.yml
 
       - name: build local packages
         run: |
