@@ -7,12 +7,15 @@ set LIB=%LIBRARY_LIB%;%LIB%
 set LIBPATH=%LIBRARY_LIB%;%LIBPATH%
 set INCLUDE=%LIBRARY_INC%;%INCLUDE%
 
+set LIBRARY_PREFIX=%cd%/output
+
 cd %cd%
 mkdir build
 cd build
 
 cmake -G "Ninja" ^
     -D ENABLE_OPENMP=0 ^
+    -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -D ENABLE_OS_SPECIFIC_INSTALL=OFF ^
     -D ENABLE_BUILD_DYNAMIC=ON ^
     -D ENABLE_HXT=1 ^

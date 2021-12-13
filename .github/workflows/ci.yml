@@ -12,6 +12,9 @@ jobs:
   build_test:
     name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}
     runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
     strategy:
       fail-fast: false
       matrix:
@@ -24,15 +27,16 @@ jobs:
           { name: ninja },
           { name: nmake },
         ]
+    env:
+      compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c conda-forge
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          auto-activate-base: true
+          activate-environment: conda-build-env
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.yml
 
       - name: build local packages
-        shell: bash -l {0} 
         run: |
-          cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && make compile
+          cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && ${{ env.compile_cmd }}

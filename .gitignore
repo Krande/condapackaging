@@ -4,5 +4,6 @@ src/occt/local/occt-V**/
 src/freetype/local/freetype-**/
 src/fltk/local/fltk/
 build/
+output/
 *.tgz
 *.tar.gz
