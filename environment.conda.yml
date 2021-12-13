@@ -7,3 +7,4 @@ dependencies:
   - anaconda-client
   - python==3.9.7
   - vs2015_win-64
+  - ninja
