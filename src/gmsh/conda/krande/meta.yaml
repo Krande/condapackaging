@@ -15,60 +15,57 @@ source:
 
 build:
   number: 0
+  script: bld.bat # [win]
+  script: build.sh # [not win]
 
-outputs:
-  - name: gmsh
-    script: bld.bat # [win]
-    script: build.sh # [not win]
-    requirements:
-      build:
-        - cmake
-        - ninja
-        - make  # [unix]
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ cdt('libselinux') }}        # [linux]
-        - {{ cdt('libxcb') }}            # [linux]
-        - {{ cdt('libxau') }}            # [linux]
-        - {{ cdt('libxdamage') }}        # [linux]
-        - {{ cdt('libxxf86vm') }}        # [linux]
-        - {{ cdt('mesa-libgl-devel') }}  # [linux]
-        - {{ cdt('mesa-dri-drivers') }}  # [linux]
-        - python *
+requirements:
+  build:
+    - cmake
+    - make  # [unix]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ cdt('libselinux') }}        # [linux]
+    - {{ cdt('libxcb') }}            # [linux]
+    - {{ cdt('libxau') }}            # [linux]
+    - {{ cdt('libxdamage') }}        # [linux]
+    - {{ cdt('libxxf86vm') }}        # [linux]
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - {{ cdt('mesa-dri-drivers') }}  # [linux]
+    - python *
 
-      host:
-        - libblas
-        - liblapack
-        - ninja
-        - gmp  # [not win]
-        - occt==7.5.3
-        - fltk
-        - libpng
-        - jpeg
-        - libglu  # [linux]
-        - zlib
-        - xorg-libxfixes     # [linux]
-        - xorg-libxext       # [linux]
-        - xorg-libxrender    # [linux]
-        - xorg-libx11        # [linux]
-        - xorg-libxmu        # [linux]
+  host:
+    - libblas
+    - liblapack
+    - ninja
+    - gmp  # [not win]
+    - occt==7.5.3
+    - fltk
+    - libpng
+    - jpeg
+    - libglu  # [linux]
+    - zlib
+    - xorg-libxfixes     # [linux]
+    - xorg-libxext       # [linux]
+    - xorg-libxrender    # [linux]
+    - xorg-libx11        # [linux]
+    - xorg-libxmu        # [linux]
 
-      run:
-        - gmp  # [not win]
-        - occt==7.5.3
-        - libpng
-        - jpeg
-        - zlib
-        - libglu  # [linux]
-        - xorg-libxfixes     # [linux]
-        - xorg-libxext       # [linux]
-        - xorg-libxrender    # [linux]
-        - xorg-libx11        # [linux]
-        - xorg-libxmu        # [linux]
+  run:
+    - gmp  # [not win]
+    - occt==7.5.3
+    - libpng
+    - jpeg
+    - zlib
+    - libglu  # [linux]
+    - xorg-libxfixes     # [linux]
+    - xorg-libxext       # [linux]
+    - xorg-libxrender    # [linux]
+    - xorg-libx11        # [linux]
+    - xorg-libxmu        # [linux]
 
-    test:
-      imports:
-        - gmsh
+test:
+  imports:
+    - gmsh
 
 about:
   home: http://geuz.org/gmsh/
