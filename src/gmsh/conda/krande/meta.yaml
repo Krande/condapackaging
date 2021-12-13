@@ -2,7 +2,7 @@
 {% set version = "4.9.1" %}
 
 package:
-  name: gmsh-packages
+  name: {{ gmsh }}
   version: {{ version }}
 
 source:
