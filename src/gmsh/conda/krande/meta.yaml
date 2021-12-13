@@ -39,6 +39,7 @@ outputs:
       host:
         - libblas
         - liblapack
+        - ninja
         - gmp  # [not win]
         - occt==7.5.3
         - fltk
