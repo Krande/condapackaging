@@ -18,12 +18,8 @@ build:
 
 outputs:
   - name: gmsh
-    build:
-      skip: true  # [win and vc<14]
-      ignore_run_exports:
-        - fltk
-    script: build_gmsh.sh  # [not win]
-    script: bld_gmsh.bat  # [win]
+    script: bld.bat # [win]
+    script: build.sh # [not win]
     requirements:
       build:
         - cmake
@@ -43,7 +39,7 @@ outputs:
         - libblas
         - liblapack
         - gmp  # [not win]
-        - occt
+        - occt==7.5.3
         - fltk
         - libpng
         - jpeg
@@ -57,7 +53,7 @@ outputs:
 
       run:
         - gmp  # [not win]
-        - occt
+        - occt==7.5.3
         - libpng
         - jpeg
         - zlib
@@ -68,21 +64,6 @@ outputs:
         - xorg-libx11        # [linux]
         - xorg-libxmu        # [linux]
 
-    test:
-      commands:
-        - gmsh -help
-        - test "$(gmsh --version 2>&1)" == "{{ version }}"   # [unix]
-
-  - name: python-gmsh
-    build:
-      noarch: python
-    script: install_python.sh  # [not win]
-    script: install_python.bat  # [win]
-    requirements:
-      run:
-        - {{ pin_subpackage("gmsh", max_pin="x.x.x") }}
-        - numpy
-        - python
     test:
       imports:
         - gmsh

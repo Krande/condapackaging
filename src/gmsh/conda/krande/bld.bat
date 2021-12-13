@@ -30,3 +30,7 @@ if errorlevel 1 exit 1
 :: Install.
 ninja install
 if errorlevel 1 exit 1
+
+mkdir %SP_DIR%
+copy %SRC_DIR%\api\gmsh.py %SP_DIR%\gmsh.py
+:: move %LIBRARY_PREFIX%\lib\gmsh.dll %LIBRARY_PREFIX%\bin\
