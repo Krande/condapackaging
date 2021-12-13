@@ -23,7 +23,7 @@ jobs:
         platform: [
           { name: Windows, distver: windows-latest },
         ]
-        compiler: [ { name: ninja }, { name: nmake } ]
+        compiler: [ { name: ninja } ]
     env:
       compile_cmd: conda-build . --python 3.9.7 -c conda-forge
     steps:
