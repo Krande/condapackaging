@@ -4,11 +4,14 @@ if not exist ..\gmsh\ (
 
 cd %cd%
 
+set LIBRARY_PREFIX=%cd%/output
+
 mkdir build
 cd build
 
 cmake -G "NMake Makefiles" ^
     -D ENABLE_OPENMP=0 ^
+    -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -D ENABLE_BUILD_DYNAMIC=ON ^
     -D ENABLE_HXT=1 ^
     -D GMSH_RELEASE=1 ^
