@@ -3,6 +3,9 @@ compile_cmd=conda activate condabuild && conda-build . --python 3.9.7 -c conda-f
 env:
 	conda env create -f environment.gmsh.yml
 
+conda:
+	conda env create -f environment.conda.yml
+
 pre:
 	choco install visualstudio2017buildtools -y && \
 	choco install vswhere --pre -y && \

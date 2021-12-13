@@ -2,9 +2,6 @@ name: gmsh-build-env
 channels:
   - conda-forge
 dependencies:
-  - conda-build
-  - conda-verify
-  - anaconda-client
   - vs2019_win-64
   - python==3.9.7
   - ninja
@@ -13,4 +10,4 @@ dependencies:
   - fltk
   - hdf5
   - freetype
-  - occt==7.5.3
+  - occt==7.5.1

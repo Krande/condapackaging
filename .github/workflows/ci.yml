@@ -25,15 +25,15 @@ jobs:
         ]
         compiler: [ { name: ninja }, { name: nmake } ]
     env:
-      compile_cmd: ./bld.bat
+      compile_cmd: conda-build . --python 3.9.7 -c conda-forge
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          activate-environment: gmsh-build-env
+          activate-environment: conda-build-env
           python-version: ${{ matrix.pyver.distver }}
-          environment-file: environment.gmsh.yml
+          environment-file: environment.conda.yml
 
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/local/${{ matrix.compiler.name }} && ${{ env.compile_cmd }}
+          cd src/${{ matrix.package.name }}/conda/krande && ${{ env.compile_cmd }}
