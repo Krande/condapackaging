@@ -17,8 +17,6 @@ cmake -G "Ninja" ^
     %SRC_DIR%
 if errorlevel 1 exit 1
 
-set CL=/MP
-
 :: Build.
 ninja
 if errorlevel 1 exit 1
