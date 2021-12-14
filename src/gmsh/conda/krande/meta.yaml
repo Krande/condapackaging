@@ -14,8 +14,7 @@ source:
     # - patches/fix_and.patch
 
 build:
-  script: bld.bat # [win]
-  script: build.sh # [not win]
+  number: 0
 
 requirements:
   build:
@@ -35,6 +34,7 @@ requirements:
   host:
     - libblas
     - liblapack
+    - ninja
     - gmp  # [not win]
     - occt==7.5.3
     - fltk
