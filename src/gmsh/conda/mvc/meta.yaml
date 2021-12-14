@@ -15,11 +15,12 @@ source:
 
 build:
   number: 0
+  preserve_egg_dir: True
 
 requirements:
   build:
     - cmake
-    - make  # [unix]
+    - ninja
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ cdt('libselinux') }}        # [linux]
@@ -34,7 +35,7 @@ requirements:
   host:
     - libblas
     - liblapack
-    - ninja
+
     - gmp  # [not win]
     - occt==7.5.3
     - fltk
@@ -50,6 +51,7 @@ requirements:
 
   run:
     - gmp  # [not win]
+    - fltk
     - occt==7.5.3
     - libpng
     - jpeg

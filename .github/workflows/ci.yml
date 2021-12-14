@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_test:
-    name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}
+    name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}-${{ matrix.compiler.type }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -23,7 +23,7 @@ jobs:
         platform: [
           { name: Windows, distver: windows-latest },
         ]
-        compiler: [ { name: ninja } ]
+        compiler: [ { name: ninja, type: mvc } ]
     env:
       compile_cmd: conda-build . --python 3.9.7 -c conda-forge
     steps:
@@ -31,10 +31,10 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          activate-environment: conda-build-env
+          activate-environment: conda-${{ matrix.compiler.type }}
           python-version: ${{ matrix.pyver.distver }}
-          environment-file: environment.conda.yml
+          environment-file: environment.conda.${{ matrix.compiler.type }}.yml
 
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/conda/krande && ${{ env.compile_cmd }}
+          cd src/${{ matrix.package.name }}/conda/${{ matrix.compiler.type }} && ${{ env.compile_cmd }}

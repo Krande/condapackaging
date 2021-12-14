@@ -1,4 +1,4 @@
-name: conda-build-env
+name: conda-mvc
 channels:
   - conda-forge
 dependencies:
@@ -6,5 +6,5 @@ dependencies:
   - conda-verify
   - anaconda-client
   - python==3.9.7
-  - vs2015_win-64
+  - vs2019_win-64
   - ninja
