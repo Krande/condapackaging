@@ -24,6 +24,5 @@ cmake --build . -- install
 
 if errorlevel 1 exit 1
 
-mkdir -p %SP_DIR%\gmsh
-move %LIBRARY_PREFIX%\lib\gmsh.py %SP_DIR%\gmsh\__init__.py
+move %LIBRARY_PREFIX%\lib\gmsh.py %SP_DIR%\gmsh.py
 move %LIBRARY_PREFIX%\lib\gmsh.dll %LIBRARY_PREFIX%\bin\

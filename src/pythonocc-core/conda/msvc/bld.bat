@@ -15,12 +15,9 @@ cmake -G "Ninja" ^
 
 if errorlevel 1 exit 1
  
-REM Build step 
-ninja
-if errorlevel 1 exit 1
+:: Build and install
+cmake --build . -- install
 
-REM Install step
-ninja install
 if errorlevel 1 exit 1
 
 REM copy the source

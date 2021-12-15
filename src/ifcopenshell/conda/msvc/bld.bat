@@ -4,7 +4,7 @@ REM Remove dot from PY_VER for use in library name
 REM From https://github.com/tpaviot/pythonocc-core/blob/master/ci/conda/bld.bat
 set MY_PY_VER=%PY_VER:.=%
 
-cmake -G "NMake Makefiles" ^
+cmake -G "Ninja" ^
  -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
  -DCMAKE_BUILD_TYPE=Release ^
  -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^

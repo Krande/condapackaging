@@ -18,14 +18,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [{ name: gmsh }]
+        package: [{ name: pythonocc-core }]
         pyver: [ { name: py39, distver: '3.9'} ]
-        platform: [
-          { name: Windows, distver: windows-latest },
-        ]
-        compiler: [ { name: ninja, type: mvc } ]
+        platform: [{ name: Windows, distver: windows-latest }]
+        compiler: [ { name: ninja, type: msvc } ]
     env:
-      compile_cmd: conda-build . --python 3.9.7 -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
+      compile_cmd: conda-build . --python 3.9.7 -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master

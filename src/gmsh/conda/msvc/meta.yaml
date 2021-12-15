@@ -30,9 +30,9 @@ requirements:
     - {{ cdt('libxxf86vm') }}        # [linux]
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
     - {{ cdt('mesa-dri-drivers') }}  # [linux]
-    - python *
 
   host:
+    - python {{ python }}
     - libblas
     - liblapack
     - gmp  # [not win]

@@ -1,4 +1,4 @@
-name: conda-mingw
+name: conda-msvc
 channels:
   - conda-forge
 dependencies:
@@ -6,4 +6,5 @@ dependencies:
   - conda-verify
   - anaconda-client
   - python==3.9.7
+  - vs2015_win-64
   - ninja
