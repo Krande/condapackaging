@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_test:
-    name: ${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}-${{ matrix.compiler.type }}
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}-${{ matrix.compiler.type }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -20,10 +20,10 @@ jobs:
       matrix:
         package: [{ name: pythonocc-core }]
         pyver: [ { name: py39, distver: '3.9'} ]
-        platform: [{ name: Windows, distver: windows-latest }]
+        platform: [ { name: win, distver: windows-latest }]
         compiler: [ { name: ninja, type: msvc } ]
     env:
-      compile_cmd: conda-build . --python 3.9.7 -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+      compile_cmd: conda-build . --python 3.9.7 -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --keep-old-work
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master

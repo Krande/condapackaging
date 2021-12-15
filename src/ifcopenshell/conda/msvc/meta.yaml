@@ -1,33 +1,32 @@
+{% set name = "ifcopenshell" %}
+{% set version = "0.7.0" %}
+
 package:
-  name: ifcopenshell
-  version: "0.6.0a1"
+  name: {{ name }}
+  version: {{ version }}
 
 source:
-  git_rev: "v0.7.0a1"
   git_url: https://github.com/IfcOpenShell/IfcOpenShell
 
 build:
   number: 0
-  features:
-    - vc9     # [win and py27]
-    - vc10    # [win and py34]
-    - vc14    # [win and py35]
-    - vc14    # [win and py36]
 
 requirements:
   build:
-    - gcc     # [osx]
-    - make
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - ninja
     - python
-    - oce ==0.18.3
+    - occt==7.5.3
+    - cgal
     - cmake
-    - swig >=3.0.9
+    - swig>=3.0.9
     - libboost
     - icu
   run:
-    - libgcc  # [osx]
+    - libgcc    # [osx]
     - python
-    - oce ==0.18.3
+    - occt ==7.5.3
     - libboost
     - icu
 

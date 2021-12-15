@@ -1,8 +1,8 @@
-mingw:
-	conda env create -f environment.conda.mingw.yml
+gcc:
+	conda env create -f environment.conda.gcc.yml
 
-mvc:
-	conda env create -f environment.conda.mvc.yml
+msvc:
+	conda env create -f environment.conda.msvc.yml
 
 pre:
 	choco install visualstudio2017buildtools -y && \
