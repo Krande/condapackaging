@@ -9,7 +9,13 @@ on:
     - main
 
 jobs:
+  activate:
+    if: !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok go
   build_test:
+    needs: activate
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.name }}-${{ matrix.compiler.type }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
@@ -19,11 +25,11 @@ jobs:
       fail-fast: false
       matrix:
         package: [{ name: pythonocc-core }]
-        pyver: [ { name: py39, distver: '3.9'} ]
+        pyver: [ { name: py39, distver: '3.9.7'} ]
         platform: [ { name: win, distver: windows-latest }]
         compiler: [ { name: ninja, type: msvc } ]
     env:
-      compile_cmd: conda-build . --python 3.9.7 -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --keep-old-work
+      compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --keep-old-work
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
