@@ -16,21 +16,13 @@ cmake -G "Ninja" ^
     -D ENABLE_HXT=1 ^
     -D GMSH_RELEASE=1 ^
     %SRC_DIR%
+
 if errorlevel 1 exit 1
 
-:: Build.
-ninja
+:: Build and install
+cmake --build . -- install
+
 if errorlevel 1 exit 1
-
-:: Test.
-:: ctest
-:: if errorlevel 1 exit 1
-
-:: Install.
-ninja install
-if errorlevel 1 exit 1
-
-python3 setup-wheel.py build bdist_wheel --plat-name win_amd64 --universal
 
 mkdir -p %SP_DIR%\gmsh
 move %LIBRARY_PREFIX%\lib\gmsh.py %SP_DIR%\gmsh\__init__.py

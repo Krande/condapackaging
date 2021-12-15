@@ -25,7 +25,7 @@ jobs:
         ]
         compiler: [ { name: ninja, type: mvc } ]
     env:
-      compile_cmd: conda-build . --python 3.9.7 -c conda-forge
+      compile_cmd: conda-build . --python 3.9.7 -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master

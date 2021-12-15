@@ -35,7 +35,6 @@ requirements:
   host:
     - libblas
     - liblapack
-
     - gmp  # [not win]
     - occt==7.5.3
     - fltk
@@ -51,8 +50,8 @@ requirements:
 
   run:
     - gmp  # [not win]
-    - fltk
     - occt==7.5.3
+    - fltk
     - libpng
     - jpeg
     - zlib
