@@ -1,5 +1,5 @@
 name: ci-git2conda
-# bump
+# bump 1
 on:
   push:
     paths:
