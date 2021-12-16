@@ -17,7 +17,7 @@ jobs:
       - run: echo ok go
   build_test:
     needs: activate
-    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.compiler.type }}
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.platform.compiler }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -27,8 +27,8 @@ jobs:
       matrix:
         package: [{ name: ifcopenshell }]
         pyver: [ { name: py39, distver: '3.9.7'} ]
-        platform: [ { name: win, distver: windows-latest }, { name: linux, distver: ubuntu-latest }]
-        compiler: [ { name: ninja, type: msvc } ]
+        platform: [ { name: win, distver: windows-latest, compiler: msvc },
+                    { name: linux, distver: ubuntu-latest, compiler: gcc }]
     env:
       compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --no-remove-work-dir
     steps:
@@ -38,8 +38,8 @@ jobs:
         with:
           activate-environment: conda-${{ matrix.compiler.type }}
           python-version: ${{ matrix.pyver.distver }}
-          environment-file: environment.conda.${{ matrix.compiler.type }}.yml
+          environment-file: environment.conda.${{ matrix.platform.compiler }}.yml
 
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/conda/${{ matrix.compiler.type }} && ${{ env.compile_cmd }}
+          cd src/${{ matrix.package.name }}/conda/${{ matrix.platform.compiler }} && ${{ env.compile_cmd }}
