@@ -1,35 +1,33 @@
-{% set name = "ifcopenshell" %}
-{% set version = "0.7.0" %}
-{% set occt_version = "7.5.3" %}
+{% set version = "v0.6.0" %}
 
 package:
-  name: {{ name }}
+  name: ifcopenshell
   version: {{ version }}
 
 source:
-  git_url: https://github.com/IfcOpenShell/IfcOpenShell
+  url: https://github.com/IfcOpenShell/IfcOpenShell/archive/{{ version }}.tar.gz
+  sha256: 4549f6747114c522025d0fa50494ce58626e0f7fa237c235c43d3300affb9976
 
 build:
-  number: 0
+  number: 5
+  skip: True  # [py2k]
 
 requirements:
   build:
     - cmake
     - ninja
-    - swig
+    - swig 3.*
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - python {{ python }}
+    - python
     - boost-cpp
-    - cgal
-    - hdf5
-    - occt=={{ occt_version }}
+    - occt
     - libxml2
   run:
     - python
     - boost-cpp
-    - occt=={{ occt_version }}
+    - occt
     - libxml2
 
 test:
@@ -46,3 +44,7 @@ about:
     working with the Industry Foundation Classes (IFC) file format.
   doc_url: http://ifcopenshell.org/
   dev_url: https://github.com/IfcOpenShell/IfcOpenShell
+
+extra:
+  recipe-maintainers:
+    - looooo
