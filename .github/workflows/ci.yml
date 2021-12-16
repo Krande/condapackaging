@@ -42,4 +42,4 @@ jobs:
 
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/conda/${{ matrix.platform.compiler }} && ${{ env.compile_cmd }}
+          cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
