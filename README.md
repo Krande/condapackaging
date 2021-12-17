@@ -3,9 +3,7 @@
 A repo for testing conda packaging using various compilers and methods.
 
 ## Goal
-Improve understanding of the c++ compilation process and linking with python code. 
-
-Will start with gmsh on Windows and once a stable compilation strategy is found, it will be 
+Improve understanding of the c++ compilation process and linking with python code.
 
 ## Packages subject for testing
 
