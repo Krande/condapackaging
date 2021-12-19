@@ -19,13 +19,12 @@ requirements:
     - ninja ==1.10.2
     - cmake
     - swig ==4.0.2
-    - zlib
 
   host:
     - python
     - occt =={{ occt_version }}
     - cgal-cpp ==5.3
-    - zlib
+    - libzlib
 
   run:
     - python
@@ -33,7 +32,7 @@ requirements:
     - lark-parser
     - deepdiff
     - cgal-cpp ==5.3
-    - zlib
+    - libzlib
 
 test:
   imports:
