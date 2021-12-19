@@ -24,7 +24,7 @@ requirements:
     - python
     - occt =={{ occt_version }}
     - cgal-cpp ==5.3
-    - libzlib
+    - zlib
 
   run:
     - python
@@ -32,7 +32,7 @@ requirements:
     - lark-parser
     - deepdiff
     - cgal-cpp ==5.3
-    - libzlib
+    - zlib
 
 test:
   imports:
