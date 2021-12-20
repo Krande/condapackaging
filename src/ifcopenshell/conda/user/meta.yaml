@@ -7,7 +7,7 @@ package:
   version: {{ version }}
 
 source:
-  git_url: https://github.com/IfcOpenShell/IfcOpenShell
+  git_url: https://github.com/Krande/IfcOpenShell
 
 build:
   binary_relocation: false [osx]
@@ -24,6 +24,7 @@ requirements:
     - python
     - occt =={{ occt_version }}
     - cgal-cpp ==5.3
+    - hdf5
     - zlib
 
   run:
@@ -32,6 +33,7 @@ requirements:
     - lark-parser
     - deepdiff
     - cgal-cpp ==5.3
+    - hdf5
     - zlib
 
 test:
