@@ -1,2 +1,2 @@
 compile:
-	conda activate conda-msvc && conda-build . --python 3.9.7 -c conda-forge
+	conda activate conda-msvc && conda-build . --python 3.9.10 -c conda-forge
