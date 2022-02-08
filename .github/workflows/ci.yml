@@ -1,10 +1,10 @@
 name: ci-git2conda
-# bump 1
+# bump 2
 on:
   push:
     paths:
-      - 'src/**'
-      - '.github/workflows/ci.yml'
+      - src/**
+      - .github/workflows/ci.yml
     branches:
     - main
 
