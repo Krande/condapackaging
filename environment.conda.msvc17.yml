@@ -5,6 +5,5 @@ dependencies:
   - conda-build
   - conda-verify
   - anaconda-client
-  - python==3.9.7
   - vs2017_win-64
   - ninja
