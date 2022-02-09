@@ -39,11 +39,11 @@ test:
     - OCC
     - OCC.Core.BRepPrimAPI
   requires:
-    - pyqt >=5
-    - mypy
+#    - pyqt >=5
+#    - mypy
     - svgwrite
 #    - wxpython >=4
-    - pyside2 >=5
+#    - pyside2 >=5
 
 about:
   home: https://github.com/tpaviot/pythonocc-core
