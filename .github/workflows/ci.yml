@@ -27,7 +27,7 @@ jobs:
       matrix:
         package: [
           { name: ifcopenshell },
-          { name: pythonocc-core },
+#          { name: pythonocc-core },
         ]
         pyver: [
           { name: py39, distver: '3.9.10'},
