@@ -40,7 +40,7 @@ test:
     - OCC.Core.BRepPrimAPI
   requires:
 #    - pyqt >=5
-#    - mypy
+    - mypy
     - svgwrite
 #    - wxpython >=4
 #    - pyside2 >=5
