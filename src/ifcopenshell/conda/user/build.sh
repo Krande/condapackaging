@@ -6,6 +6,7 @@ if [ `uname` == Darwin ]; then
     export CFLAGS="$CFLAGS   -Wl,-flat_namespace,-undefined,suppress"
     export CXXFLAGS="$CXXFLAGS -Wl,-flat_namespace,-undefined,suppress"
     export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
+    export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib"
 else
     CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
 fi
