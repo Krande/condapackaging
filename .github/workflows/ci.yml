@@ -27,7 +27,7 @@ jobs:
       matrix:
         package: [
           { name: ifcopenshell },
-          { name: pythonocc-core },
+#          { name: pythonocc-core },
         ]
         pyver: [
           { name: py39, distver: '3.9.10'},
@@ -50,6 +50,3 @@ jobs:
       - name: build local packages
         run: |
           cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
-        env:
-          CC: gcc-10
-          CXX: g++-10

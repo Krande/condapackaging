@@ -6,14 +6,13 @@ if [ `uname` == Darwin ]; then
     export CFLAGS="$CFLAGS   -Wl,-flat_namespace,-undefined,suppress"
     export CXXFLAGS="$CXXFLAGS -Wl,-flat_namespace,-undefined,suppress"
     export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
-    export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib"
 else
     CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
 fi
 
 cmake -G Ninja \
- -DCMAKE_INSTALL_PREFIX=$PREFIX \
  -DCMAKE_BUILD_TYPE=Release \
+ -DCMAKE_INSTALL_PREFIX=$PREFIX \
   ${CMAKE_PLATFORM_FLAGS[@]} \
  -DCMAKE_PREFIX_PATH=$PREFIX \
  -DCMAKE_SYSTEM_PREFIX_PATH=$PREFIX \
@@ -34,6 +33,9 @@ cmake -G Ninja \
  -DBUILD_CONVERT:BOOL=ON \
  -DBUILD_IFCPYTHON:BOOL=ON \
  -DBUILD_IFCGEOM:BOOL=ON \
+ -DBUILD_GEOMSERVER:BOOL=OFF \
+ -DIFCXML_SUPPORT:BOOL=OFF \
+ -DBOOST_USE_STATIC_LIBS:BOOL=OFF \
  ./cmake
 
 ninja
