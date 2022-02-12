@@ -35,7 +35,7 @@ jobs:
         platform: [
 #          { name: win, distver: windows-latest, compiler: msvc },
 #          { name: linux, distver: ubuntu-latest, compiler: gcc },
-          { name: macOS, distver: macos-latest, compiler: clang }
+          { name: macOS, distver: macos-latest, compiler: gcc }
         ]
     env:
       compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --no-remove-work-dir --label dev
