@@ -51,3 +51,6 @@ jobs:
       - name: build local packages
         run: |
           cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
+        env:
+          CC: gcc-10
+          CXX: g++-10
