@@ -49,4 +49,4 @@ jobs:
           environment-file: environment.conda.${{ matrix.platform.compiler }}.yml
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/conda/feedstock && ${{ env.compile_cmd }}
+          cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
