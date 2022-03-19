@@ -8,8 +8,14 @@ if [ `uname` == Darwin ]; then
   export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
 
   cmake ./cmake -DOCC_LIBRARY_DIR=$PREFIX/lib \
+      -DCMAKE_BUILD_TYPE=Release \
       -DOCC_INCLUDE_DIR=$PREFIX/include/opencascade \
+      -DHDF5_SUPPORT:BOOL=ON \
+      -DHDF5_INCLUDE_DIR=$PREFIX/include \
+      -DHDF5_LIBRARY_DIR=$PREFIX/lib \
+      -DBUILD_IFCPYTHON:BOOL=ON \
       -DCOLLADA_SUPPORT=0 \
+      -DBUILD_IFCGEOM:BOOL=ON \
       -DCGAL_INCLUDE_DIR=$PREFIX/include \
       -DGMP_LIBRARY_DIR=$PREFIX/lib \
       -DMPFR_LIBRARY_DIR=$PREFIX/lib \
@@ -35,7 +41,7 @@ else
      -DHDF5_LIBRARY_DIR=$PREFIX/lib \
      -DJSON_INCLUDE_DIR=$PREFIX/include \
      -DCGAL_INCLUDE_DIR=$PREFIX/include \
-     -DCOLLADA_SUPPORT:BOOL=OFF \
+     -DCOLLADA_SUPPORT=0 \
      -DBUILD_EXAMPLES:BOOL=OFF \
      -DIFCXML_SUPPORT:BOOL=OFF \
      -DBUILD_CONVERT:BOOL=ON \
