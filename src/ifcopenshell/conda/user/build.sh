@@ -38,6 +38,6 @@ cmake -G Ninja \
  -DBOOST_USE_STATIC_LIBS:BOOL=OFF \
  ./cmake
 
-ninja
+ninja -j -lboost_options
 
 ninja install
