@@ -9,6 +9,7 @@ if [ `uname` == Darwin ]; then
 
   cmake ./cmake -DOCC_LIBRARY_DIR=$PREFIX/lib \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$PREFIX \
       -DOCC_INCLUDE_DIR=$PREFIX/include/opencascade \
       -DHDF5_SUPPORT:BOOL=ON \
       -DHDF5_INCLUDE_DIR=$PREFIX/include \
@@ -21,6 +22,8 @@ if [ `uname` == Darwin ]; then
       -DMPFR_LIBRARY_DIR=$PREFIX/lib \
 
   make -j -lboost_options
+
+  make install
 
 else
     CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
