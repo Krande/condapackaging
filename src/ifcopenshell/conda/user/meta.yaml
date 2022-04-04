@@ -29,6 +29,7 @@ requirements:
     - hdf5 >={{ hdf5_version }}
     - cgal-cpp >={{ cgal_cpp_version }}
     - nlohmann_json
+    - libxml2
     - numpy >=1.17
 
   run:
