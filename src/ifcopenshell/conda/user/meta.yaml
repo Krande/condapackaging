@@ -26,7 +26,7 @@ requirements:
   host:
     - python
     - occt =={{ occt_version }}
-    - h5py
+    - hdf5 >={{ hdf5_version }}
     - cgal-cpp >={{ cgal_cpp_version }}
     - nlohmann_json
     - numpy >=1.17
@@ -37,7 +37,7 @@ requirements:
     - lark-parser
     - deepdiff
     - cgal-cpp >={{ cgal_cpp_version }}
-    - h5py
+    - hdf5 >={{ hdf5_version }}
     - numpy
     - requests
     - nlohmann_json
