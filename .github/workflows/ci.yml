@@ -33,8 +33,8 @@ jobs:
           { name: py39, distver: '3.9.10'},
           { name: py310, distver: '3.10.2'} ]
         platform: [
-#          { name: win, distver: windows-latest, compiler: msvc },
-#          { name: linux, distver: ubuntu-latest, compiler: gcc },
+          { name: win, distver: windows-latest, compiler: msvc },
+          { name: linux, distver: ubuntu-latest, compiler: gcc },
           { name: macOS, distver: macos-latest, compiler: gcc }
         ]
     env:
