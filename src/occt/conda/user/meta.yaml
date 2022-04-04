@@ -30,7 +30,6 @@ requirements:
     - freeimage
     - fontconfig
     - xorg-libxt  # [linux]
-#    - vtk
     - rapidjson
     - xorg-libxmu # [linux]
   run:
@@ -38,8 +37,8 @@ requirements:
     - freeimage
     - fontconfig
     - xorg-libxt  # [linux]
-#    - vtk
     - rapidjson
+
 test:
   requires:
     - ninja
