@@ -32,7 +32,7 @@ requirements:
     - xorg-libxt  # [linux]
 #    - vtk
     - rapidjson
-    - libxmu      # [linux]
+    - xorg-libxmu # [linux]
   run:
     - freetype
     - freeimage
