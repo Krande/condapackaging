@@ -1,6 +1,3 @@
-set CC=x86_64-w64-mingw32-gcc.exe
-set CXX=x86_64-w64-mingw32-g++.exe
-
 cmake -S . -B build  -G Ninja ^
       -D CMAKE_PREFIX_PATH:FILEPATH="%LIBRARY_PREFIX%" ^
       -D CMAKE_LIBRARY_PATH:FILEPATH="%LIBRARY_PREFIX%/lib" ^

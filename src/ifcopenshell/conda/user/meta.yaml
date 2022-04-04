@@ -36,7 +36,7 @@ requirements:
     - lark-parser
     - deepdiff
     - cgal-cpp >={{ cgal_cpp_version }}
-    - hdf5
+    - hdf5 >={{ hdf5_version }}
     - numpy
     - requests
     - nlohmann_json

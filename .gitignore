@@ -6,5 +6,6 @@ src/freetype/local/freetype-**/
 src/fltk/local/fltk/
 build/
 output/
+temp/
 *.tgz
 *.tar.gz
