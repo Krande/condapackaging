@@ -1,8 +1,0 @@
-name: conda-msvc
-channels:
-  - conda-forge
-dependencies:
-  - conda-build
-  - conda-verify
-  - anaconda-client
-  - ninja

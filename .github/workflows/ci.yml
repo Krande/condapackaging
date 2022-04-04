@@ -17,7 +17,7 @@ jobs:
       - run: echo ok go
   build_test:
     needs: activate
-    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{ matrix.platform.compiler }}
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -46,7 +46,7 @@ jobs:
         with:
           activate-environment: conda-${{ matrix.compiler.type }}
           python-version: ${{ matrix.pyver.distver }}
-          environment-file: environment.conda.${{ matrix.platform.compiler }}.yml
+          environment-file: environment.conda.yml
       - name: build local packages
         run: |
           cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
