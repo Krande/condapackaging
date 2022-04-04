@@ -6,9 +6,13 @@ if [ `uname` == Darwin ]; then
   export CFLAGS="$CFLAGS   -Wl,-flat_namespace,-undefined,suppress"
   export CXXFLAGS="$CXXFLAGS -Wl,-flat_namespace,-undefined,suppress"
   export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
+  export LIBXML2="$PREFIX/lib/libxml2.lib"
+  CMAKE_PLATFORM_FLAGS+=(-DLIBXML2_INCLUDE_DIR:FILEPATH="$PREFIX/include")
+  CMAKE_PLATFORM_FLAGS+=(-DLIBXML2_LIBRARIES:FILEPATH="${LIBXML2}")
 fi
 
 CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
+
 cmake -G Ninja \
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
  -DCMAKE_BUILD_TYPE=Release \
