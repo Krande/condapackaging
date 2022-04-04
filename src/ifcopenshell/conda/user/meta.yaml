@@ -2,6 +2,7 @@
 {% set version = "0.7.0" %}
 {% set occt_version = "7.5.3" %}
 {% set cgal_cpp_version = "5.3" %}
+{% set hdf5_version = "1.12.1" %}
 
 package:
   name: {{ name }}
@@ -25,8 +26,8 @@ requirements:
   host:
     - python
     - occt =={{ occt_version }}
-    - cgal-cpp =={{ cgal_cpp_version }}
-    - hdf5
+    - hdf5 >={{ hdf5_version }}
+    - cgal-cpp >={{ cgal_cpp_version }}
     - nlohmann_json
 
   run:
@@ -34,7 +35,7 @@ requirements:
     - occt =={{ occt_version }}
     - lark-parser
     - deepdiff
-    - cgal-cpp =={{ cgal_cpp_version }}
+    - cgal-cpp >={{ cgal_cpp_version }}
     - hdf5
     - numpy
     - requests
