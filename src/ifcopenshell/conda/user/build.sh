@@ -34,7 +34,6 @@ if [ `uname` == Darwin ]; then
    -DCMAKE_OSX_SYSROOT=/Applications/Xcode_13.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk \
    ./cmake
 
-  ninja -j -lboost_options
 else
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
 
@@ -67,7 +66,8 @@ else
    -DBOOST_USE_STATIC_LIBS:BOOL=OFF \
    ./cmake
 
-   ninja
 fi
+
+ninja
 
 ninja install
