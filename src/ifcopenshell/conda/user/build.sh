@@ -40,11 +40,11 @@ if [ `uname` == Darwin ]; then
 
   # Build and install
   cmake --build . -- install
-
-  # fix rpaths
-  for lib in $(ls $SP_DIR/ifcopenshell/_*.so); do
-    install_name_tool -rpath $PREFIX/lib @loader_path/../../../ $lib
-  done
+#
+#  # fix rpaths
+#  for lib in $(ls $SP_DIR/ifcopenshell/_*.so); do
+#    install_name_tool -rpath $PREFIX/lib @loader_path/../../../ $lib
+#  done
 
 else
   cmake -G Ninja \
