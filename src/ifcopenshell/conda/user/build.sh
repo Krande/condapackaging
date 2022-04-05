@@ -10,7 +10,7 @@ if [ `uname` == Darwin ]; then
   export CXXFLAGS="$CXXFLAGS -Wl,-flat_namespace,-undefined,suppress"
   export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
 
-  clang .. -isysroot "${CONDA_BUILD_SYSROOT}" -mmacosx-version-min="${MACOSX_DEPLOYMENT_TARGET}" ..
+#  clang .. -isysroot "${CONDA_BUILD_SYSROOT}" -mmacosx-version-min="${MACOSX_DEPLOYMENT_TARGET}" ..
 
   cmake -G Ninja \
    -DCMAKE_BUILD_TYPE=Release \
