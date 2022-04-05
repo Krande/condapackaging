@@ -12,8 +12,8 @@ source:
   git_url: https://github.com/Krande/IfcOpenShell
   git_branch: v0.7.0-ada-dev
 
-#build:
-#  binary_relocation: true [osx]
+build:
+  binary_relocation: true [osx]
 
 requirements:
   build:
