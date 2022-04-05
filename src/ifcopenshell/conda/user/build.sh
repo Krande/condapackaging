@@ -38,7 +38,7 @@ if [ `uname` == Darwin ]; then
 
   make -j -lboost_options
 
-  make install
+  make install -d
 
 else
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
