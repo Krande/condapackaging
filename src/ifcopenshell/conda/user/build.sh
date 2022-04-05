@@ -6,6 +6,9 @@ if [[ ${HOST} =~ .*linux.* ]]; then
 fi
 
 if [ `uname` == Darwin ]; then
+  export CFLAGS="$CFLAGS   -Wl,-flat_namespace,-undefined,suppress"
+  export CXXFLAGS="$CXXFLAGS -Wl,-flat_namespace,-undefined,suppress"
+  export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
 
   cmake -G Ninja \
    -DCMAKE_BUILD_TYPE=Release \
