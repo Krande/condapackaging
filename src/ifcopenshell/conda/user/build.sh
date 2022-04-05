@@ -1,13 +1,13 @@
 #!/bin/bash
 
 declare -a CMAKE_PLATFORM_FLAGS
-
-# MAC OSX 11
-#   -DCMAKE_OSX_SYSROOT=/Applications/Xcode_13.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk \
+if [[ ${HOST} =~ .*linux.* ]]; then
+    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
+fi
 
 if [ `uname` == Darwin ]; then
 
-  cmake \
+  cmake -G Ninja \
    -DCMAKE_BUILD_TYPE=Release \
    -DCMAKE_INSTALL_PREFIX=$PREFIX \
     ${CMAKE_PLATFORM_FLAGS[@]} \
@@ -36,13 +36,15 @@ if [ `uname` == Darwin ]; then
    -DCMAKE_OSX_SYSROOT=/Applications/Xcode_13.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk \
    ./cmake
 
-  make -j -lboost_options
+  # Build and install
+  cmake --build . -- install
 
-  make install -d
+  # fix rpaths
+  for lib in $(ls $SP_DIR/ifcopenshell/_*.so); do
+    install_name_tool -rpath $PREFIX/lib @loader_path/../../../ $lib
+  done
 
 else
-  CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
-
   cmake -G Ninja \
    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
    -DCMAKE_BUILD_TYPE=Release \
