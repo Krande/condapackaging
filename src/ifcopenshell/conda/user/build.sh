@@ -7,7 +7,7 @@ declare -a CMAKE_PLATFORM_FLAGS
 
 if [ `uname` == Darwin ]; then
 
-  cmake -G Ninja \
+  cmake \
    -DCMAKE_BUILD_TYPE=Release \
    -DCMAKE_INSTALL_PREFIX=$PREFIX \
     ${CMAKE_PLATFORM_FLAGS[@]} \
@@ -33,12 +33,12 @@ if [ `uname` == Darwin ]; then
    -DBUILD_GEOMSERVER:BOOL=OFF \
    -DIFCXML_SUPPORT:BOOL=OFF \
    -DBOOST_USE_STATIC_LIBS:BOOL=OFF \
-   -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk \
+   -DCMAKE_OSX_SYSROOT=/Applications/Xcode_13.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk \
    ./cmake
 
-  ninja
+  make -j -lboost_options
 
-  ninja install
+  make install
 
 else
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
