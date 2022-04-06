@@ -1,11 +1,10 @@
-name: conda-gcc
+name: conda-build
 channels:
   - conda-forge
-  - malfet
 dependencies:
-  - conda-build==3.16.3
+  - conda-build
   - conda-verify
   - anaconda-client
   - ninja
   - doxygen
-#  - py-lief==0.11.5
+  - py-lief
