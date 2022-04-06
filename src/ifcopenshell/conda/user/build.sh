@@ -13,7 +13,6 @@ if [ `uname` == Darwin ]; then
 fi
 
 cmake -G Ninja \
- -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
  -DCMAKE_BUILD_TYPE=Release \
  -DCMAKE_INSTALL_PREFIX=$PREFIX \
   ${CMAKE_PLATFORM_FLAGS[@]} \
@@ -44,4 +43,3 @@ cmake -G Ninja \
 ninja
 
 ninja install
-

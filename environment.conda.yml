@@ -2,10 +2,12 @@ name: conda-build
 channels:
   - conda-forge
 dependencies:
-  - conda-build==3.16.3
+  - conda-build
   - conda-verify
   - anaconda-client
   - ninja
   - doxygen
-  - py-lief
   - ripgrep
+  - pip
+  - pip:
+      - https://lief.s3-website.fr-par.scw.cloud/latest/lief/lief-0.13.0.dev0-cp310-cp310-macosx_10_14_x86_64.whl
