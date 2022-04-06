@@ -8,3 +8,4 @@ dependencies:
   - ninja
   - doxygen
   - py-lief
+  - ripgrep
