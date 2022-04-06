@@ -48,6 +48,7 @@ jobs:
           activate-environment: conda-${{ matrix.compiler.type }}
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.conda.yml
+#          miniconda-version: "3.16.3"
       - name: build local packages
         run: |
           cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
