@@ -8,4 +8,4 @@ dependencies:
   - anaconda-client
   - ninja
   - doxygen
-  - py-lief==0.11.5
+#  - py-lief==0.11.5
