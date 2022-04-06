@@ -38,7 +38,7 @@ jobs:
           { name: macOS, distver: macos-latest }
         ]
     env:
-      compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --no-remove-work-dir --label dev
+      compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --no-remove-work-dir --label dev --no-error-overlinking --no-error-overdepending
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
