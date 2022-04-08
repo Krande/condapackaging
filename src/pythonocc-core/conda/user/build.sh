@@ -18,8 +18,11 @@ cmake -G Ninja -DCMAKE_INSTALL_PREFIX=$PREFIX \
  -DSWIG_HIDE_WARNINGS=ON \
  .
 
-# Build and install
-cmake --build . -- install
+# Build step
+ninja
+
+# Install step
+ninja install
 
 # fix rpaths
 if [ $(uname) == Darwin ]; then
