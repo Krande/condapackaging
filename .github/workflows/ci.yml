@@ -26,11 +26,12 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: pythonocc-core }
+          { name: occt-core },
+          { name: occt-vtk }
         ]
         pyver: [
-          { name: py38, distver: '3.8' },
-          { name: py39, distver: '3.9' },
+#          { name: py38, distver: '3.8' },
+#          { name: py39, distver: '3.9' },
           { name: py310, distver: '3.10'}
         ]
         platform: [
@@ -50,4 +51,4 @@ jobs:
           environment-file: environment.conda.yml
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/conda/user && ${{ env.compile_cmd }}
+          cd src/occt/conda/feedstock/${{ matrix.package.name }} && ${{ env.compile_cmd }}
