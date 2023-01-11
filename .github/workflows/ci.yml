@@ -58,6 +58,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
           channel-priority: strict
+          channels: conda-forge
           activate-environment: conda-build
           mamba-version: "*"
           auto-update-conda: false
