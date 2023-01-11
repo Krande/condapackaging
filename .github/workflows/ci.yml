@@ -50,6 +50,7 @@ jobs:
           mamba-version: "*"
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.conda.yml
+          use-mamba: true
       - name: build local packages
         run: |
           cd src/${{ matrix.package.name }}/conda && ${{ env.compile_cmd }}
