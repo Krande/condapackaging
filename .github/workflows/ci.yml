@@ -42,7 +42,7 @@ jobs:
     env:
       compile_cmd: conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
