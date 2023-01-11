@@ -43,14 +43,30 @@ jobs:
       compile_cmd: conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
     steps:
       - uses: actions/checkout@v3
+      - name: Set environment variables
+        run: |
+          echo "CONDA_ENV_FILE=ci/requirements/environment.yml" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=${{ matrix.python-version }}" >> $GITHUB_ENV
+      - name: Cache conda
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-py${{ matrix.pyver.distver }}-${{
+            hashFiles('environment.conda.yml') }}
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
-          activate-environment: conda
+          annel-priority: strict
+          activate-environment: conda-build
           mamba-version: "*"
+          auto-update-conda: false
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.conda.yml
-          use-mamba: true
+          use-only-tar-bz2: true
+      - name: Install conda dependencies
+        run: |
+          mamba env update -f $CONDA_ENV_FILE
       - name: build local packages
         run: |
           cd src/${{ matrix.package.name }}/conda && ${{ env.compile_cmd }}
