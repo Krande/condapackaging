@@ -26,8 +26,8 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: occt-core },
-          { name: occt-vtk }
+          { name: ifcopenshell },
+#          { name: occt }
         ]
         pyver: [
 #          { name: py38, distver: '3.8' },
@@ -40,15 +40,16 @@ jobs:
           { name: macOS, distver: macos-latest }
         ]
     env:
-      compile_cmd: conda-build . --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --no-remove-work-dir --label dev
+      compile_cmd: conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
           activate-environment: conda
+          mamba-version: "*"
           python-version: ${{ matrix.pyver.distver }}
           environment-file: environment.conda.yml
       - name: build local packages
         run: |
-          cd src/occt/conda/feedstock/${{ matrix.package.name }} && ${{ env.compile_cmd }}
+          cd src/${{ matrix.package.name }}/conda && ${{ env.compile_cmd }}
