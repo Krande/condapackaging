@@ -41,17 +41,6 @@ jobs:
         ]
     steps:
       - uses: actions/checkout@v3
-      - name: Set environment variables
-        run: |
-          echo "CONDA_ENV_FILE=environment.conda.yml" >> $GITHUB_ENV
-          echo "PYTHON_VERSION=${{ matrix.pyver.distver }}" >> $GITHUB_ENV
-      - name: Cache conda
-        uses: actions/cache@v2
-        with:
-          path: ~/conda_pkgs_dir
-          key:
-            ${{ runner.os }}-conda-py${{ matrix.pyver.distver }}-${{
-            hashFiles('environment.conda.yml') }}
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
