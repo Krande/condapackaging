@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/IfcOpenShell/IfcOpenShell/archive/refs/tags/{{ version }}.tar.gz
-    sha256: c925a5d5f2af1f0d4f8447e33771e222c942722bb41d2e0416632acf21c3acfe
+    sha256: 0acbdb40f82dd1fe3370744c732d59e3036ae7da3fdbd0ec2d593a4147bf94be
 
   - url: https://github.com/IfcOpenShell/files/archive/ed6b97983ff1324a0eaec0fd676ab58051cf3059.tar.gz
     folder: test/input
