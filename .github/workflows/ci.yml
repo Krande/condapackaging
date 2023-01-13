@@ -63,5 +63,5 @@ jobs:
           python-version: ${{ matrix.pyver.distver }}
       - name: build local packages
         run: |
-          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+          conda build . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
         working-directory: src/${{ matrix.package.name }}/conda
