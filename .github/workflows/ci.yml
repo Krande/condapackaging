@@ -39,8 +39,6 @@ jobs:
           { name: linux, distver: ubuntu-latest },
           { name: macOS, distver: macos-latest }
         ]
-    env:
-      compile_cmd: conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
     steps:
       - uses: actions/checkout@v3
       - name: Set environment variables
@@ -63,10 +61,10 @@ jobs:
           mamba-version: "*"
           auto-update-conda: false
           python-version: ${{ matrix.pyver.distver }}
-          use-only-tar-bz2: true
       - name: Install conda dependencies
         run: |
           mamba env update -f $CONDA_ENV_FILE
       - name: build local packages
         run: |
-          cd src/${{ matrix.package.name }}/conda && ${{ env.compile_cmd }}
+          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+        working-directory: src/${{ matrix.package.name }}/conda
