@@ -58,12 +58,9 @@ jobs:
           channel-priority: strict
           channels: conda-forge
           activate-environment: conda-build
-          mamba-version: "*"
+          environment-file: environment.conda.yml
           auto-update-conda: false
           python-version: ${{ matrix.pyver.distver }}
-      - name: Install conda dependencies
-        run: |
-          mamba env update -f $CONDA_ENV_FILE
       - name: build local packages
         run: |
           conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
