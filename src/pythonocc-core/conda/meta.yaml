@@ -1,0 +1,61 @@
+{% set version = "7.7.0" %}
+
+package:
+  name: pythonocc-core
+  version: {{ version }}
+
+source:
+  url: https://github.com/tpaviot/pythonocc-core/archive/{{ version }}.tar.gz
+  sha256: 9b27003b87799badfae04f8cacd03b8faa1309600c9de8021434d7511e718f82
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - python                                 # [build_platform != target_platform]
+    - numpy                                  # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - {{ compiler('cxx') }}
+    - {{ cdt('mesa-libgl-devel') }}      # [linux]
+    - {{ cdt('libxi-devel') }}           # [linux]
+    - ninja
+    - cmake
+    - swig 4.0.2
+  host:
+    - python
+    - occt-core {{ version }}
+    - numpy
+  run:
+    - python
+    - occt-core
+    - six
+    - {{ pin_compatible("numpy") }}
+    - svgwrite
+  run_constrained:
+    - occt-core {{ version }}
+
+test:
+  source_files:
+    - test
+  imports:
+    - OCC
+    - OCC.Core.BRepPrimAPI
+  requires:
+    - pyqt >=5
+
+about:
+  home: http://www.pythonocc.org/
+  license: LGPL-3.0
+  license_family: LGPL
+  license_file: LICENSE
+  summary: python bindings for opencascade (occt)
+  description: |
+    pythonocc is a python package whose purpose is 
+    to provide 3D modeling features. It is intended 
+    to CAD/PDM/PLM and BIM related development.
+  dev_url: https://github.com/tpaviot/pythonocc-core
+
+extra:
+  recipe-maintainers:
+    - looooo
