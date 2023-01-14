@@ -27,7 +27,7 @@ jobs:
       matrix:
         package: [
           { name: ifcopenshell },
-#          { name: occt }
+          { name: pythonocc-core }
         ]
         pyver: [
 #          { name: py38, distver: '3.8' },

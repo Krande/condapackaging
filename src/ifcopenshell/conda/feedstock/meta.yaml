@@ -49,6 +49,7 @@ requirements:
     - mpfr
     - gmp  # [unix]
     - mpir  # [win]
+    - zlib
   run:
     - python
     - boost-cpp
@@ -59,6 +60,7 @@ requirements:
     - mpfr
     - gmp  # [unix]
     - mpir  # [win]
+    - zlib
 
 test:
   imports:
