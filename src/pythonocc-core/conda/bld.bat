@@ -3,24 +3,15 @@ cd build
 
 REM Configure step
 cmake -G "Ninja" ^
-    -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-    -DPYTHONOCC_BUILD_TYPE=Release ^
-    -DPYTHONOCC_MESHDS_NUMPY=ON ^
-    -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-    -DCMAKE_SYSTEM_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-    -DPython3_FIND_STRATEGY=LOCATION ^
-    -DPython3_FIND_REGISTRY=NEVER ^
-    -DSWIG_HIDE_WARNINGS=ON ^
+    -D CMAKE_INSTALL_PREFIX:FILEPATH="%LIBRARY_PREFIX%" ^
+    -D PYTHONOCC_BUILD_TYPE:STRING=Release ^
+    -D Python3_FIND_STRATEGY:STRING=LOCATION ^
+    -D Python3_FIND_REGISTRY:STRING=NEVER ^
+    -D SWIG_HIDE_WARNINGS:BOOL=ON ^
+    -D PYTHONOCC_MESHDS_NUMPY=ON ^
     ..
 
 if errorlevel 1 exit 1
- 
-:: Build and install
-cmake --build . -- install
 
+ninja install
 if errorlevel 1 exit 1
-
-REM copy the source
-REM cd ..
-REM xcopy src "%LIBRARY_PREFIX%\src\pythonocc-core\src" /s /e /i
-REM if errorlevel 1 exit 1

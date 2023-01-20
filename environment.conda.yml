@@ -7,3 +7,4 @@ dependencies:
   - anaconda-client
   - ninja
   - doxygen
+  - vs2022_win-64
