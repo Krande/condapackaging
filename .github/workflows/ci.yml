@@ -51,6 +51,10 @@ jobs:
           environment-file: environment.conda.yml
           auto-update-conda: false
           python-version: ${{ matrix.pyver.distver }}
+      - name: VS install on windows
+        if: startsWith(github.run_platform, 'windows')
+        run: |
+          conda install -c conda-forge vs2022_win-64
       - name: build local packages
         run: |
           conda build . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
