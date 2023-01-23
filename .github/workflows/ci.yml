@@ -52,7 +52,7 @@ jobs:
           auto-update-conda: false
           python-version: ${{ matrix.pyver.distver }}
       - name: VS install on windows
-        if: startsWith(github.run_platform, 'windows')
+        if: ${{ matrix.platform.name == 'win' }}
         run: |
           conda install -c conda-forge vs2022_win-64
       - name: build local packages
