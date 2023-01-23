@@ -7,3 +7,4 @@ dependencies:
   - anaconda-client
   - ninja
   - doxygen
+  - py-lief=<0.12

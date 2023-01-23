@@ -37,11 +37,13 @@ jobs:
         ]
         platform: [
           { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
+#          { name: linux, distver: ubuntu-latest },
+#          { name: macOS, distver: macos-latest }
         ]
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
         with:
