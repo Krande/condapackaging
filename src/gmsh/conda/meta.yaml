@@ -11,8 +11,8 @@ source:
   url: https://gmsh.info/src/{{ name }}-{{ version }}-source.tgz
   sha256: {{ sha256 }}
   patches:
-    - patches/fltk_nominmax.patch
-    - patches/disable_wmain.patch
+    - patches/fltk_nominmax.patch # [not win]
+    - patches/disable_wmain.patch # [not win]
 
 build:
   number: 1
