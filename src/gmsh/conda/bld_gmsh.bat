@@ -17,6 +17,7 @@ cmake -G "NMake Makefiles" ^
       -D ENABLE_HXT=0 ^
       -D BLAS_LAPACK_LIBRARIES=%LIBRARY_PREFIX%\lib\lapack.lib;%LIBRARY_PREFIX%\lib\blas.lib ^
       -D GMSH_RELEASE=1 ^
+      -D ENABLE_OPENMP=0 ^
       %SRC_DIR%
 if errorlevel 1 exit 1
 
@@ -33,6 +34,4 @@ nmake install
 if errorlevel 1 exit 1
 
 rm %LIBRARY_PREFIX%\lib\gmsh.py
-mkdir %SP_DIR%
-cp api\gmsh.py %SP_DIR%\gmsh.py
 move %LIBRARY_PREFIX%\lib\gmsh.dll %LIBRARY_PREFIX%\bin\
