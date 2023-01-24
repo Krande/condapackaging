@@ -1,11 +1,18 @@
+Subject: [PATCH] fltk nominmax
+---
+Index: src/common/gmsh.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
 diff --git a/src/common/gmsh.cpp b/src/common/gmsh.cpp
-index 31dc8961e..907d79447 100644
---- a/src/common/gmsh.cpp
-+++ b/src/common/gmsh.cpp
-@@ -5,6 +5,13 @@
-
-#include <sstream>
-#include <regex>
+--- a/src/common/gmsh.cpp	(revision 5f9213253afc2094426d6237961736d56877ded9)
++++ b/src/common/gmsh.cpp	(date 1674549740293)
+@@ -5,7 +5,13 @@
+ 
+ #include <sstream>
+ #include <regex>
+-
 +#if defined(HAVE_FLTK) && defined(_WIN32)
 +#define NOMINMAX
 +// Opencascade define NOMSG and a bunch of other macros to avoid some
@@ -13,7 +20,6 @@ index 31dc8961e..907d79447 100644
 +// Including windows.h at the beginning makes defining NOMSG irrelevant.
 +#include "windows.h"
 +#endif
-#include "GmshConfig.h"
-#include "GmshDefines.h"
-#include "GmshGlobal.h"
-#include "MallocUtils.h"
+ #include "GmshConfig.h"
+ #include "GmshDefines.h"
+ #include "GmshGlobal.h"
