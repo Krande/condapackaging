@@ -26,9 +26,9 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-#          { name: ifcopenshell },
+          { name: ifcopenshell },
 #          { name: pythonocc-core },
-          { name: gmsh }
+#          { name: gmsh }
         ]
         pyver: [
 #          { name: py39, distver: '3.9' },
