@@ -1,14 +1,5 @@
-gcc:
-	conda env create -f environment.conda.gcc.yml
-
-msvc:
-	conda env create -f environment.conda.msvc.yml
-
-msvc17:
-	conda env create -f environment.conda.msvc17.yml
-
-msvc19:
-	conda env create -f environment.conda.msvc19.yml
+dev:
+	mamba env update -f environment.conda.yml --prune
 
 pre:
 	choco install visualstudio2017buildtools -y && \

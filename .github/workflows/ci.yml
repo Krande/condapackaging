@@ -54,7 +54,7 @@ jobs:
       - name: VS install on windows
         if: ${{ matrix.platform.name == 'win' }}
         run: |
-          conda install -c conda-forge vs2019_win-64
+          conda install -c conda-forge vs2022_win-64
       - name: build local packages
         run: |
           conda build . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
