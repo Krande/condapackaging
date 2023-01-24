@@ -25,6 +25,6 @@ Caused by git checkout on windows automatically modifying code somehow thus affe
 
 Error is usually reflected in patching fails with "Hunk #1 FAILED at 5 (different line endings)."
 
-The solution seems to be 
+The solution seems to be to add `*.patch binary` to a `.gitattributes` file
 
 * https://github.com/actions/checkout/issues/135 
