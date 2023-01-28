@@ -3,7 +3,7 @@
 A repo for testing conda packaging using various compilers and methods.
 
 ## Goal
-Improve understanding of the c++ compilation process and linking with python code.
+Improve understanding of the c++/fortran compilation process and linking with python code.
 
 ## Packages subject for testing
 
@@ -13,13 +13,15 @@ Improve understanding of the c++ compilation process and linking with python cod
 * fltk
 * freetype
 * ifcopenshell
+* calculix
 
  
 # Resources
 
 ## OpenBLAS vs MKL and dependency size
 
-The `mkl` package is almost __200MB__ compared to OpenBLAS which is only a few kB. 
+The `mkl` package is almost __200MB__ compared to OpenBLAS which is only a few kB (probably a few mb given it has some
+extra dependencies). 
 
 When installing add -> `conda-forge::blas=*=openblas` to force using OpenBLAS instead of MKL.
 
