@@ -23,7 +23,6 @@ source:
     
 build:
   number: 0
-  skip: true  # [py2k or osx or win or (python_impl == 'pypy')]
   detect_binary_files_with_prefix: True
   run_exports:
     - gcc 8  # [linux]
@@ -59,7 +58,7 @@ requirements:
     - python 3.9
     - numpy 1.20
     #- mfront 3.2
-    - miss3d
+#    - miss3d
     - libgomp  # [linux]
 #    - superlu
 #    - aspell

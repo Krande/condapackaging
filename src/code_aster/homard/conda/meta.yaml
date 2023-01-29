@@ -1,0 +1,91 @@
+{% set name = "homard" %}
+{% set version = "11.12" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  - url: https://netcologne.dl.sourceforge.net/project/prereq/homard-11.12_aster2.tar.gz
+    sha256: 80425cee117349df8425f801f9a82aadb85fd41a95af25b4397f0e69dd655304
+
+build:
+  number: 0
+  detect_binary_files_with_prefix: True
+  run_exports:
+    - gcc 8  # [linux]
+    - gxx 8  # [linux]
+    - gfortran 8  # [linux]
+  ignore_run_exports:
+    - gettext
+    - libgcc-ng
+    - libstdcxx-ng
+    - libgfortran5
+    - numpy
+    - libgomp
+  #has_prefix_files:
+    #- {{ version }}/share/aster/profile.sh
+    #- etc/codeaster/profile.sh
+    #- share/aster/config.txt
+
+requirements:
+  build:
+    - gcc 8  # [linux]
+    - gxx 8  # [linux]
+    - gfortran 8  # [linux]
+    - sysroot_linux-64 =2.17
+  host:
+    - cmake  
+    - make
+    - bison 
+    - flex 
+    - swig 
+    - gettext  
+    #- tk   
+    #- boost 1.75
+    - python 3.9
+    - numpy 1.20
+    #- mfront 3.2
+    - libgomp  # [linux]
+#    - superlu
+#    - aspell
+    - libmed 4.0
+    - hdf5 1.10.6
+    - scotch
+    - libblas
+    - liblapack
+    #- libopenblas
+    #- zlib          
+
+  run:
+    - python
+    #- {{ pin_compatible('mfront', max_pin='x.x') }}
+    - {{ pin_compatible('miss3d', max_pin='x.x') }}
+    - {{ pin_compatible('numpy', max_pin='x.x') }}
+    - {{ pin_compatible('boost', max_pin='x.x') }}
+    - {{ pin_compatible('libmed', max_pin='x.x') }}
+    - {{ pin_compatible('hdf5', max_pin='x.x') }}
+    - {{ pin_compatible('scotch', max_pin='x.x') }}
+    - libgomp  # [linux]
+
+test:
+  imports:
+     - asrun
+#    - code_aster
+
+about:
+  home: https://www.code-aster.org
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  license_file: 
+    - LICENSE.txt
+    - dep-licenses/
+  summary: 'Code_Aster : a finite element solver'
+  description: |
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
+  dev_url: https://sourceforge.net/projects/codeaster/
+
+extra:
+  recipe-maintainers:
+    - ldallolio
