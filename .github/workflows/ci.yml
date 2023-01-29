@@ -30,8 +30,8 @@ jobs:
 #          { name: pythonocc-core },
 #          { name: gmsh },
 #          { name: calculix },
-          { name: code_aster/mfront },
-          { name: code_aster/code_aster },
+#          { name: code_aster/mfront },
+#          { name: code_aster/code_aster },
           { name: code_aster/libmed },
         ]
         pyver: [
