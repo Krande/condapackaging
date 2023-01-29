@@ -59,6 +59,10 @@ jobs:
         if: ${{ matrix.platform.name == 'win' }}
         run: |
           conda install -c conda-forge vs2019_win-64
+      - name: VS install on windows
+        if: ${{ matrix.platform.name == 'win' && matrix.package.name == 'code_aster/libmed' }}
+        run: |
+          choco install mingw
       - name: build local packages
         run: |
           conda build . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
