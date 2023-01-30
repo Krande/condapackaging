@@ -19,7 +19,7 @@ build:
 
 requirements:
   build:
-      - {{ compiler('fortran') }}
+      - {{ compiler('fortran') }} # [unix] 
       - {{ compiler('c') }}
       - {{ compiler('cxx') }}
       - swig
