@@ -14,6 +14,7 @@ Improve understanding of the c++/fortran compilation process and linking with py
 * freetype
 * ifcopenshell
 * calculix
+* code_aster
 
  
 # Resources
