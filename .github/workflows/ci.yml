@@ -30,9 +30,9 @@ jobs:
 #          { name: pythonocc-core/conda },
 #          { name: gmsh/conda },
 #          { name: calculix/conda },
-#          { name: code_aster/mfront },
+          { name: code_aster/mfront },
 #          { name: code_aster/code_aster },
-          { name: code_aster/asrun },
+#          { name: code_aster/asrun },
         ]
         pyver: [
 #          { name: py39, distver: '3.9' },
