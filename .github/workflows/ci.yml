@@ -32,7 +32,7 @@ jobs:
 #          { name: calculix },
 #          { name: code_aster/mfront },
 #          { name: code_aster/code_aster },
-          { name: code_aster/libmed },
+          { name: code_aster/asrun },
         ]
         pyver: [
 #          { name: py39, distver: '3.9' },

@@ -1,0 +1,27 @@
+{% set name = "asrun" %}
+{% set version = "2021.1.0" %}
+
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  hg_url: http://hg.code.sf.net/p/prereq/frontend
+  hg_tag: {{ version }}
+
+build:
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
+
+requirements:
+  build:
+    - python
+  run:
+    - python
+
+about:
+  home: https://github.com/tpaviot/pythonocc-core
+  license: LGPL
+  summary: An industrial strength 3D CAD python package
