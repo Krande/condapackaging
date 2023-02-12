@@ -1,6 +1,5 @@
 {% set name = "mfront" %}
-{% set version = "3.2.1" %}
-{% set sha256 = "12786480524a7fe86889120fb334fa00211dfd44ad5ec71e2279e7adf1ddc807" %}
+{% set version = "3.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -9,7 +8,6 @@ package:
 source:
   fn: {{ name }}_{{ version }}.tar.gz
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
 
 build:
   number: 0
@@ -19,18 +17,16 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - numpy >=1.23
   host:
     - cmake  
     - make
-    - boost-cpp
+    - boost
+    - numpy >=1.23
     - python
-    - numpy
-    - libgomp  # [linux]
   run:
     - python
-    - {{ pin_compatible('numpy', max_pin='x.x') }}
-    - {{ pin_compatible('boost', max_pin='x.x') }}
-    - libgomp  # [linux]
+    - numpy >=1.23
 
 test:
   commands:

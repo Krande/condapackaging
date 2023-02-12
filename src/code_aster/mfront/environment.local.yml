@@ -1,0 +1,10 @@
+name: mfront-dev
+channels:
+  - conda-forge
+dependencies:
+  - gcc==8.5.0
+  - cxx-compiler
+  - gfortran==8.5.0 # Compilers
+  - cmake
+  - boost==1.74
+  - numpy
