@@ -26,10 +26,10 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-#          { name: ifcopenshell },
-#          { name: pythonocc-core },
-#          { name: gmsh },
-#          { name: calculix },
+#          { name: ifcopenshell/conda },
+#          { name: pythonocc-core/conda },
+#          { name: gmsh/conda },
+#          { name: calculix/conda },
 #          { name: code_aster/mfront },
 #          { name: code_aster/code_aster },
           { name: code_aster/asrun },
@@ -40,21 +40,21 @@ jobs:
           { name: py311, distver: '3.11'},
         ]
         platform: [
-          { name: win, distver: windows-latest },
+          #{ name: win, distver: windows-latest },
           { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
+          #{ name: macOS, distver: macos-latest }
         ]
     steps:
       - uses: actions/checkout@v3
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: conda-incubator/setup-miniconda@v2  # https://github.com/conda-incubator/setup-miniconda
+      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
         with:
-          channel-priority: strict
+          environment-name: conda-build
           channels: conda-forge
-          activate-environment: conda-build
+          channel-priority: strict
           environment-file: environment.conda.yml
-          auto-update-conda: false
-          python-version: ${{ matrix.pyver.distver }}
+          extra-specs: |
+            python=${{ matrix.pyver.distver }}
       - name: VS install on windows
         if: ${{ matrix.platform.name == 'win' }}
         run: |
@@ -66,4 +66,4 @@ jobs:
       - name: build local packages
         run: |
           conda build . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
-        working-directory: src/${{ matrix.package.name }}/conda
+        working-directory: src/${{ matrix.package.name }}
