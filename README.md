@@ -17,7 +17,7 @@ Improve understanding of the c++/fortran compilation process and linking with py
 * code_aster
 
  
-# Resources
+## Observations
 
 ## OpenBLAS vs MKL and dependency size
 

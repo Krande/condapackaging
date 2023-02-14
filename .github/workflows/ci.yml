@@ -26,17 +26,17 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-#          { name: ifcopenshell/conda },
+          { name: ifcopenshell/conda },
 #          { name: pythonocc-core/conda },
 #          { name: gmsh/conda },
 #          { name: calculix/conda },
-          { name: code_aster/mfront },
+#          { name: code_aster/mfront },
 #          { name: code_aster/code_aster },
 #          { name: code_aster/asrun },
         ]
         pyver: [
 #          { name: py39, distver: '3.9' },
-#          { name: py310, distver: '3.10'},
+          { name: py310, distver: '3.10'},
           { name: py311, distver: '3.11'},
         ]
         platform: [
