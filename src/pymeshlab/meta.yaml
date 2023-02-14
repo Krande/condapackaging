@@ -1,0 +1,31 @@
+{% set version = "v2022.2.post2" %}
+
+package:
+  name: pymeshlab
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/cnr-isti-vclab/PyMeshLab
+  git_rev: {{ version }}
+
+build:
+  number: 0
+
+requirements:
+  host:
+    - python
+    - pip
+  run:
+    - python
+
+test:
+  imports:
+    - pymeshlab
+
+about:
+  home: https://github.com/cnr-isti-vclab/PyMeshLab
+  license: GPL-3.0-or-later
+  summary: 'The open source mesh processing python library'
+  description: |
+    PyMeshLab is a Python library that interfaces to MeshLab, the popular open source application for editing and 
+    processing large 3D triangle meshes. Python bindings are generated using pybind11.
