@@ -42,25 +42,23 @@ requirements:
   host:
     - python
     - boost-cpp
-    - occt-core
+    - occt
     - libxml2
     - cgal-cpp
     - hdf5
     - mpfr
     - gmp  # [unix]
     - mpir  # [win]
-    - zlib
   run:
     - python
     - boost-cpp
-    - occt-core
+    - occt
     - libxml2
     - cgal-cpp
     - hdf5
     - mpfr
     - gmp  # [unix]
     - mpir  # [win]
-    - zlib
 
 test:
   imports:
