@@ -24,7 +24,7 @@ Improve understanding of the c++/fortran compilation process and linking with py
 The `mkl` package is almost __200MB__ compared to OpenBLAS which is only a few kB (probably a few mb given it has some
 extra dependencies). 
 
-When installing add -> `conda-forge::blas=*=openblas` to force using OpenBLAS instead of MKL.
+Use `conda-forge::blas=*=openblas` to force using OpenBLAS instead of MKL.
 
 * https://github.com/conda-forge/numpy-feedstock/issues/84
 
@@ -32,7 +32,9 @@ When installing add -> `conda-forge::blas=*=openblas` to force using OpenBLAS in
 
 Caused by git checkout on windows automatically modifying code somehow thus affecting git patches.
 
-Error is usually reflected in patching fails with "Hunk #1 FAILED at 5 (different line endings)."
+Error is usually reflected in patching fails with 
+
+    Hunk #1 FAILED at 5 (different line endings).
 
 The solution seems to be to add a `.gitattributes` file with the  `*.patch binary` option
 
