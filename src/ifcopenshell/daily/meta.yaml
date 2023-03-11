@@ -13,7 +13,7 @@ source:
 build:
   binary_relocation: false [osx]
   number: {{ GIT_DESCRIBE_NUMBER }}
-  string: {{ GIT_BUILD_STR }}
+  string: {{ GIT_BUILD_STR }}_{{ build }}
 
 requirements:
   build:
