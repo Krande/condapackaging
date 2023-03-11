@@ -34,6 +34,7 @@ cmake -G "Ninja" ^
  -D HDF5_INCLUDE_DIR:FILEPATH="%LIBRARY_PREFIX%\include" ^
  -D HDF5_LIBRARY_DIR:FILEPATH="%LIBRARY_PREFIX%\lib" ^
  -D MPFR_LIBRARY_DIR:FILEPATH="%LIBRARY_PREFIX%\lib" ^
+ -D JSON_INCLUDE_DIR="%LIBRARY_PREFIX%\include" ^
  ../cmake
  
 if errorlevel 1 exit 1
