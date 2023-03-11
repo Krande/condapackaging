@@ -26,7 +26,8 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: ifcopenshell/conda },
+#          { name: ifcopenshell/conda },
+          { name: ifcopenshell/daily },
 #          { name: pythonocc-core/conda },
 #          { name: gmsh/conda },
 #          { name: calculix/conda },
