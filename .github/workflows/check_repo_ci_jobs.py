@@ -1,4 +1,5 @@
 import pathlib
+import shutil
 
 import requests
 import zipfile
@@ -33,7 +34,8 @@ def get_ci_jobs(repo_name):
     url = f"https://api.github.com/repos/{repo_name}/actions/runs"
     s = start_request_session()
     response = s.get(url)
-    return response.json()
+    jobs = response.json()
+    return list(filter(lambda x: x["name"] == MY_WORKFLOW, jobs["workflow_runs"]))
 
 
 def evaluate_log_file_for_abrupt_stop(log_file):
@@ -86,10 +88,10 @@ def check_logs_for_status_code_143(logs):
     return False
 
 
-def eval_jobs():
+def get_failed_jobs():
     jobs = get_ci_jobs(REPO_OWNER)
     failed_jobs = []
-    for job in jobs["workflow_runs"]:
+    for job in filter(lambda x: x["name"] == MY_WORKFLOW, jobs):
         if job["name"] != MY_WORKFLOW:
             continue
 
@@ -98,18 +100,25 @@ def eval_jobs():
         if job["conclusion"] != "failure":
             continue
 
-        if job["run_attempt"] > 1:
-            continue
         failed_jobs.append(job)
+    failed_jobs = list(sorted(failed_jobs, key=lambda x: x["run_number"]))
+    return failed_jobs
 
-    sorted_jobs = list(sorted(failed_jobs, key=lambda x: x["run_number"]))
-    last_job = sorted_jobs[-1]
+
+def eval_jobs():
+    failed_jobs = get_failed_jobs()
+
+    last_job = failed_jobs[-1]
     logs = get_ci_specific_run_specific_failure_details(REPO_OWNER, last_job["id"])
+
     print(logs)
     print("restarting job", last_job["id"])
 
     r = restart_job(REPO_OWNER, last_job["id"])
     print(r)
+
+    shutil.rmtree("logs")
+    os.remove("logs.zip")
 
 
 if __name__ == "__main__":
