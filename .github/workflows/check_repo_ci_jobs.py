@@ -3,23 +3,40 @@ import os
 
 REPO_OWNER = os.environ.get("REPO_OWNER", "krande/condapackaging")
 MY_WORKFLOW = os.environ.get("MY_WORKFLOW", "ci-force-fail")
+TOKEN = os.environ.get("GITHUB_TOKEN", None)
+
+
+def start_request_session():
+    s = requests.Session()
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    if TOKEN:
+        headers["Authorization"] = f"Bearer {TOKEN}"
+
+    s.headers = headers
+    return s
 
 
 def get_ci_jobs(repo_name):
     url = f"https://api.github.com/repos/{repo_name}/actions/runs"
-    response = requests.get(url)
+    s = start_request_session()
+    response = s.get(url)
     return response.json()
 
 
 def get_ci_specific_run_specific_failure_details(repo_name, run_id):
     url = f"https://api.github.com/repos/{repo_name}/actions/runs/{run_id}/attempts/1/logs"
-    response = requests.get(url)
+    s = start_request_session()
+    response = s.get(url)
     return response.json()
 
 
 def restart_job(repo_name, job_id):
     url = f"https://api.github.com/repos/{repo_name}/actions/runs/{job_id}/rerun"
-    response = requests.post(url)
+    s = start_request_session()
+    response = s.post(url)
     return response.json()
 
 
