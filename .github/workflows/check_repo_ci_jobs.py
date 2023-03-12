@@ -36,7 +36,6 @@ def check_logs_for_status_code_143(logs):
 
 def eval_jobs():
     jobs = get_ci_jobs(REPO_OWNER)
-    print(jobs)
     failed_jobs = []
     for job in jobs["workflow_runs"]:
         if job["name"] != MY_WORKFLOW:
@@ -51,12 +50,13 @@ def eval_jobs():
             continue
         failed_jobs.append(job)
 
-
-    logs = get_ci_specific_run_specific_failure_details(REPO_OWNER, job["id"])
+    sorted_jobs = list(sorted(failed_jobs, key=lambda x: x["run_number"]))
+    last_job = sorted_jobs[-1]
+    logs = get_ci_specific_run_specific_failure_details(REPO_OWNER, last_job["id"])
     print(logs)
-    print("restarting job", job["id"])
+    print("restarting job", last_job["id"])
 
-    r = restart_job(REPO_OWNER, job["id"])
+    r = restart_job(REPO_OWNER, last_job["id"])
     print(r)
 
 
