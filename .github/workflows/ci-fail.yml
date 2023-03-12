@@ -1,0 +1,20 @@
+name: ci-force-fail
+
+on: push
+
+
+jobs:
+  failed-runs:
+    runs-on: ubuntu-latest
+    matrix:
+      error: [
+        {name: 1, exit_code: 1, log: "Something happened that triggers an exit 1"},
+        {name: 143, exit_code: 143, log: "Another thing happened to trigger a exit 143"},
+        {name: null, exit_code: null, log: "This is a normal run"},
+      ]
+    steps:
+      - name: Run script
+        if: ${{ matrix.error.name != 'null' }}
+        run: |
+          ${{ matrix.error.log }}
+          exit ${{ matrix.error.exit_code }}
