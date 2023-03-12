@@ -1,6 +1,9 @@
 name: ci-force-fail
 
-on: push
+on:
+  push:
+    branches:
+      - do_not_run
 
 
 jobs:
