@@ -7,8 +7,8 @@ on:
       - completed
 
 env:
-  REPO_OWNER: Krande
-  MY_WORKFLOW: ci
+  REPO_OWNER: Krande/condapackaging
+  MY_WORKFLOW: ci-force-fail
 
 jobs:
   restart-failed-runs:

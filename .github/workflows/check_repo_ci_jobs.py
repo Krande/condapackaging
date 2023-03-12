@@ -1,8 +1,8 @@
 import requests
 import os
 
-REPO_OWNER = os.environ.get("REPO_OWNER", "")
-MY_WORKFLOW = os.environ.get("MY_WORKFLOW", "")
+REPO_OWNER = os.environ.get("REPO_OWNER", "krande/condapackaging")
+MY_WORKFLOW = os.environ.get("MY_WORKFLOW", "ci-force-fail")
 
 
 def get_ci_jobs(repo_name):
@@ -36,6 +36,8 @@ def check_logs_for_status_code_143(logs):
 
 def eval_jobs():
     jobs = get_ci_jobs(REPO_OWNER)
+    print(jobs)
+    failed_jobs = []
     for job in jobs["workflow_runs"]:
         if job["name"] != MY_WORKFLOW:
             continue
@@ -47,13 +49,15 @@ def eval_jobs():
 
         if job["run_attempt"] > 1:
             continue
+        failed_jobs.append(job)
 
-        logs = get_ci_specific_run_specific_failure_details(REPO_OWNER, job["id"])
-        print(logs)
-        print("restarting job", job["id"])
 
-        r = restart_job(REPO_OWNER, job["id"])
-        print(r)
+    logs = get_ci_specific_run_specific_failure_details(REPO_OWNER, job["id"])
+    print(logs)
+    print("restarting job", job["id"])
+
+    r = restart_job(REPO_OWNER, job["id"])
+    print(r)
 
 
 if __name__ == "__main__":
