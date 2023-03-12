@@ -8,7 +8,6 @@ package:
 
 source:
   git_url: https://github.com/IfcOpenShell/ifcopenshell.git
-  git_rev: 0.7.0
   git_depth: -1
 
 build:

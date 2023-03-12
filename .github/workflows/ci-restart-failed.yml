@@ -1,14 +1,16 @@
 name: Restart failed runs
 
+env:
+  REPO_OWNER: Krande/condapackaging
+  MY_WORKFLOW: ci-git2conda
+
 on:
   workflow_run:
-    workflows: [ ci-force-fail ]
+    workflows: [ ci-git2conda ]
     types:
       - completed
 
-env:
-  REPO_OWNER: Krande/condapackaging
-  MY_WORKFLOW: ci-force-fail
+
 
 jobs:
   restart-failed-runs:

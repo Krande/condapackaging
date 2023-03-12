@@ -5,11 +5,15 @@ import requests
 import zipfile
 import os
 
+# To test this locally, set these environment variables:
 REPO_OWNER = os.environ.get("REPO_OWNER", "krande/condapackaging")
 MY_WORKFLOW = os.environ.get("MY_WORKFLOW", "ci-force-fail")
-TOKEN = os.environ.get("GITHUB_TOKEN", None)
 WORKFLOW_RUN_ID = os.environ.get("WORKFLOW_RUN_ID", None)
+TOKEN = os.environ.get("GITHUB_TOKEN", None)
+# Create a fine-grained personal access token for the repo in question with repo permissions "actions:read"
+# See https://github.com/settings/tokens?type=beta
 
+# This is a list of strings that indicate that a job has stopped abruptly.
 SIGNS_OF_STOPPAGE = [
     "Error: The operation was canceled.",
     "fatal error C1060: compiler is out of heap space",
@@ -40,10 +44,10 @@ def get_ci_run(repo_name, run_id):
 
 def evaluate_log_file_for_abrupt_stop(log_file):
     with open(log_file) as f:
-        for line in f:
+        for i, line in enumerate(f):
             for sign in SIGNS_OF_STOPPAGE:
                 if sign in line:
-                    print(f"Found sign of stoppage: {sign}")
+                    print(f"Found sign of abrupt stoppage in [line {i}]: '{sign}'")
                     return True
     return False
 
@@ -52,13 +56,15 @@ def get_ci_specific_run_specific_failure_details(repo_name, run_id):
     url = f"https://api.github.com/repos/{repo_name}/actions/runs/{run_id}/attempts/1/logs"
     s = start_request_session()
     response = s.get(url)
+
     # SAVE zip file
     with open("logs.zip", "wb") as f:
         f.write(response.content)
-    # unzip file
 
+    # unzip file
     with zipfile.ZipFile("logs.zip", "r") as zip_ref:
         zip_ref.extractall("logs")
+
     failed_logs = []
     for file in pathlib.Path("logs").iterdir():
         if file.is_dir():
