@@ -1,9 +1,19 @@
+import pathlib
+
 import requests
+import zipfile
 import os
 
 REPO_OWNER = os.environ.get("REPO_OWNER", "krande/condapackaging")
 MY_WORKFLOW = os.environ.get("MY_WORKFLOW", "ci-force-fail")
 TOKEN = os.environ.get("GITHUB_TOKEN", None)
+
+SIGNS_OF_STOPPAGE = [
+    "Error: The operation was canceled.",
+    "fatal error C1060: compiler is out of heap space",
+    "Something happened that triggers an exit 1",
+    "Another thing happened to trigger a exit 143"
+]
 
 
 def start_request_session():
@@ -26,15 +36,40 @@ def get_ci_jobs(repo_name):
     return response.json()
 
 
+def evaluate_log_file_for_abrupt_stop(log_file):
+    with open(log_file) as f:
+        for line in f:
+            for sign in SIGNS_OF_STOPPAGE:
+                if sign in line:
+                    print(f"Found sign of stoppage: {sign}")
+                    return True
+    return False
+
+
 def get_ci_specific_run_specific_failure_details(repo_name, run_id):
     url = f"https://api.github.com/repos/{repo_name}/actions/runs/{run_id}/attempts/1/logs"
     s = start_request_session()
     response = s.get(url)
-    return response.json()
+    # SAVE zip file
+    with open("logs.zip", "wb") as f:
+        f.write(response.content)
+    # unzip file
+
+    with zipfile.ZipFile("logs.zip", "r") as zip_ref:
+        zip_ref.extractall("logs")
+    failed_logs = []
+    for file in pathlib.Path("logs").iterdir():
+        if file.is_dir():
+            continue
+
+        if evaluate_log_file_for_abrupt_stop(file):
+            failed_logs.append(file)
+
+    return failed_logs
 
 
 def restart_job(repo_name, job_id):
-    url = f"https://api.github.com/repos/{repo_name}/actions/runs/{job_id}/rerun"
+    url = f"https://api.github.com/repos/{repo_name}/actions/runs/{job_id}/rerun-failed-jobs"
     s = start_request_session()
     response = s.post(url)
     return response.json()
