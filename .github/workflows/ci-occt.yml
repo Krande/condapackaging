@@ -1,0 +1,40 @@
+name: ci-occt-core
+
+# bump 1
+on:
+  push:
+    paths:
+      - src/occt/conda/feedstock/**
+      - .github/workflows/ci-occt-core.yml
+    branches:
+    - main
+
+jobs:
+  build_test:
+    name: occt-core-${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [
+          { name: win, distver: windows-latest },
+          { name: linux, distver: ubuntu-latest },
+          { name: macOS, distver: macos-latest }
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
+        with:
+          cache-env: true
+          environment-name: conda-build
+          channels: conda-forge
+          channel-priority: strict
+          environment-file: environment.conda.yml
+      - name: build local packages
+        run: |
+          conda mambabuild . -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+        working-directory: src/occt/conda/feedstock
