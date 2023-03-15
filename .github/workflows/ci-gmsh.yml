@@ -1,17 +1,17 @@
-name: ci-ifcopenshell
+name: ci-gmsh
 
 # bump 1
 on:
   push:
     paths:
-      - src/ifcopenshell/conda/**
-      - .github/workflows/ci-ifcopenshell.yml
+      - src/gmsh/conda/**
+      - .github/workflows/ci-gmsh.yml
     branches:
     - donotrun
 
 jobs:
   build_test:
-    name: ifcopenshell-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
+    name: gmsh-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -19,10 +19,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [
-#          { name: ifcopenshell/conda },
-          { name: ifcopenshell/daily },
-        ]
         pyver: [
           { name: py311, distver: '3.11'},
         ]
@@ -46,4 +42,4 @@ jobs:
       - name: build local packages
         run: |
           conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
-        working-directory: src/${{ matrix.package.name }}
+        working-directory: src/gmsh/conda

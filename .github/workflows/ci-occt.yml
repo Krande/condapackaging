@@ -1,4 +1,4 @@
-name: ci-occt-core
+name: ci-occt
 
 # bump 1
 on:
