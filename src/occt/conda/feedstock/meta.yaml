@@ -3,10 +3,8 @@
 {% set build = 0 %}
 
 {% if variant == "core" %}
-  {% set build_variant = "occt-core" %}
   {% set build = build + 100 %}
 {% elif variant == "vtk" %}
-  {% set build_variant = "occt-vtk" %}
   {% set build = build + 200 %}
 {% endif %}
 
@@ -25,7 +23,7 @@ source:
 
 build:
   number: {{ build }}
-  string: {{ build_variant }}_h{{ PKG_HASH }}_{{ build }}
+  string: {{ variant }}_h{{ PKG_HASH }}_{{ build }}
   script_env:
     - USE_VTK=OFF  # [variant=='core']
     - USE_VTK=ON  # [variant=='vtk']
