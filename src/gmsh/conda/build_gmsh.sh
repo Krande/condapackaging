@@ -8,8 +8,8 @@ if [[ "$c_compiler" == "gcc" ]]; then
 fi
 
 # unpack.
-mkdir build
-cd build
+mkdir build_
+cd build_
 
 # build.
 cmake ${CMAKE_ARGS} \
