@@ -32,4 +32,4 @@ cmake -G "Ninja" \
  -D HDF5_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
  ../cmake
 
-ninja install -j 2
+ninja install
