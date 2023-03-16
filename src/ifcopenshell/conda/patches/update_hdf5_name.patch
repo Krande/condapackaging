@@ -1,0 +1,21 @@
+Subject: [PATCH] update hdf5 name
+---
+Index: cmake/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cmake/CMakeLists.txt b/cmake/CMakeLists.txt
+--- a/cmake/CMakeLists.txt	(revision 93ab51fb5ecb1b8edda2192d8c1b0774b948235e)
++++ b/cmake/CMakeLists.txt	(date 1678970627954)
+@@ -495,8 +495,8 @@
+             endif()
+ 
+             SET(HDF5_LIBRARIES
+-                    "${HDF5_LIBRARY_DIR}/libhdf5_cpp.${lib_ext}"
+-                    "${HDF5_LIBRARY_DIR}/libhdf5.${lib_ext}"
++                    "${HDF5_LIBRARY_DIR}/hdf5_cpp.${lib_ext}"
++                    "${HDF5_LIBRARY_DIR}/hdf5.${lib_ext}"
+                     "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
+                     )
+         endif()

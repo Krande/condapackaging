@@ -12,6 +12,8 @@ package:
 source:
   - url: https://github.com/IfcOpenShell/IfcOpenShell/archive/refs/tags/{{ version }}.tar.gz
     sha256: c223ff07d70abe19adbbb3ba3213ca9d338cef779b9da3daff8adfb4235aae8b
+    patches:
+      - patches/update_hdf5_name.patch  #  [variant == "core" and win]
 
   - url: https://github.com/IfcOpenShell/files/archive/ed6b97983ff1324a0eaec0fd676ab58051cf3059.tar.gz
     folder: test/input
@@ -79,12 +81,12 @@ test:
 {% set description = data.get('long_description') %}
 
 about:
-  home: http://ifcopenshell.org
+  home: https://ifcopenshell.org/
   license: LGPL-3.0-or-later
   license_file: COPYING
   summary: 'IfcOpenShell is a library to support the IFC file format'
   description: {{ description }}
-  doc_url: http://ifcopenshell.org/
+  doc_url: https://ifcopenshell.org/
   dev_url: https://github.com/IfcOpenShell/IfcOpenShell
 
 extra:
