@@ -1,4 +1,8 @@
 {% set version = "7.7.0" %}
+{% set build = 0 %}
+
+{% set build = build + 200 %}  # [variant == "core"]
+{% set build = build + 100 %}  # [variant == "vtk"]
 
 package:
   name: pythonocc-core
@@ -9,7 +13,8 @@ source:
   sha256: 9b27003b87799badfae04f8cacd03b8faa1309600c9de8021434d7511e718f82
 
 build:
-  number: 1
+  number: {{ build }}
+  string: {{ variant }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:
@@ -25,12 +30,14 @@ requirements:
 
   host:
     - python
-    - occt-core =={{ version }}
+    - occt=*=core*  # [variant == "core"]
+    - occt  # [variant == "vtk"]
     - numpy >=1.17
 
   run:
     - python
-    - occt-core =={{ version }}
+    - occt=*=core*  # [variant == "core"]
+    - occt  # [variant == "vtk"]
     - six
     - numpy >=1.17
 
