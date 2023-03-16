@@ -24,6 +24,8 @@ source:
 build:
   number: {{ build }}
   string: {{ variant }}_h{{ PKG_HASH }}_{{ build }}
+  run_exports:
+    - {{ pin_subpackage('occt', max_pin='x.x.x') }}
   script_env:
     - USE_VTK=OFF  # [variant=='core']
     - USE_VTK=ON  # [variant=='vtk']
