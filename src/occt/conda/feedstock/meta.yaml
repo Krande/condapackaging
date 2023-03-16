@@ -2,11 +2,8 @@
 {% set version = "7.7.0" %}
 {% set build = 0 %}
 
-{% if variant == "core" %}
-  {% set build = build + 100 %}
-{% elif variant == "vtk" %}
-  {% set build = build + 200 %}
-{% endif %}
+{% set build = build + 100 %}   # [variant == "core"]
+{% set build = build + 200 %}   # [variant == "vtk"]
 
 
 package:
@@ -24,8 +21,6 @@ source:
 build:
   number: {{ build }}
   string: {{ variant }}_h{{ PKG_HASH }}_{{ build }}
-  run_exports:
-    - {{ pin_subpackage('occt', max_pin='x.x.x') }}
   script_env:
     - USE_VTK=OFF  # [variant=='core']
     - USE_VTK=ON  # [variant=='vtk']
