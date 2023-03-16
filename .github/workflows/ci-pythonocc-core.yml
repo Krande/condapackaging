@@ -7,7 +7,7 @@ on:
       - src/pythonocc-core/conda/**
       - .github/workflows/ci-pythonocc-core.yml
     branches:
-    - donotrun
+    - main
 
 jobs:
   build_test:
