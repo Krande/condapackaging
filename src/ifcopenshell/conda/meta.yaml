@@ -57,6 +57,7 @@ requirements:
     - gmp  # [unix]
     - mpir  # [win]
     - nlohmann_json
+    - zlib
   run:
     - python
     - boost-cpp
@@ -69,6 +70,7 @@ requirements:
     - gmp  # [unix]
     - mpir  # [win]
     - nlohmann_json
+    - zlib
 
 test:
   imports:
