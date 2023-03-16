@@ -7,7 +7,7 @@ on:
       - src/gmsh/conda/**
       - .github/workflows/ci-gmsh.yml
     branches:
-    - donotrun
+    - main
 
 jobs:
   build_test:
@@ -41,5 +41,5 @@ jobs:
             python=${{ matrix.pyver.distver }}
       - name: build local packages
         run: |
-          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
         working-directory: src/gmsh/conda
