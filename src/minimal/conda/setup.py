@@ -6,7 +6,7 @@ from setuptools import setup
 def get_long_description():
     """Get the long description from the README file."""
     with open("README.md") as f:
-        return f.read()
+        return '    '.join(f.readlines())
 
 
 setup(

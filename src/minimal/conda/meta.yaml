@@ -1,9 +1,10 @@
-{% set data = load_setup_py_data() %}
-{% set version = "0.0.1" %}
+{% set data = load_setup_py_data(from_recipe_dir=True) %}
+{% set description = data.get('long_description') %}
+
 
 package:
   name: minimal-test
-  version: {{ version }}
+  version: 0.0.4
 
 source:
   - path: .
@@ -21,7 +22,8 @@ about:
   home: https://ifcopenshell.org/
   license: LGPL-3.0-or-later
   summary: 'IfcOpenShell is a library to support the IFC file format'
-  description: README.md
+  description: |
+    {{ description }}
   doc_url: https://ifcopenshell.org/
   dev_url: https://github.com/IfcOpenShell/IfcOpenShell
 
