@@ -1,0 +1,72 @@
+{% set name = "ocp" %}
+{% set version = "7.7.0.0" %}
+{% set occt_ver = "7.7.0" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  # currently only used for the license file
+  - url: https://raw.githubusercontent.com/CadQuery/OCP/{{ version }}/LICENSE
+    fn: {{ name }}-{{ version }}-LICENSE.txt
+    sha256: a13caea71627202ad33cc4cafafdd18e667e16716488f8d9c568127121fb89fd
+
+  # binding sources
+  - url: "https://github.com/CadQuery/OCP/releases/download/{{ version }}/OCP_src_windows-2019.zip"  # [win]
+    sha256: 6904ffe6031cfa0fa75969cbd94f222a1233c7651542a513595a8a07b3fbca8f  # [win]
+  - url: "https://github.com/CadQuery/OCP/releases/download/{{ version }}/OCP_src_macOS-10.15.zip"   # [osx]
+    sha256: ac9da29a5741579422086afdefd1f00066219a5402c761ded85f76317e1c8812  # [osx]
+  - url: "https://github.com/CadQuery/OCP/releases/download/{{ version }}/OCP_src_Ubuntu-18.04.zip"  # [linux]
+    sha256: 3a33cdb524baadf9d79482f21bd1e1c6ee3976ddd201e83234ff569d5771c512  # [linux]
+    folder: src
+    patches: CMakeLists-Zm10-win.patch  # [win]
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - python                                # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}    # [build_platform != target_platform]
+    - {{ compiler('cxx') }}
+    - cmake
+    - ninja
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - {{ cdt('libxi-devel') }}       # [linux]
+    - {{ cdt('libxext-devel') }}     # [linux]
+    - lld  # [win]
+    - boost 1.78.*
+  host:
+    - python
+    - pybind11
+    - pybind11-abi
+    - occt {{ occt_ver }}=*=vtk*  # [variant=='vtk']
+    - occt {{ occt_ver }}=*=core*  # [variant=='core']
+    - vtk  # [variant=='vtk']
+  run:
+    - python
+    - {{ pin_compatible('occt=*=vtk*', max_pin='x.x.x') }}  # [variant=='vtk']
+    - {{ pin_compatible('occt=*=core*', max_pin='x.x.x') }}  # [variant=='core']
+    - {{ pin_compatible('vtk', max_pin='x.x') }}  # [variant=='vtk']
+
+test:
+  imports:
+    - OCP
+    - OCP.WNT    # [win]
+    - OCP.Xw     # [linux]
+    - OCP.Cocoa  # [osx]
+
+about:
+  home: https://github.com/CadQuery/OCP/
+  license: Apache-2.0
+  license_family: Apache
+  license_file: {{ name }}-{{ version }}-LICENSE.txt
+  summary: 'Python wrapper for OCCT using auto-generated pybind11 bindings.'
+  doc_url: https://github.com/CadQuery/OCP/blob/master/README.md
+  dev_url: https://github.com/CadQuery/OCP/
+
+extra:
+  recipe-maintainers:
+    - whophil
+    - adam-urbanczyk
