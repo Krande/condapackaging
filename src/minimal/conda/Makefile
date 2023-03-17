@@ -1,0 +1,2 @@
+compile:
+	conda mambabuild .
