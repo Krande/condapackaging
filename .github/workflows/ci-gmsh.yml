@@ -9,6 +9,10 @@ on:
     branches:
     - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build_test:
     name: gmsh-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
@@ -23,8 +27,8 @@ jobs:
           { name: py311, distver: '3.11'},
         ]
         platform: [
-#          { name: win, distver: windows-latest },
-#          { name: linux, distver: ubuntu-latest },
+          { name: win, distver: windows-latest },
+          { name: linux, distver: ubuntu-latest },
           { name: macOS, distver: macos-latest }
         ]
     steps:
