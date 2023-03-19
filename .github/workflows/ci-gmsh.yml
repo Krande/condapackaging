@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build_test:
-    name: gmsh-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
+    name: gmsh-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{matrix.build.name}}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -23,6 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        build: [ { name: 'core' },{ name: 'vtk' } ]
         pyver: [
           { name: py311, distver: '3.11'},
         ]
@@ -43,7 +44,8 @@ jobs:
           environment-file: environment.conda.yml
           extra-specs: |
             python=${{ matrix.pyver.distver }}
+
       - name: build local packages
         run: |
-          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+          conda mambabuild . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
         working-directory: src/gmsh/conda
