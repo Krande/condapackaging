@@ -43,11 +43,11 @@ jobs:
 
       - name: Create temp artifacts directory
         run: |
-          mkdir artifacts
+          mkdir $GITHUB_WORKSPACE/artifacts
 
       - name: build local packages
         run: |
-          conda mambabuild . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev --output-folder ./artifacts
+          conda mambabuild . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev --output-folder $GITHUB_WORKSPACE/artifacts
         working-directory: src/ifcopenshell/conda
 
       - name: Copy from temp artifacts directory to github workspace artifacts directory
