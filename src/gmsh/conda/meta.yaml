@@ -81,8 +81,8 @@ outputs:
     build:
       noarch: python
       skip: true  # [build_platform != target_platform]
-      number: { { build } }
-      string: { { variant } }h{{ PKG_HASH }}_{{ build }}
+      number: {{ build }}
+      string: {{ variant }}h{{ PKG_HASH }}_{{ build }}
     script: install_python.sh  # [not win]
     script: install_python.bat  # [win]
     requirements:
