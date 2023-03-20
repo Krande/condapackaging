@@ -1,35 +1,44 @@
-mkdir build && cd build
+#!/bin/bash
 
-# this disables linking to python DSO
-if [ `uname` == Darwin ]; then
-    export  LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
-	LIBXML2="$PREFIX/lib/libxml2.dylib"
-else
-	LIBXML2="$PREFIX/lib/libxml2.so"
+declare -a CMAKE_PLATFORM_FLAGS
+
+if [[ ${HOST} =~ .*linux.* ]]; then
+    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE=$RECIPE_DIR/cross-linux.cmake)
 fi
 
-cmake -G "Ninja" \
- -D CMAKE_BUILD_TYPE:STRING=Release \
- -D CMAKE_INSTALL_PREFIX:FILEPATH=$PREFIX \
- -D CMAKE_PREFIX_PATH:FILEPATH=$PREFIX \
- -D CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=$PREFIX \
- -D OCC_INCLUDE_DIR:FILEPATH=$PREFIX/include/opencascade \
- -D OCC_LIBRARY_DIR:FILEPATH=$PREFIX/lib \
- -D PYTHON_EXECUTABLE:FILEPATH=$PYTHON \
- -D COLLADA_SUPPORT:BOOL=OFF \
- -D BUILD_EXAMPLES:BOOL=OFF \
- -D BUILD_GEOMSERVER:BOOL=OFF \
- -D BUILD_CONVERT:BOOL=ON \
- -D BUILD_IFCMAX:BOOL=OFF \
- -D IFCXML_SUPPORT:BOOL=ON \
- -D LIBXML2_INCLUDE_DIR:FILEPATH=$PREFIX/include/libxml2 \
- -D LIBXML2_LIBRARIES:FILEPATH=${LIBXML2} \
- -D GMP_INCLUDE_DIR:FILEPATH="$PREFIX/include" \
- -D MPFR_INCLUDE_DIR:FILEPATH="$PREFIX/include" \
- -D GMP_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
- -D MPFR_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
- -D HDF5_INCLUDE_DIR:FILEPATH="$PREFIX/include" \
- -D HDF5_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
- ../cmake
+if [ `uname` == Darwin ]; then
+  export CFLAGS="$CFLAGS   -Wl,-flat_namespace,-undefined,suppress"
+  export CXXFLAGS="$CXXFLAGS -Wl,-flat_namespace,-undefined,suppress"
+  export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
+fi
 
-ninja install
+cmake -G Ninja \
+ -DCMAKE_BUILD_TYPE=Release \
+ -DCMAKE_INSTALL_PREFIX=$PREFIX \
+  ${CMAKE_PLATFORM_FLAGS[@]} \
+ -DCMAKE_PREFIX_PATH=$PREFIX \
+ -DCMAKE_SYSTEM_PREFIX_PATH=$PREFIX \
+ -DPYTHON_EXECUTABLE:FILEPATH=$PYTHON \
+ -DGMP_LIBRARY_DIR=$PREFIX/lib \
+ -DMPFR_LIBRARY_DIR=$PREFIX/lib \
+ -DOCC_INCLUDE_DIR=$PREFIX/include/opencascade \
+ -DOCC_LIBRARY_DIR=$PREFIX/lib \
+ -DHDF5_SUPPORT:BOOL=ON \
+ -DHDF5_INCLUDE_DIR=$PREFIX/include \
+ -DHDF5_LIBRARY_DIR=$PREFIX/lib \
+ -DJSON_INCLUDE_DIR=$PREFIX/include \
+ -DCGAL_INCLUDE_DIR=$PREFIX/include \
+ -DCOLLADA_SUPPORT=0 \
+ -DBUILD_EXAMPLES:BOOL=OFF \
+ -DIFCXML_SUPPORT:BOOL=ON \
+ -DGLTF_SUPPORT:BOOL=ON \
+ -DBUILD_CONVERT:BOOL=ON \
+ -DBUILD_IFCPYTHON:BOOL=ON \
+ -DBUILD_IFCGEOM:BOOL=ON \
+ -DBUILD_GEOMSERVER:BOOL=OFF \
+ -DBOOST_USE_STATIC_LIBS:BOOL=OFF \
+ ./cmake
+
+ninja
+
+ninja install -j 2
