@@ -18,14 +18,12 @@ source:
     - patches/fltk_nominmax.patch
     - patches/disable_wmain.patch
 
-build:
-  number: {{ build }}
-  string: {{ variant }}h{{ PKG_HASH }}_{{ build }}
-
 outputs:
   - name: gmsh
     build:
       skip: true  # [win and vc<14]
+      number: {{ build }}
+      string: {{ variant }}h{{ PKG_HASH }}_{{ build }}
     script: build_gmsh.sh  # [not win]
     script: bld_gmsh.bat  # [win]
     requirements:
@@ -83,6 +81,8 @@ outputs:
     build:
       noarch: python
       skip: true  # [build_platform != target_platform]
+      number: { { build } }
+      string: { { variant } }h{{ PKG_HASH }}_{{ build }}
     script: install_python.sh  # [not win]
     script: install_python.bat  # [win]
     requirements:
