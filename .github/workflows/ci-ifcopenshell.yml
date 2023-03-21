@@ -51,5 +51,5 @@ jobs:
 
       - name: build local packages
         run: |
-          conda mambabuild . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev --output-folder $GITHUB_WORKSPACE/artifacts
+          conda build . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev --output-folder $GITHUB_WORKSPACE/artifacts
         working-directory: src/ifcopenshell/conda

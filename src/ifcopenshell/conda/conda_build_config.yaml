@@ -3,7 +3,7 @@ variant:
   - core
 
 c_compiler:
- - vs2019                     # [win]
+ - vs2022                     # [win]
  
 cxx_compiler:
- - vs2019                     # [win]
+ - vs2022                     # [win]

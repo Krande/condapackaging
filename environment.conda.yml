@@ -8,3 +8,4 @@ dependencies:
   - ninja
   - doxygen
   - boa
+  - vs2022_win-64
