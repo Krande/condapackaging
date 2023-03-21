@@ -44,6 +44,7 @@ jobs:
           environment-file: environment.conda.yml
           extra-specs: |
             python=${{ matrix.pyver.distver }}
+            sel(win): vs2022_win-64
 
       - name: Create temp artifacts directory
         run: |
