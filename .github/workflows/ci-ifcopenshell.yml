@@ -1,6 +1,6 @@
 name: ci-ifcopenshell
 
-# bump 1
+# bump 2
 on:
   push:
     paths:
