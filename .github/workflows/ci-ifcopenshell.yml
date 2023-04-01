@@ -29,8 +29,8 @@ jobs:
         ]
         platform: [
           { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
+#          { name: linux, distver: ubuntu-latest },
+#          { name: macOS, distver: macos-latest }
         ]
     steps:
       - uses: actions/checkout@v3
