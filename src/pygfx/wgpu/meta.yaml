@@ -23,7 +23,7 @@ requirements:
   run:
     - python
     - cffi >=1.15.0rc2
-    - rubicon-objc >=0.4.1  # [darwin]
+    - rubicon-objc >=0.4.1  # [osx]
 
 test:
   imports:
