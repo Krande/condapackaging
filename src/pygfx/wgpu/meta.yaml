@@ -1,0 +1,44 @@
+{% set name = "wgpu" %}
+{% set version = "0.9.4" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/wgpu-{{ version }}.tar.gz
+  sha256: 2431916bbf2b9828be88016d46248f278c0bef6377610546738a7352e98e655f
+
+build:
+  skip: true  # [py<37]
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+
+requirements:
+  host:
+    - python
+    - setuptools >=42
+    - wheel
+    - pip
+  run:
+    - python
+    - cffi >=1.15.0rc2
+    - rubicon-objc >=0.4.1  # [darwin]
+
+test:
+  imports:
+    - wgpu
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/pygfx/wgpu-py
+  summary: Next generation GPU API for Python
+  license: BSD-2-Clause
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - Krande
