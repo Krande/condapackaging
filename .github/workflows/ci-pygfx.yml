@@ -6,8 +6,8 @@ on:
     paths:
       - src/**
       - .github/workflows/ci-pygfx.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 jobs:
   build_test:
