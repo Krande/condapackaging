@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - src/**
-      - .github/workflows/ci-pygfx.yml
+      - .github/workflows/ci-calculix.yml
     branches:
     - donotrun
 
@@ -30,15 +30,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
         with:
+          environment-name: conda-build
+          channels: conda-forge
+          channel-priority: strict
           environment-file: environment.conda.yml
-          create-args: >-
+          extra-specs: |
             python=${{ matrix.pyver.distver }}
 
-      - name: build pygfx packages
+      - name: build local packages
         run: |
-          conda mambabuild pylinalg --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-          conda mambabuild wgpu --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-          conda mambabuild pygfx --python ${{ matrix.pyver.distver }} -c conda-forge -c krande --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-        working-directory: src/pygfx
+          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+        working-directory: src/calculix/conda
