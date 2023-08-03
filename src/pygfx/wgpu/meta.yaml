@@ -19,6 +19,7 @@ requirements:
     - requests
     - setuptools >=42
     - wheel
+    - rubicon-objc >=0.4.1  # [osx]
     - pip
   run:
     - python
