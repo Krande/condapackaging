@@ -1,0 +1,48 @@
+context:
+  name: pygfx
+  version: 0.1.13
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/pygfx-{{ version }}.tar.gz
+  sha256: 35cfcd9f1b2ac3ecd78a24fbd19acb969b8aad6f085af9bd3eb2d0d7a52a3e64
+
+build:
+  noarch: python
+  script: '{{ PYTHON }} -m pip install . -vv'
+  number: 0
+
+requirements:
+  host:
+    - python >=3.8
+    - pip
+  run:
+    - python >=3.8
+    - numpy
+    - wgpu >=0.9.4,<0.10.0
+    - pylinalg >=0.4.0,<0.5.0
+    - freetype-py
+    - uharfbuzz
+    - jinja2
+
+test:
+  imports:
+    - pygfx
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/pygfx/pygfx
+  summary: A threejs-like render engine based on wgpu
+  license: BSD-2-Clause
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - Krande
+

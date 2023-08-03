@@ -10,8 +10,8 @@ on:
       - donotrun
 
 jobs:
-  build_test:
-    name: calculix-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
+  build_wgpu:
+    name: wgpu-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -38,7 +38,27 @@ jobs:
 
       - name: build pygfx packages
         run: |
-          conda mambabuild pylinalg --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
           conda mambabuild wgpu --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-          conda mambabuild pygfx --python ${{ matrix.pyver.distver }} -c conda-forge -c krande --token ${{ secrets.ANACONDA_TOKEN }} --user krande
         working-directory: src/pygfx
+
+  build_noarch:
+    name: pygfx-pylinalg-noarch
+    needs: [build_wgpu]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+        - uses: actions/checkout@v3
+        - uses: mamba-org/setup-micromamba@v1 #
+          with:
+            environment-file: environment.conda.yml
+            create-args: >-
+              python=3.11
+        - name: build pygfx packages
+          run: |
+            conda mambabuild pylinalg -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
+            conda mambabuild pygfx -c conda-forge -c krande --token ${{ secrets.ANACONDA_TOKEN }} --user krande
+          working-directory: src/pygfx
+
+
