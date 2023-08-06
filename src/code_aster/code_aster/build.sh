@@ -9,7 +9,7 @@ cp $RECIPE_DIR/config/wafcfg_conda.py .
 pip install ./deps/asrun
 
 # Install metis-aster
-echo "**************** M E T I S  B U I L D  S T A R T S  H E R E ****************"
+echo "** Building METIS **"
 
 cd deps/metis-aster
 
@@ -23,12 +23,10 @@ make install
 
 cd ../..
 
-#export LIBPATH="$PREFIX/metis-aster/lib"
-#export INCLUDES="$PREFIX/metis-aster/include $PREFIX/include $INCLUDES"
+echo "METIS Build complete"
 
-echo "**************** M E T I S  B U I L D  E N D S  H E R E ****************"
-
-export LINKFLAGS="${LINKFLAGS} -Wl,--no-as-needed,-rpath=${CONDA_LIBRARY_PATH}"
+#export LINKFLAGS="${LINKFLAGS} -Wl,-rpath=${CONDA_LIBRARY_PATH}"
+export CONFIG_PARAMETERS_addmem=4096
 
 # Install for standard sequential
 ./waf_std \
@@ -37,7 +35,5 @@ export LINKFLAGS="${LINKFLAGS} -Wl,--no-as-needed,-rpath=${CONDA_LIBRARY_PATH}"
   --use-config-dir=${CONDA_LIBRARY_PATH} \
   --prefix=${CONDA_PREFIX} \
   --with-data=data \
-  --install-tests \
   configure
-# ./waf_std build
-./waf_std install
+./waf_std install -v

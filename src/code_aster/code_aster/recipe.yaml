@@ -4,6 +4,7 @@ context:
   asrun_ver: 2021.1.0
   med_ver: 4.0.0
   metis_ver: 5.1.0_aster4
+  mfront_ver: 3.3.2
 
 package:
   name: '{{ name|lower }}'
@@ -21,7 +22,8 @@ source:
   - hg_url: http://hg.code.sf.net/p/prereq/frontend
     hg_tag: '{{ asrun_ver }}'
     folder: deps/asrun
-
+#  - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz
+#    folder: deps/mfront
 
 build:
   detect_binary_files_with_prefix: true
@@ -35,12 +37,12 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('gfortran') }}"
     - "libmed {{ med_ver }}"
+    - "mfront {{ mfront_ver }}"
     - scotch
 #    - metis ==5.1.0
     - mumps-include
 #    - mumps-mpi
     - mumps-seq
-    - mfront
     - petsc
     - hdf5
     - numpy
@@ -48,12 +50,12 @@ requirements:
     - boost-cpp
   host:
     - "libmed {{ med_ver }}"
+    - "mfront {{ mfront_ver }}"
     - scotch
 #    - metis ==5.1.0
     - mumps-include
 #    - mumps-mpi
     - mumps-seq
-    - mfront
     - petsc
     - hdf5
     - numpy
@@ -86,4 +88,3 @@ about:
 extra:
   recipe-maintainers:
     - Krande
-
