@@ -8,3 +8,4 @@ dependencies:
   - ninja
   - doxygen
   - boa
+  - mercurial

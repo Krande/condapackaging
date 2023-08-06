@@ -1,0 +1,89 @@
+context:
+  name: code-aster
+  version: 15.8.0
+  asrun_ver: 2021.1.0
+  med_ver: 4.0.0
+  metis_ver: 5.1.0_aster4
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - fn: '{{ name }}_{{ version }}.tar.gz'
+    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+    patches:
+      - patches/add_stdexcept.patch
+  # Modified version of Metis changing integer sizes for indexes (IDXTYPEWIDTH 64) and including headers for direct linking to Aster
+  - url: https://downloads.sourceforge.net/project/prereq/metis-{{ metis_ver }}.tar.gz
+    sha256: 1b295f9ce260c19d2d93fb2430be4139496c56f58f74ef7956ccd26c854fcc2e
+    folder: deps/metis-aster
+  - hg_url: http://hg.code.sf.net/p/prereq/frontend
+    hg_tag: '{{ asrun_ver }}'
+    folder: deps/asrun
+
+
+build:
+  detect_binary_files_with_prefix: true
+  number: 0
+
+
+requirements:
+  build:
+    - waf
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('gfortran') }}"
+    - "libmed {{ med_ver }}"
+    - scotch
+#    - metis ==5.1.0
+    - mumps-include
+#    - mumps-mpi
+    - mumps-seq
+    - mfront
+    - petsc
+    - hdf5
+    - numpy
+    - glib
+    - boost-cpp
+  host:
+    - "libmed {{ med_ver }}"
+    - scotch
+#    - metis ==5.1.0
+    - mumps-include
+#    - mumps-mpi
+    - mumps-seq
+    - mfront
+    - petsc
+    - hdf5
+    - numpy
+    - glib
+    - boost-cpp
+  run:
+    - "{{ pin_compatible('libmed', max_pin='x.x') }}"
+    - "{{ pin_compatible('mfront', max_pin='x.x') }}"
+#    - "{{ pin_compatible('metis', max_pin='x.x') }}"
+    - scotch
+    - mumps-include
+#    - mumps-mpi
+    - mumps-seq
+    - petsc
+    - hdf5
+    - numpy
+    - glib
+    - boost-cpp
+
+about:
+  home: https://www.code-aster.org
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  summary: 'Code_Aster : a finite element solver'
+  description: |
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
+  dev_url: https://sourceforge.net/projects/codeaster/
+
+extra:
+  recipe-maintainers:
+    - Krande
+

@@ -20,7 +20,7 @@ jobs:
       matrix:
         package: [
 #          { name: code_aster/mfront },
-#          { name: code_aster/code_aster },
+          { name: code_aster/code_aster },
 #          { name: code_aster/asrun },
         ]
         pyver: [
@@ -33,24 +33,13 @@ jobs:
         ]
     steps:
       - uses: actions/checkout@v3
-      - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
-          environment-name: conda-build
-          channels: conda-forge
-          channel-priority: strict
           environment-file: environment.conda.yml
-          extra-specs: |
+          create-args: >-
             python=${{ matrix.pyver.distver }}
-      - name: VS install on windows
-        if: ${{ matrix.platform.name == 'win' }}
-        run: |
-          conda install -c conda-forge vs2019_win-64
-      - name: VS install on windows
-        if: ${{ matrix.platform.name == 'win' && matrix.package.name == 'code_aster/libmed' }}
-        run: |
-          choco install mingw
+
       - name: build local packages
         run: |
-          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
+          boa build . --python ${{ matrix.pyver.distver }}
         working-directory: src/${{ matrix.package.name }}
