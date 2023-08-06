@@ -4,9 +4,9 @@ on:
   push:
     paths:
       - src/**
-      - .github/workflows/ci.yml
-    branches:
-    - donotrun
+      - .github/workflows/ci-code-aster.yml
+#    branches:
+#    - donotrun
 
 jobs:
   build_test:
