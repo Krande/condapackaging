@@ -12,7 +12,10 @@ def configure(self):
     prefix_dir = os.getenv("PREFIX")
     recipe_dir = os.getenv('RECIPE_DIR')
 
-    self.env['ADDMEM'] = 600
+    self.env.LD_LIBRARY_PATH = conda_prefix
+    self.env.PYTHONPATH = conda_prefix
+
+    self.ASTERLIBDIR = lib_dir
 
     self.env.INCLUDES_BOOST = include_dir
     self.env.LIBPATH_BOOST = [lib_dir]
@@ -26,7 +29,8 @@ def configure(self):
 
     self.env.append_value('LIBPATH', [
         lib_dir,
-        prefix_dir + '/metis-aster'
+        prefix_dir + '/metis-aster',
+        prefix_dir + '/mumps-aster'
     ])
 
     self.env.append_value('INCLUDES', [

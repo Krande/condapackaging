@@ -4,7 +4,9 @@ context:
   asrun_ver: 2021.1.0
   med_ver: 4.0.0
   metis_ver: 5.1.0_aster4
-  mfront_ver: 3.3.2
+  mfront_ver: 3.2.1
+  mumps_ver: 5.2.1
+  scotch_ver: 6.0.4
 
 package:
   name: '{{ name|lower }}'
@@ -16,15 +18,22 @@ source:
     patches:
       - patches/add_stdexcept.patch
   # Modified version of Metis changing integer sizes for indexes (IDXTYPEWIDTH 64) and including headers for direct linking to Aster
-  - url: https://downloads.sourceforge.net/project/prereq/metis-{{ metis_ver }}.tar.gz
-    sha256: 1b295f9ce260c19d2d93fb2430be4139496c56f58f74ef7956ccd26c854fcc2e
+  - hg_url: http://hg.code.sf.net/p/prereq/metis
+    hg_tag: '{{ metis_ver }}'
     folder: deps/metis-aster
   - hg_url: http://hg.code.sf.net/p/prereq/frontend
     hg_tag: '{{ asrun_ver }}'
     folder: deps/asrun
-#  - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz
-#    folder: deps/mfront
-
+  - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz
+    folder: deps/mfront
+    # Modified version of Mumps changing integer, complex and real sizes to four bytes (fortran kind=4), waf configuration and metis renumbering
+#  - url: http://graal.ens-lyon.fr/MUMPS/MUMPS_{{ mumps_ver }}.tar.gz
+#    folder: deps/mumps-aster
+#    patches:
+#    - patches/mumps-aster-diff.patch
+#  - url: https://netcologne.dl.sourceforge.net/project/prereq/homard-11.12_aster2.tar.gz
+#    sha256: 80425cee117349df8425f801f9a82aadb85fd41a95af25b4397f0e69dd655304
+#    folder: deps/homard
 build:
   detect_binary_files_with_prefix: true
   number: 0
@@ -42,20 +51,7 @@ requirements:
 #    - metis ==5.1.0
     - mumps-include
 #    - mumps-mpi
-    - mumps-seq
-    - petsc
-    - hdf5
-    - numpy
-    - glib
-    - boost-cpp
-  host:
-    - "libmed {{ med_ver }}"
-    - "mfront {{ mfront_ver }}"
-    - scotch
-#    - metis ==5.1.0
-    - mumps-include
-#    - mumps-mpi
-    - mumps-seq
+    - "mumps-seq {{ mumps_ver }}"
     - petsc
     - hdf5
     - numpy
@@ -64,11 +60,10 @@ requirements:
   run:
     - "{{ pin_compatible('libmed', max_pin='x.x') }}"
     - "{{ pin_compatible('mfront', max_pin='x.x') }}"
-#    - "{{ pin_compatible('metis', max_pin='x.x') }}"
+    - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
     - scotch
     - mumps-include
 #    - mumps-mpi
-    - mumps-seq
     - petsc
     - hdf5
     - numpy
