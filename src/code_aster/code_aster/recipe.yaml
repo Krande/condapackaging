@@ -45,13 +45,14 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('gfortran') }}"
+    # Packages
     - "libmed {{ med_ver }}"
     - "mfront {{ mfront_ver }}"
+    - "mumps-seq {{ mumps_ver }}"
+#    - mumps-mpi
+    - mumps-include
     - scotch
 #    - metis ==5.1.0
-    - mumps-include
-#    - mumps-mpi
-    - "mumps-seq {{ mumps_ver }}"
     - petsc
     - hdf5
     - numpy
