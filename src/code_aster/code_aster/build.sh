@@ -28,9 +28,12 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --use-config=wafcfg_conda \
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
+  --libdir=$PREFIX/lib \
+  --pythondir=$PREFIX/lib/aster \
   --embed-metis \
   --without-hg \
   configure
+./waf build -j 4
 ./waf install
 
 #
