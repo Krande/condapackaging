@@ -36,7 +36,8 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   configure
 ./waf install
 
-#
+# Not sure what these do
+
 #find $PREFIX -name "profile.sh" -exec sed -i 's/PYTHONHOME=/#PYTHONHOME=/g' {} \;
 #find $PREFIX -name "profile.sh" -exec sed -i 's/export PYTHONHOME/#export PYTHONHOME/g' {} \;
-#
+
