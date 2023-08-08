@@ -30,10 +30,10 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
   --pythondir=$PREFIX/lib/aster \
+  --install-tests \
   --embed-metis \
   --without-hg \
   configure
-./waf build -j 4
 ./waf install
 
 #
