@@ -17,6 +17,8 @@ source:
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
     patches:
       - patches/add_stdexcept.patch
+#  - url: https://gitlab.com/codeaster/devtools/-/archive/use-git/devtools-use-git.tar.gz
+#    folder: deps/devtools
   # Modified version of Metis changing integer sizes for indexes (IDXTYPEWIDTH 64) and including headers for direct linking to Aster
   - hg_url: http://hg.code.sf.net/p/prereq/metis
     hg_tag: '{{ metis_ver }}'
@@ -58,6 +60,20 @@ requirements:
     - numpy
     - glib
     - boost-cpp
+  host:
+    - "libmed {{ med_ver }}"
+    - "mfront {{ mfront_ver }}"
+    - "mumps-seq {{ mumps_ver }}"
+    #    - mumps-mpi
+    - mumps-include
+    - scotch
+    #    - metis ==5.1.0
+    - petsc
+    - hdf5
+    - numpy
+    - glib
+    - boost-cpp
+    - python
   run:
     - "{{ pin_compatible('libmed', max_pin='x.x') }}"
     - "{{ pin_compatible('mfront', max_pin='x.x') }}"
@@ -70,6 +86,10 @@ requirements:
     - numpy
     - glib
     - boost-cpp
+test:
+  imports:
+    - asrun
+    - code_aster
 
 about:
   home: https://www.code-aster.org

@@ -24,7 +24,8 @@ jobs:
 #          { name: code_aster/asrun },
         ]
         pyver: [
-          { name: py311, distver: '3.11'},
+          { name: py311, distver: '3.9'},
+          { name: py311, distver: '3.10'},
         ]
         platform: [
           { name: win, distver: windows-latest },
