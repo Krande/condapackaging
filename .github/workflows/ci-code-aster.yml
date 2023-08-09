@@ -19,9 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-#          { name: code_aster/mfront },
-          { name: code_aster/code_aster },
-#          { name: code_aster/asrun },
+          { name: code_aster, path: src/code_aster/code_aster },
         ]
         pyver: [
           { name: py39, distver: '3.9'},
@@ -42,5 +40,19 @@ jobs:
 
       - name: build local packages
         run: |
-          boa build . --python ${{ matrix.pyver.distver }}
-        working-directory: src/${{ matrix.package.name }}
+          boa build . --python ${{ matrix.pyver.distver }} --croot $GITHUB_WORKSPACE/artifacts --output-folder $GITHUB_WORKSPACE/artifacts
+        working-directory: ${{ matrix.package.path }}
+
+      # in the event of success or failure, upload the artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+          path: $GITHUB_WORKSPACE/artifacts
+
+      - name: Upload artifacts if failed
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+          path: $GITHUB_WORKSPACE/artifacts
