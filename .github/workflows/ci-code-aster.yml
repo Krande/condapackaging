@@ -3,7 +3,7 @@ name: ci-code-aster
 on:
   push:
     paths:
-      - src/**
+      - src/code_aster/code_aster/**
       - .github/workflows/ci-code-aster.yml
 #    branches:
 #    - donotrun

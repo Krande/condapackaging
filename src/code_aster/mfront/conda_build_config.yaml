@@ -1,7 +1,8 @@
 c_compiler:
- - gcc
+ - vs2019
+
 cxx_compiler:
- - gxx
+ - vs2019
 
 fortran_compiler:
   - gfortran

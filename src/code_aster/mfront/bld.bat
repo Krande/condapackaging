@@ -4,7 +4,7 @@ echo Build MFRONT/TFEL
 if not exist build mkdir build
 cd build
 
-cmake -G "Ninja" ^
+cmake .. -G "Visual Studio 16 2019" -A x64 ^
     -DCMAKE_BUILD_TYPE=Release ^
     -Dlocal-castem-header=ON ^
     -Denable-fortran=ON ^
@@ -20,7 +20,6 @@ cmake -G "Ninja" ^
     -DPYTHON_LIBRARY:FILEPATH=%LIBRARY_PREFIX%\lib\libpython%CONDA_PY%.dll ^
     -DPYTHON_INCLUDE_DIR:PATH=%LIBRARY_PREFIX%\include\python%CONDA_PY% ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
-    ..
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine
 ninja install
