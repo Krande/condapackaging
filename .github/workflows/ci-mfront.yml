@@ -40,7 +40,7 @@ jobs:
 
       - name: build local packages
         run: |
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ github.workspace }}/artifacts --output-folder ${{ github.workspace }}/artifacts
+          boa build . --python ${{ matrix.pyver.distver }} --croot '${{ github.workspace }}/artifacts' --output-folder '${{ github.workspace }}/artifacts'
         working-directory: ${{ matrix.package.path }}
 
       # in the event of success or failure, upload the artifacts either way
