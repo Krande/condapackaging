@@ -64,7 +64,7 @@ requirements:
     - boost-cpp
   host:
     - "libmed {{ med_ver }}"
-    - "mfront {{ mfront_ver }}"
+    - sel(linux): "mfront {{ mfront_ver }}"
     - "mumps-seq {{ mumps_ver }}"
     - scotch
     - sel(unix): petsc
@@ -75,7 +75,7 @@ requirements:
     - python
   run:
     - "{{ pin_compatible('libmed', max_pin='x.x') }}"
-    - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
+    - sel(linux): "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
     - scotch
 #    - mumps-include

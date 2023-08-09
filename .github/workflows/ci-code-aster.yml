@@ -47,16 +47,3 @@ jobs:
         run: |
           boa build . --python ${{ matrix.pyver.distver }} --croot ${{ github.workspace }}/artifacts --output-folder ${{ github.workspace }}/artifacts
         working-directory: ${{ matrix.package.path }}
-
-#      - name: Upload artifacts
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
-#          path: ${{ github.workspace }}/artifacts
-#
-#      - name: Upload artifacts if failed
-#        if: ${{ failure() }}
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
-#          path: ${{ github.workspace }}/artifacts
