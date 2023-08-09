@@ -12,4 +12,5 @@ cmake . \
     -Denable-python=ON \
     -DCMAKE_INSTALL_PREFIX=$PREFIX
 
+# shellcheck disable=SC2046
 make -j $(nproc) install

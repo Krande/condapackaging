@@ -2,8 +2,9 @@ fortran_compiler:
   - gfortran
 fortran_compiler_version:
   - 9
+
 c_compiler:
- - gcc                     # [win]
+ - vs2019                     # [win]
 
 cxx_compiler:
- - g++                     # [win]
+ - vs2019                     # [win]

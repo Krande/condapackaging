@@ -7,6 +7,7 @@ context:
   mfront_ver: 3.2.1
   mumps_ver: 5.2.1
   scotch_ver: 6.0.4
+  petsc_ver: 3.12.3_aster
 
 package:
   name: '{{ name|lower }}'
@@ -26,8 +27,11 @@ source:
   - hg_url: http://hg.code.sf.net/p/prereq/frontend
     hg_tag: '{{ asrun_ver }}'
     folder: deps/asrun
-#  - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz
-#    folder: deps/mfront
+  - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz # [win]
+    folder: deps/mfront                                                       # [win]
+  - hg_url: http://hg.code.sf.net/p/prereq/petsc                              # [win]
+    hg_tag: '{{ petsc_ver }}'                                                 # [win]
+    folder: deps/petsc                                                        # [win]
     # Modified version of Mumps changing integer, complex and real sizes to four bytes (fortran kind=4), waf configuration and metis renumbering
 #  - url: http://graal.ens-lyon.fr/MUMPS/MUMPS_{{ mumps_ver }}.tar.gz
 #    folder: deps/mumps-aster
@@ -46,16 +50,17 @@ requirements:
     - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
+    - sel(win): m2w64-gcc-fortran
     - "{{ compiler('gfortran') }}"
     # Packages
     - "libmed {{ med_ver }}"
-    - "mfront {{ mfront_ver }}"
+    - sel(linux): "mfront {{ mfront_ver }}"
     - "mumps-seq {{ mumps_ver }}"
 #    - mumps-mpi
-    - mumps-include
+#    - mumps-include
     - scotch
 #    - metis ==5.1.0
-    - petsc
+    - sel(unix): petsc
     - hdf5
     - numpy
     - glib
@@ -64,11 +69,8 @@ requirements:
     - "libmed {{ med_ver }}"
     - "mfront {{ mfront_ver }}"
     - "mumps-seq {{ mumps_ver }}"
-    #    - mumps-mpi
-    - mumps-include
     - scotch
-    #    - metis ==5.1.0
-    - petsc
+    - sel(unix): petsc
     - hdf5
     - numpy
     - glib
@@ -79,9 +81,9 @@ requirements:
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
     - scotch
-    - mumps-include
+#    - mumps-include
 #    - mumps-mpi
-    - petsc
+    - sel(unix): petsc
     - hdf5
     - numpy
     - glib

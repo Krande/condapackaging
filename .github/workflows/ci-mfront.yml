@@ -1,10 +1,10 @@
-name: ci-code-aster
+name: ci-mfront
 # bump 1
 on:
   push:
     paths:
       - src/**
-      - .github/workflows/ci-code-aster.yml
+      - .github/workflows/ci-mfront.yml
 #    branches:
 #    - donotrun
 
@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: code_aster, path: src/code_aster/code_aster },
+          { name: mfront, path: src/code_aster/mfront },
         ]
         pyver: [
           { name: py39, distver: '3.9'},
@@ -27,7 +27,7 @@ jobs:
         ]
         platform: [
           { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
+#          { name: linux, distver: ubuntu-latest },
 #          { name: macOS, distver: macos-latest }
         ]
     steps:
@@ -45,14 +45,14 @@ jobs:
 
       # in the event of success or failure, upload the artifacts
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
           path: ${{ github.workspace }}/artifacts
 
       - name: Upload artifacts if failed
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
           path: ${{ github.workspace }}/artifacts

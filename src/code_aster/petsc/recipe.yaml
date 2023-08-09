@@ -1,0 +1,109 @@
+context:
+  version: 3.19.4
+  build: 0
+
+package:
+  name: petsc
+  version: '{{ version }}'
+
+source:
+  url: https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-{{ version }}.tar.gz
+  sha256: 7c941b71be52c3b764214e492df60109d12f97f7d854c97a44df0c4d958b3906
+  patches:
+    - ignore-not-invalid.patch
+    - no-cppflags-in-pkgconfig-cflags.patch
+    - hypre-error.patch
+
+build:
+  number: '{{ build }}'
+  string: '{{ scalar }}_h{{ PKG_HASH }}_{{ build }}'
+  run_exports:
+    - '{{ pin_subpackage("petsc", max_pin="x.x") }} {{ scalar }}_*'
+  track_features:
+    - sel(scalar == "complex"): petsc_complex
+
+  skip:
+    - win
+requirements:
+  build:
+    - '{{ compiler("c") }}'
+    - '{{ compiler("cxx") }}'
+    - '{{ compiler("fortran") }}'
+    - make
+    - pkg-config
+    - python
+    - sel(unix): gnuconfig
+    - sel(mpi == 'openmpi' and build_platform != target_platform): '{{ mpi }}'
+  host:
+    - libblas
+    - libcblas
+    - liblapack
+    - cmake
+    - '{{ mpi }}'
+    - yaml
+    # FIXME: unpin hypre after next petsc release
+    - hypre 2.28
+    - metis
+    - parmetis
+    - ptscotch
+    - scalapack
+    - superlu
+    - superlu_dist
+    - scotch
+    - mumps-mpi
+    - suitesparse
+    - hdf5
+    - hdf5 * mpi_{{ mpi }}_*
+    - fftw * mpi_{{ mpi }}_*
+  run:
+    - '{{ mpi }}'
+    - yaml
+    - hypre
+    - metis
+    - parmetis
+    - ptscotch
+    - scalapack
+    - superlu
+    - superlu_dist
+    - scotch
+    - mumps-mpi
+    - suitesparse
+    - hdf5
+    - hdf5 * mpi_{{ mpi }}_*
+    - fftw * mpi_{{ mpi }}_*
+
+test:
+  requires:
+    - pkg-config
+    - '{{ compiler("c") }}'
+    - '{{ compiler("cxx") }}'
+    - '{{ compiler("fortran") }}'
+    - make
+  files:
+    - tests/ex1.c
+    - tests/ex1f.F90
+    - tests/makefile
+  commands:
+    - pkg-config --validate PETSc
+    - pkg-config --cflags PETSc
+    - pkg-config --libs PETSc
+
+about:
+  home: https://www.mcs.anl.gov/petsc/
+  summary: 'PETSc: Portable, Extensible Toolkit for Scientific Computation'
+  license: BSD-2-Clause
+  license_file: LICENSE
+  license_family: BSD
+  dev_url: https://gitlab.com/petsc/petsc
+  doc_url: https://petsc.org/release/docs/manual/
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
+    - dalcinl
+    - minrk
+    - davidbrochart
+    - SylvainCorlay
+    - martinRenou
+    - matthiasdiener
+
