@@ -3,43 +3,35 @@
 A repo for testing conda packaging using various compilers and methods.
 
 ## Goal
-Improve understanding of the c++/fortran compilation process and linking with python code.
+Improve understanding of the c++/fortran compilation process and linking with python code using conda.
 
-## Packages subject for testing
+## Highlighted packages subject for testing
 
 * gmsh
 * pythonocc-core
 * occt
-* fltk
-* freetype
 * ifcopenshell
 * calculix
 * code_aster
 
- 
-## Observations
+## Running locally using Boa
 
-## OpenBLAS vs MKL and dependency size
+Assuming you have mambaforge (or an equivalent conda installation).
 
-The `mkl` package is almost __200MB__ compared to OpenBLAS which is only a few kB (probably a few mb given it has some
-extra dependencies). 
+In the top level directory install the necessary pre-requisites by simply
 
-Use `conda-forge::blas=*=openblas` to force using OpenBLAS instead of MKL.
+```bash
+mamba env update -f environment.conda.yml
+```
 
-* https://github.com/conda-forge/numpy-feedstock/issues/84
+Go to the subdirectory of choice and find whichever subdirectory with a `recipe.yaml` file 
+(or if it only has a meta.yaml file you might be able to convert it by simply doing `boa convert meta.yaml>recipe.yaml`)
 
-## Hunk errors related to patches on windows
+To compile the package run using
 
-Caused by git checkout on windows automatically modifying code somehow thus affecting git patches.
+```bash
+boa build . --python=3.10 --croot=../temp/build
+```
 
-Error is usually reflected in patching fails with 
-
-    Hunk #1 FAILED at 5 (different line endings).
-
-The solution seems to be to add a `.gitattributes` file with the  `*.patch binary` option
-
-* https://github.com/actions/checkout/issues/135 
-
-## Other
-
-* http://www.johnlees.me/blog/2018/10/15/creating-a-conda-package-with-compilation-and-dependencies/
+Note that `--python` and `--croot` are optional flags. The latter comes in handy if you want to quickly browse the
+work, build and test directories of your packages in your IDE. But keep the `temp` dir out of the build dir. 
