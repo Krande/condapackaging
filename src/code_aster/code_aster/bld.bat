@@ -8,6 +8,7 @@ copy "%RECIPE_DIR%\bld\*" .
 pip install ./deps/asrun
 call install_metis.bat
 call install_tfel.bat
+call install_petsc.bat
 
 set "TFELHOME=%LIBRARY_PREFIX%"
 set "LIBPATH=%LIBRARY_PREFIX%\lib;%LIBPATH%"

@@ -29,9 +29,6 @@ source:
     folder: deps/asrun
   - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz # [win]
     folder: deps/mfront                                                       # [win]
-  - hg_url: http://hg.code.sf.net/p/prereq/petsc                              # [win]
-    hg_tag: '{{ petsc_ver }}'                                                 # [win]
-    folder: deps/petsc                                                        # [win]
     # Modified version of Mumps changing integer, complex and real sizes to four bytes (fortran kind=4), waf configuration and metis renumbering
 #  - url: http://graal.ens-lyon.fr/MUMPS/MUMPS_{{ mumps_ver }}.tar.gz
 #    folder: deps/mumps-aster
