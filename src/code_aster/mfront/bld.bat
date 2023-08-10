@@ -4,7 +4,7 @@ echo Build MFRONT/TFEL
 if not exist build mkdir build
 cd build
 
-cmake .. -G "Visual Studio 16 2019" -A x64 ^
+cmake .. -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -Dlocal-castem-header=ON ^
     -Denable-fortran=ON ^

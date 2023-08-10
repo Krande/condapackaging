@@ -1,5 +1,5 @@
-boost:
-  - 1.78
+python:
+  - 3.9
 
 c_compiler:
  - vs2022                     # [win]

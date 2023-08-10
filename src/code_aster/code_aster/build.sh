@@ -5,10 +5,9 @@ export CONDA_LIBRARY_PATH="$CONDA_PREFIX/lib"
 
 cp $RECIPE_DIR/bld/* .
 
-chmod +x ./install_asrun.sh
 chmod +x ./install_metis.sh
 
-./install_asrun.sh
+pip install ./deps/asrun
 ./install_metis.sh
 
 export TFELHOME=$PREFIX

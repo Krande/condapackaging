@@ -2,7 +2,7 @@ context:
   name: code-aster
   version: 15.8.0
   asrun_ver: 2021.1.0
-  med_ver: 4.1.1
+  med_ver: 4.0.0
   metis_ver: 5.1.0_aster4
   mfront_ver: 3.2.1
   mumps_ver: 5.2.1
