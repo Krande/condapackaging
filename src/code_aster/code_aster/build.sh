@@ -7,7 +7,7 @@ cp $RECIPE_DIR/bld/* .
 
 chmod +x ./install_metis.sh
 
-pip install ./deps/asrun
+#pip install ./deps/asrun
 ./install_metis.sh
 
 export TFELHOME=$PREFIX
@@ -31,6 +31,11 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --without-hg \
   configure
 ./waf install
+
+# copy modified shell scripts
+cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
+cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
+#cp $RECIPE_DIR/config/as_run $PREFIX/bin/as_run
 
 mkdir -p $PREFIX/etc/conda/activate.d
 echo "export PYTHONPATH=\"\$PYTHONPATH:\$PREFIX/lib/aster\"" > $PREFIX/etc/conda/activate.d/code_aster.sh

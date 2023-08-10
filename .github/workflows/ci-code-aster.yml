@@ -45,5 +45,7 @@ jobs:
 
       - name: build local packages
         run: |
+          conda config --add channels krande
+          conda config --add channels conda-forge
           boa build . --python ${{ matrix.pyver.distver }} --croot ${{ github.workspace }}/artifacts --output-folder ${{ github.workspace }}/artifacts
         working-directory: ${{ matrix.package.path }}
