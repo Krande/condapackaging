@@ -25,15 +25,12 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --bindir=$PREFIX/bin \
-  --pythondir=$PREFIX/lib \
+  --pythondir=$PREFIX/lib/aster \
   --install-tests \
   --embed-metis \
   --without-hg \
   configure
 ./waf install
-
-# Not sure what these do
 
 mkdir -p $PREFIX/etc/conda/activate.d
 echo "export PYTHONPATH=\"\$PYTHONPATH:\$PREFIX/lib/aster\"" > $PREFIX/etc/conda/activate.d/code_aster.sh
