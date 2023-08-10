@@ -89,14 +89,13 @@ test:
   imports:
     - code_aster
   commands:
-    - as_run --info
-    - homard || true  # [unix]
-    - as_run --test forma01a
-    - as_run --test sslp114a
-    - as_run --test mumps02a
-    - as_run --test mumps01a
-    - as_run --test umat001a
-    - as_run --test zzzz121a
+    - run_aster --info
+    - run_aster --test forma01a
+    - run_aster --test sslp114a
+    - run_aster --test mumps02a
+    - run_aster --test mumps01a
+    - run_aster --test umat001a
+    - run_aster --test zzzz121a
 
 about:
   home: https://www.code-aster.org

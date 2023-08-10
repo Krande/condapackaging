@@ -18,9 +18,6 @@ export LIBPATH_METIS="$PREFIX/metis-aster/lib"
 export INCLUDES_METIS="$PREFIX/metis-aster/include"
 
 #export ASTERLIBDIR="$PREFIX/lib"
-#export PYTHONPATH="$SP_DIR:$SRC_DIR:$PYTHONPATH"
-#export LD_LIBRARY_PATH="$SRC_DIR/deps/devtools/lib:$LD_LIBRARY_PATH"
-#export PATH="$SRC_DIR/deps/devtools/bin:$PATH"
 
 # Install for standard sequential
 ./waf \
@@ -28,6 +25,7 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
+  --bindir=$PREFIX/bin \
   --pythondir=$PREFIX/lib \
   --install-tests \
   --embed-metis \
@@ -37,6 +35,11 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
 
 # Not sure what these do
 
-#find $PREFIX -name "profile.sh" -exec sed -i 's/PYTHONHOME=/#PYTHONHOME=/g' {} \;
-#find $PREFIX -name "profile.sh" -exec sed -i 's/export PYTHONHOME/#export PYTHONHOME/g' {} \;
+mkdir -p $PREFIX/etc/conda/activate.d
+echo "export PYTHONPATH=\"\$PYTHONPATH:\$PREFIX/lib/aster\"" > $PREFIX/etc/conda/activate.d/code_aster.sh
+chmod +x $PREFIX/etc/conda/activate.d/code_aster.sh
+
+mkdir -p $PREFIX/etc/conda/deactivate.d
+echo "export PYTHONPATH=\"\${PYTHONPATH//\$PREFIX\/lib\/aster:/}\"" > $PREFIX/etc/conda/deactivate.d/code_aster.sh
+chmod +x $PREFIX/etc/conda/deactivate.d/code_aster.sh
 
