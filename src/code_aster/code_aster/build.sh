@@ -25,7 +25,7 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --pythondir=$PREFIX/lib/aster \
+  --pythondir=$PREFIX/lib \
   --install-tests \
   --embed-metis \
   --without-hg \
