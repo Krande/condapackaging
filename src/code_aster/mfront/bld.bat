@@ -6,9 +6,7 @@ cd build
 
 cmake .. -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
-    -Dlocal-castem-header=ON ^
     -Denable-fortran=ON ^
-    -Denable-broken-boost-python-module-visibility-handling=ON ^
     -Denable-python-bindings=ON ^
     -Denable-cyrano=ON -Denable-aster=ON ^
     -Ddisable-reference-doc=ON ^
@@ -17,8 +15,8 @@ cmake .. -G "Ninja" ^
     -DPython_ADDITIONAL_VERSIONS=%CONDA_PY% ^
     -Denable-python=ON ^
     -DPYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
-    -DPYTHON_LIBRARY:FILEPATH=%LIBRARY_PREFIX%\lib\libpython%CONDA_PY%.dll ^
-    -DPYTHON_INCLUDE_DIR:PATH=%LIBRARY_PREFIX%\include\python%CONDA_PY% ^
+    -DPYTHON_LIBRARY:FILEPATH=%LIBRARY_PREFIX%\lib ^
+    -DPYTHON_INCLUDE_DIR:PATH=%LIBRARY_PREFIX%\include ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine
