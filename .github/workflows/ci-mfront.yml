@@ -8,6 +8,9 @@ on:
 #    branches:
 #    - donotrun
 
+env:
+  WORK_DIR: /home/runner/work
+
 jobs:
   build_test:
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
@@ -27,7 +30,7 @@ jobs:
         ]
         platform: [
           { name: win, distver: windows-2022 },
-#          { name: linux, distver: ubuntu-latest },
+          { name: linux, distver: ubuntu-latest },
 #          { name: macOS, distver: macos-latest }
         ]
     steps:
@@ -40,5 +43,6 @@ jobs:
 
       - name: build local packages
         run: |
-          boa build . --python ${{ matrix.pyver.distver }} --croot '${{ github.workspace }}/artifacts' --output-folder '${{ github.workspace }}/artifacts'
+          mkdir -p '${{ env.WORK_DIR }}/artifacts'
+          boa build . --python ${{ matrix.pyver.distver }} --croot '${{ env.WORK_DIR }}/artifacts' --output-folder '${{ env.WORK_DIR }}/artifacts'
         working-directory: ${{ matrix.package.path }}

@@ -14,12 +14,13 @@ build:
   number: 0
   detect_binary_files_with_prefix: true
   run_exports:
-    - {{ pin_subpackage('mfront', max_pin='x.x.x') }}
+    - "{{ pin_subpackage('mfront', max_pin='x.x.x') }}"
 
 requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
+    - m2w64-gcc-fortran
     - numpy >=1.23
     - ninja
   host:
