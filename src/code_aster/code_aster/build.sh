@@ -21,6 +21,8 @@ export INCLUDES="$PREFIX/include $INCLUDES"
 export LIBPATH_METIS="$PREFIX/metis-aster/lib"
 export INCLUDES_METIS="$PREFIX/metis-aster/include"
 
+export LIBPATH_PETSC="$PREFIX/lib"
+export INCLUDES_PETSC="$PREFIX/include"
 
 export INCLUDES_BOOST=$PREFIX/include
 export LIBPATH_BOOST=$PREFIX/lib
@@ -37,8 +39,9 @@ export LIB_BOOST="libboost_python$CONDA_PY"
   --embed-metis \
   --without-hg \
   configure
-./waf install
+
 #./waf build_debug
+./waf install
 
 # copy modified shell scripts
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster

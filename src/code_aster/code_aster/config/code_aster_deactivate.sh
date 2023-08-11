@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export PYTHONPATH=$(echo $PYTHONPATH | sed "s|$PREFIX/lib/aster:||g")
-export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|$PREFIX/lib/aster:||g")
-export C_INCLUDE_PATH=$(echo $C_INCLUDE_PATH | sed "s|$PREFIX/include/aster:||g")
-export CPLUS_INCLUDE_PATH=$(echo $CPLUS_INCLUDE_PATH | sed "s|$PREFIX/include/aster:||g")
+export PYTHONPATH=$(echo $PYTHONPATH | sed "s|$CONDA_PREFIX/lib/aster:||g")
+export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|$CONDA_PREFIX/lib/aster:||g")
+export C_INCLUDE_PATH=$(echo $C_INCLUDE_PATH | sed "s|$CONDA_PREFIX/include/aster:||g")
+export CPLUS_INCLUDE_PATH=$(echo $CPLUS_INCLUDE_PATH | sed "s|$CONDA_PREFIX/include/aster:||g")
 
 # Restore original values of environment variables, or unset them if they were not previously set
 export ASTER_LIBDIR=$(cat $CONDA_PREFIX/.aster_libdir_old 2> /dev/null || echo "")
