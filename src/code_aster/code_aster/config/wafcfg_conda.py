@@ -11,10 +11,6 @@ def configure(self):
     conda_prefix = os.getenv('CONDA_PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
 
-    self.env.INCLUDES_BOOST = include_dir
-    self.env.LIBPATH_BOOST = [lib_dir]
-    self.env.LIB_BOOST = ['libboost_python310']
-
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 
     self.env.append_value('LIBPATH', [

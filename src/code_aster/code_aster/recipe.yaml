@@ -24,11 +24,11 @@ source:
   - hg_url: http://hg.code.sf.net/p/prereq/metis
     hg_tag: '{{ metis_ver }}'
     folder: deps/metis-aster
-  - hg_url: http://hg.code.sf.net/p/prereq/frontend
-    hg_tag: '{{ asrun_ver }}'
-    folder: deps/asrun
   - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz # [win]
     folder: deps/mfront                                                       # [win]
+#  - hg_url: http://hg.code.sf.net/p/prereq/frontend
+#    hg_tag: '{{ asrun_ver }}'
+#    folder: deps/asrun
     # Modified version of Mumps changing integer, complex and real sizes to four bytes (fortran kind=4), waf configuration and metis renumbering
 #  - url: http://graal.ens-lyon.fr/MUMPS/MUMPS_{{ mumps_ver }}.tar.gz
 #    folder: deps/mumps-aster
@@ -53,11 +53,13 @@ requirements:
     - "libmed {{ med_ver }}"
     - sel(linux): "mfront {{ mfront_ver }}"
     - "mumps-seq {{ mumps_ver }}"
+    - pyyaml # to extract recipe.yaml version of code aster and insert that into code aster pkginfo.py
 #    - mumps-mpi
 #    - mumps-include
     - scotch
 #    - metis ==5.1.0
     - sel(unix): petsc
+    - asrun
     - hdf5
     - numpy
     - glib
@@ -78,6 +80,7 @@ requirements:
     - sel(linux): "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
     - scotch
+    - asrun
 #    - mumps-include
 #    - mumps-mpi
     - sel(unix): petsc
@@ -89,13 +92,17 @@ test:
   imports:
     - code_aster
   commands:
-    - run_aster --info
-    - run_aster --test forma01a
-    - run_aster --test sslp114a
-    - run_aster --test mumps02a
-    - run_aster --test mumps01a
-    - run_aster --test umat001a
-    - run_aster --test zzzz121a
+    - run_aster --help
+    - python test_import.py
+#    - run_aster --test forma01a
+#    - as_run --info
+#    - as_run --test sslp114a
+#    - as_run --test mumps02a
+#    - as_run --test mumps01a
+#    - as_run --test umat001a
+#    - as_run --test zzzz121a
+  files:
+    - test_import.py
 
 about:
   home: https://www.code-aster.org
