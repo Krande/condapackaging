@@ -7,6 +7,8 @@ on:
       - .github/workflows/ci-code-aster.yml
 #    branches:
 #    - donotrun
+env:
+  WORK_DIR: /home/runner/work
 
 jobs:
   build_test:
@@ -47,15 +49,15 @@ jobs:
         run: |
           conda config --add channels krande
           conda config --add channels conda-forge
-          mkdir -p ${{ github.workspace }}/artifacts
-          mkdir -p ${{ github.workspace }}/build
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ github.workspace }}/build --output-folder ${{ github.workspace }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/build
+          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
         working-directory: ${{ matrix.package.path }}
 
       - name: upload to anaconda
         if: matrix.platform.upload == 'true'
         run: |
-          path="${{ github.workspace }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
