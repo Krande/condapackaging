@@ -1,6 +1,9 @@
 python:
   - 3.9
 
+numpy:
+  - 1.19.*
+
 c_compiler:
  - vs2022                     # [win]
 
