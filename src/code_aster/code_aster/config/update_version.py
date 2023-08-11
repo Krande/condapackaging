@@ -1,3 +1,4 @@
+import os
 from time import strftime
 
 import yaml
@@ -13,6 +14,8 @@ def main():
         data = yaml.safe_load(stream)
         version = data['context']['version']
         version_tuple = tuple([int(x) for x in version.split('.')])
+
+    os.environ['_CA_VERSION'] = version
 
     with open('./code_aster/pkginfo.py', 'w') as f:
         curr_time = strftime("%d/%m/%Y")

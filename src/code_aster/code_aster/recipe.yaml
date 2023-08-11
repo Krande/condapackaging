@@ -1,13 +1,14 @@
 context:
   name: code-aster
-  version: 15.8.0
+  version: 16.4.2
   asrun_ver: 2021.1.0
-  med_ver: 4.0.0
+  med_ver: 4.1.1
   metis_ver: 5.1.0_aster4
   mfront_ver: 3.2.1
   mumps_ver: 5.2.1
   scotch_ver: 6.0.4
   petsc_ver: 3.12.3_aster
+  medcoupling_ver: 9.10.0
 
 package:
   name: '{{ name|lower }}'
@@ -26,6 +27,9 @@ source:
     folder: deps/metis-aster
   - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz # [win]
     folder: deps/mfront                                                       # [win]
+  - fn: 'medcoupling_{{ medcoupling_ver }}.tar.gz'
+    url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz
+    folder: deps/medcoupling
 #  - hg_url: http://hg.code.sf.net/p/prereq/frontend
 #    hg_tag: '{{ asrun_ver }}'
 #    folder: deps/asrun
@@ -81,7 +85,7 @@ requirements:
     - "{{ pin_compatible('libmed', max_pin='x.x') }}"
     - sel(linux): "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
-    - "{{ pin_compatible('numpy', max_pin='x.x') }}"
+    - numpy
     - "{{ pin_compatible('hdf5', max_pin='x.x') }}"
     - scotch
     - asrun

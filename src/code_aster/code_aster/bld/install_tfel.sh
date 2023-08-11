@@ -7,12 +7,8 @@ cd deps/mfront
 mkdir -p build
 cd build
 
-export VERSION_TFEL=3.4.0
-
 cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
-    -DTFEL_SVN_REVISION=${VERSION_TFEL} \
-    -DTFEL_APPEND_VERSION=${VERSION_TFEL} \
     -Dlocal-castem-header=ON \
     -Denable-fortran=ON \
     -Denable-broken-boost-python-module-visibility-handling=ON \

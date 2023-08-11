@@ -10,9 +10,13 @@ python $RECIPE_DIR/config/update_version.py
 cp $RECIPE_DIR/bld/* .
 
 chmod +x ./install_metis.sh
-
-#pip install ./deps/asrun
 ./install_metis.sh
+
+# if env variable _CA_VERSION
+if [ "$_CA_VERSION" == "16.4.2" ]; then
+  chmod +x ./install_medcoupling.sh
+  ./install_medcoupling.sh
+fi
 
 export TFELHOME=$PREFIX
 export LIBPATH="$PREFIX/lib $LIBPATH"
@@ -29,7 +33,7 @@ export LIBPATH_BOOST=$PREFIX/lib
 export LIB_BOOST="libboost_python$CONDA_PY"
 
 # Install for standard sequential
-./waf \
+./waf_std \
   --use-config=wafcfg_conda \
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
@@ -40,8 +44,8 @@ export LIB_BOOST="libboost_python$CONDA_PY"
   --without-hg \
   configure
 
-./waf install
-#./waf install_debug
+#./waf install
+./waf install_debug
 
 # copy modified shell scripts
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
