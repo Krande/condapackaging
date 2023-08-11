@@ -3,6 +3,9 @@
 export CONDA_INCLUDE_PATH="$CONDA_PREFIX/include"
 export CONDA_LIBRARY_PATH="$CONDA_PREFIX/lib"
 
+# This adds a printout of the error when trying to import the code_aster module
+cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
+
 cp $RECIPE_DIR/bld/* .
 
 chmod +x ./install_metis.sh
@@ -25,7 +28,7 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --pythondir=$PREFIX/lib/aster \
+  --pythondir=$SP_DIR \
   --install-tests \
   --embed-metis \
   --without-hg \
@@ -37,11 +40,16 @@ cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
 cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
 #cp $RECIPE_DIR/config/as_run $PREFIX/bin/as_run
 
+
+# Alternative, I could move the entire code_aster subdirectory to site-packages granted I am able to relocate all
+# relevant .so files
+
 mkdir -p $PREFIX/etc/conda/activate.d
-echo "export PYTHONPATH=\"\$PYTHONPATH:\$PREFIX/lib/aster\"" > $PREFIX/etc/conda/activate.d/code_aster.sh
+cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster.sh
 chmod +x $PREFIX/etc/conda/activate.d/code_aster.sh
 
 mkdir -p $PREFIX/etc/conda/deactivate.d
-echo "export PYTHONPATH=\"\${PYTHONPATH//\$PREFIX\/lib\/aster:/}\"" > $PREFIX/etc/conda/deactivate.d/code_aster.sh
+cp $RECIPE_DIR/config/code_aster_deactivate.sh $PREFIX/etc/conda/deactivate.d/code_aster.sh
 chmod +x $PREFIX/etc/conda/deactivate.d/code_aster.sh
+
 

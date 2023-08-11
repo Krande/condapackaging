@@ -6,9 +6,10 @@ cd build
 
 cmake .. -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
-    -Denable-fortran=ON ^
+    -Denable-fortran=OFF ^
     -Denable-python-bindings=ON ^
-    -Denable-cyrano=ON -Denable-aster=ON ^
+    -Denable-cyrano=ON ^
+    -Denable-aster=ON ^
     -Ddisable-reference-doc=ON ^
     -Ddisable-website=ON ^
     -Denable-portable-build=ON ^

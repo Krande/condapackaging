@@ -13,7 +13,7 @@ def configure(self):
 
     self.env.INCLUDES_BOOST = include_dir
     self.env.LIBPATH_BOOST = [lib_dir]
-    self.env.LIB_BOOST = ['libboost_python310']
+    # self.env.LIB_BOOST = ['libboost_python310']
 
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 
