@@ -5,6 +5,7 @@ export CONDA_LIBRARY_PATH="$CONDA_PREFIX/lib"
 
 # This adds a printout of the error when trying to import the code_aster module
 cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
+python $RECIPE_DIR/config/update_version.py
 
 cp $RECIPE_DIR/bld/* .
 
@@ -20,7 +21,10 @@ export INCLUDES="$PREFIX/include $INCLUDES"
 export LIBPATH_METIS="$PREFIX/metis-aster/lib"
 export INCLUDES_METIS="$PREFIX/metis-aster/include"
 
-#export ASTERLIBDIR="$PREFIX/lib"
+
+export INCLUDES_BOOST=$PREFIX/include
+export LIBPATH_BOOST=$PREFIX/lib
+export LIB_BOOST="libboost_python$CONDA_PY"
 
 # Install for standard sequential
 ./waf \
@@ -28,7 +32,7 @@ export INCLUDES_METIS="$PREFIX/metis-aster/include"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --pythondir=$SP_DIR \
+  --pythondir=$PREFIX/lib/aster \
   --install-tests \
   --embed-metis \
   --without-hg \

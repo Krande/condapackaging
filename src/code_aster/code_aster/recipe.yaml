@@ -53,6 +53,7 @@ requirements:
     - "libmed {{ med_ver }}"
     - sel(linux): "mfront {{ mfront_ver }}"
     - "mumps-seq {{ mumps_ver }}"
+    - pyyaml # to extract recipe.yaml version of code aster and insert that into code aster pkginfo.py
 #    - mumps-mpi
 #    - mumps-include
     - scotch
