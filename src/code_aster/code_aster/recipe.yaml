@@ -49,6 +49,7 @@ requirements:
     - "{{ compiler('cxx') }}"
     #- sel(win): m2w64-gcc-fortran
     - "{{ compiler('gfortran') }}"
+    - sel(linux): sysroot_linux-64 =2.17
     # Packages
     - "libmed {{ med_ver }}"
     - sel(linux): "mfront {{ mfront_ver }}"
@@ -79,13 +80,13 @@ requirements:
     - "{{ pin_compatible('libmed', max_pin='x.x') }}"
     - sel(linux): "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
+    - "{{ pin_compatible('numpy', max_pin='x.x') }}"
+    - "{{ pin_compatible('hdf5', max_pin='x.x') }}"
     - scotch
     - asrun
 #    - mumps-include
 #    - mumps-mpi
-    - sel(unix): petsc
-    - hdf5
-    - numpy
+    - sel(linux): petsc
     - glib
     - boost-cpp
 test:
