@@ -55,7 +55,6 @@ jobs:
         working-directory: ${{ matrix.package.path }}
 
       - name: upload to anaconda
-        if: matrix.platform.upload == 'true'
         run: |
           path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then

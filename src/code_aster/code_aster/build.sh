@@ -38,6 +38,7 @@ export LIB_BOOST="libboost_python$CONDA_PY"
   --without-hg \
   configure
 ./waf install
+#./waf build_debug
 
 # copy modified shell scripts
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
