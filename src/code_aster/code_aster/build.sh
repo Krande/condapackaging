@@ -10,9 +10,7 @@ python $RECIPE_DIR/config/update_version.py
 cp $RECIPE_DIR/bld/* .
 
 chmod +x ./install_metis.sh
-chmod +x ./install_mumps.sh
 ./install_metis.sh
-./install_mumps.sh
 
 export TFELHOME=$PREFIX
 export LIBPATH="$PREFIX/lib $LIBPATH"

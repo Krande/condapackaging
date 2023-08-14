@@ -27,7 +27,7 @@ requirements:
     - swig
 
   host:
-    - "libmed {{ med_ver }}"
+    - libmed
     - python
     - boost-cpp
     - libxml2

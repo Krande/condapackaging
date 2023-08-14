@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: metis, path: src/code_aster/metis },
+          { name: mumps, path: src/code_aster/mumps },
         ]
         pyver: [
           { name: py39, distver: '3.9'},
