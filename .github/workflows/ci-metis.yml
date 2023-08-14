@@ -32,7 +32,7 @@ jobs:
 #          { name: macOS, distver: macos-latest pkg_dir: osx-64}
         ]
     steps:
-      - uses: ./.github/actions/my-action
+      - uses: ./.github/actions/boa-build.yml
         with:
           path: ${{ matrix.package.path }}
           name: ${{ matrix.package.name }}
