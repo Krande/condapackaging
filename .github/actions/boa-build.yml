@@ -13,12 +13,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-
-    - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
-      with:
-        environment-file: environment.conda.yml
-        create-args: >-
-          python=${{ inputs.python }}
     - name: set ENV WORK_DIR
       run: |
         if [[ "$RUNNER_OS" == "Windows" ]]; then
