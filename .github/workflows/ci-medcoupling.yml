@@ -1,17 +1,18 @@
-name: ci-metis
+name: ci-medcoupling
+
+env:
+  PKG_NAME: medcoupling
+  PKG_PATH: src/code_aster/medcoupling
 
 # bump 0
 on:
   push:
     paths:
-      - src/code_aster/metis/**
-      - .github/workflows/ci-metis.yml
+      - src/code_aster/medcoupling/**
+      - .github/workflows/ci-medcoupling.yml
 #    branches:
 #    - donotrun
 
-env:
-  PKG_NAME: medcoupling
-  PKG_PATH: src/code_aster/medcoupling
 
 jobs:
   build_test:
