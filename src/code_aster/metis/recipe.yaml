@@ -1,0 +1,53 @@
+context:
+  name: metis
+  version: 5.1.0_aster4
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - hg_url: http://hg.code.sf.net/p/prereq/metis
+    hg_tag: '{{ version }}'
+
+build:
+  detect_binary_files_with_prefix: true
+  number: 0
+  run_exports:
+    - "{{ pin_subpackage('metis', max_pin='x.x.x') }}"
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - make
+
+test:
+  imports:
+    - code_aster
+  commands:
+    - run_aster --help
+    - python test_import.py
+    - run_ctest -R 'forma01a' --resutest=./temp
+#    - as_run --info
+#    - as_run --test sslp114a
+#    - as_run --test mumps02a
+#    - as_run --test mumps01a
+#    - as_run --test umat001a
+#    - as_run --test zzzz121a
+  files:
+    - test_import.py
+
+about:
+  home: https://www.code-aster.org
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  summary: 'Code_Aster : a finite element solver'
+  description: |
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
+  dev_url: https://sourceforge.net/projects/codeaster/
+
+extra:
+  recipe-maintainers:
+    - Krande

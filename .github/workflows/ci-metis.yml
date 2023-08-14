@@ -1,0 +1,59 @@
+name: ci-metis
+# bump 1
+on:
+  push:
+    paths:
+      - src/code_aster/metis/**
+      - .github/workflows/ci-metis.yml
+#    branches:
+#    - donotrun
+
+env:
+  WORK_DIR: /home/runner/work
+
+jobs:
+  build_test:
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [
+          { name: metis, path: src/code_aster/metis },
+        ]
+        pyver: [
+          { name: py39, distver: '3.9'},
+#          { name: py310, distver: '3.10'},
+        ]
+        platform: [
+          { name: win, distver: windows-2022 },
+          { name: linux, distver: ubuntu-latest },
+#          { name: macOS, distver: macos-latest }
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: environment.conda.yml
+          create-args: >-
+            python=${{ matrix.pyver.distver }}
+
+      - name: build local packages
+        run: |
+          conda config --add channels krande
+          conda config --add channels conda-forge
+          mkdir -p ${{ env.WORK_DIR }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/build
+          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+        working-directory: ${{ matrix.package.path }}
+
+      - name: upload to anaconda
+        run: |
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label dev $path
