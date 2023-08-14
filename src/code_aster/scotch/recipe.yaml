@@ -1,13 +1,13 @@
 context:
-  name: mumps
-  version: 5.2.1_aster2
+  name: scotch
+  version: 6.0.4_aster7
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  - hg_url: http://hg.code.sf.net/p/prereq/mumps
+  - hg_url: http://hg.code.sf.net/p/prereq/scotch
     hg_tag: '{{ version }}'
 
 
@@ -15,31 +15,21 @@ build:
   detect_binary_files_with_prefix: true
   number: 0
   run_exports:
-    - "{{ pin_subpackage('mumps', max_pin='x.x.x') }}"
+    - "{{ pin_subpackage('scotch', max_pin='x.x.x') }}"
 
 requirements:
   build:
-    - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - numpy
-    - metis
-    - scotch 6.0.4
-    - libgomp
-
 
   host:
     - python
-    - numpy
-    - metis
-    - scotch 6.0.4
-    - libblas
-    - liblapack
+    - zlib
 
   run:
-    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('zlib', max_pin='x.x.x') }}"
+
+
 
 about:
   home: https://www.code-aster.org
