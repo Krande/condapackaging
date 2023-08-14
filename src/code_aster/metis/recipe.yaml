@@ -23,14 +23,14 @@ requirements:
     - make
 
 about:
-  home: https://www.code-aster.org
-  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
-  license_family: GPL
-  summary: 'Code_Aster : a finite element solver'
+  home: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html
+  license: Apache-2.0
+  license_family: Apache
+  summary: 'METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering'
   description: |
-    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
-  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
-  dev_url: https://sourceforge.net/projects/codeaster/
+    METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.
+  doc_url: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html
+
 
 extra:
   recipe-maintainers:

@@ -3,8 +3,8 @@
 # Install metis-aster
 echo "** Building METIS **"
 
-mkdir -p $PREFIX/metis-aster
-make config prefix=$PREFIX/metis-aster
+mkdir -p $PREFIX
+make config prefix=$PREFIX
 make
 make install
 

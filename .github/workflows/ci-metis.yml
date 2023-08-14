@@ -29,7 +29,7 @@ jobs:
 #          { name: py310, distver: '3.10'},
         ]
         platform: [
-          { name: win, distver: windows-2022, pkg_dir: win-64 },
+#          { name: win, distver: windows-2022, pkg_dir: win-64 },
           { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
 #          { name: macOS, distver: macos-latest pkg_dir: osx-64}
         ]
