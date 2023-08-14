@@ -1,0 +1,49 @@
+context:
+  name: mumps
+  version: 5.2.1_aster2
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - hg_url: http://hg.code.sf.net/p/prereq/mumps
+    hg_tag: '{{ version }}'
+
+
+build:
+  detect_binary_files_with_prefix: true
+  number: 0
+  run_exports:
+    - "{{ pin_subpackage('mumps', max_pin='x.x.x') }}"
+
+requirements:
+  build:
+    - waf
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - numpy
+    - metis
+
+  host:
+    - python
+    - numpy
+    - metis
+
+  run:
+    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
+
+about:
+  home: https://www.code-aster.org
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  summary: 'Code_Aster : a finite element solver'
+  description: |
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
+  dev_url: https://sourceforge.net/projects/codeaster/
+
+extra:
+  recipe-maintainers:
+    - Krande

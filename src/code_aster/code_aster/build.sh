@@ -10,13 +10,9 @@ python $RECIPE_DIR/config/update_version.py
 cp $RECIPE_DIR/bld/* .
 
 chmod +x ./install_metis.sh
+chmod +x ./install_mumps.sh
 ./install_metis.sh
-
-# if env variable _CA_VERSION
-if [ "$_CA_VERSION" == "16.4.2" ]; then
-  chmod +x ./install_medcoupling.sh
-  ./install_medcoupling.sh
-fi
+./install_mumps.sh
 
 export TFELHOME=$PREFIX
 export LIBPATH="$PREFIX/lib $LIBPATH"
@@ -38,9 +34,9 @@ export LIB_BOOST="libboost_python$CONDA_PY"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --pythondir=$PREFIX/lib \
   --install-tests \
   --embed-metis \
+  --embed-mumps \
   --without-hg \
   configure
 

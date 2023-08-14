@@ -1,8 +1,8 @@
 context:
   name: code-aster
-  version: 16.4.2
+  version: 15.8.0
   asrun_ver: 2021.1.0
-  med_ver: 4.1.1
+  med_ver: 4.1.0
   metis_ver: 5.1.0_aster4
   mfront_ver: 3.2.1
   mumps_ver: 5.2.1
@@ -19,28 +19,20 @@ source:
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
     patches:
       - patches/add_stdexcept.patch
-#  - url: https://gitlab.com/codeaster/devtools/-/archive/use-git/devtools-use-git.tar.gz
-#    folder: deps/devtools
-  # Modified version of Metis changing integer sizes for indexes (IDXTYPEWIDTH 64) and including headers for direct linking to Aster
-  - hg_url: http://hg.code.sf.net/p/prereq/metis
-    hg_tag: '{{ metis_ver }}'
-    folder: deps/metis-aster
+
   - url: https://github.com/thelfer/tfel/archive/TFEL-{{ mfront_ver }}.tar.gz # [win]
     folder: deps/mfront                                                       # [win]
   - fn: 'medcoupling_{{ medcoupling_ver }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz
     folder: deps/medcoupling
-#  - hg_url: http://hg.code.sf.net/p/prereq/frontend
-#    hg_tag: '{{ asrun_ver }}'
-#    folder: deps/asrun
-    # Modified version of Mumps changing integer, complex and real sizes to four bytes (fortran kind=4), waf configuration and metis renumbering
-#  - url: http://graal.ens-lyon.fr/MUMPS/MUMPS_{{ mumps_ver }}.tar.gz
-#    folder: deps/mumps-aster
+  - url: http://graal.ens-lyon.fr/MUMPS/MUMPS_{{ mumps_ver }}.tar.gz
+    folder: deps/mumps-aster
 #    patches:
-#    - patches/mumps-aster-diff.patch
-#  - url: https://netcologne.dl.sourceforge.net/project/prereq/homard-11.12_aster2.tar.gz
-#    sha256: 80425cee117349df8425f801f9a82aadb85fd41a95af25b4397f0e69dd655304
-#    folder: deps/homard
+#      - patches/mumps-aster-diff.patch
+  - url: https://netcologne.dl.sourceforge.net/project/prereq/homard-11.12_aster2.tar.gz
+    sha256: 80425cee117349df8425f801f9a82aadb85fd41a95af25b4397f0e69dd655304
+    folder: deps/homard
+
 build:
   detect_binary_files_with_prefix: true
   number: 0
@@ -52,55 +44,42 @@ requirements:
     - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    #- sel(win): m2w64-gcc-fortran
-    - "{{ compiler('gfortran') }}"
-    - sel(linux): sysroot_linux-64 =2.17
     # Packages
     - "libmed {{ med_ver }}"
-    - sel(linux): "mfront {{ mfront_ver }}"
-    - "mumps-seq {{ mumps_ver }}"
-    - pyyaml # to extract recipe.yaml version of code aster and insert that into code aster pkginfo.py
-#    - mumps-mpi
-#    - mumps-include
+    - pyyaml
     - scotch
-#    - metis ==5.1.0
-    - sel(unix): petsc
-    - asrun
+    - petsc
     - hdf5
     - numpy
     - glib
     - boost-cpp
+
   host:
-    - "libmed {{ med_ver }}"
-    - sel(linux): "mfront {{ mfront_ver }}"
-    - "mumps-seq {{ mumps_ver }}"
-    - scotch
-    - sel(unix): petsc
-    - hdf5
-    - numpy
-    - glib
-    - boost-cpp
     - python
-  run:
-    - "{{ pin_compatible('libmed', max_pin='x.x') }}"
-    - sel(linux): "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('mumps-seq', max_pin='x.x') }}"
+    - "libmed {{ med_ver }}"
     - numpy
-    - "{{ pin_compatible('hdf5', max_pin='x.x') }}"
     - scotch
-    - asrun
-#    - mumps-include
-#    - mumps-mpi
-    - sel(linux): petsc
+    - petsc
+    - hdf5
     - glib
     - boost-cpp
+
+  run:
+    - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('hdf5', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('petsc', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
+    - glib
+
 test:
   imports:
     - code_aster
   commands:
     - run_aster --help
     - python test_import.py
-#    - run_aster --test forma01a
+    - run_ctest -R 'forma01a' --resutest=./temp
 #    - as_run --info
 #    - as_run --test sslp114a
 #    - as_run --test mumps02a
