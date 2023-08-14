@@ -1,14 +1,17 @@
 context:
   name: scotch
-  version: 6.0.4_aster7
+  version: 7.0.1
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  - hg_url: http://hg.code.sf.net/p/prereq/scotch
-    hg_tag: '{{ version }}'
+  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+    folder: deps/
+#  - hg_url: http://hg.code.sf.net/p/prereq/scotch
+#    hg_tag: '{{ version }}'
 
 
 build:
@@ -25,6 +28,7 @@ requirements:
   host:
     - python
     - zlib
+    - bison
 
   run:
     - "{{ pin_compatible('zlib', max_pin='x.x.x') }}"

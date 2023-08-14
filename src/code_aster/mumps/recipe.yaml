@@ -1,14 +1,17 @@
 context:
   name: mumps
-  version: 5.2.1_aster2
+  version: 5.5.1_aster1
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  - hg_url: http://hg.code.sf.net/p/prereq/mumps
-    hg_tag: '{{ version }}'
+  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+    folder: deps/
+#  - hg_url: http://hg.code.sf.net/p/prereq/mumps
+#    hg_tag: '{{ version }}'
 
 
 build:
@@ -24,7 +27,7 @@ requirements:
     - "{{ compiler('cxx') }}"
     - numpy
     - metis
-    - scotch 6.0.4
+    - scotch 7.0.1
     - libgomp
 
 
@@ -32,9 +35,10 @@ requirements:
     - python
     - numpy
     - metis
-    - scotch 6.0.4
+    - scotch 7.0.1
     - libblas
     - liblapack
+    - zlib
 
   run:
     - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"

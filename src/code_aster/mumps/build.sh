@@ -1,13 +1,17 @@
 #!/bin/bash
 
-echo "**************** M U M P S  B U I L D  S T A R T S  H E R E ****************"
-
-#export METIS_LIBS="$PREFIX/metis-aster"
-#export METIS_INCLUDES="$PREFIX/metis-aster/include"
+tar -xzvf "$SRC_DIR/deps/archives/mumps-5.5.1_aster1.tar.gz" -C . --strip-components=1
 
 export CFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
 export FCFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${FCFLAGS}"
 
-$PYTHON waf configure install --prefix=$PREFIX --enable-metis --enable-scotch --enable-openmp
+$PYTHON waf configure install \
+  --prefix=$PREFIX \
+  --enable-metis \
+  --maths-libs=auto \
+  --enable-scotch \
+  --enable-openmp \
+  --install-tests
 
-echo "**************** M U M P S  B U I L D  E N D S  H E R E ****************"
+$PYTHON ./waf build
+$PYTHON ./waf isntall
