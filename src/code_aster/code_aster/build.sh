@@ -26,6 +26,8 @@ export INCLUDES_BOOST=$PREFIX/include
 export LIBPATH_BOOST=$PREFIX/lib
 export LIB_BOOST="libboost_python$CONDA_PY"
 
+export MED_LIBS="$PREFIX/lib"
+
 # Install for standard sequential
 ./waf_std \
   --use-config=wafcfg_conda \
