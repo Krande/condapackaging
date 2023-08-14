@@ -25,6 +25,8 @@ runs:
           echo "PKG_DIR=linux-64" >> $GITHUB_ENV
           echo "WORK_DIR=/home/runner/work" >> $GITHUB_ENV
         fi
+      shell: bash -l {0}
+
     - name: build local packages
       run: |
         conda config --add channels krande
@@ -34,6 +36,7 @@ runs:
         mkdir -p ${{ env.WORK_DIR }}/build
         boa build . --python ${{ inputs.python }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
       working-directory: ${{ inputs.path }}
+      shell: bash -l {0}
 
     - name: upload to anaconda
       run: |
@@ -42,3 +45,4 @@ runs:
           path="'$path'"
         fi
         anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label dev $path
+      shell: bash -l {0}
