@@ -8,8 +8,6 @@ on:
 #    branches:
 #    - donotrun
 
-env:
-  WORK_DIR: /home/runner/work
 
 jobs:
   build_test:
@@ -34,26 +32,8 @@ jobs:
 #          { name: macOS, distver: macos-latest pkg_dir: osx-64}
         ]
     steps:
-      - uses: actions/checkout@v3
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+      - uses: ./.github/actions/my-action
         with:
-          environment-file: environment.conda.yml
-          create-args: >-
-            python=${{ matrix.pyver.distver }}
-
-      - name: build local packages
-        run: |
-          conda config --add channels krande
-          conda config --add channels conda-forge
-          mkdir -p ${{ env.WORK_DIR }}/artifacts
-          mkdir -p ${{ env.WORK_DIR }}/build
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
-        working-directory: ${{ matrix.package.path }}
-
-      - name: upload to anaconda
-        run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
-          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-            path="'$path'"
-          fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label dev $path
+          path: ${{ matrix.package.path }}
+          name: ${{ matrix.package.name }}
+          python: ${{ matrix.pyver.distver }}
