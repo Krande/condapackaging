@@ -9,15 +9,15 @@ python $RECIPE_DIR/config/update_version.py
 
 cp $RECIPE_DIR/bld/* .
 
-chmod +x ./install_metis.sh
-./install_metis.sh
+#chmod +x ./install_metis.sh
+#./install_metis.sh
 
 export TFELHOME=$PREFIX
 export LIBPATH="$PREFIX/lib $LIBPATH"
-export INCLUDES="$PREFIX/include $INCLUDES"
+export INCLUDES="$PREFIX/include $PREFIX/include_seq $INCLUDES"
 
-export LIBPATH_METIS="$PREFIX/metis-aster/lib"
-export INCLUDES_METIS="$PREFIX/metis-aster/include"
+export LIBPATH_METIS="$PREFIX/lib"
+export INCLUDES_METIS="$PREFIX/include"
 
 export LIBPATH_PETSC="$PREFIX/lib"
 export INCLUDES_PETSC="$PREFIX/include"
@@ -26,7 +26,12 @@ export INCLUDES_BOOST=$PREFIX/include
 export LIBPATH_BOOST=$PREFIX/lib
 export LIB_BOOST="libboost_python$CONDA_PY"
 
+export INCLUDES_MUMPS="$PREFIX/include"
+export LIBPATH_MUMPS="$PREFIX/lib"
+
 export MED_LIBS="$PREFIX/lib"
+export INCLUDES_MED="$PREFIX/include"
+export LIBPATH_MED="$PREFIX/lib"
 
 # Install for standard sequential
 ./waf_std \
@@ -34,9 +39,8 @@ export MED_LIBS="$PREFIX/lib"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
+  --includedir=$PREFIX/include \
   --install-tests \
-  --embed-metis \
-  --embed-mumps \
   --without-hg \
   configure
 

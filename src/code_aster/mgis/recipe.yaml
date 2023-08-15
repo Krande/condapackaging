@@ -1,0 +1,48 @@
+context:
+  name: mgis
+  version: 2.1
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  fn: '{{ name }}_{{ version }}.tar.gz'
+  url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
+
+build:
+  detect_binary_files_with_prefix: true
+  number: 0
+  run_exports:
+    - "{{ pin_subpackage('mgis', max_pin='x.x.x') }}"
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - cmake
+    - boost
+
+  host:
+    - python {{ python }}
+    - numpy
+    - boost
+    - mfront 4.1.0
+
+  run:
+    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
+
+about:
+  home: https://thelfer.github.io/mgis/web/index.html
+  license: Apache-2.0
+  license_family: Apache
+  summary: 'MGIS - MFrontGenericInterfaceSupport '
+  description: |
+    This project aims at proving tools (functions, classes, bindings, etc…) to handle behaviours written using MFront generic interface
+  doc_url: https://github.com/thelfer/MFrontGenericInterfaceSupport
+
+extra:
+  recipe-maintainers:
+    - Krande

@@ -1,11 +1,11 @@
 context:
   name: code-aster
   version: 16.4.2
-  asrun_ver: 2021.1.0
+  asrun_ver: 2021.1
   med_ver: 4.1.1
   metis_ver: 5.1.0_aster4
   mfront_ver: 4.1.0
-  mumps_ver: 5.5.1
+  mumps_ver: 5.5.1_aster1
   scotch_ver: 7.0.1
   petsc_ver: 3.17.1_aster
   medcoupling_ver: 9.10.0
@@ -32,28 +32,32 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     # Packages
-    - "libmed {{ med_ver }}"
-    - "mfront {{ mfront_ver }}"
+    - libmed {{ med_ver }}
+    - mfront {{ mfront_ver }}
+    - mumps {{ mumps_ver }}
     - medcoupling
     - pyyaml
-    - asrun
+    - asrun {{ asrun_ver }}
     - scotch
-    - petsc
-    - hdf5
+    - hdf5 1.10.6 # Important for finding MEDlibraryNumVersion
     - numpy
     - glib
+    - libgomp
     - boost-cpp
 
   host:
     - python
-    - "mfront {{ mfront_ver }}"
-    - "libmed {{ med_ver }}"
+    - mfront {{ mfront_ver }}
+    - libmed {{ med_ver }}
+    - asrun {{ asrun_ver }}
+    - metis {{ metis_ver }}
+    - mumps {{ mumps_ver }}
+    - libgomp
     - medcoupling
     - numpy
     - pyyaml
     - scotch
-    - petsc
-    - hdf5
+    - hdf5 1.10.6
     - glib
     - boost-cpp
 
@@ -61,7 +65,6 @@ requirements:
     - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
     - "{{ pin_compatible('hdf5', max_pin='x.x.x') }}"
     - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('petsc', max_pin='x.x.x') }}"
     - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
     - "{{ pin_compatible('medcoupling', max_pin='x.x.x') }}"

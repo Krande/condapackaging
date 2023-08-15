@@ -82,4 +82,5 @@ You can check the current limit by running the command ulimit -c.
 If the value is 0, core dumps are disabled. You can enable them by running ulimit -c unlimited
 
 If you're on ubuntu you might have to turn off `Apport` before running the compilation. 
-Do this by entering `sudo service apport stop` (after you're done debugging you can turn it back off `sudo service apport start`).
+Do this by entering `sudo service apport stop` (after you're done debugging you can turn 
+it back off `sudo service apport start`).

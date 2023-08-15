@@ -19,6 +19,7 @@ def configure(self):
 
     self.env.append_value('INCLUDES', [
         include_dir,
+        conda_prefix + '/include_seq',
     ])
 
     # to fail if not found
