@@ -36,7 +36,6 @@ requirements:
     - mfront {{ mfront_ver }}
     - mumps {{ mumps_ver }}
     - medcoupling
-    - pyyaml
     - asrun {{ asrun_ver }}
     - scotch
     - hdf5 1.10.6 # Important for finding MEDlibraryNumVersion

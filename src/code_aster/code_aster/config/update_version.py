@@ -1,8 +1,6 @@
 import os
-from time import strftime
-
-import yaml
 import pathlib
+from time import strftime
 
 
 def main():
@@ -10,10 +8,9 @@ def main():
     # Commit hash and branch name set to n/a for now
     chash = 'n/a'
     bname = 'n/a'
-    with open(src_dir / "recipe.yaml", "r") as stream:
-        data = yaml.safe_load(stream)
-        version = data['context']['version']
-        version_tuple = tuple([int(x) for x in version.split('.')])
+
+    version = os.getenv('PKG_VERSION')
+    version_tuple = tuple([int(x) for x in version.split('.')])
 
     os.environ['_CA_VERSION'] = version
 

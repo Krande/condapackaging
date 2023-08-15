@@ -21,12 +21,13 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - cmake
-    - boost
+    - python {{ python }}
 
   host:
     - python {{ python }}
-    - numpy
+    - numpy >=1.23
     - boost
+    - boost-cpp
     - mfront 4.1.0
 
   run:
