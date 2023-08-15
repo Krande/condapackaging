@@ -1,6 +1,6 @@
 context:
   name: libmed
-  version: 4.0.0
+  version: 4.1.1
   sha256: dc2b5d54ebf0666e3ff2e974041d2ab0da906061323537023ab165d573389dd0
 
 package:
@@ -10,29 +10,32 @@ package:
 source:
   fn: '{{ name }}_{{ version }}.tar.gz'
   url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
-  #sha256: '{{ sha256 }}'
+  sha256: '{{ sha256 }}'
     #git_url: https://salsa.debian.org/science-team/med-fichier
-    #git_rev: 8a0b0d21d4bac79772797b0a800cf4d5bf77bc32    
+    #git_rev: 8a0b0d21d4bac79772797b0a800cf4d5bf77bc32
 
 build:
-  number: 0
+  number: 2
 
+  skip:
+    - py2k or osx
 requirements:
   build:
-    - sel(unix): '{{ compiler("fortran") }}'
+    - '{{ compiler("fortran") }}'
     - '{{ compiler("c") }}'
     - '{{ compiler("cxx") }}'
-    - swig
+    - swig >=4.0.2
   host:
-    - sel(linux): autoconf
-    - sel(linux): make
+#      - autoconf  # [linux]
+    - sel(not win): make
     - sel(win): ninja
-    - sel(win): cmake
+    - cmake
     - hdf5 >=1.10.2,<1.11
-    - python
+    - python {{ python }}
   run:
     - '{{ pin_compatible("hdf5", min_pin="x.x", max_pin="x.x") }}'
-    - python
+    - '{{ pin_compatible("python", min_pin="x.x", max_pin="x.x") }}'
+    - python {{ python }}
 
 test:
   imports:
@@ -51,6 +54,7 @@ about:
 
 extra:
   recipe-maintainers:
+    - ldallolio
     - looooo
     - ldallolio-irt
 
