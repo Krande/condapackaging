@@ -1,8 +1,2 @@
-python:
-  - 3.9.15
-
-numpy:
-  - 1.19.*
-
 metis:
   5.1.0_aster4

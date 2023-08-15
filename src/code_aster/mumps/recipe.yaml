@@ -25,16 +25,15 @@ requirements:
     - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
+    - gfortran 9
     - numpy
-    - metis
+    - metis 5.1.0_aster4
     - scotch 7.0.1
-    - libgomp
-
 
   host:
     - python
     - numpy
-    - metis
+    - metis 5.1.0_aster4
     - scotch 7.0.1
     - libblas
     - liblapack
