@@ -22,13 +22,12 @@ cmake .. \
     -DPYTHON_EXECUTABLE:FILEPATH="${PYTHON}" \
     -DPYTHON_LIBRARY:FILEPATH="$PREFIX/lib/libpython${PY_VER}.so" \
     -DPYTHON_LIBRARY_PATH:PATH="$PREFIX/lib" \
-    -DPYTHON_INCLUDE_DIRS="$PREFIX/include" \
+    -DPYTHON_INCLUDE_DIRS="$PREFIX/include;$PREFIX/include/boost/python;$PREFIX/include/python3.9" \
     -DPYTHON_INCLUDE_PATH="$PREFIX/include" \
-    -DBUILD_SHARED_LIBS=ON \
-    -DMGIS_PYTHON_MODULES_INSTALL_DIRECTORY=$SP_DIR \
+    -DBoost_INCLUDE_DIRS="$PREFIX/include" \
     -DCMAKE_INSTALL_PREFIX="${PREFIX}"
 
 ls $PREFIX/include/boost/python/module.hpp
 
-make VERBOSE=1
+make VERBOSE=2
 make install
