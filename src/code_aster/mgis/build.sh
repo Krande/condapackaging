@@ -3,31 +3,26 @@
 mkdir build
 cd build
 
-export TFELHOME=$PREFIX
+export TFELHOME="${PREFIX}"
 python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
-echo $python_version
-
-ls $PREFIX/include/boost/python/module.hpp
 
 cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
-    -Denable-website:BOOL=OFF \
-    -Denable-doxygen-doc:BOOL=OFF \
-    -Denable-c-bindings=OFF \
+    -Denable-c-bindings=ON \
     -Denable-fortran-bindings=OFF \
     -Denable-python-bindings=ON \
     -Denable-portable-build=ON \
-    -DPYTHONLIBS_VERSION_STRING=$PY_VER \
-    -DPython_ADDITIONAL_VERSIONS=$python_version \
-    -DPYTHON_EXECUTABLE:FILEPATH="${PYTHON}" \
-    -DPYTHON_LIBRARY:FILEPATH="$PREFIX/lib/libpython${PY_VER}.so" \
-    -DPYTHON_LIBRARY_PATH:PATH="$PREFIX/lib" \
-    -DPYTHON_INCLUDE_DIRS="$PREFIX/include;$PREFIX/include/boost/python;$PREFIX/include/python3.9" \
-    -DPYTHON_INCLUDE_PATH="$PREFIX/include" \
-    -DBoost_INCLUDE_DIRS="$PREFIX/include" \
-    -DCMAKE_INSTALL_PREFIX="${PREFIX}"
+    -Denable-julia-bindings=OFF \
+    -DPYTHONLIBS_VERSION_STRING="${CONDA_PY}" \
+    -DPython_ADDITIONAL_VERSIONS="${python_version}" \
+    -DPYTHON_EXECUTABLE:FILEPATH="${PREFIX}/bin/python" \
+    -DPYTHON_LIBRARY:FILEPATH="${PREFIX}/lib/libpython${python_version}.so" \
+    -DPYTHON_LIBRARY_PATH:PATH="${PREFIX}/lib" \
+    -DPYTHON_INCLUDE_DIRS:PATH="${PREFIX}/include" \
+    -DUSE_EXTERNAL_COMPILER_FLAGS=ON \
+    -DCMAKE_INSTALL_PREFIX:PATH="${PREFIX}"
 
 ls $PREFIX/include/boost/python/module.hpp
 
-make VERBOSE=2
+make
 make install

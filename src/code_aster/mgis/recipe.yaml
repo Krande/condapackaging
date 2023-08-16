@@ -7,11 +7,12 @@ package:
   version: '{{ version }}'
 
 source:
-  fn: '{{ name }}_{{ version }}.tar.gz'
-  url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
+#  - git_url: https://github.com/thelfer/MFrontGenericInterfaceSupport.git
+#    git_rev: 10cae958a8e97c9f6b61893f80924c119a6f8e67
+  - fn: '{{ name }}_{{ version }}.tar.gz'
+    url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
 
 build:
-  detect_binary_files_with_prefix: true
   number: 0
   run_exports:
     - "{{ pin_subpackage('mgis', max_pin='x.x.x') }}"
@@ -20,19 +21,16 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - cmake
-    - python {{ python }}
-
-  host:
+    - cmake 3.26.4
     - python {{ python }}
     - numpy >=1.23
     - boost
     - boost-cpp
     - mfront 4.1.0
 #
-#  run:
-#    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
-#    - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
+  run:
+    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
 #    - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
 
 about:
