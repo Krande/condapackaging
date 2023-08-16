@@ -27,13 +27,13 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - gfortran 9
-    - numpy
+    - numpy >1.22
     - metis 5.1.0_aster4
     - scotch 7.0.1
 
   host:
     - python
-    - numpy
+    - numpy >1.22
     - metis 5.1.0_aster4
     - scotch 7.0.1
     - libblas
