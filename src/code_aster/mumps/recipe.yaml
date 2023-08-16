@@ -46,14 +46,13 @@ requirements:
     - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
 
 about:
-  home: https://www.code-aster.org
-  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
-  license_family: GPL
-  summary: 'Code_Aster : a finite element solver'
+  home: http://mumps.enseeiht.fr/
+  license: CeCILL-C free/libre
+  license_family: CeCILL-C
+  summary: 'MUMPS is a library which provides a powerful sparse direct parallel solver'
   description: |
-    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
-  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
-  dev_url: https://sourceforge.net/projects/codeaster/
+    MUMPS is a library which provides a powerful sparse direct parallel solver. It is available in Code_Aster’s linear solvers both for sequential and parallel use.
+  dev_url: https://github.com/scivision/mumps
 
 extra:
   recipe-maintainers:

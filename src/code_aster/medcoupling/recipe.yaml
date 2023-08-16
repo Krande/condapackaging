@@ -35,14 +35,14 @@ requirements:
     - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
 
 about:
-  home: https://www.code-aster.org
+  home: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
   license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
   license_family: GPL
-  summary: 'Code_Aster : a finite element solver'
+  summary: 'The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)'
   description: |
-    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
-  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
-  dev_url: https://sourceforge.net/projects/codeaster/
+    The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)
+  doc_url: https://docs.salome-platform.org/8/dev/MEDCoupling/index.html
+  dev_url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
 
 extra:
   recipe-maintainers:
