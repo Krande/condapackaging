@@ -17,8 +17,9 @@ cmake .. -G "Ninja" ^
     -Denable-python=ON ^
     -DPYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
     -DPYTHON_LIBRARY:FILEPATH=%LIBRARY_PREFIX%\lib ^
-    -DPYTHON_INCLUDE_DIR:PATH=%LIBRARY_PREFIX%\include ^
+    -DPYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+    -DUSE_EXTERNAL_COMPILER_FLAGS=ON
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine
 ninja install

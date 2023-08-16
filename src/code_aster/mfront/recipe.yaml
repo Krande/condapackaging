@@ -20,8 +20,8 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - gxx <=11
-    - gcc <=11
+    - sel(linux): gxx <=11
+    - sel(linux): gcc <=11
     - cmake
 
   host:
