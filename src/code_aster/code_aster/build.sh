@@ -22,8 +22,6 @@ export LIB_BOOST="libboost_python$CONDA_PY"
 export INCLUDES_MUMPS="$PREFIX/include"
 export LIBPATH_MUMPS="$PREFIX/lib"
 
-export MED_LIBS="$PREFIX/lib"
-export MED_INCLUDES="$PREFIX/include"
 export INCLUDES_MED="$PREFIX/include"
 export LIBPATH_MED="$PREFIX/lib"
 
@@ -36,7 +34,6 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix="${PREFIX}" \
   --libdir="${PREFIX}/lib" \
-  --includedir="${PREFIX}/include" \
   --install-tests \
   --datadir="${SRC_DIR}/data" \
   --disable-mpi \
