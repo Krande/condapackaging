@@ -34,6 +34,10 @@ requirements:
   run:
     - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
 
+test:
+  imports:
+    - medcoupling
+
 about:
   home: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
   license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
