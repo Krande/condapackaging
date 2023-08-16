@@ -3,8 +3,8 @@ name: ci-libmed
 on:
   push:
     paths:
-      - src/code_aster/mumps/**
-      - .github/workflows/ci-mumps.yml
+      - src/code_aster/libmed/**
+      - .github/workflows/ci-libmed.yml
 #    branches:
 #    - donotrun
 
