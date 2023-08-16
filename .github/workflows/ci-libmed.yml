@@ -1,4 +1,4 @@
-name: ci-mumps
+name: ci-libmed
 # bump 1
 on:
   push:
@@ -9,8 +9,8 @@ on:
 #    - donotrun
 
 env:
-  PKG_NAME: mumps
-  PKG_PATH: src/code_aster/mumps
+  PKG_NAME: libmed
+  PKG_PATH: src/code_aster/libmed
 
 jobs:
   build_test:
