@@ -59,8 +59,8 @@ jobs:
           conda config --add channels krande/label/dev
           conda config --add channels conda-forge
           
-          artifacts_dir = ${{ env.WORK_DIR }}/artifacts
-          build_dir = ${{ env.WORK_DIR }}/build
+          artifacts_dir=${{ env.WORK_DIR }}/artifacts
+          build_dir=${{ env.WORK_DIR }}/build
           
           if [ "${{ env.PKG_DIR }}" == 'win-64' ]; then
             artifacts_dir="'$artifacts_dir'"
