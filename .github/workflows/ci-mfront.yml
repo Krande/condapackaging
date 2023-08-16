@@ -58,9 +58,18 @@ jobs:
           conda config --add channels krande
           conda config --add channels krande/label/dev
           conda config --add channels conda-forge
-          mkdir -p ${{ env.WORK_DIR }}/artifacts
-          mkdir -p ${{ env.WORK_DIR }}/build
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          
+          artifacts_dir = ${{ env.WORK_DIR }}/artifacts
+          build_dir = ${{ env.WORK_DIR }}/build
+          
+          if [ "${{ env.PKG_DIR }}" == 'win-64' ]; then
+            artifacts_dir="'$artifacts_dir'"
+            build_dir="'$build_dir'"
+          fi
+          
+          mkdir -p artifacts_dir
+          mkdir -p build_dir
+          boa build . --python ${{ matrix.pyver.distver }} --croot $build_dir --output-folder $artifacts_dir
         working-directory: ${{ env.PKG_PATH }}
 
       - name: upload to anaconda
