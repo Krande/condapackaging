@@ -60,6 +60,11 @@ jobs:
           conda config --add channels krande/label/dev
           conda config --add channels conda-forge
           
+          conda config --show-sources
+          conda config --remove channels defaults
+          conda config --show-sources
+          
+          
           artifacts_dir=${{ env.WORK_DIR }}/artifacts
           build_dir=${{ env.WORK_DIR }}/build
           
