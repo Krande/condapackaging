@@ -22,7 +22,5 @@ cmake .. \
     -DUSE_EXTERNAL_COMPILER_FLAGS=ON \
     -DCMAKE_INSTALL_PREFIX:PATH="${PREFIX}"
 
-ls $PREFIX/include/boost/python/module.hpp
-
 make
 make install
