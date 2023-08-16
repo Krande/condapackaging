@@ -20,18 +20,18 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - m2w64-gcc-fortran
-    - numpy >=1.23
-    - ninja
-  host:
+    - gxx >=11
+    - gcc >=11
     - cmake
-    - make
+
+  host:
     - boost
-    - numpy >=1.23
+    - numpy
     - python
+
   run:
     - python
-    - numpy >=1.23
+    - numpy
     - "{{ pin_compatible('boost', max_pin='x.x') }}"
 
 test:
