@@ -1,15 +1,13 @@
 #!/bin/bash
 
-export CONDA_INCLUDE_PATH="$CONDA_PREFIX/include"
-export CONDA_LIBRARY_PATH="$CONDA_PREFIX/lib"
+export CONDA_INCLUDE_PATH="$PREFIX/include"
+export CONDA_LIBRARY_PATH="$PREFIX/lib"
 
 # This adds a printout of the error when trying to import the code_aster module
 cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
 python $RECIPE_DIR/config/update_version.py
 
 export TFELHOME=$PREFIX
-export LIBPATH="$PREFIX/lib $LIBPATH"
-export INCLUDES="$PREFIX/include $PREFIX/include_seq $INCLUDES"
 
 export LIBPATH_METIS="$PREFIX/lib"
 export INCLUDES_METIS="$PREFIX/include"
@@ -28,13 +26,16 @@ export MED_LIBS="$PREFIX/lib"
 export INCLUDES_MED="$PREFIX/include"
 export LIBPATH_MED="$PREFIX/lib"
 
+export LIBPATH_MEDCOUPLING="$PREFIX/lib"
+export INCLUDES_MEDCOUPLING="$PREFIX/include"
+
 # Install for standard sequential
 ./waf_std \
   --use-config=wafcfg_conda \
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --includedir="$PREFIX/include $PREFIX/include_seq" \
+  --includedir=$PREFIX/include \
   --install-tests \
   --without-hg \
   configure

@@ -6,19 +6,17 @@ def configure(self):
 
     print('Running Conda Configuration')
 
-    include_dir = os.getenv('CONDA_INCLUDE_PATH')
-    lib_dir = os.getenv('CONDA_LIBRARY_PATH')
-    conda_prefix = os.getenv('CONDA_PREFIX')
+    conda_prefix = os.getenv('PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
 
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 
     self.env.append_value('LIBPATH', [
-        lib_dir,
+        conda_prefix + '/lib',
     ])
 
     self.env.append_value('INCLUDES', [
-        include_dir,
+        conda_prefix + "/include",
         conda_prefix + '/include_seq',
     ])
 
@@ -29,5 +27,5 @@ def configure(self):
     opts.enable_mumps = True
     opts.enable_scotch = True
     opts.enable_mfront = True
-    opts.with_py_medcoupling = False
+    opts.with_py_medcoupling = True
     print('Conda Configuration Complete')
