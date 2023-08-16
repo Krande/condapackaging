@@ -10,7 +10,6 @@ source:
 
   - fn: 'medcoupling_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz # 9.10
-#    url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=1b5fb5650409b0ad3a61da3215496f2adf2dae02;sf=tgz # 9.11
   - fn: 'config_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=25f724f7a6c0000330a40c3851dcd8bc2493e1fa;sf=tgz # 9.10.0
     folder: deps/config
@@ -27,13 +26,13 @@ requirements:
     - swig
 
   host:
-    - libmed
+    - libmed 4.1.1
     - python
     - boost-cpp
     - libxml2
 
   run:
-    - "{{ pin_compatible('libmed', max_pin='x.x') }}"
+    - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
 
 about:
   home: https://www.code-aster.org

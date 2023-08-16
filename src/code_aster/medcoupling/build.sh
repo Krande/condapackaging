@@ -32,7 +32,6 @@ cmake .. \
     -DPTSCOTCH_INCLUDE_DIRS="${PREFIX}/include" \
     -DPARMETIS_ROOT_DIR=${PREFIX} \
     -DPARMETIS_INCLUDE_DIRS="${PREFIX}/include" \
-    "${CA_CFG_MEDCOUPLING[@]}" \
     -DCMAKE_BUILD_TYPE=Release
 
 make -j
