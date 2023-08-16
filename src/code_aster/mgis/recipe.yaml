@@ -26,8 +26,8 @@ requirements:
 
   host:
     - python
-    - numpy
-    - boost >=1.78
+    - numpy >1.22
+    - boost
     - mfront 4.1.0
 
   run:

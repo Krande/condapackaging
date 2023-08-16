@@ -1,0 +1,8 @@
+boost:
+ - 1.78
+
+c_compiler:
+ - vs2022                     # [win]
+
+cxx_compiler:
+ - vs2022                     # [win]
