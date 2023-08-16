@@ -7,11 +7,6 @@ export CONDA_LIBRARY_PATH="$CONDA_PREFIX/lib"
 cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
 python $RECIPE_DIR/config/update_version.py
 
-cp $RECIPE_DIR/bld/* .
-
-#chmod +x ./install_metis.sh
-#./install_metis.sh
-
 export TFELHOME=$PREFIX
 export LIBPATH="$PREFIX/lib $LIBPATH"
 export INCLUDES="$PREFIX/include $PREFIX/include_seq $INCLUDES"
@@ -39,13 +34,13 @@ export LIBPATH_MED="$PREFIX/lib"
   --use-config-dir="$RECIPE_DIR"/config \
   --prefix=$PREFIX \
   --libdir=$PREFIX/lib \
-  --includedir=$PREFIX/include \
+  --includedir="$PREFIX/include $PREFIX/include_seq" \
   --install-tests \
   --without-hg \
   configure
 
-#./waf install
-./waf install_debug
+#./waf_std install
+./waf_std install_debug
 
 # copy modified shell scripts
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster

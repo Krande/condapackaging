@@ -4,6 +4,7 @@ context:
   asrun_ver: 2021.1
   med_ver: 4.1.1
   metis_ver: 5.1.0_aster4
+  mgis_ver: 2.1
   mfront_ver: 4.1.0
   mumps_ver: 5.5.1_aster1
   scotch_ver: 7.0.1
@@ -32,17 +33,21 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     # Packages
-    - libmed {{ med_ver }}
-    - mfront {{ mfront_ver }}
-    - mumps {{ mumps_ver }}
-    - medcoupling
-    - asrun {{ asrun_ver }}
-    - scotch
     - hdf5 1.10.6 # Important for finding MEDlibraryNumVersion
-    - numpy
-    - glib
+    - mfront {{ mfront_ver }}
+    - libmed {{ med_ver }}
+    - asrun {{ asrun_ver }}
+    - metis {{ metis_ver }}
+    - mumps {{ mumps_ver }}
+    - mgis {{ mgis_ver }}
     - libgomp
+    - medcoupling
+    - numpy 1.22.4
+    - pyyaml
+    - scotch
+    - glib
     - boost-cpp
+
 
   host:
     - python
@@ -51,9 +56,10 @@ requirements:
     - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
+    - mgis {{ mgis_ver }}
     - libgomp
     - medcoupling
-    - numpy
+    - numpy 1.22.4
     - pyyaml
     - scotch
     - hdf5 1.10.6
@@ -67,6 +73,7 @@ requirements:
     - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
     - "{{ pin_compatible('medcoupling', max_pin='x.x.x') }}"
+    - pyyaml
     - glib
 
 test:
