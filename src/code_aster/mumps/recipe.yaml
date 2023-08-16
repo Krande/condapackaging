@@ -41,7 +41,7 @@ requirements:
     - zlib
 
   run:
-    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
+    - numpy
     - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
     - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
 
