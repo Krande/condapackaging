@@ -59,6 +59,11 @@ jobs:
           conda config --add channels krande
           conda config --add channels krande/label/dev
           conda config --add channels conda-forge
+          
+          conda config --show-sources
+          conda config --remove channels defaults
+          conda config --show-sources
+          
           mkdir -p ${{ env.WORK_DIR }}/artifacts
           mkdir -p ${{ env.WORK_DIR }}/build
           boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
