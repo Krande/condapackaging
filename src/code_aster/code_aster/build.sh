@@ -23,6 +23,7 @@ export INCLUDES_MUMPS="$PREFIX/include"
 export LIBPATH_MUMPS="$PREFIX/lib"
 
 export MED_LIBS="$PREFIX/lib"
+export MED_INCLUDES="$PREFIX/include"
 export INCLUDES_MED="$PREFIX/include"
 export LIBPATH_MED="$PREFIX/lib"
 
@@ -33,17 +34,22 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
 ./waf_std \
   --use-config=wafcfg_conda \
   --use-config-dir="$RECIPE_DIR"/config \
-  --prefix=$PREFIX \
-  --libdir=$PREFIX/lib \
-  --includedir=$PREFIX/include \
+  --prefix="${PREFIX}" \
+  --libdir="${PREFIX}/lib" \
+  --includedir="${PREFIX}/include" \
   --install-tests \
+  --datadir="${SRC_DIR}/data" \
+  --disable-mpi \
   --without-hg \
   configure
 
 #./waf_std install
 ./waf_std install_debug
 
-# copy modified shell scripts
+# copy modified shell scripts and create backups of the ones we don't want.
+cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
+cp $PREFIX/bin/run_ctest $PREFIX/bin/_run_ctest_old
+
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
 cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
 #cp $RECIPE_DIR/config/as_run $PREFIX/bin/as_run

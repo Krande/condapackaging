@@ -32,22 +32,15 @@ requirements:
     - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    # Packages
-    - hdf5 1.10.6 # Important for finding MEDlibraryNumVersion
-    - mfront {{ mfront_ver }}
-    - libmed {{ med_ver }}
-    - asrun {{ asrun_ver }}
-    - metis {{ metis_ver }}
-    - mumps {{ mumps_ver }}
-    - mgis {{ mgis_ver }}
-    - numpy 1.22.4
+    - gcc 9
+    - gxx 9
+    - gfortran 9
     - pyyaml
-
 
   host:
     - python
     - mfront {{ mfront_ver }}
-    - libmed {{ med_ver }}
+    - conda-forge::libmed {{ med_ver }}
     - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
