@@ -1,5 +1,5 @@
 name: ci-code-aster
-# bump 1
+# bump 0
 on:
   push:
     paths:
