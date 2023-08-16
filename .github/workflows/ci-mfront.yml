@@ -67,8 +67,8 @@ jobs:
             build_dir="'$build_dir'"
           fi
           
-          mkdir -p artifacts_dir
-          mkdir -p build_dir
+          mkdir -p $artifacts_dir
+          mkdir -p $build_dir
           boa build . --python ${{ matrix.pyver.distver }} --croot $build_dir --output-folder $artifacts_dir
         working-directory: ${{ env.PKG_PATH }}
 
