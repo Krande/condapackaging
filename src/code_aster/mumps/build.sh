@@ -9,11 +9,11 @@ export LIBPATH="$PREFIX/lib $LIBPATH"
 export INCLUDES="$PREFIX/include $INCLUDES"
 
 $PYTHON waf configure install \
-  --prefix=$PREFIX \
+  --prefix="${PREFIX}" \
+  --disable-openmp \
   --enable-metis \
   --maths-libs=auto \
   --enable-scotch \
-  --enable-openmp \
   --install-tests
 
 $PYTHON ./waf build
