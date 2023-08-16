@@ -25,8 +25,7 @@ requirements:
     - cmake
 
   host:
-    - boost
-    - boost-cpp
+    - boost >=1.78
     - numpy
     - python
 

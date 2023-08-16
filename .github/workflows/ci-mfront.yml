@@ -30,7 +30,7 @@ jobs:
           { name: py311, distver: '3.11'},
         ]
         platform: [
-          { name: win, distver: windows-2022 },
+#          { name: win, distver: windows-2022 },
           { name: linux, distver: ubuntu-latest },
 #          { name: macOS, distver: macos-latest }
         ]
