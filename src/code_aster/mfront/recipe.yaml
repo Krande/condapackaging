@@ -36,7 +36,24 @@ requirements:
 
 test:
   commands:
-    - sel(linux): test -f $PREFIX/bin/tfelconfig
+    - tfel-config --version
+    - tfel-doc --version
+    - tfel-check --version
+    - mtest --version
+    - mfront --list-stress-criteria
+    - mfront-doc --version
+    - mfront-query --version
+    - mfm --version
+    - sel(linux): test -f $PREFIX/lib/libTFELConfig.so
+    - sel(linux): test -f $PREFIX/lib/libTFELUnicodeSupport.so
+    - sel(linux): test -f $PREFIX/lib/libTFELGlossary.so
+    - sel(linux): test -f $PREFIX/lib/libTFELException.so
+    - sel(linux): test -f $PREFIX/lib/libTFELUtilities.so
+
+  imports:
+    - tfel
+    - tfel.math
+    - tfel.material
 
 about:
   home: http://tfel.sourceforge.net
