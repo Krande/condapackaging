@@ -12,13 +12,15 @@ source:
   url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
   sha256: '{{ sha256 }}'
     #git_url: https://salsa.debian.org/science-team/med-fichier
-    #git_rev: 8a0b0d21d4bac79772797b0a800cf4d5bf77bc32
+  #git_rev: 8a0b0d21d4bac79772797b0a800cf4d5bf77bc32
 
 build:
   number: 2
-
   skip:
     - py2k or osx
+  run_exports:
+    - "{{ pin_subpackage('libmed', max_pin='x.x.x') }}"
+
 requirements:
   build:
     - '{{ compiler("fortran") }}'
@@ -26,7 +28,6 @@ requirements:
     - '{{ compiler("cxx") }}'
     - swig >=4.0.2
   host:
-#      - autoconf  # [linux]
     - sel(not win): make
     - sel(win): ninja
     - cmake
@@ -34,8 +35,7 @@ requirements:
     - python {{ python }}
   run:
     - "{{ pin_compatible('hdf5', max_pin='x.x.x') }}"
-    - '{{ pin_compatible("python", max_pin="x.x.x") }}'
-    - python {{ python }}
+
 
 test:
   imports:
