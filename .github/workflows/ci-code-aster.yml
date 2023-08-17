@@ -58,12 +58,12 @@ jobs:
           
           mkdir -p ${{ env.WORK_DIR }}/artifacts
           mkdir -p ${{ env.WORK_DIR }}/build
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
         working-directory: ${{ matrix.package.path }}
 
       - name: upload to anaconda
         run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
