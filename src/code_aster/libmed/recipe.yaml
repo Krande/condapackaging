@@ -24,18 +24,17 @@ requirements:
     - '{{ compiler("fortran") }}'
     - '{{ compiler("c") }}'
     - '{{ compiler("cxx") }}'
-    - swig >=4.0.2
-    - autoconf
-  host:
     - sel(not win): make
     - sel(win): ninja
     - cmake
+    - swig >=4.0.2
+    - autoconf
+  host:
     - hdf5
     - python {{ python }}
   run:
     - "{{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}"
-    - "{{ pin_compatible('python', min_pin='x.x', max_pin='x.x') }}"
-    - python {{ python }}
+
 
 test:
   imports:
