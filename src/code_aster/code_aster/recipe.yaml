@@ -23,7 +23,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  number: 1
+  number: 2
 
 requirements:
   build:
@@ -67,8 +67,8 @@ test:
     - code_aster
   commands:
     - run_aster --help
-#    - python test_import.py
 #    - run_ctest -R 'forma01a' --resutest=./temp
+#    - python test_import.py
 #    - as_run --info
 #    - as_run --test sslp114a
 #    - as_run --test mumps02a
