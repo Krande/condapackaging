@@ -6,7 +6,7 @@ echo "$ASTER_DATADIR" > "$CONDA_PREFIX/.aster_datadir_old"
 echo "$ASTER_LOCALEDIR" > "$CONDA_PREFIX/.aster_localedir_old"
 echo "$ASTER_ELEMENTSDIR" > "$CONDA_PREFIX/.aster_elementsdir_old"
 
-export PYTHONPATH="${CONDA_PREFIX}/lib/aster:?SP_DIR?:${PYTHONPATH}"
+export PYTHONPATH="${CONDA_PREFIX}/lib/aster:${PYTHONPATH}"
 export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib/aster:${LD_LIBRARY_PATH}"
 
 # Not sure if these really matter
