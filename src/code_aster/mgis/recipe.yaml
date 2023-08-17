@@ -24,16 +24,16 @@ requirements:
     - autoconf
 
   host:
-    - python {{ python }}
+    - python
     - numpy >1.22
     - boost
-    - mfront 4.1.0
+    - krande/label/dev::mfront
 
   run:
     - numpy
     - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
-    - python {{ python }}
+    - python
 
 about:
   home: https://thelfer.github.io/mgis/web/index.html

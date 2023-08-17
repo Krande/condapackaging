@@ -24,8 +24,6 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: 0
-  run_exports:
-    - "{{ pin_subpackage('code-aster', max_pin='x.x.x') }}"
 
 requirements:
   build:
@@ -39,7 +37,7 @@ requirements:
 
   host:
     - python
-    - mfront {{ mfront_ver }}
+    - krande/label/dev::mfront {{ mfront_ver }}
     - krande/label/dev::libmed {{ med_ver }}
     - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
@@ -49,13 +47,13 @@ requirements:
     - medcoupling {{ medcoupling_ver }}
     - numpy >1.22
     - pyyaml
-    - boost-cpp
+    - boost
 
   run:
     - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
+    - numpy
     - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
     - asrun {{ asrun_ver }}

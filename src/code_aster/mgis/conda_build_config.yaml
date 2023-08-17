@@ -1,6 +1,9 @@
 boost:
  - 1.78
 
+mfront:
+ - 4.1.0
+
 c_compiler:
  - vs2022                     # [win]
 

@@ -35,7 +35,6 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
   --prefix="${PREFIX}" \
   --libdir="${PREFIX}/lib" \
   --install-tests \
-  --datadir="${SRC_DIR}/data" \
   --disable-mpi \
   --without-hg \
   configure
