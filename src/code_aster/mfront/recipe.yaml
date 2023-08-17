@@ -11,7 +11,7 @@ source:
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
   run_exports:
 
@@ -23,16 +23,15 @@ requirements:
     - sel(linux): gcc <=11
     - cmake
     - autoconf
+
   host:
     - boost
     - numpy >1.22
-    - python {{ python }}
+    - python
 
   run:
     - numpy
-    - "{{ pin_compatible('boost', max_pin='x.x') }}"
-    - "{{ pin_compatible('python', max_pin='x.x') }}"
-    - python {{ python }}
+    - python
 
 test:
   commands:
