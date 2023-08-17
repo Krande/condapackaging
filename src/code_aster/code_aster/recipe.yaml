@@ -54,7 +54,8 @@ requirements:
     - boost-cpp
 
   run:
-    - krande/label/dev::libmed {{ med_ver }}
+    - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
     - hdf5 1.10.6
@@ -64,7 +65,6 @@ requirements:
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
-    - krande/label/dev::mfront {{ mfront_ver }}
     - pyyaml
 
 test:
