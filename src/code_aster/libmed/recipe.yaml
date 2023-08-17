@@ -22,7 +22,7 @@ build:
 requirements:
   build:
       - "{{ compiler('fortran') }}"
-      -" {{ compiler('c') }}"
+      - "{{ compiler('c') }}"
       - "{{ compiler('cxx') }}"
       - swig
   host:
