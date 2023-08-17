@@ -40,8 +40,8 @@ requirements:
 
   host:
     - python {{ python }}
-    - mfront {{ mfront_ver }}
-    - conda-forge::libmed {{ med_ver }}
+    - krande/label/dev::mfront {{ mfront_ver }}
+    - krande/label/dev::libmed {{ med_ver }}
     - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
@@ -54,7 +54,7 @@ requirements:
     - boost-cpp
 
   run:
-    - libmed {{ med_ver }}
+    - krande/label/dev::libmed {{ med_ver }}
     - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
     - hdf5 1.10.6
@@ -64,7 +64,7 @@ requirements:
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
-    - mfront {{ mfront_ver }}
+    - krande/label/dev::mfront {{ mfront_ver }}
     - pyyaml
 
 test:
