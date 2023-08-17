@@ -23,8 +23,6 @@ requirements:
     - sel(linux): gcc <=11
     - cmake
     - autoconf
-    - perl
-    - m4
   host:
     - boost
     - numpy >1.22

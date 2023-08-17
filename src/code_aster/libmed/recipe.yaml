@@ -26,8 +26,6 @@ requirements:
     - '{{ compiler("cxx") }}'
     - swig >=4.0.2
     - autoconf
-    - perl
-    - m4
   host:
     - sel(not win): make
     - sel(win): ninja
