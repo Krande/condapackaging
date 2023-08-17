@@ -13,8 +13,6 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: 0
-  run_exports:
-    - "{{ pin_subpackage('metis', max_pin='x.x.x') }}"
 
 requirements:
   build:

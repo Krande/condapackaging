@@ -64,12 +64,12 @@ jobs:
           
           mkdir -p ${{ env.WORK_DIR }}/artifacts
           mkdir -p ${{ env.WORK_DIR }}/build
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
         working-directory: ${{ env.PKG_PATH }}
 
       - name: upload to anaconda
         run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.tar.bz2"
+          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
           if [ "${{ env.PKG_DIR }}" == 'win-64' ]; then
             path="'$path'"
           fi

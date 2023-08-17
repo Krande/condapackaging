@@ -15,17 +15,16 @@ source:
 build:
   number: 0
   detect_binary_files_with_prefix: true
-  run_exports:
-    - "{{ pin_subpackage('mgis', max_pin='x.x.x') }}"
 
 requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - cmake >=3.26.4
+    - autoconf
 
   host:
-    - python
+    - python {{ python }}
     - numpy >1.22
     - boost
     - mfront 4.1.0
@@ -34,6 +33,7 @@ requirements:
     - numpy
     - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
+    - python {{ python }}
 
 about:
   home: https://thelfer.github.io/mgis/web/index.html
