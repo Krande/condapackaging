@@ -40,7 +40,7 @@ requirements:
   host:
     - python
     - mfront {{ mfront_ver }}
-    - libmed {{ med_ver }}
+    - krande/label/dev::libmed {{ med_ver }}
     - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
