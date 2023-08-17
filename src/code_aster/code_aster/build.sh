@@ -57,7 +57,6 @@ cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
 
 mkdir -p $PREFIX/etc/conda/activate.d
 cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster.sh
-sed -i "s/?SP_DIR?/$SP_DIR/g" $PREFIX/etc/conda/activate.d/code_aster.sh
 chmod +x $PREFIX/etc/conda/activate.d/code_aster.sh
 
 mkdir -p $PREFIX/etc/conda/deactivate.d
