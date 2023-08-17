@@ -14,7 +14,6 @@ build:
   number: 0
   detect_binary_files_with_prefix: true
   run_exports:
-    - "{{ pin_subpackage('mfront', max_pin='x.x.x') }}"
 
 requirements:
   build:
@@ -23,15 +22,19 @@ requirements:
     - sel(linux): gxx <=11
     - sel(linux): gcc <=11
     - cmake
-
+    - autoconf
+    - perl
+    - m4
   host:
     - boost
     - numpy >1.22
-    - python
+    - python {{ python }}
 
   run:
     - numpy
     - "{{ pin_compatible('boost', max_pin='x.x') }}"
+    - "{{ pin_compatible('python', max_pin='x.x') }}"
+    - python {{ python }}
 
 test:
   commands:
