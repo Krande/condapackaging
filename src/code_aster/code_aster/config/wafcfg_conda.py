@@ -27,5 +27,6 @@ def configure(self):
     opts.enable_mumps = True
     opts.enable_scotch = True
     opts.enable_mfront = True
+    opts.enable_petsc = True
     opts.with_py_medcoupling = True
     print('Conda Configuration Complete')
