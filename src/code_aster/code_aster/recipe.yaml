@@ -36,19 +36,17 @@ requirements:
     - gxx 9
     - gfortran 9
     - pyyaml
-    - python {{ python }}
 
   host:
-    - python {{ python }}
-    - krande/label/dev::mfront {{ mfront_ver }}
-    - krande/label/dev::libmed {{ med_ver }}
+    - python
+    - mfront {{ mfront_ver }}
+    - libmed {{ med_ver }}
     - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
     - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
-    - hdf5 1.10.6
     - numpy >1.22
     - pyyaml
     - boost-cpp
@@ -58,7 +56,6 @@ requirements:
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('numpy', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost-cpp', max_pin='x.x.x') }}"
-    - hdf5 1.10.6
     - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
     - asrun {{ asrun_ver }}
