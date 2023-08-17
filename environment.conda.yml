@@ -1,6 +1,7 @@
 name: conda-build
 channels:
   - conda-forge
+  - nodefaults
 dependencies:
   - conda-build
   - conda-verify
