@@ -16,9 +16,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  number: 0
-  run_exports:
-    - "{{ pin_subpackage('scotch', max_pin='x.x.x') }}"
+  number: 1
 
 requirements:
   build:
