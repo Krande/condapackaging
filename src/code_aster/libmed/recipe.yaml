@@ -18,8 +18,6 @@ build:
   number: 2
   skip:
     - py2k or osx
-  run_exports:
-    - "{{ pin_subpackage('libmed', max_pin='x.x.x') }}"
 
 requirements:
   build:
@@ -27,6 +25,9 @@ requirements:
     - '{{ compiler("c") }}'
     - '{{ compiler("cxx") }}'
     - swig >=4.0.2
+    - autoconf
+    - perl
+    - m4
   host:
     - sel(not win): make
     - sel(win): ninja
@@ -34,13 +35,19 @@ requirements:
     - hdf5
     - python {{ python }}
   run:
-    - "{{ pin_compatible('hdf5', max_pin='x.x.x') }}"
-
+    - "{{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}"
+    - "{{ pin_compatible('python', min_pin='x.x', max_pin='x.x') }}"
+    - python {{ python }}
 
 test:
   imports:
     - med
-
+  commands:
+    - |
+      if [[ -z $(nm -D $CONDA_PREFIX/lib/libmed.so | grep MEDlibraryNumVersion) ]]; then
+        echo "MEDlibraryNumVersion is not present in libmed.so";
+        exit 1;
+      fi
 about:
   home: https://www.salome-platform.org/user-section/about/med
   license: LGPL-3.0-only
