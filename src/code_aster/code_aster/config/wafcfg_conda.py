@@ -3,7 +3,6 @@ import os
 
 def configure(self):
     opts = self.options
-    self.env['ADDMEM'] = 2000
 
     print('Running Conda Configuration')
 

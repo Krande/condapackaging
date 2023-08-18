@@ -1,12 +1,11 @@
 #!/bin/bash
 
-export CONDA_INCLUDE_PATH="$PREFIX/include"
-export CONDA_LIBRARY_PATH="$PREFIX/lib"
 
 # This adds a printout of the error when trying to import the code_aster module
 cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
 python $RECIPE_DIR/config/update_version.py
 
+export CONFIG_PARAMETERS_addmem=3000
 export TFELHOME=$PREFIX
 
 export LIBPATH_METIS="$PREFIX/lib"
@@ -39,8 +38,8 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
   --without-hg \
   configure
 
-#./waf_std install
-./waf_std install_debug
+./waf_std install
+#./waf_std install_debug
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
