@@ -50,7 +50,7 @@ requirements:
     - boost
 
   run:
-    - libmed {{ med_ver }}
+    - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
     - numpy
@@ -69,7 +69,7 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|umat001a|zzzz121a' --resutest=../resutest
+    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|umat001a|zzzz121a' --resutest=../resutest --only-failed-results
   files:
     - basic_import.py
 
