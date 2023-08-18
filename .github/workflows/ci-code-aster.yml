@@ -5,8 +5,8 @@ on:
     paths:
       - src/code_aster/code_aster/**
       - .github/workflows/ci-code-aster.yml
-    branches:
-    - donotrun
+#    branches:
+#    - donotrun
 env:
   WORK_DIR: /home/runner/work
 

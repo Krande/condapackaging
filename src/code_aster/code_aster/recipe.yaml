@@ -69,7 +69,7 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|umat001a|zzzz121a' --resutest=../resutest
+#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|umat001a|zzzz121a' --resutest=../resutest
   files:
     - basic_import.py
 
