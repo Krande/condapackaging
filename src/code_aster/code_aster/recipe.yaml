@@ -4,6 +4,7 @@ context:
   asrun_ver: 2021.1
   med_ver: 4.1.1
   metis_ver: 5.1.0_aster4
+  homard_ver: 11.12
   mgis_ver: 2.1
   mfront_ver: 4.1.0
   mumps_ver: 5.5.1_aster1
@@ -43,12 +44,13 @@ requirements:
     - mgis {{ mgis_ver }}
     - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
+    - homard {{ homard_ver }}
     - numpy >1.22
     - pyyaml
     - boost
 
   run:
-    - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
+    - libmed {{ med_ver }}
     - "{{ pin_compatible('mfront', max_pin='x.x.x') }}"
     - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
     - numpy
@@ -58,6 +60,7 @@ requirements:
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
+    - homard {{ homard_ver }}
     - pyyaml
 
 test:
@@ -66,13 +69,12 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - run_ctest -R 'forma01a' --resutest=./temp
-#    - as_run --info
-#    - as_run --test sslp114a
-#    - as_run --test mumps02a
-#    - as_run --test mumps01a
-#    - as_run --test umat001a
-#    - as_run --test zzzz121a
+    - run_ctest -R 'forma01a' --no-resutest
+    - run_ctest -R 'sslp114a' --no-resutest
+    - run_ctest -R 'mumps02a' --no-resutest
+    - run_ctest -R 'mumps01a' --no-resutest
+    - run_ctest -R 'umat001a' --no-resutest
+    - run_ctest -R 'zzzz121a' --no-resutest
   files:
     - basic_import.py
 
