@@ -39,6 +39,10 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-file: environment.conda.yml
+          condarc: |
+            channels:
+              - krande/label/dev
+              - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
