@@ -1,6 +1,7 @@
 context:
   name: medcoupling
   version: 9.10.0
+  libmed_ver: 4.1.1
 
 package:
   name: '{{ name|lower }}'
@@ -16,7 +17,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  number: 2
+  number: 3
 
 requirements:
   build:
@@ -26,7 +27,7 @@ requirements:
     - swig
 
   host:
-    - libmed 4.1.1
+    - krande/label/dev::libmed {{ libmed_ver }}
     - python
     - boost
     - libxml2
