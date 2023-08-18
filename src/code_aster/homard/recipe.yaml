@@ -1,0 +1,39 @@
+context:
+  name: homard
+  version: 11.12
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - url: https://netcologne.dl.sourceforge.net/project/prereq/homard-11.12_aster2.tar.gz
+    sha256: 80425cee117349df8425f801f9a82aadb85fd41a95af25b4397f0e69dd655304
+
+build:
+  number: 0
+  script: python3 setup_homard.py --prefix=${PREFIX}
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+
+  host:
+    - python
+
+  run:
+    - python
+
+about:
+  home: https://code-aster.org/V2/outils/homard/en/intro.html
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  summary: 'Homard : a mesh adaption tool'
+  description: |
+    The software HOMARD is intended to adapt the meshes within the framework of the computer codes by finite elements or finite volumes
+
+extra:
+  recipe-maintainers:
+    - Krande
+
