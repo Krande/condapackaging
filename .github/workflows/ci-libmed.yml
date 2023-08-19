@@ -45,7 +45,7 @@ jobs:
           conda config --show-sources
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             echo "PKG_DIR=win-64" >> $GITHUB_ENV
-            echo "WORK_DIR=C:\\actions-runner\\_work" >> $GITHUB_ENV
+            echo "WORK_DIR=C:/actions-runner/_work" >> $GITHUB_ENV
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "PKG_DIR=osx-64" >> $GITHUB_ENV
             echo "WORK_DIR=/Users/runner/work" >> $GITHUB_ENV
