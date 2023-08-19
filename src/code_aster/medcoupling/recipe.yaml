@@ -32,7 +32,7 @@ requirements:
     - swig
 
   host:
-    - krande/label/dev::libmed {{ libmed_ver }}
+    - libmed {{ libmed_ver }}=aster_*
     - python
     - boost
     - libxml2
