@@ -36,7 +36,6 @@ requirements:
     - python
   run:
     - {{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}
-    - {{ pin_compatible('python', min_pin='x.x', max_pin='x.x') }}
     - python
 
 test:
