@@ -10,27 +10,48 @@ source:
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
 
 build:
-  number: 0
+  number: 6
+  string: 'aster_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   detect_binary_files_with_prefix: True
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - numpy >=1.23
-  host:
-    - cmake  
+    - cmake
     - make
+
+  host:
     - boost
-    - numpy >=1.23
+    - numpy >=1.22
     - python
+
   run:
     - python
-    - numpy >=1.23
+    - numpy >=1.22
+    - {{ pin_compatible('boost', max_pin='x.x.x') }}
 
 test:
   commands:
     - test -f $PREFIX/bin/tfelconfig # [linux]
+    - tfel-config --version
+    - tfel-doc --version
+    - tfel-check --version
+    - mtest --version
+    - mfront --list-stress-criteria
+    - mfront-doc --version
+    - mfront-query --version
+    - mfm --version
+    - test -f $PREFIX/lib/libTFELConfig.so
+    - test -f $PREFIX/lib/libTFELUnicodeSupport.so
+    - test -f $PREFIX/lib/libTFELGlossary.so
+    - test -f $PREFIX/lib/libTFELException.so
+    - test -f $PREFIX/lib/libTFELUtilities.so
+
+  imports:
+    - tfel
+    - tfel.math
+    - tfel.material
 
 about:
   home: http://tfel.sourceforge.net

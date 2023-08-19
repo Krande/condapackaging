@@ -56,14 +56,6 @@ jobs:
           fi
       - name: build local packages
         run: |
-          conda config --add channels krande
-          conda config --add channels krande/label/dev
-          conda config --add channels conda-forge
-          
-          conda config --show-sources
-          conda config --remove channels defaults
-          conda config --show-sources
-          
           
           artifacts_dir=${{ env.WORK_DIR }}/artifacts
           build_dir=${{ env.WORK_DIR }}/build
@@ -75,12 +67,14 @@ jobs:
           
           mkdir -p $artifacts_dir
           mkdir -p $build_dir
-          boa build . --python ${{ matrix.pyver.distver }} --croot $build_dir --output-folder $artifacts_dir --pkg-format=2
+          conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          # boa build . --python ${{ matrix.pyver.distver }} --croot $build_dir --output-folder $artifacts_dir --pkg-format=2
         working-directory: ${{ env.PKG_PATH }}
 
       - name: upload to anaconda
         run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
+          #path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
+          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.tar.bz2"
           if [ "${{ env.PKG_DIR }}" == 'win-64' ]; then
             path="'$path'"
           fi
