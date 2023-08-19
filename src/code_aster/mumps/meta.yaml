@@ -1,0 +1,56 @@
+{% set name = "mumps" %}
+{% set version = "5.5.1" %}
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+    folder: deps/
+#  - hg_url: http://hg.code.sf.net/p/prereq/mumps
+#    hg_tag: '{{ version }}'
+
+
+build:
+  detect_binary_files_with_prefix: true
+  string: 'aster1_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  number: 1
+
+requirements:
+  build:
+    - waf
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - gfortran 9
+    - numpy >1.22
+    - metis 5.1.0_aster4
+    - scotch 7.0.1
+
+  host:
+    - python
+    - numpy >1.22
+    - metis 5.1.0_aster4
+    - scotch 7.0.1
+    - libblas
+    - liblapack
+    - zlib
+
+  run:
+    - numpy
+    - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
+    - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+
+about:
+  home: http://mumps.enseeiht.fr/
+  license: CeCILL-C free/libre
+  summary: 'MUMPS is a library which provides a powerful sparse direct parallel solver'
+  description: |
+    MUMPS is a library which provides a powerful sparse direct parallel solver. It is available in Code_Aster’s linear solvers both for sequential and parallel use.
+  dev_url: https://github.com/scivision/mumps
+
+extra:
+  recipe-maintainers:
+    - Krande
