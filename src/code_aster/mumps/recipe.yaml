@@ -18,8 +18,6 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: 0
-  run_exports:
-    - "{{ pin_subpackage('mumps', max_pin='x.x.x') }}"
 
 requirements:
   build:
@@ -48,7 +46,6 @@ requirements:
 about:
   home: http://mumps.enseeiht.fr/
   license: CeCILL-C free/libre
-  license_family: CeCILL-C
   summary: 'MUMPS is a library which provides a powerful sparse direct parallel solver'
   description: |
     MUMPS is a library which provides a powerful sparse direct parallel solver. It is available in Code_Aster’s linear solvers both for sequential and parallel use.

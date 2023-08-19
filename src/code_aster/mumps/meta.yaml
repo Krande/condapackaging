@@ -16,7 +16,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: 'aster1_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  string: aster1_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   number: 1
 
 requirements:
@@ -26,13 +26,13 @@ requirements:
     - "{{ compiler('cxx') }}"
     - gfortran 9
     - numpy >1.22
-    - metis 5.1.0_aster4
+    - metis 5.1.0=aster4*
     - scotch 7.0.1
 
   host:
     - python
     - numpy >1.22
-    - metis 5.1.0_aster4
+    - metis 5.1.0=aster4*
     - scotch 7.0.1
     - libblas
     - liblapack

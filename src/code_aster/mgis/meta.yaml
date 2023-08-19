@@ -1,15 +1,13 @@
-context:
-  name: mgis
-  version: 2.1
-  mfront_ver: 4.1.0
+{% set name = "mgis" %}
+{% set version = "2.1.0" %}
+{% set mfront_ver = "4.1.0" %}
+
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-#  - git_url: https://github.com/thelfer/MFrontGenericInterfaceSupport.git
-#    git_rev: 10cae958a8e97c9f6b61893f80924c119a6f8e67
   - fn: '{{ name }}_{{ version }}.tar.gz'
     url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
 
