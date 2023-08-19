@@ -8,37 +8,46 @@ package:
   version: {{ version }}
 
 source:
-  fn: {{ name }}_{{ version }}.tar.gz
-  url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+#  - fn: {{ name }}_{{ version }}.tar.gz
+#    url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
+#    sha256: {{ sha256 }}
     #git_url: https://salsa.debian.org/science-team/med-fichier
     #git_rev: 8a0b0d21d4bac79772797b0a800cf4d5bf77bc32
+  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+    folder: deps/
 
 build:
-  number: 2
+  number: 5
+  string: 'aster_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   skip: true  # [py2k or osx]
 
 requirements:
   build:
-      - {{ compiler('fortran') }}
-      - {{ compiler('c') }}
-      - {{ compiler('cxx') }}
-      - swig >=4.0.2
+    - {{ compiler('fortran') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - swig >=4.0.2
   host:
-#      - autoconf  # [linux]
-      - make  # [not win]
-      - ninja  # [win]
-      - cmake
-      - hdf5 >=1.10.2,<1.11
-      - python {{ python }}
+    - autoconf
+    - make
+    - hdf5 >=1.10.2,<1.11
+    - python
   run:
-      - {{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}
-      - {{ pin_compatible('python', min_pin='x.x', max_pin='x.x') }}
-      - python {{ python }}
+    - {{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}
+    - {{ pin_compatible('python', min_pin='x.x', max_pin='x.x') }}
+    - python
 
 test:
   imports:
     - med
+  commands:
+    - |
+      if [[ -z $(nm -D $CONDA_PREFIX/lib/libmed.so | grep MEDlibraryNumVersion) ]]; then
+        echo "MEDlibraryNumVersion is not present in libmed.so";
+        exit 1;
+      fi
 
 about:
   home: https://www.salome-platform.org/user-section/about/med
