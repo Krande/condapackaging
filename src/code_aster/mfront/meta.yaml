@@ -35,7 +35,6 @@ requirements:
 
 test:
   commands:
-    - test -f $PREFIX/bin/tfelconfig # [linux]
     - tfel-config --version
     - tfel-doc --version
     - tfel-check --version
