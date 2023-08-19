@@ -63,7 +63,8 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
+#          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
+          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.tar.bz2"
           if [ "${{ env.PKG_DIR }}" == 'win-64' ]; then
             path="'$path'"
           fi
