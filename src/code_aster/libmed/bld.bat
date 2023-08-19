@@ -1,3 +1,14 @@
+@echo off
+
+mkdir "%SRC_DIR%\deps\config"
+tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" -C . --strip-components=1
+
+set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
+set FFLAGS=-fdefault-integer-8 %FFLAGS%
+
+set CMAKE_C_COMPILER=%LIBRARY_PREFIX%\mingw-w64\bin\gcc.exe
+set CMAKE_CXX_COMPILER=%LIBRARY_PREFIX%\mingw-w64\bin\g++.exe
+set CMAKE_Fortran_COMPILER=%LIBRARY_PREFIX%\mingw-w64\bin\gfortran.exe
 
 cmake -G "Ninja" ^
       -Wno-dev ^

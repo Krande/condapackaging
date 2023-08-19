@@ -1,5 +1,40 @@
 # Compiling Code Aster
 
+## Conda package compilation
+
+### Linux
+
+- [x] Code Aster v16.4.2
+- [x] mfront
+- [x] libmed
+- [x] scotch
+- [x] medcoupling
+- [x] asrun
+- [x] metis
+- [x] mumps
+- [x] mgis
+- [x] homard
+- [x] petsc
+
+### Windows
+
+- [ ] Code Aster v16.4.2
+- [ ] mfront
+- [ ] libmed
+- [ ] scotch
+- [ ] medcoupling
+- [ ] asrun
+- [ ] metis
+- [ ] mumps
+- [ ] mgis
+- [ ] homard
+- [ ] petsc
+
+### OSX
+
+not started
+
+
 ## Dependencies relations
 The following graph shows the dependencies between the different packages.
 

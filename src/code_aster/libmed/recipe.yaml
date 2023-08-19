@@ -27,12 +27,14 @@ build:
 
 requirements:
   build:
-      - "{{ compiler('fortran') }}"
+      - sel(unix): "{{ compiler('fortran') }}"
+        sel(win): m2w64-gcc-fortran
       - "{{ compiler('c') }}"
       - "{{ compiler('cxx') }}"
       - swig
+      - sel(win): ninja
   host:
-      - autoconf
+      - sel(unix): autoconf
       - make
       - hdf5 >=1.10.2,<1.11
       - python
