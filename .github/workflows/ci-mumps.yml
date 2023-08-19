@@ -37,6 +37,9 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-file: environment.conda.yml
+          condarc: |
+            conda-build:
+              pkg_format: 2
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
