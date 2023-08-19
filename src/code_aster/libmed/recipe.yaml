@@ -27,12 +27,15 @@ build:
 
 requirements:
   build:
-      - sel(unix): "{{ compiler('fortran') }}"
-        sel(win): m2w64-gcc-fortran
+      - sel(unix):
+          - "{{ compiler('fortran') }}"
       - "{{ compiler('c') }}"
       - "{{ compiler('cxx') }}"
+      - sel(win):
+          - m2w64-gcc-fortran
+          - cmake
+          - ninja
       - swig
-      - sel(win): ninja
   host:
       - sel(unix): autoconf
       - make
