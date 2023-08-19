@@ -1,0 +1,6 @@
+conda-build:
+  - pkg_format: 2
+anaconda_upload: True
+channels:
+  - krande/label/dev
+  - conda-forge

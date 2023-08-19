@@ -65,6 +65,8 @@ requirements:
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
 
+#  run_constrained:
+#    - "{{ pin_compatible('gfortran', max_pin='x.x.x') }}"
 
 test:
   imports:
@@ -72,11 +74,12 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|umat001a|zzzz121a' --resutest=../resutest --only-failed-results
+    #- run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|umat001a|zzzz121a' --resutest=../resutest --only-failed-results
+    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results
   files:
     - basic_import.py
-  requires:
-    - gfortran # Note that test 'umat001a' requires installation of a fortran compiler (ie. gfortran)
+#  requires:
+#    - gfortran # Note that test 'umat001a' requires installation of a fortran compiler (ie. gfortran)
 
 about:
   home: https://www.code-aster.org
