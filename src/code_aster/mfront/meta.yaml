@@ -10,14 +10,16 @@ source:
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
 
 build:
-  number: 6
-  string: 'aster_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  number: 3
+  string: 'aster_py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   detect_binary_files_with_prefix: True
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - gxx <=11
+    - gcc <=11
     - cmake
     - make
 
