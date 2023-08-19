@@ -1,7 +1,39 @@
 # Compiling Code Aster
 
-# V15.8.0
+## Dependencies relations
+The following graph shows the dependencies between the different packages.
 
+```mermaid
+  flowchart TD;
+    A[Code Aster v16.4.2]
+    B[mfront]
+    C[libmed]
+    D[scotch]
+    E[medcoupling]
+    F[asrun]
+    G[metis]
+    H[mumps]
+    I[mgis]
+    J[homard]
+    K[petsc]
+    
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    A --> G
+    A --> H
+    A --> I
+    A --> J
+    A --> K
+    
+    I --> B
+    H --> G
+    H --> D
+    E --> C
+    
+```
 
 
 ## Official deps
@@ -10,6 +42,7 @@
 * v16.4.2: [VERSION="20221225"](#version20221225)
 
 ### VERSION="20221225"
+Can be downloaded from https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
 ```
 VERSION="20221225"
 
