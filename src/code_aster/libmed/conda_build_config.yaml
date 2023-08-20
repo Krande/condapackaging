@@ -1,8 +1,13 @@
 hdf5:
- - 1.10.6
+  - 1.10.6
 
 c_compiler:
- - vs2022                     # [win]
+  - vs2022                     # [win]
 
 cxx_compiler:
- - vs2022                     # [win]
+  - vs2022                     # [win]
+
+#fortran_compiler:
+  - flang                      # [win]
+#fortran_compiler_version:
+#  - '5'                        # [win]

@@ -1,18 +1,25 @@
 @echo off
 
 mkdir "%SRC_DIR%\deps\config"
-tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" -C . --strip-components=1
+
+:: Specify the full path to your tar executable if it's not in the PATH
+tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" --strip-components=1
 
 ::set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
 ::set FFLAGS=-fdefault-integer-8 %FFLAGS%
 
+:: GCC
 ::set CMAKE_C_COMPILER=%PREFIX%\mingw-w64\bin\gcc.exe
 ::set CMAKE_CXX_COMPILER=%PREFIX%\mingw-w64\bin\g++.exe
-set CMAKE_Fortran_COMPILER=%PREFIX%\mingw-w64\bin\gfortran.exe
+::set CMAKE_CXX_COMPILER=%PREFIX%\mingw-w64\bin\gfortran.exe
 
-echo %CC%
-echo %CXX%
-echo %FC%
+:: FLANG
+set CMAKE_Fortran_COMPILER=%LIBRARY_PREFIX%\bin\flang.exe
+set FC=%LIBRARY_PREFIX%\bin\flang.exe
+
+echo "CC=%CC%"
+echo "CXX=%CXX%"
+echo "FC=%FC%"
 
 cmake -G "Ninja" -S .^
       -Wno-dev ^
