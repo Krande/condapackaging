@@ -59,10 +59,10 @@ jobs:
           artifacts_dir=${{ env.WORK_DIR }}/artifacts
           build_dir=${{ env.WORK_DIR }}/build
 
-          if [ "${{ matrix.platform.pkg_dir }}" == 'win-64' ]; then
-            artifacts_dir="'$artifacts_dir'"
-            build_dir="'$build_dir'"
-          fi
+          #if [ "${{ matrix.platform.pkg_dir }}" == 'win-64' ]; then
+          #  artifacts_dir="'$artifacts_dir'"
+          #  build_dir="'$build_dir'"
+          #fi
           
           mkdir -p $artifacts_dir
           mkdir -p $build_dir
