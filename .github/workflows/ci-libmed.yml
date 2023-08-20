@@ -52,7 +52,7 @@ jobs:
           
           mkdir -p "$artifacts_dir"
           mkdir -p "$build_dir"
-          boa build . --python ${{ matrix.pyver.distver }} --croot "$build_dir" --output-folder "$artifacts_dir" --pkg-format=2
+          boa build . --python ${{ matrix.pyver.distver }} --output-folder "$artifacts_dir" --pkg-format=2
         working-directory: ${{ env.PKG_PATH }}
 
       - name: upload to anaconda
