@@ -11,11 +11,11 @@ tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" --strip-components=1
 :: GCC
 ::set CMAKE_C_COMPILER=%PREFIX%\mingw-w64\bin\gcc.exe
 ::set CMAKE_CXX_COMPILER=%PREFIX%\mingw-w64\bin\g++.exe
-::set CMAKE_CXX_COMPILER=%PREFIX%\mingw-w64\bin\gfortran.exe
+set CMAKE_CXX_COMPILER=%PREFIX%\mingw-w64\bin\gfortran.exe
 
 :: FLANG
-set CMAKE_Fortran_COMPILER=%LIBRARY_PREFIX%\bin\flang.exe
-set FC=%LIBRARY_PREFIX%\bin\flang.exe
+@REM set CMAKE_Fortran_COMPILER=%LIBRARY_PREFIX%\bin\flang.exe
+@REM set FC=%LIBRARY_PREFIX%\bin\flang.exe
 
 echo "CC=%CC%"
 echo "CXX=%CXX%"
