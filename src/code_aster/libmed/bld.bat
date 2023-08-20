@@ -3,7 +3,8 @@
 mkdir "%SRC_DIR%\deps\config"
 
 :: Specify the full path to your tar executable if it's not in the PATH
-tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" --strip-components=1
+@REM tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" --strip-components=1
+7z x "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" -so | 7z x -si -ttar -o.
 
 ::set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
 ::set FFLAGS=-fdefault-integer-8 %FFLAGS%
