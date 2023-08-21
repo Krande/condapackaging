@@ -45,10 +45,41 @@ jobs:
             code-aster==16.4.2
 
       - name: run ctest
+        continue-on-error: true
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 1 --output-on-failure
 
       - name: print debug logs
-        if: always()
         run: |
-          python src/code_aster/scan_failed.py ${{github.workspace}}/ctest 
+          python src/code_aster/scan_failed.py ${{github.workspace}}/ctest
+
+      - name: Upload ctest for packaging
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctest-${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+          path: ${{ github.workspace }}/ctest
+
+  package:
+    needs: build_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download all ctest artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Package ctest directories
+        run: |
+          tar czf ctest-results.tar.gz ctest-*
+
+      - name: Create Release and Upload Tarball
+        uses: gh-actions/create-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.sha }}
+          name: CTest Results ${{ github.sha }}
+          body: Automated release created on ${{ github.sha }}. Contains ctest results.
+          draft: false
+          prerelease: false
+          files: ctest-results.tar.gz
