@@ -1,0 +1,51 @@
+name: ci-code-aster
+# bump 0
+on:
+  push:
+    paths:
+      - .github/workflows/ci-code-aster-test.yml
+#    branches:
+#    - donotrun
+env:
+  WORK_DIR: /home/runner/work
+
+jobs:
+  build_test:
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [
+          { name: code_aster, path: src/code_aster/code_aster },
+        ]
+        pyver: [
+          { name: py39, distver: '3.9'},
+          { name: py310, distver: '3.10'},
+          { name: py311, distver: '3.11'},
+        ]
+        platform: [
+          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          condarc: |
+            channels:
+              - krande/label/dev
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver.distver }}
+            code-aster==16.4.2
+
+      - name: run ctest
+        run: |
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 1
+
+      - name: print debug logs
+        run: |
+          python src/code_aster/scan_failed.py ${{github.workspace}}/ctest 
