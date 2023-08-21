@@ -46,8 +46,9 @@ jobs:
 
       - name: run ctest
         run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 1
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 1 --output-on-failure
 
       - name: print debug logs
+        if: always()
         run: |
           python src/code_aster/scan_failed.py ${{github.workspace}}/ctest 
