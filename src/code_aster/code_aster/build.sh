@@ -38,8 +38,8 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
   --without-hg \
   configure
 
-./waf_std install
-#./waf_std install_debug
+#./waf_std install
+./waf_std install_debug
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
