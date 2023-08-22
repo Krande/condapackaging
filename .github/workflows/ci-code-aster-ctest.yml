@@ -74,9 +74,8 @@ jobs:
           tar czf ctest-results.tar.gz ctest-*
 
       - name: Create Release and Upload Tarball
-        uses: gh-actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.sha }}
           name: CTest Results ${{ github.sha }}
           body: Automated release created on ${{ github.sha }}. Contains ctest results.
