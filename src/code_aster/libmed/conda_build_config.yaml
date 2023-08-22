@@ -8,6 +8,6 @@ cxx_compiler:
   - vs2022                     # [win]
 
 #fortran_compiler:
-  - flang                      # [win]
+#  - flang                      # [win]
 #fortran_compiler_version:
 #  - '5'                        # [win]
