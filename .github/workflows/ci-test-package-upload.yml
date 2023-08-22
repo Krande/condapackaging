@@ -69,8 +69,8 @@ jobs:
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: vdummy
-          name: CTest Results vdummy
+          tag_name: code-aster-16.4.2-ctest
+          name: CTest Results code-aster-16.4.2
           body: Automated release created on ${{ github.sha }}. Contains ctest results.
           draft: false
           prerelease: false
