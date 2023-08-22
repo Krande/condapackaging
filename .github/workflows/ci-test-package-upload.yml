@@ -53,7 +53,7 @@ jobs:
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.sha }}
+          tag_name: ${{ github.ref }}
           name: CTest Results ${{ github.sha }}
           body: Automated release created on ${{ github.sha }}. Contains ctest results.
           draft: false
