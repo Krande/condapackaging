@@ -38,13 +38,12 @@ jobs:
           create-args: >-
             python=${{ matrix.pyver.distver }}
             code-aster==16.4.2
-            mamba
 
       - name: Create dummy data
         run: |
           mkdir -p ${{ github.workspace }}/ctest
-          mamba list
-          echo "$(mamba list)" > ${{ github.workspace }}/ctest/dummy.txt
+          micromamba list
+          echo "$(micromamba list)" > ${{ github.workspace }}/ctest/dummy.txt
 
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v3
