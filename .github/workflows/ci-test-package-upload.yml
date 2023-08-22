@@ -31,10 +31,6 @@ jobs:
           mkdir -p ${{ github.workspace }}/ctest
           echo "This is some dummy data for testing." > ${{ github.workspace }}/ctest/dummy.txt
 
-      - name: Package dummy data
-        run: |
-          tar czf dummy-data.tar.gz dummy.txt
-
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v2
         with:
