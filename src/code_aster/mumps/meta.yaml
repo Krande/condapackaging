@@ -24,9 +24,6 @@ requirements:
     - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - gcc <=9
-    - gxx <=9
-    - gfortran <=9
     - numpy >1.22
     - metis 5.1.0=aster4*
     - scotch 7.0.1

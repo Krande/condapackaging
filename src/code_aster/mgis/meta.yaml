@@ -1,5 +1,5 @@
 {% set name = "mgis" %}
-{% set version = "2.1.0" %}
+{% set version = "2.1" %}
 {% set mfront_ver = "4.1.0" %}
 
 

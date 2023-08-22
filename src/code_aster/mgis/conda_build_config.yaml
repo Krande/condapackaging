@@ -17,5 +17,7 @@ fortran_compiler_version:
  - '9'      # [unix]
 
 pin_run_as_build:
+  boost-cpp:
+    max_pin: x.x.x
   mfront:
     max_pin: x.x.x

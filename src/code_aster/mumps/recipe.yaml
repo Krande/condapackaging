@@ -41,8 +41,8 @@ requirements:
 
   run:
     - numpy
-    - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+    - metis
+    - scotch
     - python
 
 test:
