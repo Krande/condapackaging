@@ -14,7 +14,7 @@ source:
     url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
 
 build:
-  number: 1
+  number: 2
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -23,6 +23,7 @@ requirements:
     - "{{ compiler('cxx') }}"
     - cmake >=3.26.4
     - autoconf
+    - python
 
   host:
     - python
@@ -35,6 +36,15 @@ requirements:
     - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
     - mfront {{ mfront_ver }}=aster_*
     - python
+#
+#test:
+#  commands:
+#    # Check for libMFrontGenericInterface.so library
+#    - test -f $PREFIX/lib/libMFrontGenericInterface.so
+#    # Check for mgis and mgis-version executables
+#    - mgis --version  # or whatever command to verify its presence
+#
+
 
 about:
   home: https://thelfer.github.io/mgis/web/index.html

@@ -17,8 +17,11 @@ package:
   version: '{{ version }}'
 
 source:
-  - fn: '{{ name }}_{{ version }}.tar.gz'
-    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+  - git_url: https://gitlab.com/codeaster/src.git
+    git_depth: 1 # (Defaults to -1/not shallow)
+#  - fn: '{{ name }}_{{ version }}.tar.gz'
+#    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+
 
 build:
   detect_binary_files_with_prefix: true
@@ -30,9 +33,9 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
     - waf
-    - gcc 9
-    - gxx 9
-    - gfortran 9
+    - gcc <=11
+    - gxx <=11
+    - gfortran <=11
     - pyyaml
     - python
 
@@ -43,7 +46,7 @@ requirements:
     - boost
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
-    - asrun {{ asrun_ver }}
+#    - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
@@ -60,7 +63,7 @@ requirements:
     - libmed {{ med_ver }}
     - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
-    - asrun {{ asrun_ver }}
+#    - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
@@ -72,7 +75,7 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results
+    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
   files:
     - basic_import.py
 

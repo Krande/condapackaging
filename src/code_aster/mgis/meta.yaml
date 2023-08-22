@@ -12,7 +12,7 @@ source:
     url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
 
 build:
-  number: 1
+  number: 2
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -21,6 +21,7 @@ requirements:
     - "{{ compiler('cxx') }}"
     - cmake >=3.26.4
     - autoconf
+    - python
 
   host:
     - python

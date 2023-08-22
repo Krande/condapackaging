@@ -20,11 +20,11 @@ The current status of the conda package compilation is as follows:
 
 At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.11. Here are the current test results:
 
-| Python version | Status |
-|----------------|--------|
-| 3.9            | [![Build Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280444) |
-| 3.10           | [![Build Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280571) |
-| 3.11           | [![Build Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280712) |
+| Python version | Status                                                                                        |
+|----------------|-----------------------------------------------------------------------------------------------|
+| 3.9            | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280444) |
+| 3.10           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280571) |
+| 3.11           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280712) |
 
 
 

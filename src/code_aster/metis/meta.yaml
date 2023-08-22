@@ -12,8 +12,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: '{{ aster_variant }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
-  noarch: generic
+  string: '{{ aster_variant }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   number: 2
 
 requirements:

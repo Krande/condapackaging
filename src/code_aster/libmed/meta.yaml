@@ -29,6 +29,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - swig >=4.0.2
+    - python
   host:
     - autoconf
     - make

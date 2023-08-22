@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export LDFLAGS="-L$PREFIX/lib -lm -lpthread -lrt -ldl -lz -lgomp"
-export LIBPATH="$PREFIX/lib $LIBPATH"
+#export LDFLAGS="-L$PREFIX/lib -lm -lpthread -lrt -ldl -lz -lgomp"
+#export LIBPATH="$PREFIX/lib $LIBPATH"
 
 export TFELHOME="${PREFIX}"
 python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"

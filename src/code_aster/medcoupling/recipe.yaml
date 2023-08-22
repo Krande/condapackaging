@@ -30,10 +30,11 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - swig
+    - python
 
   host:
-    - libmed {{ libmed_ver }}=aster_*
     - python
+    - libmed {{ libmed_ver }}=aster_*
     - boost
     - libxml2
 

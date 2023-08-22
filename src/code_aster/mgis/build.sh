@@ -8,11 +8,13 @@ python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
 
 cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
-    -Denable-c-bindings=ON \
+    -Denable-c-bindings=OFF \
     -Denable-fortran-bindings=OFF \
     -Denable-python-bindings=ON \
     -Denable-portable-build=ON \
     -Denable-julia-bindings=OFF \
+    -Denable-website=OFF \
+    -Denable-broken-boost-python-module-visibility-handling=ON \
     -DPYTHONLIBS_VERSION_STRING="${CONDA_PY}" \
     -DPython_ADDITIONAL_VERSIONS="${python_version}" \
     -DPYTHON_EXECUTABLE:FILEPATH="${PREFIX}/bin/python" \
