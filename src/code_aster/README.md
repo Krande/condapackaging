@@ -1,8 +1,10 @@
 # Compiling Code Aster
 
-## Conda package compilation
+## Conda package compilation Status
 
 ### Linux
+
+The current status of the conda package compilation is as follows:
 
 - [x] Code Aster v16.4.2
 - [x] mfront
@@ -15,6 +17,17 @@
 - [x] mgis
 - [x] homard
 - [x] petsc
+
+At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.11. Here are the current test results:
+
+| Python version | Status |
+|----------------|--------|
+| 3.9            | [![Build Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280444) |
+| 3.10           | [![Build Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280571) |
+| 3.11           | [![Build Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280712) |
+
+
+
 
 ### Windows
 

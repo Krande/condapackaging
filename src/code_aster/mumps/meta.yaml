@@ -17,7 +17,7 @@ source:
 build:
   detect_binary_files_with_prefix: true
   string: aster1_py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
-  number: 1
+  number: 2
 
 requirements:
   build:
@@ -28,6 +28,7 @@ requirements:
     - numpy >1.22
     - metis 5.1.0=aster4*
     - scotch 7.0.1
+    - python
 
   host:
     - python
@@ -42,6 +43,18 @@ requirements:
     - numpy
     - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
     - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+    - python
+
+test:
+  commands:
+    # Check for existence of mumps libraries
+    - test -f $PREFIX/lib/libcmumps.a
+    - test -f $PREFIX/lib/libdmumps.a
+    - test -f $PREFIX/lib/libmumps_common.a
+    - test -f $PREFIX/lib/libmpiseq.a
+    - test -f $PREFIX/lib/libpord.a
+    - test -f $PREFIX/lib/libsmumps.a
+    - test -f $PREFIX/lib/libzmumps.a
 
 about:
   home: http://mumps.enseeiht.fr/

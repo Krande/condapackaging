@@ -13,12 +13,18 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: 0
+  noarch: generic
 
 requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - make
+test:
+  commands:
+    # Check for existence of files and directories
+    - test -f $PREFIX/lib/libmetis.a
+    - test -f $PREFIX/include/metis.h
 
 about:
   home: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html

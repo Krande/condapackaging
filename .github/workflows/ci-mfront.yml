@@ -10,8 +10,8 @@ on:
     paths:
       - src/code_aster/mfront/**
       - .github/workflows/ci-mfront.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 
 jobs:

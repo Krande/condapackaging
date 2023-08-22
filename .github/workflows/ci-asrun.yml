@@ -6,8 +6,8 @@ on:
     paths:
       - src/code_aster/asrun/**
       - .github/workflows/ci-asrun.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 env:
   PKG_NAME: asrun

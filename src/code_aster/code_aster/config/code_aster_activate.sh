@@ -2,7 +2,6 @@
 
 # https://docs.conda.io/projects/conda/en/latest/dev-guide/deep-dives/activation.html
 
-
 export PYTHONPATH="${CONDA_PREFIX}/lib/aster:${PYTHONPATH}"
 export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib/aster:${LD_LIBRARY_PATH}"
 

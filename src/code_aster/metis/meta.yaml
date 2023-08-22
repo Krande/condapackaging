@@ -13,13 +13,20 @@ source:
 build:
   detect_binary_files_with_prefix: true
   string: '{{ aster_variant }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
-  number: 1
+  noarch: generic
+  number: 2
 
 requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - make
+
+test:
+  commands:
+    # Check for existence of files and directories
+    - test -f $PREFIX/lib/libmetis.a
+    - test -f $PREFIX/include/metis.h
 
 about:
   home: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html

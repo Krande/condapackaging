@@ -17,7 +17,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  number: 0
+  number: 2
 
 requirements:
   build:
@@ -26,13 +26,14 @@ requirements:
     - "{{ compiler('cxx') }}"
     - gfortran 9
     - numpy >1.22
-    - metis 5.1.0_aster4
+    - metis 5.1.0=aster4*
     - scotch 7.0.1
+    - python
 
   host:
     - python
     - numpy >1.22
-    - metis 5.1.0_aster4
+    - metis 5.1.0=aster4*
     - scotch 7.0.1
     - libblas
     - liblapack
@@ -42,6 +43,18 @@ requirements:
     - numpy
     - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
     - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+    - python
+
+test:
+  commands:
+    # Check for existence of mumps libraries
+    - test -f $PREFIX/lib/libcmumps.a
+    - test -f $PREFIX/lib/libdmumps.a
+    - test -f $PREFIX/lib/libmumps_common.a
+    - test -f $PREFIX/lib/libmpiseq.a
+    - test -f $PREFIX/lib/libpord.a
+    - test -f $PREFIX/lib/libsmumps.a
+    - test -f $PREFIX/lib/libzmumps.a
 
 about:
   home: http://mumps.enseeiht.fr/

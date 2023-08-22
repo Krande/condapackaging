@@ -5,8 +5,8 @@ on:
     paths:
       - src/code_aster/mumps/**
       - .github/workflows/ci-mumps.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 env:
   PKG_NAME: mumps

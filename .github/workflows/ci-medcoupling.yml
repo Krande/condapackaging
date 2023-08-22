@@ -10,8 +10,8 @@ on:
     paths:
       - src/code_aster/medcoupling/**
       - .github/workflows/ci-medcoupling.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 
 jobs:

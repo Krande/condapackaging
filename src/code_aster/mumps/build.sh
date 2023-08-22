@@ -10,9 +10,8 @@ export INCLUDES="$PREFIX/include $INCLUDES"
 
 $PYTHON waf configure install \
   --prefix="${PREFIX}" \
-  --disable-openmp \
+  --enable-openmp \
   --enable-metis \
-  --maths-libs=auto \
   --enable-scotch \
   --install-tests
 
