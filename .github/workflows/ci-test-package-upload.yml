@@ -29,10 +29,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
+          init-shell: >-
+            bash
           condarc: |
             channels:
               - krande/label/dev
@@ -44,6 +45,7 @@ jobs:
       - name: Create dummy data
         run: |
           mkdir -p ${{ github.workspace }}/ctest
+          mamba list
           echo "$(mamba list)" > ${{ github.workspace }}/ctest/dummy.txt
 
       - name: Upload ctest for packaging
