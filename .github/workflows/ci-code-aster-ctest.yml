@@ -49,6 +49,10 @@ jobs:
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 1 --output-on-failure
 
+      - name: add mamba data
+        run: |
+          echo "$(micromamba list)" > ${{ github.workspace }}/ctest/mamba.txt
+
       - name: print debug logs
         run: |
           python src/code_aster/scan_failed.py ${{github.workspace}}/ctest
@@ -67,7 +71,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download all ctest artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
 
       - name: Package ctest directories
         run: |
@@ -76,8 +80,8 @@ jobs:
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.sha }}
-          name: CTest Results ${{ github.sha }}
+          tag_name: code-aster-16.4.2-ctest
+          name: CTest Results code-aster-16.4.2
           body: Automated release created on ${{ github.sha }}. Contains ctest results.
           draft: false
           prerelease: false
