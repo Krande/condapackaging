@@ -7,6 +7,18 @@ already
 
 run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 4
 
+### Debugging individual failed tests
+
+When selected a failed test to investigated further, go to the $CONDA_PREFIX/share/aster/tests directory
+and find and copy the `<test_name>.export` and `<test_name>.comm` files and include all files mentioned in the 
+`<test_name>.export` file. 
+
+Ensure that you have gdb installed and checked that `Apport` is not running, run the following command to start
+
+`gdb -ex r --args python3 -m run_aster.run_aster_main zzzz328d.export`
+
+
+
 ## Conda package compilation Status
 
 ### Linux
