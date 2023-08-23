@@ -57,7 +57,7 @@ jobs:
         run: |
           if [[ ${{ matrix.package.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
-          else; then
+          else
             conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
@@ -119,7 +119,7 @@ jobs:
         run: |
           if [[ ${{ matrix.package.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
-          else; then
+          else
             conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
@@ -179,7 +179,7 @@ jobs:
         run: |
           if [[ ${{ matrix.package.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
-          else; then
+          else
             conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
