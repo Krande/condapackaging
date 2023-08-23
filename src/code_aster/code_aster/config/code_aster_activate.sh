@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # https://docs.conda.io/projects/conda/en/latest/dev-guide/deep-dives/activation.html
 

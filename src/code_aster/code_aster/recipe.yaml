@@ -1,7 +1,6 @@
 context:
   name: code-aster
   version: 16.4.2
-  asrun_ver: 2021.1
   med_ver: 4.1.1=aster_*
   metis_ver: 5.1.0=aster4*
   mfront_ver: 4.1.0=aster_*
@@ -43,7 +42,6 @@ requirements:
     - boost
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
-#    - asrun {{ asrun_ver }}
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
@@ -55,16 +53,14 @@ requirements:
     - python
     - numpy
     - pyyaml
-    - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
-    - mfront {{ mfront_ver }}
-    - libmed {{ med_ver }}
-    - scotch {{ scotch_ver }}
-    - medcoupling {{ medcoupling_ver }}
-#    - asrun {{ asrun_ver }}
-    - metis {{ metis_ver }}
-    - mumps {{ mumps_ver }}
-    - mgis {{ mgis_ver }}
-    - homard {{ homard_ver }}
+    - mfront
+    - libmed
+    - scotch
+    - medcoupling
+    - metis
+    - mumps
+    - mgis
+    - homard
 
 test:
   imports:

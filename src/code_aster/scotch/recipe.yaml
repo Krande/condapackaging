@@ -22,6 +22,7 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
     - python
 
   host:
@@ -30,7 +31,8 @@ requirements:
     - bison
 
   run:
-    - "{{ pin_compatible('zlib', max_pin='x.x.x') }}"
+    - zlib
+    - bison
     - python
 
 test:

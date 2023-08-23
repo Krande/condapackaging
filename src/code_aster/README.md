@@ -1,5 +1,12 @@
 # Compiling Code Aster
 
+## Validation
+
+**NOTE!** Keep in mind that many of the tests require `ctest`. So you will have to install `cmake` if you haven't 
+already
+
+run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 4
+
 ## Conda package compilation Status
 
 ### Linux
@@ -25,8 +32,6 @@ At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.
 | 3.9            | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280444) |
 | 3.10           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280571) |
 | 3.11           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280712) |
-
-
 
 
 ### Windows

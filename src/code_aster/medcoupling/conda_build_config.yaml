@@ -1,21 +1,32 @@
 boost:
- - 1.78
+  - 1.78
 
 c_compiler:
- - vs2022  # [win]
- - gcc     # [unix]
+  - vs2022  # [win]
+  - gcc     # [unix]
 c_compiler_version:
- - 9     # [unix]
+  - 8     # [unix]
 cxx_compiler:
- - vs2022  # [win]
- - gxx     # [unix]
+  - vs2022  # [win]
+  - gxx     # [unix]
 cxx_compiler_version:
- - 9      # [unix]
+  - 8      # [unix]
 fortran_compiler:
- - gfortran # [unix]
+  - gfortran # [unix]
 fortran_compiler_version:
- - 9      # [unix]
+  - 8      # [unix]
+
 
 pin_run_as_build:
+  gcc:
+    max_pin: x.x
+  gxx:
+    max_pin: x.x
+  gfortran:
+    max_pin: x.x
+  numpy:
+    max_pin: x.x
   libmed:
+    max_pin: x.x.x
+  boost:
     max_pin: x.x.x

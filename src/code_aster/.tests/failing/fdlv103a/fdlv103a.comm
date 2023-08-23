@@ -1,0 +1,352 @@
+# coding=utf-8
+# --------------------------------------------------------------------
+# Copyright (C) 1991 - 2022 - EDF R&D - www.code-aster.org
+# This file is part of code_aster.
+#
+# code_aster is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# code_aster is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with code_aster.  If not, see <http://www.gnu.org/licenses/>.
+# --------------------------------------------------------------------
+
+#
+
+#       RESOLUTION D UN LAPLACIEN DANS UNE LAME DE
+
+# FLUIDE+CALCUL D'UNE MATR_ASSE_GENE DE MASSE AJOUTEE POUR
+
+#                          DEUX SPHERES
+
+#                          CONCENTRIQUES
+
+#                       FAITES DE TRIA3 DKT
+
+#                          CALCUL 3D
+
+#                      CALCUL MODAL EN EAU
+
+#                       CAS TEST FDLV103A
+
+#
+
+DEBUT(
+    CODE=_F(NIV_PUB_WEB="INTERNET"),
+    DEBUG=_F(SDVERI="OUI"),
+    IGNORE_ALARM=("MODELE1_63", "MODELE1_64"),
+)
+
+# <MODELE1_63> : DANS UN MODELE, IL EXISTE DES ELEMENTS DE TYPE "BORD" QUI N'ONT PAS DE VOISIN AVEC RIGIDITE
+# <MODELE1_64> : DANS UN MODELE, IL N'Y A AUCUN ELEMENT AVEC AVEC RIGIDITE
+#  LE MODELE PROVOQUANT CES ALARMES EST UN MODELE D'INTERFACE
+
+# PRE_IDEAS()
+
+MAYA = LIRE_MAILLAGE(FORMAT="ASTER")
+
+#
+
+EAU = DEFI_MATERIAU(THER=_F(LAMBDA=1.0, RHO_CP=1000.0))
+
+ACIER = DEFI_MATERIAU(ELAS=_F(RHO=7800.0, NU=0.3, E=2.0e11))
+
+CHAMMAT1 = AFFE_MATERIAU(
+    MAILLAGE=MAYA, AFFE=(_F(GROUP_MA="FLUIDE", MATER=EAU), _F(GROUP_MA="INTERFAC", MATER=EAU))
+)
+
+CHAMMAT2 = AFFE_MATERIAU(
+    MAILLAGE=MAYA,
+    #                       AFFE:(GROUP_MA: COQUE MATER:ACIER)
+    AFFE=_F(GROUP_MA="COQINT", MATER=ACIER),
+)
+
+#
+
+FLUIDE = AFFE_MODELE(
+    MAILLAGE=MAYA,
+    AFFE=(
+        _F(GROUP_MA="FLUIDE", MODELISATION="3D", PHENOMENE="THERMIQUE"),
+        _F(GROUP_MA="INTERFAC", MODELISATION="3D", PHENOMENE="THERMIQUE"),
+    ),
+)
+
+INTERF = AFFE_MODELE(
+    MAILLAGE=MAYA, AFFE=_F(GROUP_MA="INTERFAC", MODELISATION="3D", PHENOMENE="THERMIQUE")
+)
+
+STRUCT = AFFE_MODELE(
+    MAILLAGE=MAYA,
+    AFFE=(
+        _F(GROUP_MA="COQINT", MODELISATION="DKT", PHENOMENE="MECANIQUE"),
+        _F(GROUP_MA="RESSORTS", MODELISATION="DIS_TR", PHENOMENE="MECANIQUE"),
+    ),
+)
+
+#
+
+CHARGE = AFFE_CHAR_THER(MODELE=FLUIDE, TEMP_IMPO=_F(GROUP_NO="TEMPIMPO", TEMP=0.0))
+
+#
+
+CHAMPCAR = AFFE_CARA_ELEM(
+    MODELE=STRUCT,
+    DISCRET=(
+        _F(
+            GROUP_MA="RESSORTS",
+            CARA="K_TR_L",
+            VALE=(
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0e5,
+                0.0,
+                0.0,
+                0.0,
+                1.0e10,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0e10,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0e10,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                -1.0e5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0e5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0e10,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0e10,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0e10,
+            ),
+        ),
+        _F(
+            GROUP_MA="RESSORTS",
+            CARA="M_TR_L",
+            VALE=(
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+            ),
+        ),
+    ),
+    COQUE=_F(GROUP_MA="COQINT", EPAIS=1.0e-3),
+)
+
+#
+
+CHARGS = AFFE_CHAR_MECA(
+    MODELE=STRUCT,
+    DDL_IMPO=(
+        _F(GROUP_NO="ENCAST", DX=0.0, DY=0.0, DZ=0.0, DRX=0.0, DRY=0.0, DRZ=0.0),
+        _F(GROUP_NO="NOINT", DX=0.0, DY=0.0, DRX=0.0, DRY=0.0, DRZ=0.0),
+    ),
+)
+
+MASSE = POST_ELEM(
+    MODELE=STRUCT,
+    CHAM_MATER=CHAMMAT2,
+    CARA_ELEM=CHAMPCAR,
+    MASS_INER=_F(GROUP_MA="COQINT"),
+    TITRE="MASSE COQUE INTERNE",
+)
+
+MEL_KSTR = CALC_MATR_ELEM(
+    MODELE=STRUCT, CARA_ELEM=CHAMPCAR, CHAM_MATER=CHAMMAT2, OPTION="RIGI_MECA", CHARGE=(CHARGS,)
+)
+
+MEL_MSTR = CALC_MATR_ELEM(
+    MODELE=STRUCT, CARA_ELEM=CHAMPCAR, CHAM_MATER=CHAMMAT2, OPTION="MASS_MECA", CHARGE=(CHARGS,)
+)
+
+NUSTR = NUME_DDL(MATR_RIGI=MEL_KSTR)
+
+MATASKS = ASSE_MATRICE(MATR_ELEM=MEL_KSTR, NUME_DDL=NUSTR)
+
+MATASMS = ASSE_MATRICE(MATR_ELEM=MEL_MSTR, NUME_DDL=NUSTR)
+
+#
+
+
+MODES = CALC_MODES(
+    CALC_FREQ=_F(FREQ=(1.0, 100.0)), OPTION="BANDE", MATR_RIGI=MATASKS, MATR_MASS=MATASMS
+)
+
+NUMGEN = NUME_DDL_GENE(BASE=MODES, STOCKAGE="PLEIN")
+
+MATRAJ = CALC_MATR_AJOU(
+    MODELE_FLUIDE=FLUIDE,
+    MODELE_INTERFACE=INTERF,
+    OPTION="MASS_AJOU",
+    NUME_DDL_GENE=NUMGEN,
+    CHARGE=CHARGE,
+    CHAM_MATER=CHAMMAT1,
+    MODE_MECA=MODES,
+)
+
+MGENE = PROJ_MATR_BASE(BASE=MODES, NUME_DDL_GENE=NUMGEN, MATR_ASSE=MATASMS)
+
+RIGGEN = PROJ_MATR_BASE(BASE=MODES, NUME_DDL_GENE=NUMGEN, MATR_ASSE=MATASKS)
+
+MASTOT = COMB_MATR_ASSE(COMB_R=(_F(MATR_ASSE=MGENE, COEF_R=1.0), _F(MATR_ASSE=MATRAJ, COEF_R=1.0)))
+
+MODHUMI = CALC_MODES(
+    MATR_RIGI=RIGGEN,
+    CALC_FREQ=_F(FREQ=(1.0, 100.0)),
+    OPTION="BANDE",
+    SOLVEUR=_F(METHODE="LDLT"),
+    MATR_MASS=MASTOT,
+)
+
+TEST_RESU(
+    RESU=_F(
+        NUME_ORDRE=1,
+        PARA="FREQ",
+        REFERENCE="ANALYTIQUE",
+        RESULTAT=MODHUMI,
+        VALE_CALC=3.89833476333,
+        VALE_REFE=3.8540000000000001,
+        CRITERE="RELATIF",
+        PRECISION=0.014999999999999999,
+    )
+)
+
+FIN()
+#

@@ -26,9 +26,10 @@ build:
 
 requirements:
   build:
-    - cmake
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
+    - cmake
     - swig
     - python
 
@@ -40,8 +41,8 @@ requirements:
 
   run:
     - python
-    - "{{ pin_compatible('libmed', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('boost', max_pin='x.x.x') }}"
+    - libmed
+    - boost
 
 test:
   imports:

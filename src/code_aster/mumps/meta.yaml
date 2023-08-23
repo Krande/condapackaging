@@ -24,9 +24,8 @@ requirements:
     - waf
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
     - numpy >1.22
-    - metis 5.1.0=aster4*
-    - scotch 7.0.1
     - python
 
   host:
@@ -40,8 +39,8 @@ requirements:
 
   run:
     - numpy
-    - "{{ pin_compatible('metis', max_pin='x.x.x') }}"
-    - "{{ pin_compatible('scotch', max_pin='x.x.x') }}"
+    - metis
+    - scotch
     - python
 
 test:

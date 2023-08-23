@@ -6,6 +6,7 @@ from dataclasses import dataclass
 # run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results
 # Rerun all failed using
 # run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results --rerun-failed
+
 @dataclass
 class FailedJob:
     num_failed: int
@@ -129,7 +130,7 @@ def fail_checker(test_dir, aster_ver):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('test_dir', type=str, help='Path to the test directory')
+    parser.add_argument('test_dir', default='.tests/ctest', type=str, help='Path to the test directory')
     parser.add_argument('--aster_ver', type=str, default='16.4.2', help='Code_Aster version')
 
     args = parser.parse_args()

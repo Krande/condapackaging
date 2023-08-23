@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export PYTHONPATH=$(echo $PYTHONPATH | sed "s|$CONDA_PREFIX/lib/aster:||g")
 export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|$CONDA_PREFIX/lib/aster:||g")

@@ -28,15 +28,17 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - autoconf
     - swig >=4.0.2
     - python
-  host:
-    - autoconf
     - make
-    - hdf5 >=1.10.2,<1.11
+
+  host:
+    - hdf5
     - python
+
   run:
-    - {{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}
+    - hdf5
     - python
 
 test:
