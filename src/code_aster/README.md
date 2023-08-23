@@ -5,7 +5,7 @@
 **NOTE!** Keep in mind that many of the tests require `ctest`. So you will have to install `cmake` if you haven't 
 already
 
-run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 4
+`run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 6`
 
 ### Debugging individual failed tests
 
@@ -177,8 +177,8 @@ RESTRICTED=0
 
 ## Enable Core Dumps 
 First, make sure that core dumps are enabled on your system. 
-You can check the current limit by running the command ulimit -c. 
-If the value is 0, core dumps are disabled. You can enable them by running ulimit -c unlimited
+You can check the current limit by running the command `ulimit -c`. 
+If the value is 0, core dumps are disabled. You can enable them by running `ulimit -c unlimited`
 
 If you're on ubuntu you might have to turn off `Apport` before running the compilation. 
 Do this by entering `sudo service apport stop` (after you're done debugging you can turn 

@@ -72,6 +72,7 @@ def fail_checker(test_dir, aster_ver):
         ("AttributeError: 'libaster.Function' object has no attribute 'getMaterialNames'", ),
         ("TypeError: 'float' object cannot be interpreted as an integer", ),
         ("<F> <FERMETUR_13>", "libumat.so: cannot open shared object file"),
+        ("No module named 'asrun'", ),
         ("NOOK_TEST_RESU", )
     ]
 
