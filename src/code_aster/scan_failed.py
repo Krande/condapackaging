@@ -65,11 +65,13 @@ def fail_checker(test_dir, aster_ver):
         ("<F> <DVP_1>", "ier .eq. 0"),
         ("<F> <HHO1_4>", "Échec de la factorisation de Cholesky: la matrice n'est pas symétrique définie positive"),
         ("<F> <DVP_2>", "Erreur numérique (floating point exception)"),
+        ("<EXCEPTION> <DVP_2>", "Erreur numérique (floating point exception)"),
         ("Fortran runtime error: Unit number in I/O statement too large", "acearp.F90"),
         ("<F> <UTILITAI6_77>", ),
         ("<F> <ELEMENTS2_57>", "La modélisation T3G ne permet pas de bien"),
         ("AttributeError: 'libaster.Function' object has no attribute 'getMaterialNames'", ),
         ("TypeError: 'float' object cannot be interpreted as an integer", ),
+        ("<F> <FERMETUR_13>", "libumat.so: cannot open shared object file"),
         ("NOOK_TEST_RESU", )
     ]
 
