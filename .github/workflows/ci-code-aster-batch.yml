@@ -59,7 +59,7 @@ jobs:
           else; then
             conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
           fi
-        working-directory: ${{ matrix.package.path }}
+        working-directory: src/code_aster/${{ matrix.package.path }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -67,43 +67,68 @@ jobs:
           name: ${{ matrix.package.name }}-artifacts
           path: ${{ env.WORK_DIR }}/artifacts
 
-#  build_batch_2:
-#    needs: build_batch_1
-#    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
-#    runs-on: ${{ matrix.platform.distver }}
-#    defaults:
-#      run:
-#        shell: bash -l {0}
-#    strategy:
-#      matrix:
-#        package: [
-#          { name: mgis, path: src/mgis },
-#          { name: mumps, path: src/mumps },
-#          { name: medcoupling, path: src/medcoupling },
-#        ]
-#        pyver: [
-#          { name: py39, distver: '3.9' },
-#          { name: py310, distver: '3.10' },
-#          { name: py311, distver: '3.11' },
-#        ]
-#        platform: [
-#          # { name: win, distver: windows-latest, pkg_dir: win-64 },
-#          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
-#          # { name: macOS, distver: macos-latest }
-#        ]
-#    steps:
-#      - name: Download previous artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: ${{ matrix.package.name }}-artifacts
-#          path: ${{ env.WORK_DIR }}/artifacts
-#      # your build steps
-#      - name: Upload artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: ${{ matrix.package.name }}-artifacts
-#          path: ${{ env.WORK_DIR }}/artifacts
-#
+  build_batch_2:
+    needs: build_batch_1
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      matrix:
+        package: [
+          { name: mgis, path: src/mgis },
+          { name: mumps, path: src/mumps },
+          { name: medcoupling, path: src/medcoupling },
+        ]
+        pyver: [
+          { name: py39, distver: '3.9' },
+          { name: py310, distver: '3.10' },
+          { name: py311, distver: '3.11' },
+        ]
+        platform: [
+          # { name: win, distver: windows-latest, pkg_dir: win-64 },
+          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
+          # { name: macOS, distver: macos-latest }
+        ]
+    steps:
+      - name: Download previous artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ matrix.package.name }}-artifacts
+          path: ${{ env.WORK_DIR }}/artifacts
+
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: environment.conda.yml
+          condarc: |
+            channels:
+              - krande/label/dev
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver.distver }}
+
+      - name: make dirs
+        run: |
+          mkdir -p ${{ env.WORK_DIR }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/build
+
+      - name: build local packages
+        run: |
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
+          else; then
+            conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          fi
+        working-directory: src/code_aster/${{ matrix.package.path }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.package.name }}-artifacts
+          path: ${{ env.WORK_DIR }}/artifacts
+
 #  upload_packages:
 #    name: upload-packages
 #    needs: build_batch_1
