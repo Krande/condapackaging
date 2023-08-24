@@ -66,7 +66,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.package.name }}-artifacts
+          name: ${{ matrix.pyver.name }}-artifacts
           path: ${{ env.WORK_DIR }}/artifacts
 
   build_batch_2:
@@ -97,7 +97,7 @@ jobs:
       - name: Download previous artifacts
         uses: actions/download-artifact@v2
         with:
-          name: ${{ matrix.package.name }}-artifacts
+          name: ${{ matrix.pyver.name }}-artifacts
           path: ${{ env.WORK_DIR }}/artifacts
 
       - uses: actions/checkout@v3
@@ -128,7 +128,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.package.name }}-artifacts
+          name: ${{ matrix.pyver.name }}-artifacts
           path: ${{ env.WORK_DIR }}/artifacts
 
   build_batch_3:
@@ -157,7 +157,7 @@ jobs:
       - name: Download previous artifacts
         uses: actions/download-artifact@v2
         with:
-          name: ${{ matrix.package.name }}-artifacts
+          name: ${{ matrix.pyver.name }}-artifacts
           path: ${{ env.WORK_DIR }}/artifacts
 
       - uses: actions/checkout@v3
