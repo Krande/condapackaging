@@ -68,12 +68,7 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          if [[ ${{ matrix.package.boa }} == true ]]; then
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-          else
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
-          fi
-
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
@@ -135,11 +130,8 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          if [[ ${{ matrix.package.boa }} == true ]]; then
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-          else
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
-          fi
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          
 
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
@@ -200,11 +192,7 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          if [[ ${{ matrix.package.boa }} == true ]]; then
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-          else
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
-          fi
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
           
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
