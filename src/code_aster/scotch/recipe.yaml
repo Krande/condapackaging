@@ -24,11 +24,11 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
     - python
+    - zlib
+    - bison
 
   host:
     - python
-    - zlib
-    - bison
 
   run:
     - zlib

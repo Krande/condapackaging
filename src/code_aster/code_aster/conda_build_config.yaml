@@ -41,6 +41,8 @@ pin_run_as_build:
     max_pin: x.x.x
   homard:
     max_pin: x.x.x
+  hdf5:
+    max_pin: x.x.x
 
 boost:
   - 1.78

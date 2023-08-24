@@ -32,6 +32,7 @@ requirements:
     - numpy
     - cmake
     - swig
+    - hdf5
     - python
 
   host:

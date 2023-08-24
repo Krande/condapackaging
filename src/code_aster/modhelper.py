@@ -9,11 +9,11 @@ yaml.preserve_quotes = True  # not necessary for your current input
 yaml.allow_duplicate_keys = True
 
 
-def iter_valid_dirs(root_dir):
+def iter_valid_dirs(root_dir, return_file="conda_build_config.yaml"):
     for subdir in pathlib.Path(root_dir).iterdir():
         if not subdir.is_dir():
             continue
-        config_file = subdir.joinpath("conda_build_config.yaml")
+        config_file = subdir.joinpath(return_file)
         if not config_file.exists():
             continue
         yield config_file
@@ -71,12 +71,19 @@ def change_compilers(compiler_version, root_dir='.'):
             yaml.dump(data, f)
 
 
+def set_meta_requirement(req_type, package, version=None, root_dir='.'):
+    meta = list(iter_valid_dirs(root_dir, 'meta.yaml')) + list(iter_valid_dirs(root_dir, 'recipe.yaml'))
+    for meta_file in meta:
+        with open(meta_file, 'r') as f:
+            data = yaml.load(f)
+
+
 if __name__ == '__main__':
     compiler_version = 12
     # This will harmonize all compilers to same version
     change_compilers(compiler_version)
-    for dep in ['libgcc', 'libgomp', 'libgfortran5', 'libgfortran', 'libstdcxx']:
-        ensure_consistent_package_versions(dep, compiler_version)
+    # for dep in ['libgcc', 'libgomp', 'libgfortran5', 'libgfortran', 'libstdcxx']:
+    #     ensure_consistent_package_versions(dep, compiler_version)
     # various dependencies that ought to be pinned
     # ensure_consistent_package_versions('numpy', '1.23')
     # ensure_consistent_package_versions('hdf5', '1.10.6')

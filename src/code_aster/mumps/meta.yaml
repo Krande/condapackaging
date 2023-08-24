@@ -25,6 +25,8 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
+    - libblas
+    - liblapack
     - python
 
   host:
@@ -32,8 +34,6 @@ requirements:
     - numpy
     - metis 5.1.0=aster4*
     - scotch 7.0.1
-    - libblas
-    - liblapack
     - zlib
 
   run:

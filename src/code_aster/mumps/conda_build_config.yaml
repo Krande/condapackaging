@@ -29,6 +29,11 @@ pin_run_as_build:
     max_pin: x.x.x
   scotch:
     max_pin: x.x.x
+  libblas:
+    max_pin: x.x.x
+  liblapack:
+    max_pin: x.x.x
+
 numpy:
   - '1.23'
 hdf5:

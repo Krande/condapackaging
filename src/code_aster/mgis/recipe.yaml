@@ -25,6 +25,8 @@ requirements:
     - cmake >=3.26.4
     - autoconf
     - python
+    - numpy
+    - hdf5
 
   host:
     - python

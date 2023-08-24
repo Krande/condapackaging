@@ -1,6 +1,6 @@
 name: ci-code-aster-batch
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc12all
+  CONDA_LABEL: gcc12v2
 
 jobs:
   build_batch_1:
