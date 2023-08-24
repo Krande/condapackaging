@@ -44,6 +44,9 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            conda-build:
+              pkg_format: 2
+              zstd_compression_level: 19
             channels:
               - conda-forge
           create-args: >-
@@ -107,6 +110,9 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            conda-build:
+              pkg_format: 2
+              zstd_compression_level: 19            
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
@@ -169,6 +175,9 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            conda-build:
+              pkg_format: 2
+              zstd_compression_level: 19            
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge

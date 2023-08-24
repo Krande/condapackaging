@@ -75,4 +75,4 @@ if __name__ == '__main__':
     # change_compilers(12)
     # ensure_consistent_package_versions('numpy', '1.23')
     # ensure_consistent_package_versions('hdf5', '1.10.6')
-    # add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')
+    add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')

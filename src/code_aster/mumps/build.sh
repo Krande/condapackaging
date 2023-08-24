@@ -6,7 +6,7 @@ export CFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
 export FCFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space -fallow-argument-mismatch ${FCFLAGS}"
 # -fallow-argument-mismatch is needed to avoid mismatch errors related to floats and integer types
 # This enables us to use gcc compilers > 8.*
-cd ..
+
 export LIBPATH="$PREFIX/lib $LIBPATH"
 export INCLUDES="$PREFIX/include $INCLUDES"
 
