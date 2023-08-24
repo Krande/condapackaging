@@ -64,13 +64,16 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          for ext in "conda" "tar.bz2"; do
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
-            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-              path="'$path'"
-            fi
-            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
-          done
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          else
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          fi
+          
+          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
   build_batch_2:
     needs: build_batch_1
@@ -124,13 +127,16 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          for ext in "conda" "tar.bz2"; do
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
-            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-              path="'$path'"
-            fi
-            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
-          done
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          else
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          fi
+          
+          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
   build_batch_3:
     needs: build_batch_2
@@ -182,10 +188,14 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          for ext in "conda" "tar.bz2"; do
-            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
-            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-              path="'$path'"
-            fi
-            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
-          done
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          else
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          fi
+          
+          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          
