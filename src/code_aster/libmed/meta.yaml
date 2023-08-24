@@ -28,6 +28,8 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - libgomp
+    - libgfortran5
     - autoconf
     - swig >=4.0.2
     - python

@@ -11,5 +11,6 @@ dependencies:
   - doxygen
   - boa
   - mercurial
+  - ruamel.yaml.jinja2
   # for windows and fortran compiler install the following
 #    - m2w64-gcc-fortran

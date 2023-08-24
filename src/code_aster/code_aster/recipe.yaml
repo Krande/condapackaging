@@ -36,6 +36,8 @@ requirements:
     - python
     - numpy
     - hdf5
+    - libgomp
+    - libgfortran5
 
   host:
     - python

@@ -1,9 +1,10 @@
 import pathlib
 
+import ruamel.yaml
 from ruamel.yaml import YAML
 
-yaml = YAML()
-yaml.explicit_start = True
+yaml = YAML(typ='jinja2')
+#yaml.explicit_start = True
 yaml.indent(mapping=2, offset=2)
 yaml.preserve_quotes = True  # not necessary for your current input
 yaml.allow_duplicate_keys = True
@@ -61,7 +62,7 @@ def change_compilers(compiler_version, root_dir='.'):
         with open(config_file, 'r') as f:
             data = yaml.load(f)
 
-        compilers = ["c_compiler_version", "cxx_compiler_version", "fortran_compiler_version"]
+        compilers = ["c_compiler_version", "cxx_compiler_version", "fortran_compiler_version", "libgomp", "libgfortran5"]
         for cver in compilers:
             if data.get(cver, None) is None:
                 continue
@@ -72,18 +73,29 @@ def change_compilers(compiler_version, root_dir='.'):
 
 
 def set_meta_requirement(req_type, package, version=None, root_dir='.'):
+    if req_type not in ['build', 'host', 'run']:
+        raise ValueError('req_type must be either build, host or run')
     meta = list(iter_valid_dirs(root_dir, 'meta.yaml')) + list(iter_valid_dirs(root_dir, 'recipe.yaml'))
     for meta_file in meta:
         with open(meta_file, 'r') as f:
             data = yaml.load(f)
+
+        requirement: ruamel.yaml.CommentedSeq = data['requirements'][req_type]
+        if package not in requirement:
+            requirement.append(package)
+
+        with open(meta_file, 'w') as f:
+            yaml.dump(data, f)
 
 
 if __name__ == '__main__':
     compiler_version = 12
     # This will harmonize all compilers to same version
     change_compilers(compiler_version)
-    # for dep in ['libgcc', 'libgomp', 'libgfortran5', 'libgfortran', 'libstdcxx']:
+    # for dep in ['libgomp', 'libgfortran5']:
     #     ensure_consistent_package_versions(dep, compiler_version)
+    #     set_meta_requirement('build', dep)
+
     # various dependencies that ought to be pinned
     # ensure_consistent_package_versions('numpy', '1.23')
     # ensure_consistent_package_versions('hdf5', '1.10.6')
