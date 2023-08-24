@@ -9,134 +9,136 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: debug
+  CONDA_LABEL: gcc12
 
 jobs:
-#  build_batch_1:
-#    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
-#    runs-on: ${{ matrix.platform.distver }}
-#    defaults:
-#      run:
-#        shell: bash -l {0}
-#    strategy:
-#      matrix:
-#        package: [
-#          { name: scotch, boa: true },
-#          { name: metis, boa: false },
-#          { name: libmed, boa: false },
-#          { name: mfront, boa: false },
-#          { name: homard, boa: true },
-#        ]
-#        pyver: [
-#          { name: py39, distver: '3.9' },
-#          { name: py310, distver: '3.10' },
-#          { name: py311, distver: '3.11' },
-#        ]
-#        platform: [
-#          # { name: win, distver: windows-latest, pkg_dir: win-64 },
-#          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
-#          # { name: macOS, distver: macos-latest }
-#        ]
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
-#        with:
-#          environment-file: environment.conda.yml
-#          condarc: |
-#            channels:
-#              - conda-forge
-#          create-args: >-
-#            python=${{ matrix.pyver.distver }}
-#
-#      - name: make dirs
-#        run: |
-#          mkdir -p ${{ env.WORK_DIR }}/artifacts
-#          mkdir -p ${{ env.WORK_DIR }}/build
-#
-#      - name: build local packages
-#        run: |
-#          if [[ ${{ matrix.package.boa }} == true ]]; then
-#            boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
-#          else
-#            conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
-#          fi
-#        working-directory: src/code_aster/${{ matrix.package.name }}
-#
-#      - name: upload to anaconda
-#        run: |
-#          if [[ ${{ matrix.package.boa }} == true ]]; then
-#            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-#          else
-#            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
-#          fi
-#
-#          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-#            path="'$path'"
-#          fi
-#          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
-#
-#  build_batch_2:
-#    needs: build_batch_1
-#    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
-#    runs-on: ${{ matrix.platform.distver }}
-#    defaults:
-#      run:
-#        shell: bash -l {0}
-#    strategy:
-#      matrix:
-#        package: [
-#          { name: mgis, boa: true},
-#          { name: mumps, boa: false  },
-#          { name: medcoupling, boa: true},
-#        ]
-#        pyver: [
-#          { name: py39, distver: '3.9' },
-#          { name: py310, distver: '3.10' },
-#          { name: py311, distver: '3.11' },
-#        ]
-#        platform: [
-#          # { name: win, distver: windows-latest, pkg_dir: win-64 },
-#          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
-#          # { name: macOS, distver: macos-latest }
-#        ]
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
-#        with:
-#          environment-file: environment.conda.yml
-#          condarc: |
-#            channels:
-#              - krande/label/${{ env.CONDA_LABEL }}
-#              - conda-forge
-#          create-args: >-
-#            python=${{ matrix.pyver.distver }}
-#
-#      - name: make dirs
-#        run: |
-#          mkdir -p ${{ env.WORK_DIR }}/artifacts
-#          mkdir -p ${{ env.WORK_DIR }}/build
-#
-#      - name: build local packages
-#        run: |
-#          if [[ ${{ matrix.package.boa }} == true ]]; then
-#            boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
-#          else
-#            conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
-#          fi
-#        working-directory: src/code_aster/${{ matrix.package.name }}
-#
-#      - name: upload to anaconda
-#        run: |
-#          if [[ ${{ matrix.package.boa }} == true ]]; then
-#            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-#          else
-#            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
-#          fi
-#
-#          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-#            path="'$path'"
-#          fi
-#          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+  build_batch_1:
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [
+          { name: scotch, boa: true },
+          { name: metis, boa: false },
+          { name: libmed, boa: false },
+          { name: mfront, boa: false },
+          { name: homard, boa: true },
+        ]
+        pyver: [
+          { name: py39, distver: '3.9' },
+          { name: py310, distver: '3.10' },
+          { name: py311, distver: '3.11' },
+        ]
+        platform: [
+          # { name: win, distver: windows-latest, pkg_dir: win-64 },
+          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
+          # { name: macOS, distver: macos-latest }
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: environment.conda.yml
+          condarc: |
+            channels:
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver.distver }}
+
+      - name: make dirs
+        run: |
+          mkdir -p ${{ env.WORK_DIR }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/build
+
+      - name: build local packages
+        run: |
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
+          else
+            conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          fi
+        working-directory: src/code_aster/${{ matrix.package.name }}
+
+      - name: upload to anaconda
+        run: |
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          else
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          fi
+
+          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+
+  build_batch_2:
+    needs: build_batch_1
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [
+          { name: mgis, boa: true},
+          { name: mumps, boa: false  },
+          { name: medcoupling, boa: true},
+        ]
+        pyver: [
+          { name: py39, distver: '3.9' },
+          { name: py310, distver: '3.10' },
+          { name: py311, distver: '3.11' },
+        ]
+        platform: [
+          # { name: win, distver: windows-latest, pkg_dir: win-64 },
+          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
+          # { name: macOS, distver: macos-latest }
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: environment.conda.yml
+          condarc: |
+            channels:
+              - krande/label/${{ env.CONDA_LABEL }}
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver.distver }}
+
+      - name: make dirs
+        run: |
+          mkdir -p ${{ env.WORK_DIR }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/build
+
+      - name: build local packages
+        run: |
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
+          else
+            conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          fi
+        working-directory: src/code_aster/${{ matrix.package.name }}
+
+      - name: upload to anaconda
+        run: |
+          if [[ ${{ matrix.package.boa }} == true ]]; then
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          else
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.tar.bz2"
+          fi
+
+          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
   build_batch_3:
 #    needs: build_batch_2

@@ -31,4 +31,4 @@ def change_compilers(compiler_version, root_dir='.'):
 
 
 if __name__ == '__main__':
-    change_compilers(8)
+    change_compilers(12)
