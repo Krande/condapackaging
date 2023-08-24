@@ -1,7 +1,4 @@
 ---
-boost:
-  - 1.78
-
 c_compiler:
   - vs2022  # [win]
   - gcc     # [unix]
@@ -30,13 +27,5 @@ numpy:
   - '1.23'
 hdf5:
   - 1.10.6
-libgomp:
-  - 12
-libgcc-ng:
-  - 12
-libgfortran5:
-  - 12
-libstdcxx-ng:
-  - 12
-libgfortran-ng:
-  - 12
+boost:
+  - 1.78

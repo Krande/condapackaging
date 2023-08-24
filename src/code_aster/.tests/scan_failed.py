@@ -2,6 +2,7 @@ import pathlib
 import argparse
 from dataclasses import dataclass
 
+
 # Run all using
 # run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results
 # Rerun all failed using
@@ -50,9 +51,9 @@ def fail_checker(test_dir, aster_ver):
 
     fail_messages = [
         # Missing xmgrace
-        ("Le fichier xmgrace n'existe pas", ),
+        ("Le fichier xmgrace n'existe pas",),
         # Missing scipy
-        ("ModuleNotFoundError: No module named 'scipy'", ),
+        ("ModuleNotFoundError: No module named 'scipy'",),
         # missing miss3d
         ("run_miss3d: not found",),
         # Related to numpy >1.20
@@ -67,13 +68,16 @@ def fail_checker(test_dir, aster_ver):
         ("<F> <DVP_2>", "Erreur numérique (floating point exception)"),
         ("<EXCEPTION> <DVP_2>", "Erreur numérique (floating point exception)"),
         ("Fortran runtime error: Unit number in I/O statement too large", "acearp.F90"),
-        ("<F> <UTILITAI6_77>", ),
+        ("<F> <UTILITAI6_77>",),
         ("<F> <ELEMENTS2_57>", "La modélisation T3G ne permet pas de bien"),
-        ("AttributeError: 'libaster.Function' object has no attribute 'getMaterialNames'", ),
-        ("TypeError: 'float' object cannot be interpreted as an integer", ),
+        ("AttributeError: 'libaster.Function' object has no attribute 'getMaterialNames'",),
+        ("TypeError: 'float' object cannot be interpreted as an integer",),
         ("<F> <FERMETUR_13>", "libumat.so: cannot open shared object file"),
-        ("No module named 'asrun'", ),
-        ("NOOK_TEST_RESU", )
+        ("No module named 'asrun'",),
+        ("Fatal Python error: Segmentation fault", "=139"),
+        ("Fatal Python error: Aborted",),
+        ("Killed", '137'),
+        ("NOOK_TEST_RESU",)
     ]
 
     failed_termination_msg = '_ERROR'
@@ -122,8 +126,13 @@ def fail_checker(test_dir, aster_ver):
         print(f'"{failed_seq}": {failed_job.num_failed} jobs failed')
         print('|'.join(failed_job.jobs_failed))
         print()
+
+    # 96% tests passed, 81 tests failed out of 2182
+    print(
+        f'{(tot_num_jobs - num_failed_tot) / tot_num_jobs * 100:.2f}% tests passed, {num_failed_tot} tests failed out of {tot_num_jobs}')
     print(
         f'{num_identified_failed} failures identified out of {num_failed_tot} jobs -> {num_identified_failed / num_failed_tot * 100:.2f}%')
+
     print(f'{num_failed_tot} failures out of {tot_num_jobs} jobs -> {num_failed_tot / tot_num_jobs * 100:.2f}%')
 
     print('Unidentified failures:')

@@ -32,6 +32,7 @@ requirements:
     - swig >=4.0.2
     - python
     - make
+    - hdf5
 
   host:
     - hdf5

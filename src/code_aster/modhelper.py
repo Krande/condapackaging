@@ -54,6 +54,7 @@ def add_pin_run_as_build(package, max_version=None, min_version=None, root_dir='
             yaml.dump(data, f)
         break
 
+
 def change_compilers(compiler_version, root_dir='.'):
     """Make changes to the compiler versions set in the conda_build_config.yaml files"""
     for config_file in iter_valid_dirs(root_dir):
@@ -72,9 +73,11 @@ def change_compilers(compiler_version, root_dir='.'):
 
 if __name__ == '__main__':
     compiler_version = 12
+    # This will harmonize all compilers to same version
     change_compilers(compiler_version)
-    for dep in ['libgcc-ng', 'libgomp', 'libgfortran5','libgfortran-ng', 'libstdcxx-ng']:
+    for dep in ['libgcc', 'libgomp', 'libgfortran5', 'libgfortran', 'libstdcxx']:
         ensure_consistent_package_versions(dep, compiler_version)
+    # various dependencies that ought to be pinned
     # ensure_consistent_package_versions('numpy', '1.23')
     # ensure_consistent_package_versions('hdf5', '1.10.6')
     # add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')
