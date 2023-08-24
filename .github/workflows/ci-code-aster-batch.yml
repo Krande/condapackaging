@@ -44,7 +44,6 @@ jobs:
           environment-file: environment.conda.yml
           condarc: |
             channels:
-              - krande/label/dev
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
@@ -63,11 +62,15 @@ jobs:
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.pyver.name }}-artifacts
-          path: ${{ env.WORK_DIR }}/artifacts
+      - name: upload to anaconda
+        run: |
+          for ext in "conda" "tar.bz2"; do
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
+            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+              path="'$path'"
+            fi
+            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          done
 
   build_batch_2:
     needs: build_batch_1
@@ -94,19 +97,13 @@ jobs:
           # { name: macOS, distver: macos-latest }
         ]
     steps:
-      - name: Download previous artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ matrix.pyver.name }}-artifacts
-          path: ${{ env.WORK_DIR }}/artifacts
-
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-file: environment.conda.yml
           condarc: |
             channels:
-              - krande/label/dev
+              - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
@@ -125,11 +122,15 @@ jobs:
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.pyver.name }}-artifacts
-          path: ${{ env.WORK_DIR }}/artifacts
+      - name: upload to anaconda
+        run: |
+          for ext in "conda" "tar.bz2"; do
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
+            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+              path="'$path'"
+            fi
+            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          done
 
   build_batch_3:
     needs: build_batch_2
@@ -154,19 +155,13 @@ jobs:
           # { name: macOS, distver: macos-latest }
         ]
     steps:
-      - name: Download previous artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ matrix.pyver.name }}-artifacts
-          path: ${{ env.WORK_DIR }}/artifacts
-
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-file: environment.conda.yml
           condarc: |
             channels:
-              - krande/label/dev
+              - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
@@ -185,34 +180,12 @@ jobs:
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.package.name }}-artifacts
-          path: ${{ env.WORK_DIR }}/artifacts
-#  upload_packages:
-#    name: upload-packages
-#    needs: build_batch_1
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
-#        with:
-#          name: environment.conda.yml
-#          condarc: |
-#            channels:
-#              - krande/label/dev
-#              - conda-forge
-#          create-args: >-
-#            python=${{ matrix.pyver.distver }}
-#            anaconda-client
-#
-#      - name: upload to anaconda
-#        run: |
-#          for ext in "conda" "tar.bz2"; do
-#            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
-#            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-#              path="'$path'"
-#            fi
-#            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
-#          done
+      - name: upload to anaconda
+        run: |
+          for ext in "conda" "tar.bz2"; do
+            path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.$ext"
+            if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
+              path="'$path'"
+            fi
+            anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          done
