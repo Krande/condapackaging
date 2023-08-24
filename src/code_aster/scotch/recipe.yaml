@@ -23,8 +23,6 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - libgomp
-    - libgfortran5
     - python
     - zlib
     - bison

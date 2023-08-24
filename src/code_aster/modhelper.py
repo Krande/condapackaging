@@ -89,7 +89,7 @@ def set_meta_requirement(req_type, package, version=None, root_dir='.'):
 
 
 if __name__ == '__main__':
-    compiler_version = 9
+    compiler_version = 12
     # This will harmonize all compilers to same version
     change_compilers(compiler_version)
     # for dep in ['libgomp', 'libgfortran5']:
@@ -98,5 +98,5 @@ if __name__ == '__main__':
 
     # various dependencies that ought to be pinned
     # ensure_consistent_package_versions('numpy', '1.23')
-    # ensure_consistent_package_versions('hdf5', '1.10.6')
+    ensure_consistent_package_versions('hdf5', '1.10.6=nompi*')
     # add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')

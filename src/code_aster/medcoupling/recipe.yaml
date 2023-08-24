@@ -34,7 +34,7 @@ requirements:
     - numpy
     - cmake
     - swig
-    - hdf5
+    - hdf5 {{ hdf5 }}
     - python
 
   host:
@@ -49,6 +49,7 @@ requirements:
     - numpy
     - libmed
     - boost
+    - hdf5 {{ hdf5 }}
 
 test:
   imports:

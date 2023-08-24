@@ -28,20 +28,18 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - libgomp
-    - libgfortran5
     - autoconf
     - swig >=4.0.2
     - python
     - make
-    - hdf5
+    - hdf5 {{ hdf5 }}
 
   host:
-    - hdf5
+    - hdf5 {{ hdf5 }}
     - python
 
   run:
-    - hdf5
+    - hdf5 {{ hdf5 }}
     - python
 
 test:

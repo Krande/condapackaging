@@ -35,9 +35,7 @@ requirements:
     - pyyaml
     - python
     - numpy
-    - hdf5
-    - libgomp
-    - libgfortran5
+    - hdf5 {{ hdf5 }}
 
   host:
     - python
@@ -65,7 +63,7 @@ requirements:
     - mumps
     - mgis
     - homard
-    - "{{ pin_compatible('hdf5', max_pin='x.x.x' )}}"
+    - hdf5 {{ hdf5 }}
 
 test:
   imports:

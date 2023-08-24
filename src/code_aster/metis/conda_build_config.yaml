@@ -2,20 +2,17 @@ c_compiler:
   - vs2022  # [win]
   - gcc     # [unix]
 c_compiler_version:
-  - 9       # [unix]
+  - 12      # [unix]
 cxx_compiler:
   - vs2022  # [win]
   - gxx     # [unix]
 cxx_compiler_version:
-  - 9
+  - 12
 fortran_compiler:
   - gfortran # [unix]
 fortran_compiler_version:
-  - 9        # [unix]
-libgomp:
-  - 9
-libgfortran5:
-  - 9
+  - 12       # [unix]
+
 pin_run_as_build:
   gcc:
     max_pin: x.x
@@ -28,6 +25,6 @@ pin_run_as_build:
 numpy:
   - '1.23'
 hdf5:
-  - 1.10.6
+  - 1.10.6=nompi*
 boost:
   - 1.78
