@@ -139,7 +139,7 @@ jobs:
 #          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
   build_batch_3:
-    needs: build_batch_2
+#    needs: build_batch_2
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
