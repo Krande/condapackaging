@@ -44,7 +44,7 @@ jobs:
               pkg_format: 2
               zstd_compression_level: 19
             channels:
-              - krande/label/dev
+              - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
