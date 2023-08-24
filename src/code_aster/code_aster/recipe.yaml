@@ -61,6 +61,7 @@ requirements:
     - mumps
     - mgis
     - homard
+    - hdf5
 
 test:
   imports:

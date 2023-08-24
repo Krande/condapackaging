@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 # Run this to compile all dependencies locally and finally code-aster
 # Useful for iterating version changes to compilers and flags that needs to stay consistent

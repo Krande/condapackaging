@@ -146,6 +146,7 @@ jobs:
       run:
         shell: bash -l {0}
     strategy:
+      fail-fast: false
       matrix:
         package: [
           { name: code-aster, boa: true },

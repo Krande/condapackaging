@@ -6,6 +6,7 @@ dependencies:
   - conda-build
   - conda-verify
   - anaconda-client
+  - pyyaml
   - ninja
   - doxygen
   - boa

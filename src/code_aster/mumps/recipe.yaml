@@ -26,8 +26,6 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
     - numpy >1.22
-    - metis 5.1.0=aster4*
-    - scotch 7.0.1
     - python
 
   host:

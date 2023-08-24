@@ -1,3 +1,4 @@
+---
 mpi:
   - mpich
   - openmpi
@@ -17,4 +18,3 @@ pin_run_as_build:
     max_pin: x.x
   suitesparse:
     max_pin: x.x  # [not osx]
-    max_pin: x.x.x  # [osx]
