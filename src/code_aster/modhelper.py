@@ -71,7 +71,10 @@ def change_compilers(compiler_version, root_dir='.'):
 
 
 if __name__ == '__main__':
-    change_compilers(8)
+    compiler_version = 12
+    change_compilers(compiler_version)
+    for dep in ['libgcc-ng', 'libgomp', 'libgfortran5','libgfortran-ng', 'libstdcxx-ng']:
+        ensure_consistent_package_versions(dep, compiler_version)
     # ensure_consistent_package_versions('numpy', '1.23')
     # ensure_consistent_package_versions('hdf5', '1.10.6')
     # add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')
