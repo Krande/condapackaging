@@ -45,4 +45,4 @@ pin_run_as_build:
   homard:
     max_pin: x.x.x
 numpy:
-  - '1.22'
+  - '1.23'

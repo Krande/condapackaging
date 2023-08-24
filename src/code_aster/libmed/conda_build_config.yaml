@@ -29,4 +29,4 @@ pin_run_as_build:
   numpy:
     max_pin: x.x
 numpy:
-  - '1.22'
+  - '1.23'

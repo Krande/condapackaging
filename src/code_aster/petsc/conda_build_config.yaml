@@ -19,4 +19,4 @@ pin_run_as_build:
   suitesparse:
     max_pin: x.x  # [not osx]
 numpy:
-  - '1.22'
+  - '1.23'

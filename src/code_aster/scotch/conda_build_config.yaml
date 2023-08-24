@@ -26,4 +26,4 @@ pin_run_as_build:
   bison:
     max_pin: x.x.x
 numpy:
-  - '1.22'
+  - '1.23'
