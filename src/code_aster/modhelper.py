@@ -89,7 +89,7 @@ def set_meta_requirement(req_type, package, version=None, root_dir='.'):
 
 
 if __name__ == '__main__':
-    compiler_version = 12
+    compiler_version = 8
     # This will harmonize all compilers to same version
     change_compilers(compiler_version)
     # for dep in ['libgomp', 'libgfortran5']:
