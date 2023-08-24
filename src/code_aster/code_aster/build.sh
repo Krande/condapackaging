@@ -26,6 +26,7 @@ export LIBPATH_MED="$PREFIX/lib"
 
 export LIBPATH_MEDCOUPLING="$PREFIX/lib"
 export INCLUDES_MEDCOUPLING="$PREFIX/include"
+export PYPATH_MEDCOUPLING=$SP_DIR
 
 # Install for standard sequential
 ./waf_std \

@@ -1,7 +1,8 @@
 ---
 boost:
   - 1.78
-
+python_impl:
+  - cpython
 c_compiler:
   - vs2022  # [win]
   - gcc     # [unix]
@@ -24,8 +25,6 @@ pin_run_as_build:
     max_pin: x.x
   gfortran:
     max_pin: x.x
-  numpy:
-    max_pin: x.x
   boost:
     max_pin: x.x
   mfront:
@@ -44,6 +43,7 @@ pin_run_as_build:
     max_pin: x.x.x
   homard:
     max_pin: x.x.x
+
 numpy:
   - '1.23'
 hdf5:

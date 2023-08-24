@@ -34,6 +34,7 @@ requirements:
     - waf
     - pyyaml
     - python
+    - numpy
 
   host:
     - python

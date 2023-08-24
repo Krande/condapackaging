@@ -29,18 +29,21 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
+    - numpy
     - cmake
     - swig
     - python
 
   host:
     - python
+    - numpy
     - libmed {{ libmed_ver }}=aster_*
     - boost
     - libxml2
 
   run:
     - python
+    - numpy
     - libmed
     - boost
 

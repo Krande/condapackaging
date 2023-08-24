@@ -25,12 +25,11 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - numpy >1.22
     - python
 
   host:
     - python
-    - numpy >1.22
+    - numpy
     - metis 5.1.0=aster4*
     - scotch 7.0.1
     - libblas
