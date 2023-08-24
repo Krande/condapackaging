@@ -22,8 +22,6 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - libgomp
-    - libgfortran5
     - cmake >=3.26.4
     - autoconf
     - python

@@ -62,7 +62,7 @@ def change_compilers(compiler_version, root_dir='.'):
         with open(config_file, 'r') as f:
             data = yaml.load(f)
 
-        compilers = ["c_compiler_version", "cxx_compiler_version", "fortran_compiler_version", "libgomp", "libgfortran5"]
+        compilers = ["c_compiler_version", "cxx_compiler_version", "fortran_compiler_version", "libgomp"]
         for cver in compilers:
             if data.get(cver, None) is None:
                 continue
@@ -92,11 +92,12 @@ if __name__ == '__main__':
     compiler_version = 12
     # This will harmonize all compilers to same version
     change_compilers(compiler_version)
-    # for dep in ['libgomp', 'libgfortran5']:
+    # for dep in ['libgomp']:
     #     ensure_consistent_package_versions(dep, compiler_version)
     #     set_meta_requirement('build', dep)
 
     # various dependencies that ought to be pinned
     # ensure_consistent_package_versions('numpy', '1.23')
-    ensure_consistent_package_versions('hdf5', '1.10.6=nompi*')
+    # ensure_consistent_package_versions('libgomp', '1.23')
+    # ensure_consistent_package_versions('hdf5', '1.10.6=nompi*')
     # add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')
