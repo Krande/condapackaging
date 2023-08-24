@@ -52,4 +52,5 @@ def change_compilers(compiler_version, root_dir='.'):
 
 if __name__ == '__main__':
     # change_compilers(12)
-    ensure_consistent_package_versions('numpy', '1.23')
+    # ensure_consistent_package_versions('numpy', '1.23')
+    ensure_consistent_package_versions('hdf5', '1.10.6')
