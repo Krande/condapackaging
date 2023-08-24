@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc12
+  CONDA_LABEL: nplock
 
 jobs:
   build_batch_1:

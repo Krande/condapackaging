@@ -25,7 +25,7 @@ requirements:
 
   host:
     - boost
-    - numpy >1.22
+    - numpy
     - python
 
   run:

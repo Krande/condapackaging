@@ -37,7 +37,7 @@ requirements:
 
   host:
     - python
-    - numpy >1.22
+    - numpy
     - pyyaml
     - boost
     - mfront {{ mfront_ver }}

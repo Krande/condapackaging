@@ -25,12 +25,12 @@ requirements:
 
   host:
     - boost
-    - numpy >=1.22
+    - numpy
     - python
 
   run:
     - python
-    - numpy >=1.22
+    - numpy
     - {{ pin_compatible('boost', max_pin='x.x.x') }}
 
 test:

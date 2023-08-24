@@ -28,7 +28,7 @@ requirements:
 
   host:
     - python
-    - numpy >1.22
+    - numpy
     - boost
     - mfront {{ mfront_ver }}=aster_*
 
