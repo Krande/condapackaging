@@ -53,7 +53,7 @@ cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
 
 # Alternative, I could move the entire code_aster subdirectory to site-packages granted I am able to relocate all
 # relevant .so files
-
+# Add activation/deactivation scripts to set/unset required env variables for code-aster
 mkdir -p $PREFIX/etc/conda/activate.d
 cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster.sh
 chmod +x $PREFIX/etc/conda/activate.d/code_aster.sh

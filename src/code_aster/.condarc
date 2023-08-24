@@ -1,6 +1,5 @@
 conda-build:
-  - pkg_format: 2
-anaconda_upload: True
+  pkg_format: 2
+  zstd_compression_level: 19
 channels:
-  - krande/label/dev
   - conda-forge
