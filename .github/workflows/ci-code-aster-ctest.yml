@@ -5,10 +5,11 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-ctest.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 env:
   WORK_DIR: /home/runner/work
+  CONDA_LABEL: gcc12
 
 jobs:
   build_test:
@@ -38,7 +39,7 @@ jobs:
           environment-name: test-env
           condarc: |
             channels:
-              - krande/label/dev
+              - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
@@ -47,7 +48,7 @@ jobs:
       - name: run ctest
         continue-on-error: true
         run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 1 --output-on-failure
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2 --output-on-failure
 
       - name: add mamba data
         run: |
@@ -80,9 +81,9 @@ jobs:
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: code-aster-16.4.2-ctest
-          name: CTest Results code-aster-16.4.2
-          body: Automated release created on ${{ github.sha }}. Contains ctest results.
+          tag_name: code-aster-16.4.2-ctest-${{ env.CONDA_LABEL }}
+          name: CTest Results code-aster-16.4.2 [${{ env.CONDA_LABEL }}]
+          body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ env.CONDA_LABEL }}.
           draft: false
           prerelease: false
           files: ctest-results.tar.gz
