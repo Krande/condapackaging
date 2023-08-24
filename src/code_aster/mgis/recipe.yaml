@@ -26,7 +26,6 @@ requirements:
     - autoconf
     - python
     - numpy
-    - hdf5
 
   host:
     - python
