@@ -28,9 +28,11 @@ build:
 
 requirements:
   build:
-    - "{{ compiler('c') }}"
-    - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - gcc 8
+    - gxx 8
+    - gfortran 8
+    - libgomp
+    - sysroot_linux-64 =2.17
     - waf
     - pyyaml
     - python
@@ -64,6 +66,13 @@ requirements:
     - mgis
     - homard
     - hdf5 {{ hdf5 }}
+    - libblas
+    - liblapack
+    - scotch
+    - libopenblas
+    - libgcc-ng  # [linux]
+    - libstdcxx-ng  # [linux]
+    - libgfortran5  # [linux]
 
 test:
   imports:
