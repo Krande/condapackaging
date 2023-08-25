@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc12sysroot
+  CONDA_LABEL: gcc8sysroot
 
 jobs:
   build_batch_1:
@@ -65,14 +65,13 @@ jobs:
             conda mambabuild . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
           fi
         working-directory: src/code_aster/${{ matrix.package.name }}
-
       - name: upload to anaconda
         run: |
           path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path --force-metadata-update
 
   build_batch_2:
     needs: build_batch_1
@@ -136,7 +135,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path --force-metadata-update
 
   build_code_aster:
     needs: build_batch_2
@@ -197,7 +196,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path --force-metadata-update
           
 
   run_ctest:
@@ -245,7 +244,7 @@ jobs:
 
       - name: print debug logs
         run: |
-          python src/code_aster/scan_failed.py ${{github.workspace}}/ctest
+          python src/code_aster/.tests/scan_failed.py ${{github.workspace}}/ctest
 
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v2
