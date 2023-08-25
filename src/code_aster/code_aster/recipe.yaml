@@ -28,11 +28,9 @@ build:
 
 requirements:
   build:
-    - gcc 8
-    - gxx 8
-    - gfortran 8
-    - libgomp
-    - sysroot_linux-64 =2.17
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
     - waf
     - pyyaml
     - python
@@ -66,13 +64,6 @@ requirements:
     - mgis
     - homard
     - hdf5 {{ hdf5 }}
-    - libblas
-    - liblapack
-    - scotch
-    - libopenblas
-    - libgcc-ng  # [linux]
-    - libstdcxx-ng  # [linux]
-    - libgfortran5  # [linux]
 
 test:
   imports:
@@ -80,7 +71,7 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
+#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
   files:
     - basic_import.py
 

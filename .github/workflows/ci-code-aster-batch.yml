@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8
+  CONDA_LABEL: gcc12
 
 jobs:
   build_batch_1:
@@ -138,7 +138,7 @@ jobs:
           fi
           anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
-  build_batch_3:
+  build_code_aster:
     needs: build_batch_2
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
@@ -199,3 +199,80 @@ jobs:
           fi
           anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
           
+
+  run_ctest:
+    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    needs: build_code_aster
+    runs-on: ${{ matrix.platform.distver }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [
+          { name: code_aster, path: src/code_aster/code_aster },
+        ]
+        pyver: [
+          { name: py39, distver: '3.9' },
+          { name: py310, distver: '3.10' },
+          { name: py311, distver: '3.11' },
+        ]
+        platform: [
+          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-name: test-env
+          condarc: |
+            channels:
+              - krande/label/${{ env.CONDA_LABEL }}
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver.distver }}
+            code-aster==16.4.2
+
+      - name: run ctest
+        continue-on-error: true
+        run: |
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2 --output-on-failure
+
+      - name: add mamba data
+        run: |
+          echo "$(micromamba list)" > ${{ github.workspace }}/ctest/mamba.txt
+
+      - name: print debug logs
+        run: |
+          python src/code_aster/scan_failed.py ${{github.workspace}}/ctest
+
+      - name: Upload ctest for packaging
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctest-${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+          path: ${{ github.workspace }}/ctest
+
+  package:
+    needs: run_ctest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download all ctest artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Package ctest directories
+        run: |
+          tar czf ctest-results.tar.gz ctest-*
+
+      - name: Create Release and Upload Tarball
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: code-aster-16.4.2-ctest-${{ env.CONDA_LABEL }}
+          name: CTest Results code-aster-16.4.2 [${{ env.CONDA_LABEL }}]
+          body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ env.CONDA_LABEL }}.
+          draft: false
+          prerelease: false
+          files: ctest-results.tar.gz

@@ -25,11 +25,9 @@ build:
 
 requirements:
   build:
-    - gcc 8
-    - gxx 8
-    - gfortran 8
-    - libgomp
-    - sysroot_linux-64 =2.17
+    - {{ compiler('fortran') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - autoconf
     - swig >=4.0.2
     - python

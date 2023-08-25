@@ -20,11 +20,9 @@ build:
 
 requirements:
   build:
-    - gcc 8
-    - gxx 8
-    - gfortran 8
-    - libgomp
-    - sysroot_linux-64 =2.17
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
     - python
     - zlib
     - bison
@@ -36,12 +34,6 @@ requirements:
     - zlib
     - bison
     - python
-    - libblas
-    - liblapack
-    - libopenblas
-    - libgcc-ng
-    - libstdcxx-ng
-    - libgfortran5
 
 test:
   commands:
