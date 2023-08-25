@@ -13,7 +13,8 @@ When selected a failed test to investigated further, go to the $CONDA_PREFIX/sha
 and find and copy the `<test_name>.export` and `<test_name>.comm` files and include all files mentioned in the 
 `<test_name>.export` file. 
 
-Ensure that you have gdb installed and checked that `Apport` is not running, run the following command to start
+Ensure that you have gdb installed, `ulimit -c unlimited` and turned of Apport (if you're on ubuntu) 
+`sudo service apport stop`. Then do the following:
 
 `gdb -ex r --args python3 -m run_aster.run_aster_main zzzz328d.export`
 
@@ -174,6 +175,11 @@ ASRUN="2021.0.0-1"
 
 RESTRICTED=0
 ```
+# General tips
+
+## Why sysroot 2.17
+Basically to enable centos 7 support. See the following links for more information:
+# https://conda-forge.org/docs/maintainer/knowledge_base.html#using-centos-7
 
 ## Enable Core Dumps 
 First, make sure that core dumps are enabled on your system. 
@@ -183,3 +189,4 @@ If the value is 0, core dumps are disabled. You can enable them by running `ulim
 If you're on ubuntu you might have to turn off `Apport` before running the compilation. 
 Do this by entering `sudo service apport stop` (after you're done debugging you can turn 
 it back off `sudo service apport start`).
+
