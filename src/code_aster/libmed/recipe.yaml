@@ -21,7 +21,7 @@ source:
 
 build:
   number: 4
-  string: 'aster_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ PKG_BUILD_STRING}}'
+  string: 'aster_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   skip:
     - py2k or osx
 

@@ -3,7 +3,7 @@ import pathlib
 import ruamel.yaml
 from ruamel.yaml import YAML
 
-yaml = YAML(typ='jinja2')
+yaml = YAML(typ='rt')
 #yaml.explicit_start = True
 yaml.indent(mapping=2, offset=2)
 yaml.preserve_quotes = True  # not necessary for your current input
@@ -89,9 +89,10 @@ def set_meta_requirement(req_type, package, version=None, root_dir='.'):
 
 
 if __name__ == '__main__':
-    compiler_version = 12
+    compiler_version = 8
     # This will harmonize all compilers to same version
     change_compilers(compiler_version)
+    # set_meta_requirement('build', 'sysroot_linux-64', '2.17')
     # for dep in ['libgomp']:
     #     ensure_consistent_package_versions(dep, compiler_version)
     #     set_meta_requirement('build', dep)
