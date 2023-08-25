@@ -71,7 +71,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path --force-metadata-update
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
   build_batch_2:
     needs: build_batch_1
@@ -135,7 +135,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path --force-metadata-update
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
 
   build_code_aster:
     needs: build_batch_2
@@ -196,7 +196,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path --force-metadata-update
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
           
 
   run_ctest:
