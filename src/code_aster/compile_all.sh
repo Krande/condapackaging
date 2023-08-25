@@ -1,4 +1,7 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
+# Exit immediately if any command exits with a non-zero status
+set -e
 
 # Run this to compile all dependencies locally and finally code-aster
 # Useful for iterating version changes to compilers and flags that needs to stay consistent
@@ -6,38 +9,20 @@
 
 pyver=3.11
 
-cd scotch
+boa build scotch --python=$pyver
 
-boa build . --python=$pyver
+conda mambabuild metis --python=$pyver
 
-cd ../metis
+conda mambabuild libmed --python=$pyver
 
-conda mambabuild . --python=$pyver
+boa build homard --python=$pyver
 
-cd ../libmed
+conda mambabuild mfront --python=$pyver
 
-conda mambabuild . --python=$pyver
+boa build medcoupling --python=$pyver
 
-cd ../homard
+conda mambabuild mumps --python=$pyver
 
-boa build . --python=$pyver
+boa build mgis --python=$pyver
 
-cd ../mfront
-
-conda mambabuild . --python=$pyver
-
-cd ../medcoupling
-
-boa build . --python=$pyver
-
-cd ../mumps
-
-conda mambabuild . --python=$pyver
-
-cd ../mgis
-
-boa build . --python=$pyver
-
-cd ../code_aster
-
-boa build . --python=$pyver
+boa build code_aster --python=$pyver
