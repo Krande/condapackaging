@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8sysroot
+  CONDA_LABEL: gcc8
 
 jobs:
   build_batch_1:
