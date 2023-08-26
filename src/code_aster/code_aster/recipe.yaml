@@ -43,6 +43,8 @@ requirements:
     - numpy
     - pyyaml
     - boost
+    - libblas
+    - liblapack
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
     - metis {{ metis_ver }}
@@ -64,6 +66,8 @@ requirements:
     - mumps
     - mgis
     - homard
+    - libblas
+    - liblapack
     - hdf5 {{ hdf5 }}
 
 test:

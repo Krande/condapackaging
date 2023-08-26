@@ -5,11 +5,11 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batch.yml
-    branches:
-      - donotrun
+#    branches:
+#      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8v2
+  CONDA_LABEL: gcc9
 
 jobs:
   build_batch_1:
