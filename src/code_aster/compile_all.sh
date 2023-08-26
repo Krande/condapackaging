@@ -9,7 +9,7 @@ set -e
 
 pyver=3.11
 
-boa build scotch --python=$pyver
+#boa build scotch --python=$pyver
 
 conda mambabuild metis --python=$pyver
 
@@ -17,7 +17,7 @@ conda mambabuild libmed --python=$pyver
 
 boa build homard --python=$pyver
 
-conda mambabuild mfront --python=$pyver
+#conda mambabuild mfront --python=$pyver
 
 boa build medcoupling --python=$pyver
 
