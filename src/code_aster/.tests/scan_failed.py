@@ -75,7 +75,8 @@ def fail_checker(test_dir, aster_ver):
         ("<F> <FERMETUR_13>", "libumat.so: cannot open shared object file"),
         ("No module named 'asrun'",),
         ("Fatal Python error: Segmentation fault", "=139"),
-        ("Fatal Python error: Aborted",),
+        # ("Fatal Python error: Aborted",),
+        ("JeveuxCollection.h", "ABORT - exit code 17", "seems empty"),
         ("Killed", '137'),
         ("NOOK_TEST_RESU",)
     ]
@@ -120,7 +121,7 @@ def fail_checker(test_dir, aster_ver):
         else:
             print(f'{failed_mess} did not fail')
 
-    print('Failures due to:\n')
+    print('\nFailures due to:\n')
     for fail_msg, failed_job in fail_map.items():
         failed_seq = " & ".join([f"'{x}'" for x in fail_msg])
         print(f'"{failed_seq}": {failed_job.num_failed} jobs failed')
@@ -142,7 +143,7 @@ def fail_checker(test_dir, aster_ver):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('test_dir', default='.tests/ctest', type=str, help='Path to the test directory')
+    parser.add_argument('--test_dir', default='temp/ctest', type=str, help='Path to the test directory')
     parser.add_argument('--aster_ver', type=str, default='16.4.2', help='Code_Aster version')
 
     args = parser.parse_args()

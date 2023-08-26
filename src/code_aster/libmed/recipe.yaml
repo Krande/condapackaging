@@ -27,12 +27,10 @@ build:
 
 requirements:
   build:
-      - sel(unix):
-          - "{{ compiler('fortran') }}"
+      - "{{ compiler('fortran') }}"
       - "{{ compiler('c') }}"
       - "{{ compiler('cxx') }}"
       - sel(win):
-          - m2w64-gcc-fortran
           - cmake
           - ninja
       - swig

@@ -1,5 +1,18 @@
 # Compiling Code Aster
 
+Note! The intention is to set up the official compilation of code-aster and its dependencies in conda-forge. 
+To emulate as close as possible the conditions found in conda-forge the conda_build_config.yaml file 
+will contain more information based on the global pinning file used by conda-forge. 
+See https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/main/recipe/conda_build_config.yaml
+for more information.
+
+Once the number of failed tests reaches a low enough number, and the remaining failures can be attributed to
+either missing dependencies that are excluded on purpose or to identified bugs in the code aster source code 
+the conda package will be submitted to conda-forge.
+
+The official code-aster variants published in Singularity containers are compiled against the following
+dependencies v16.4.2: [VERSION="20221225"](#version20221225)
+
 ## Validation
 
 **NOTE!** Keep in mind that many of the tests require `ctest`. So you will have to install `cmake` if you haven't 
@@ -21,6 +34,7 @@ Ensure that you have gdb installed, `ulimit -c unlimited` and turned of Apport (
 
 
 ## Conda package compilation Status
+
 
 ### Linux
 
