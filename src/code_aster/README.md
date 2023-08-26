@@ -29,8 +29,24 @@ and find and copy the `<test_name>.export` and `<test_name>.comm` files and incl
 Ensure that you have gdb installed, `ulimit -c unlimited` and turned of Apport (if you're on ubuntu) 
 `sudo service apport stop`. Then do the following:
 
+
+`python3 -m run_aster.run_aster_main ssnp162p.export --test --gdb`
+
+or 
+
 `gdb -ex r --args python3 -m run_aster.run_aster_main zzzz328d.export`
 
+or 
+
+`gdb -ex 'b dyna_vibra.py:44' --args python3 -m run_aster.run_aster_main ahlv302g.export`
+(I haven't been able to get this to work yet, but it should be possible to set a breakpoint in the python code)
+
+
+### Comparing results with results from github actions. 
+
+In order to compare apple's with apple's its important to know which default packages are installed in the
+github actions environment. This can be found in the following link:
+https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
 
 
 ## Conda package compilation Status

@@ -11,26 +11,33 @@ tar -xzvf "%SRC_DIR%\deps\archives\med-4.1.1.tar.gz" --strip-components=1
 :: set MED_MEDINT_TYPE=long
 
 :: GCC
-for /f "delims=" %%i in ('where gfortran.exe') do set GF_PATH=%%i
-for /f "delims=" %%i in ('where gcc.exe') do set CC_PATH=%%i
-for /f "delims=" %%i in ('where g++.exe') do set CXX_PATH=%%i
+if exists %BUILD_PREFIX%\Library\bin\gcc.exe (
+    echo "GCC found"
+
+    set CC=%CC_PATH%
+    set CXX=%CXX_PATH%
+    set FC=%GF_PATH%
+)
+echo "CC_PATH=%CC_PATH%"
+echo "CXX_PATH=%CXX_PATH%"
+echo "GF_PATH=%GF_PATH%"
 
 set CC=%CC_PATH%
 set CXX=%CXX_PATH%
 set FC=%GF_PATH%
+echo "CC=%CC%"
+echo "CXX=%CXX%"
+echo "FC=%FC%"
 
 :: FLANG
 if exist %BUILD_PREFIX%\Library\bin\flang.exe (
     echo "FLANG found"
-    for /f "delims=" %%i in ('where flang.exe') do set GF_PATH=%%i
-    for /f "delims=" %%i in ('where clang.exe') do set CC_PATH=%%i
-    for /f "delims=" %%i in ('where clang++.exe') do set CXX_PATH=%%i
-    echo "GF_PATH=%GF_PATH%"
-    echo "CC_PATH=%CC_PATH%"
-    echo "CXX_PATH=%CXX_PATH%"
+    rem for /f "delims=" %%i in ('where flang.exe') do set GF_PATH=%%i
+    rem for /f "delims=" %%i in ('where clang.exe') do set CC_PATH=%%i
+    rem for /f "delims=" %%i in ('where clang++.exe') do set CXX_PATH=%%i
 
-    set CC=%BUILD_PREFIX%\Library\bin\clang.exe
-    set CXX=%BUILD_PREFIX%\Library\bin\clang++.exe
+    ::set CC=%BUILD_PREFIX%\Library\bin\clang.exe
+    ::set CXX=%BUILD_PREFIX%\Library\bin\clang++.exe
     set FC=%BUILD_PREFIX%\Library\bin\flang.exe
 )
 

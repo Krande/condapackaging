@@ -5,11 +5,11 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batch.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8sysroot
+  CONDA_LABEL: gcc8v2
 
 jobs:
   build_batch_1:
@@ -274,4 +274,4 @@ jobs:
           body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ env.CONDA_LABEL }}.
           draft: false
           prerelease: false
-          files: ctest-results.tar.gz
+          files: ctest-results-${{ env.CONDA_LABEL }}.tar.gz

@@ -49,16 +49,18 @@ def fail_checker(test_dir, aster_ver):
     if last_failed is None:
         last_failed = get_current_failed(test_dir)
 
-    fail_messages = [
-        # Missing xmgrace
+    missing_packages = [
         ("Le fichier xmgrace n'existe pas",),
-        # Missing scipy
         ("ModuleNotFoundError: No module named 'scipy'",),
-        # missing miss3d
         ("run_miss3d: not found",),
+        ("No module named 'asrun'",),
+    ]
+    numpy_failures = [
         # Related to numpy >1.20
         ("AttributeError: module 'numpy' has no attribute 'float'.", 'MacroCommands/post_endo_fiss_ops.py", line 831'),
         ("AttributeError: module 'numpy' has no attribute 'complex'.", 'zzzz313a.comm.changed.py", line 44'),
+    ]
+    unclassified_fail_messages = [
         # Uncategorized
         ("<F> <DVP_1>", "La commande CALC_ERC_DYN ne peut fonctionner que sur des maillages ne contenant que des SEG2"),
         ("<F> <DVP_1>", "dmax .gt. 0.d0"),
@@ -70,12 +72,11 @@ def fail_checker(test_dir, aster_ver):
         ("Fortran runtime error: Unit number in I/O statement too large", "acearp.F90"),
         ("<F> <UTILITAI6_77>",),
         ("<F> <ELEMENTS2_57>", "La modélisation T3G ne permet pas de bien"),
+        ("<F> <FACTOR_11>", "la matrice est singulière ou presque singulière"),
         ("AttributeError: 'libaster.Function' object has no attribute 'getMaterialNames'",),
         ("TypeError: 'float' object cannot be interpreted as an integer",),
         ("<F> <FERMETUR_13>", "libumat.so: cannot open shared object file"),
-        ("No module named 'asrun'",),
         ("Fatal Python error: Segmentation fault", "=139"),
-        # ("Fatal Python error: Aborted",),
         ("JeveuxCollection.h", "ABORT - exit code 17", "seems empty"),
         ("Killed", '137'),
         ("NOOK_TEST_RESU",)
@@ -90,14 +91,14 @@ def fail_checker(test_dir, aster_ver):
 
     num_failed_tot = 0
     unidentified_failures = []
-    fail_map: dict[str, FailedJob] = {}
+    fail_map: dict[tuple[str], FailedJob] = {}
 
     for failed_mess in last_failed:
         if not failed_mess.exists():
             continue
         has_failed = False
         is_identified = False
-        for fail_msg in fail_messages:
+        for fail_msg in unclassified_fail_messages + missing_packages + numpy_failures:
             data = failed_mess.read_text(encoding='utf-8')
 
             if failed_termination_msg in data or abnormal_termination_msg in data or not_ok_result in data:
@@ -121,13 +122,31 @@ def fail_checker(test_dir, aster_ver):
         else:
             print(f'{failed_mess} did not fail')
 
-    print('\nFailures due to:\n')
-    for fail_msg, failed_job in fail_map.items():
-        failed_seq = " & ".join([f"'{x}'" for x in fail_msg])
-        print(f'"{failed_seq}": {failed_job.num_failed} jobs failed')
-        print('|'.join(failed_job.jobs_failed))
-        print()
+    res = sum([len(fail_map.get(nf, FailedJob(0, [])).jobs_failed) for nf in missing_packages])
+    print(f'\nMissing packages Errors ({res}):\n')
+    for mis_pack in missing_packages:
+        for failure in fail_map.get(mis_pack, FailedJob(0, [])).jobs_failed:
+            print(f"{failure} due to '{mis_pack[0]}'")
 
+    res = sum([len(fail_map.get(nf, FailedJob(0, [])).jobs_failed) for nf in numpy_failures])
+    print(f'\nNumpy Errors ({res}):\n')
+    for numpy_fail in numpy_failures:
+        for failure in fail_map.get(numpy_fail, FailedJob(0, [])).jobs_failed:
+            print(f"{failure} due to '{numpy_fail}'")
+
+    res = sum([len(fail_map.get(nf, FailedJob(0, [])).jobs_failed) for nf in unclassified_fail_messages])
+    print(f'\nUnclassified Errors ({res}):\n')
+    for numpy_fail in unclassified_fail_messages:
+        for failure in fail_map.get(numpy_fail, FailedJob(0, [])).jobs_failed:
+            print(f"{failure} due to '{numpy_fail}'")
+
+    unidentified_failures_num = len(unidentified_failures)
+    if unidentified_failures_num > 0:
+        print(f'\nUnidentified failures {unidentified_failures_num}:')
+        for fail_mess in unidentified_failures:
+            print(fail_mess)
+
+    print('\n')
     # 96% tests passed, 81 tests failed out of 2182
     print(
         f'{(tot_num_jobs - num_failed_tot) / tot_num_jobs * 100:.2f}% tests passed, {num_failed_tot} tests failed out of {tot_num_jobs}')
@@ -135,15 +154,14 @@ def fail_checker(test_dir, aster_ver):
         f'{num_identified_failed} failures identified out of {num_failed_tot} jobs -> {num_identified_failed / num_failed_tot * 100:.2f}%')
 
     print(f'{num_failed_tot} failures out of {tot_num_jobs} jobs -> {num_failed_tot / tot_num_jobs * 100:.2f}%')
+    print(f'Number of unidentified failures: {unidentified_failures_num}')
 
-    print('Unidentified failures:')
-    for fail_mess in unidentified_failures:
-        print(fail_mess)
+    all_failed_jobs = '|'.join([f.stem for f in test_dir.glob('*.mess')])
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_dir', default='temp/ctest', type=str, help='Path to the test directory')
+    parser.add_argument('--test_dir', default='temp/ctestpy310', type=str, help='Path to the test directory')
     parser.add_argument('--aster_ver', type=str, default='16.4.2', help='Code_Aster version')
 
     args = parser.parse_args()
