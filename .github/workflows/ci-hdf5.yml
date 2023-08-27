@@ -6,8 +6,8 @@ on:
     paths:
       - src/code_aster/hdf5/**
       - .github/workflows/ci-hdf5.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 env:
   PKG_NAME: hdf5
