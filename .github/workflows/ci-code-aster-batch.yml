@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8np125
+  CONDA_LABEL: gcc8np122
 
 jobs:
   build_batch_1:
@@ -49,6 +49,7 @@ jobs:
               zstd_compression_level: 19
             channels:
               - conda-forge
+              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
@@ -110,6 +111,7 @@ jobs:
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
+              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
@@ -172,6 +174,7 @@ jobs:
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
+              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
@@ -229,6 +232,7 @@ jobs:
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
+              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
             code-aster==16.4.2

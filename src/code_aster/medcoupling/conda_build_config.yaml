@@ -44,6 +44,6 @@ pin_run_as_build:
 boost:
   - 1.78
 numpy:
-  - '1.25'
+  - '1.22'
 hdf5:
-  - 1.10.6=nompi*
+  - 1.10.9=nompi*

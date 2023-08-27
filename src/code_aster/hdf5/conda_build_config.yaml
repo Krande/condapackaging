@@ -23,3 +23,7 @@ mpi:
 #  - openmpi  # [unix]
 MACOSX_SDK_VERSION:        # [osx and x86_64]
   - "10.12"                # [osx and x86_64]
+numpy:
+  - '1.22'
+hdf5:
+  - 1.10.9=nompi*
