@@ -161,8 +161,8 @@ def fail_checker(test_dir, aster_ver):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_dir', default='temp/ctestpy310', type=str, help='Path to the test directory')
-    parser.add_argument('--aster_ver', type=str, default='16.4.2', help='Code_Aster version')
+    parser.add_argument('--test-dir', default='temp/ctestpy310', type=str, help='Path to the test directory')
+    parser.add_argument('--aster-ver', type=str, default='16.4.2', help='Code_Aster version')
 
     args = parser.parse_args()
     fail_checker(args.test_dir, args.aster_ver)

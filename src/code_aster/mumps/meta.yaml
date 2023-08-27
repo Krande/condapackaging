@@ -16,7 +16,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster1_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+  string: aster1_py{{ CONDA_PY }}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   number: 2
 
 requirements:
