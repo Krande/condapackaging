@@ -98,7 +98,7 @@ if __name__ == '__main__':
     #     set_meta_requirement('build', dep)
 
     # various dependencies that ought to be pinned
-    ensure_consistent_package_versions('numpy', '1.22')
+    ensure_consistent_package_versions('numpy', '1.23')
     # ensure_consistent_package_versions('libgomp', '1.23')
     ensure_consistent_package_versions('hdf5', '1.10.9=nompi*')
     # add_pin_run_as_build('hdf5', min_version='x.x.x', max_version='x.x.x')

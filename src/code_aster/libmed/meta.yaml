@@ -33,15 +33,16 @@ requirements:
     - swig >=4.0.2
     - python
     - make
-    - hdf5 {{ hdf5 }}
 
   host:
     - hdf5 {{ hdf5 }}
+    - zlib
     - python
 
   run:
     - hdf5 {{ hdf5 }}
     - python
+    - zlib
 
 test:
   imports:

@@ -40,7 +40,7 @@ pin_run_as_build:
     max_pin: x.x
 
 numpy:
-  - '1.22'
+  - '1.23'
 hdf5:
   - 1.10.9=nompi*
 boost:
