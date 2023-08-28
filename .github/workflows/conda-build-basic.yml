@@ -39,8 +39,8 @@ env:
 
 jobs:
   build_conda:
-    name: ${{ inputs.package }}-${{ input.platform }}-${{ input.pyver }}
-    runs-on: ${{ input.platform }}
+    name: ${{ inputs.package }}-${{ inputs.platform }}-${{ inputs.pyver }}
+    runs-on: ${{ inputs.platform }}
     defaults:
       run:
         shell: bash -l {0}
