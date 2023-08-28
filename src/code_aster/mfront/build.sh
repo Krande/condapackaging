@@ -1,12 +1,12 @@
 #!/bin/bash
 
 
-export LDFLAGS="--sysroot ${CONDA_BUILD_SYSROOT} -L$PREFIX/lib -lm -lpthread -lrt -ldl -lz -lgomp ${LDFLAGS}"
+export LDFLAGS="-L$PREFIX/lib -lm -lpthread -lrt -ldl -lz -lgomp ${LDFLAGS}"
 export LIBPATH="$PREFIX/lib $LIBPATH"
 
 export TFELHOME="${PREFIX}"
 python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
-
+CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
 cmake -S . -B build \
     -Wno-dev \
     -DCMAKE_BUILD_TYPE=Release \
@@ -25,6 +25,7 @@ cmake -S . -B build \
     -DPYTHON_LIBRARY:FILEPATH="${PREFIX}/lib/libpython${python_version}.so" \
     -DPYTHON_LIBRARY_PATH:PATH="${PREFIX}/lib" \
     -DPYTHON_INCLUDE_DIRS:PATH="${PREFIX}/include" \
+    ${CMAKE_PLATFORM_FLAGS[@]} \
     -DUSE_EXTERNAL_COMPILER_FLAGS=ON
 
 
