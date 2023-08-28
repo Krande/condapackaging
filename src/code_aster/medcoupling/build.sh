@@ -10,12 +10,12 @@ on_mpi="OFF"
 on_seq="ON"
 
 CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
+export MED_INT_IS_LONG=ON
 
-cmake .. -C "$RECIPE_DIR/TryRunResults.cmake" \
+cmake .. \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
-    -DMED_INT_IS_LONG:BOOL=ON \
     -DSALOME_CMAKE_DEBUG=ON \
     -DSALOME_USE_MPI=${on_mpi} \
     -DMEDCOUPLING_BUILD_TESTS=OFF \
@@ -33,10 +33,8 @@ cmake .. -C "$RECIPE_DIR/TryRunResults.cmake" \
     -DMEDFILE_ROOT_DIR=${PREFIX} \
     -DSCOTCH_ROOT_DIR=${PREFIX} \
     -DMETIS_ROOT_DIR=${PREFIX} \
-    -DPTSCOTCH_ROOT_DIR=${PREFIX} \
     -DPARMETIS_ROOT_DIR=${PREFIX} \
     -DCMAKE_BUILD_TYPE=Release \
-    ${CMAKE_PLATFORM_FLAGS[@]} \
     -DCMAKE_PREFIX_PATH="${PREFIX}"
 
 make -j

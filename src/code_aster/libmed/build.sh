@@ -9,11 +9,24 @@
 
 export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
 export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
-export F77=${FC}
 
+export F77=${FC}
 export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
 
-./configure --with-swig=yes --prefix="$PREFIX" --with-f90 --with-hdf5="$PREFIX"
+opts=("--with-swig=yes" )
+
+# Switch to enable debug symbols
+enable_debug=0
+if [ ${enable_debug} -eq 1 ]; then
+    export CFLAGS="-g ${CFLAGS}"
+    export CXXFLAGS="-g ${CXXFLAGS}"
+    export FCFLAGS="-g ${FCFLAGS}"
+    opts+=( "--enable-mesgerr" )
+else
+    opts+=( "--disable-mesgerr" )
+fi
+
+./configure "${opts[@]}" --prefix="$PREFIX" --with-hdf5="$PREFIX"
 make
 make install
 
