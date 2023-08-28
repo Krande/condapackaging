@@ -231,3 +231,9 @@ it back off `sudo service apport start`).
 ## Sysroot and cross compilation
 Could this be relevant?
 https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html#an-aside-on-cmake-and-sysroots
+
+If this is the case it would affect the following packages:
+
+* [mgis](./mgis/build.sh)
+* [mfront](./mfront/build.sh)
+* [medcoupling](./medcoupling/build.sh)

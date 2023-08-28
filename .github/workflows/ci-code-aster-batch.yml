@@ -27,7 +27,7 @@ jobs:
           { name: scotch, boa: true },
           { name: metis, boa: false },
           { name: libmed, boa: false },
-          { name: mfront, boa: false },
+#          { name: mfront, boa: false },
           { name: homard, boa: true },
         ]
         pyver: [

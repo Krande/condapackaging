@@ -30,16 +30,15 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
     - sysroot_linux-64 2.17
-    - numpy
     - cmake
     - swig 3.0.12
-    - hdf5 {{ hdf5 }}
     - python
 
   host:
     - python
     - numpy
     - libmed {{ libmed_ver }}=aster_*
+    - hdf5 {{ hdf5 }}
     - boost
     - libxml2
 
@@ -48,7 +47,7 @@ requirements:
     - numpy
     - libmed
     - boost
-    - hdf5 {{ hdf5 }}
+    - hdf5
 
 test:
   imports:
