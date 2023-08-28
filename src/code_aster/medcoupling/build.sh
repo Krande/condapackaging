@@ -11,10 +11,11 @@ on_seq="ON"
 
 CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
 
-cmake .. \
+cmake .. -C "$RECIPE_DIR/TryRunResults.cmake" \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
+    -DMED_INT_IS_LONG:BOOL=ON \
     -DSALOME_CMAKE_DEBUG=ON \
     -DSALOME_USE_MPI=${on_mpi} \
     -DMEDCOUPLING_BUILD_TESTS=OFF \
