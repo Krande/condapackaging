@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8np123
+  CONDA_LABEL: gcc8cfdeps
 
 jobs:
   build_batch_1:
@@ -22,10 +22,10 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, boa: true },
+#          { name: scotch, boa: true },
           { name: metis, boa: false },
           { name: libmed, boa: false },
-          { name: mfront, boa: false },
+#          { name: mfront, boa: false },
           { name: homard, boa: true },
         ]
         pyver: [
@@ -49,7 +49,6 @@ jobs:
               zstd_compression_level: 19
             channels:
               - conda-forge
-              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
@@ -111,7 +110,6 @@ jobs:
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
-              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
@@ -174,7 +172,6 @@ jobs:
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
-              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
@@ -203,7 +200,7 @@ jobs:
           
 
   run_ctest:
-    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    name: ctest-${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     needs: build_code_aster
     runs-on: ${{ matrix.platform.distver }}
     defaults:
@@ -232,7 +229,6 @@ jobs:
             channels:
               - krande/label/${{ env.CONDA_LABEL }}
               - conda-forge
-              - krande/label/hdfgcc8
           create-args: >-
             python=${{ matrix.pyver.distver }}
             code-aster==16.4.2

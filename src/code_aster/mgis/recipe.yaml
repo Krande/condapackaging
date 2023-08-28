@@ -32,12 +32,12 @@ requirements:
     - python
     - numpy
     - boost
-    - mfront {{ mfront_ver }}=aster_*
+    - mfront {{ mfront_ver }} #=aster_*
 
   run:
     - numpy
     - boost
-    - mfront
+    - mfront {{ mfront_ver }}
     - python
 #
 #test:

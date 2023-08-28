@@ -34,7 +34,7 @@ requirements:
     - libgomp
     - libblas
     - liblapack
-    - metis 5.1.0=aster4*
+    - metis 5.1.0 #=aster4*
     - scotch 7.0.1
     - zlib
 

@@ -1,9 +1,9 @@
 context:
   name: code-aster
   version: 16.4.2
-  med_ver: 4.1.1=aster_*
+  med_ver: 4.1.1 #=aster_*
   metis_ver: 5.1.0=aster4*
-  mfront_ver: 4.1.0=aster_*
+  mfront_ver: 4.1.0 #=aster_*
   mumps_ver: 5.5.1=aster1*
   petsc_ver: 3.17.1_aster
   scotch_ver: 7.0.1

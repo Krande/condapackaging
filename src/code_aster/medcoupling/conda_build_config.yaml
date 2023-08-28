@@ -46,4 +46,4 @@ boost:
 numpy:
   - '1.23'
 hdf5:
-  - 1.10.9=nompi*
+  - 1.10.*=nompi*
