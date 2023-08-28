@@ -54,6 +54,11 @@ jobs:
           create-args: >-
             python=${{ matrix.pyver.distver }}
 
+      - name: try to remove swig
+        continue-on-error: true
+        run: |
+          sudo apt-get remove swig
+
       - name: make dirs
         run: |
           mkdir -p ${{ env.WORK_DIR }}/artifacts
@@ -114,6 +119,11 @@ jobs:
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
+
+      - name: try to remove swig
+        continue-on-error: true
+        run: |
+          sudo apt-get remove swig
 
       - name: make dirs
         run: |
