@@ -23,6 +23,12 @@ requirements:
     - sysroot_linux-64 2.17
     - make
 
+  host:
+    - python
+
+  run:
+    - python
+
 test:
   commands:
     # Check for existence of files and directories
