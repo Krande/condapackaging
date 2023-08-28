@@ -41,4 +41,5 @@ jobs:
       conda_label: gcc8crosslinux
       conda_user: krandedev
     secrets:
-      CONDA_TOKEN: ${{ env.CONDA_TOKEN }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
