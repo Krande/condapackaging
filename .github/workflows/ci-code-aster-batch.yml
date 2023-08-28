@@ -10,6 +10,8 @@ on:
 env:
   WORK_DIR: /home/runner/work
   CONDA_LABEL: gcc8crosslinux
+  CONDA_USER: krandedev
+  CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
 
 jobs:
   build_batch_1:
@@ -71,7 +73,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
 
   build_batch_2:
     needs: build_batch_1
@@ -135,7 +137,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
 
   build_code_aster:
     needs: build_batch_2
@@ -196,7 +198,7 @@ jobs:
           if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+          anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
           
 
   run_ctest:
