@@ -38,7 +38,7 @@ jobs:
       pyver: ${{ matrix.pyver }}
       platform: ${{ matrix.platform }}
       boa: ${{ matrix.package.boa }}
-      conda_label: ${{ env.CONDA_LABEL }}
-      conda_user: ${{ env.CONDA_USER }}
+      conda_label: "${{ env.CONDA_LABEL }}"
+      conda_user: "${{ env.CONDA_USER }}"
     secrets:
       CONDA_TOKEN: ${{ env.CONDA_TOKEN }}
