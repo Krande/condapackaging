@@ -1,0 +1,88 @@
+name: ci-code-aster-batch
+
+# bump 1
+on:
+  workflow_call:
+    inputs:
+      package_name:
+        description: 'package name'
+        type: string
+        required: true
+      pyver:
+        description: 'python version'
+        type: string
+        required: true
+      platform:
+        description: 'platform'
+        type: string
+        required: true
+      boa:
+        description: 'use boa'
+        type: boolean
+        required: true
+      conda_label:
+        description: 'conda label'
+        type: string
+        required: true
+      conda_user:
+        description: 'conda user'
+        type: string
+        required: true
+
+    secrets:
+      CONDA_TOKEN:
+        description: 'anaconda token'
+        required: true
+
+env:
+  WORK_DIR: /home/runner/work
+
+jobs:
+  build_conda:
+    name: ${{ inputs.package }}-${{ input.platform }}-${{ input.pyver }}
+    runs-on: ${{ input.platform }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: environment.conda.yml
+          condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
+            conda-build:
+              pkg_format: 2
+              zstd_compression_level: 19
+            channels:
+              - conda-forge
+          create-args: >-
+            python=${{ inputs.pyver }}
+
+      - name: try to remove swig
+        continue-on-error: true
+        run: |
+          sudo apt remove swig make
+
+      - name: make dirs
+        run: |
+          mkdir -p ${{ env.WORK_DIR }}/artifacts
+          mkdir -p ${{ env.WORK_DIR }}/build
+
+      - name: build local packages
+        run: |
+          if [[ ${{ inputs.boa }} == true ]]; then
+            boa build . --python ${{ inputs.pyver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          else
+            conda mambabuild . --python ${{ inputs.pyver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+          fi
+        working-directory: src/code_aster/${{ inputs.package_name }}
+      - name: upload to anaconda
+        run: |
+          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
+          if [ "${{ inputs.platform }}" == 'Windows' ]; then
+            path="'$path'"
+          fi
+          anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
+
