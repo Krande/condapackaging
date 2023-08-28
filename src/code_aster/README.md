@@ -13,6 +13,42 @@ the conda package will be submitted to conda-forge.
 The official code-aster variants published in Singularity containers are compiled against the following
 dependencies v16.4.2: [VERSION="20221225"](#version20221225)
 
+## Dependencies relations
+The following graph shows the dependencies between the different packages.
+
+```mermaid
+  flowchart TD;
+    A[Code Aster v16.4.2]
+    B[mfront]
+    C[libmed]
+    D[scotch]
+    E[medcoupling]
+    F[asrun]
+    G[metis]
+    H[mumps]
+    I[mgis]
+    J[homard]
+    K[petsc]
+    
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    A --> G
+    A --> H
+    A --> I
+    A --> J
+    A --> K
+    
+    I --> B
+    H --> G
+    H --> D
+    E --> C
+    
+```
+
+
 ## Validation
 
 **NOTE!** Keep in mind that many of the tests require `ctest`. So you will have to install `cmake` if you haven't 
@@ -104,42 +140,6 @@ At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.
 not started
 
 
-## Dependencies relations
-The following graph shows the dependencies between the different packages.
-
-```mermaid
-  flowchart TD;
-    A[Code Aster v16.4.2]
-    B[mfront]
-    C[libmed]
-    D[scotch]
-    E[medcoupling]
-    F[asrun]
-    G[metis]
-    H[mumps]
-    I[mgis]
-    J[homard]
-    K[petsc]
-    
-    A --> B
-    A --> C
-    A --> D
-    A --> E
-    A --> F
-    A --> G
-    A --> H
-    A --> I
-    A --> J
-    A --> K
-    
-    I --> B
-    H --> G
-    H --> D
-    E --> C
-    
-```
-
-
 ## Official deps
 
 * [v15.8.0 Singularity env](https://gitlab.com/codeaster/src/-/blob/15.8.0/env.d/scibian9_std.sh?ref_type=tags)
@@ -228,3 +228,6 @@ If you're on ubuntu you might have to turn off `Apport` before running the compi
 Do this by entering `sudo service apport stop` (after you're done debugging you can turn 
 it back off `sudo service apport start`).
 
+## Sysroot and cross compilation
+Could this be relevant?
+https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html#an-aside-on-cmake-and-sysroots

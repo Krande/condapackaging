@@ -1,3 +1,4 @@
+import argparse
 import os
 import pathlib
 import shutil
@@ -37,4 +38,9 @@ def create_suite(test_dir):
 
 
 if __name__ == '__main__':
-    create_suite('temp/ctestpy310')
+    argparse = argparse.ArgumentParser()
+    argparse.add_argument('test_dir', help='The directory containing the failed tests')
+    args = argparse.parse_args()
+    create_suite(args.test_dir)
+
+

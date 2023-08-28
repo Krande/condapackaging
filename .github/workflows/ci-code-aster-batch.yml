@@ -110,7 +110,7 @@ jobs:
               pkg_format: 2
               zstd_compression_level: 19            
             channels:
-              - krande/label/${{ env.CONDA_LABEL }}
+              - ${{ env.CONDA_USER }}/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
@@ -172,7 +172,7 @@ jobs:
               pkg_format: 2
               zstd_compression_level: 19            
             channels:
-              - krande/label/${{ env.CONDA_LABEL }}
+              - ${{ env.CONDA_USER }}/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
@@ -229,7 +229,7 @@ jobs:
           environment-name: test-env
           condarc: |
             channels:
-              - krande/label/${{ env.CONDA_LABEL }}
+              - ${{ env.CONDA_USER }}/label/${{ env.CONDA_LABEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver.distver }}
