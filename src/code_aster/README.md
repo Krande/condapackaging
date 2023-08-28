@@ -1,10 +1,5 @@
 # Compiling Code Aster
 
-Note! The intention is to set up the official compilation of code-aster and its dependencies in conda-forge. 
-To emulate as close as possible the conditions found in conda-forge the conda_build_config.yaml file 
-will contain more information based on the global pinning file used by conda-forge. 
-See https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/main/recipe/conda_build_config.yaml
-for more information.
 
 Once the number of failed tests reaches a low enough number, and the remaining failures can be attributed to
 either missing dependencies that are excluded on purpose or to identified bugs in the code aster source code 
@@ -12,6 +7,43 @@ the conda package will be submitted to conda-forge.
 
 The official code-aster variants published in Singularity containers are compiled against the following
 dependencies v16.4.2: [VERSION="20221225"](#version20221225)
+
+
+At the time of writing the code-aster conda package is compiled for python 3.9, 3.10 and 3.11. 
+
+To download and install the conda package run the following command:
+
+`mamba create -n codeaster -c krande/label/gcc8 code-aster==16.4.2`
+
+Here are the latest test results for the different experimental packages:
+
+| Label | Python version | Failed Tests | Status                                                                                        |
+|-------|----------------|--------------|-----------------------------------------------------------------------------------------------|
+| gcc8  | 3.9            | 118          | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223638863) |
+| gcc8  | 3.10           | 121          | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223639052) |
+| gcc8  | 3.11           | 26           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223639163) |
+
+
+Note!
+
+Among the reported failing tests, 10 tests are currently failing on all python versions and are a direct result of 
+missing dependencies (ie 10 tests are not considered critical wrt. validating code aster as a conda package).
+
+The dependencies in question are
+* scipy (1)
+* xmgrace (6)
+* miss3d (1)
+* asrun (2)
+
+
+## Methodology
+For now github actions is the chosen tools for quickly developing, packaging and testing code-aster for conda.
+
+The intention is to set up the official compilation of code-aster and its dependencies in conda-forge. 
+To emulate as close as possible the conditions found in conda-forge the conda_build_config.yaml file 
+will contain more information based on the global pinning file used by conda-forge. 
+See https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/main/recipe/conda_build_config.yaml
+for more information.
 
 ## Dependencies relations
 The following graph shows the dependencies between the different packages.
@@ -104,19 +136,7 @@ The current status of the conda package compilation is as follows:
 - [x] homard
 - [x] petsc
 
-At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.11. 
 
-Here are the latest test results for the different experimental packages:
-
-| Label | Python version | Failed Tests | Status                                                                                        |
-|-------|----------------|--------------|-----------------------------------------------------------------------------------------------|
-| gcc8  | 3.9            | 118          | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223638863) |
-| gcc8  | 3.10           | 121          | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223639052) |
-| gcc8  | 3.11           | 26           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223639163) |
-
-To download and install the conda package run the following command:
-
-`mamba create -n codeaster -c krande/label/gcc8 code-aster==16.4.2`
 
 #### Compatibility with conda-forge packages
 

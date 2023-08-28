@@ -42,6 +42,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
@@ -105,6 +107,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
@@ -175,6 +179,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
@@ -237,6 +243,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
@@ -303,6 +311,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
@@ -348,7 +358,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: mgis, boa: true },
+          { name: mgis, boa: false },
         ]
         pyver: [
           { name: py39, distver: '3.9' },
@@ -366,6 +376,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
@@ -433,6 +445,8 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
@@ -493,6 +507,8 @@ jobs:
         with:
           environment-name: test-env
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             channels:
               - ${{ env.CONDA_USER }}/label/${{ env.CONDA_LABEL }}
               - conda-forge
