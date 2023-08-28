@@ -30,7 +30,7 @@ requirements:
     - {{ compiler('cxx') }}
     - sysroot_linux-64 2.17
     - autoconf
-    - swig >=4.0.2
+    - swig 3.0.12
     - python
     - make
 

@@ -79,8 +79,11 @@ At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.
 #### Compatibility with conda-forge packages
 
 * mfront
+  * 
 * scotch
-
+  * 
+* HDF5 v1.10.6 (conda-forge) vs v1.10.9 (custom)
+  * No observable difference in number of failed tests when comparing v1.10.6 and v1.10.9 
 
 ### Windows
 

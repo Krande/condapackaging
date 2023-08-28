@@ -34,7 +34,7 @@ requirements:
           - llvm-openmp
           - cmake
           - ninja
-      - swig
+      - swig 3.0.12
       - python
       - hdf5
   host:
