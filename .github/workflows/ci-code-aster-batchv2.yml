@@ -5,30 +5,63 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batchv2.yml
-#    branches:
-#      - donotrun
-env:
-  WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8crosslinux
-  CONDA_USER: krandedev
-  CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    branches:
+      - donotrun
+
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
 jobs:
-  build_batch_libmed:
+  build_batch_1:
+    uses: ./.github/workflows/conda-build-basic.yml
     strategy:
       fail-fast: false
       matrix:
         package: [
-          { name: libmed, boa: false },
+          { name: scotch, boa: true },
+          { name: metis, boa: false },
+          { name: homard, boa: true },
         ]
-    uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ${{ matrix.package.name }}
       boa: ${{ matrix.package.boa }}
-      conda_label: gcc8crosslinux
-      conda_user: krandedev
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
-
-
+    secrets: inherit
+  build_batch_mumps:
+    needs: build_batch_1
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mumps
+      boa: false
+    secrets: inherit
+  build_batch_libmed:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: libmed
+      boa: false
+    secrets: inherit
+  build_batch_medcoupling:
+    needs: build_batch_libmed
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: medcoupling
+      boa: false
+    secrets: inherit
+  build_batch_mfront:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mfront
+      boa: false
+    secrets: inherit
+  build_batch_mgis:
+    needs: build_batch_mfront
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mgis
+      boa: false
+    secrets: inherit
+  build_batch_code_aster:
+    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: code-aster
+      boa: false
+    secrets: inherit

@@ -12,23 +12,16 @@ on:
         description: 'use boa'
         type: boolean
         required: true
-      conda_label:
-        description: 'conda label'
-        type: string
-        required: true
-      conda_user:
-        description: 'conda user'
-        type: string
-        required: true
       work_dir:
         description: 'work dir'
         type: string
         required: false
         default: /home/runner/work
-    secrets:
-      CONDA_TOKEN:
-        description: 'anaconda token'
-        required: true
+
+env:
+  CONDA_LABEL: gcc8crosslinux
+  CONDA_USER: krandedev
+  CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
 
 
 jobs:
@@ -56,6 +49,7 @@ jobs:
               zstd_compression_level: 19
             channels:
               - conda-forge
+              - ${{ env.CONDA_USER }}/label/${{ env.CONDA_LABEL }}
           create-args: >-
             python=${{ matrix.pyver }}
 
@@ -84,5 +78,5 @@ jobs:
           if [ "${{ matrix.platform }}" == 'Windows' ]; then
             path="'$path'"
           fi
-          anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
+          anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
 
