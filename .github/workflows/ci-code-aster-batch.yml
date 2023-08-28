@@ -209,7 +209,7 @@ jobs:
           fi
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
   build_batch_mumps:
-    needs: build_batch_batch1
+    needs: build_batch_1
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
