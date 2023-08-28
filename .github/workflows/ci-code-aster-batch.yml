@@ -268,7 +268,7 @@ jobs:
 
       - name: Package ctest directories
         run: |
-          tar czf ctest-results.tar.gz ctest-*
+          tar czf ctest-results-${{ env.CONDA_LABEL }}.tar.gz ctest-*
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
