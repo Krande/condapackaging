@@ -22,16 +22,13 @@ jobs:
         package: [
           { name: libmed, boa: false },
         ]
-        pyver: [ 3.9, 3.10, 3.11 ]
-        platform: [ubuntu-latest ] #, windows-latest, macos-latest]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ${{ matrix.package.name }}
-      pyver: ${{ matrix.pyver }}
-      platform: ${{ matrix.platform }}
       boa: ${{ matrix.package.boa }}
       conda_label: gcc8crosslinux
       conda_user: krandedev
     secrets:
       CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
 

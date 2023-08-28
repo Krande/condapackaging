@@ -8,14 +8,6 @@ on:
         description: 'package name'
         type: string
         required: true
-      pyver:
-        description: 'python version'
-        type: string
-        required: true
-      platform:
-        description: 'platform'
-        type: string
-        required: true
       boa:
         description: 'use boa'
         type: boolean
@@ -41,11 +33,16 @@ on:
 
 jobs:
   build_conda:
-    name: ${{ inputs.package }}-${{ inputs.platform }}-${{ inputs.pyver }}
-    runs-on: ${{ inputs.platform }}
+    name: ${{ inputs.package_name }}-${{ matrix.platform }}-${{ matrix.pyver }}
+    runs-on: ${{ matrix.platform }}
     defaults:
       run:
         shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        pyver: [ "3.9", "3.10", "3.11" ]
+        platform: [ ubuntu-latest ] #, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
@@ -60,7 +57,7 @@ jobs:
             channels:
               - conda-forge
           create-args: >-
-            python=${{ inputs.pyver }}
+            python=${{ matrix.pyver }}
 
       - name: try to remove swig
         continue-on-error: true
@@ -75,15 +72,16 @@ jobs:
       - name: build local packages
         run: |
           if [[ ${{ inputs.boa }} == true ]]; then
-            boa build . --python ${{ inputs.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
+            boa build . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
           else
-            conda mambabuild . --python ${{ inputs.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
+            conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
           fi
         working-directory: src/code_aster/${{ inputs.package_name }}
+
       - name: upload to anaconda
         run: |
           path="${{ inputs.work_dir }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-          if [ "${{ inputs.platform }}" == 'Windows' ]; then
+          if [ "${{ matrix.platform }}" == 'Windows' ]; then
             path="'$path'"
           fi
           anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
