@@ -144,7 +144,8 @@ jobs:
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
 
 
-  build_batch_mfront:
+
+  build_batch_1:
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
@@ -154,7 +155,9 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: mfront, boa: false },
+          { name: scotch, boa: true },
+          { name: metis, boa: false },
+          { name: homard, boa: true },
         ]
         pyver: [
           { name: py39, distver: '3.9' },
@@ -205,9 +208,8 @@ jobs:
             path="'$path'"
           fi
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
-
   build_batch_mumps:
-    needs: build_batch_mfront
+    needs: build_batch_batch1
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
@@ -272,7 +274,8 @@ jobs:
             path="'$path'"
           fi
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
-  build_batch_1:
+
+  build_batch_mfront:
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
@@ -282,9 +285,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, boa: true },
-          { name: metis, boa: false },
-          { name: homard, boa: true },
+          { name: mfront, boa: false },
         ]
         pyver: [
           { name: py39, distver: '3.9' },
@@ -335,8 +336,9 @@ jobs:
             path="'$path'"
           fi
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ env.CONDA_USER }} --label ${{ env.CONDA_LABEL }} $path
+
   build_batch_mgis:
-    needs: build_batch_1
+    needs: build_batch_mfront
     name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
