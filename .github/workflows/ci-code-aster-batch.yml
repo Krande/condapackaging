@@ -42,8 +42,6 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
@@ -107,8 +105,7 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20:
+            conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
             channels:
@@ -178,8 +175,6 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
@@ -242,8 +237,6 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
@@ -310,8 +303,6 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
@@ -375,8 +366,6 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            
@@ -444,8 +433,6 @@ jobs:
         with:
           environment-file: environment.conda.yml
           condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 20
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19            

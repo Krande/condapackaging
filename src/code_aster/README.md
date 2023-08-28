@@ -104,13 +104,19 @@ The current status of the conda package compilation is as follows:
 - [x] homard
 - [x] petsc
 
-At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.11. Here are the current test results:
+At the time of writing the conda package is compiled for python 3.9, 3.10 and 3.11. 
 
-| Python version | Status                                                                                        |
-|----------------|-----------------------------------------------------------------------------------------------|
-| 3.9            | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280444) |
-| 3.10           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280571) |
-| 3.11           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5935206416/job/16093280712) |
+Here are the latest test results for the different experimental packages:
+
+| Label | Python version | Failed Tests | Status                                                                                        |
+|-------|----------------|--------------|-----------------------------------------------------------------------------------------------|
+| gcc8  | 3.9            | 118          | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223638863) |
+| gcc8  | 3.10           | 121          | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223639052) |
+| gcc8  | 3.11           | 26           | [CI Status](https://github.com/Krande/condapackaging/actions/runs/5976400546/job/16223639163) |
+
+To download and install the conda package run the following command:
+
+`mamba create -n codeaster -c krande/label/gcc8 code-aster==16.4.2`
 
 #### Compatibility with conda-forge packages
 
