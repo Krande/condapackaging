@@ -26,4 +26,4 @@ MACOSX_SDK_VERSION:        # [osx and x86_64]
 numpy:
   - '1.23'
 hdf5:
-  - 1.10.*=nompi*
+  - 1.10.6=nompi*
