@@ -1,9 +1,9 @@
 #!/bin/bash
 
-mkdir -p "$SRC_DIR/deps/config"
-tar -xzvf "$SRC_DIR/deps/archives/medcoupling-V9_10_0.tar.gz" -C . --strip-components=1
-tar -xzvf "$SRC_DIR/deps/archives/configuration-V9_10_0.tar.gz" -C "$SRC_DIR/deps/config" --strip-components=1
-
+#mkdir -p "$SRC_DIR/deps/config"
+#tar -xzvf "$SRC_DIR/deps/archives/medcoupling-V9_10_0.tar.gz" -C . --strip-components=1
+#tar -xzvf "$SRC_DIR/deps/archives/configuration-V9_10_0.tar.gz" -C "$SRC_DIR/deps/config" --strip-components=1
+export LDFLAGS="--sysroot ${CONDA_BUILD_SYSROOT} ${LDFLAGS}"
 mkdir -p build
 cd build
 

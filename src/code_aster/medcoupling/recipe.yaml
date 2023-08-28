@@ -9,15 +9,15 @@ package:
 
 source:
 
-#  - fn: 'medcoupling_{{ version }}.tar.gz'
-#    url: http://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz # 9.10
-#  - fn: 'config_{{ version }}.tar.gz'
-#    url: http://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=25f724f7a6c0000330a40c3851dcd8bc2493e1fa;sf=tgz # 9.10.0
-#    folder: deps/config
-  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
-    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
-    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
-    folder: deps/
+  - fn: 'medcoupling_{{ version }}.tar.gz'
+    url: http://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz # 9.10
+  - fn: 'config_{{ version }}.tar.gz'
+    url: http://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=25f724f7a6c0000330a40c3851dcd8bc2493e1fa;sf=tgz # 9.10.0
+    folder: deps/config
+#  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+#    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+#    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+#    folder: deps/
 
 
 build:

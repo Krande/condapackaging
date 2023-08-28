@@ -3,6 +3,7 @@
 mkdir build
 cd build
 
+export LDFLAGS="--sysroot ${CONDA_BUILD_SYSROOT} ${LDFLAGS}"
 export TFELHOME="${PREFIX}"
 python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
 

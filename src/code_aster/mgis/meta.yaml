@@ -1,7 +1,6 @@
-context:
-  name: mgis
-  version: 2.1
-  mfront_ver: 4.1.0
+{% set name = "mgis" %}
+{% set version = "2.1" %}
+{% set mfront_ver = "4.1.0" %}
 
 package:
   name: '{{ name|lower }}'
@@ -31,12 +30,12 @@ requirements:
     - python
     - numpy
     - boost
-    - mfront {{ mfront_ver }} #=aster_*
+    - mfront {{ mfront_ver }} =aster_*
 
   run:
     - numpy
     - boost
-    - mfront {{ mfront_ver }}
+    - mfront {{ mfront_ver }} =aster_*
     - python
 #
 #test:

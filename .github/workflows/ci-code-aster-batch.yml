@@ -9,7 +9,7 @@ on:
 #      - donotrun
 env:
   WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc8cfdeps
+  CONDA_LABEL: gcc8crosslinux
 
 jobs:
   build_batch_1:
@@ -25,7 +25,7 @@ jobs:
           { name: scotch, boa: true },
           { name: metis, boa: false },
           { name: libmed, boa: false },
-#          { name: mfront, boa: false },
+          { name: mfront, boa: false },
           { name: homard, boa: true },
         ]
         pyver: [
