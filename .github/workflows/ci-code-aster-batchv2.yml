@@ -5,12 +5,18 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batchv2.yml
-    branches:
-      - donotrun
+#    branches:
+#      - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
 jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      conda_label: gcc8
+      conda_user: krandedev
+
   build_batch_1:
     uses: ./.github/workflows/conda-build-basic.yml
     strategy:
@@ -24,6 +30,8 @@ jobs:
     with:
       package_name: ${{ matrix.package.name }}
       boa: ${{ matrix.package.boa }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mumps:
     needs: build_batch_1
@@ -31,12 +39,16 @@ jobs:
     with:
       package_name: mumps
       boa: false
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_libmed:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
       boa: false
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_medcoupling:
     needs: build_batch_libmed
@@ -44,12 +56,16 @@ jobs:
     with:
       package_name: medcoupling
       boa: false
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mfront:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mfront
       boa: false
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mgis:
     needs: build_batch_mfront
@@ -57,6 +73,8 @@ jobs:
     with:
       package_name: mgis
       boa: false
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_code_aster:
     needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling ]
@@ -64,4 +82,6 @@ jobs:
     with:
       package_name: code-aster
       boa: false
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
