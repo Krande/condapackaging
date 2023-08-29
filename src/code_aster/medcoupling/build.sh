@@ -44,5 +44,5 @@ cmake .. \
     -DPARMETIS_ROOT_DIR="${PREFIX}" \
     -DCMAKE_PREFIX_PATH="${PREFIX}"
 
-make -j
+make -j 1
 make install
