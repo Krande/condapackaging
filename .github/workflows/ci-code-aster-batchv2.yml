@@ -17,8 +17,7 @@ jobs:
       # This is where the conda user and label should be set
       conda_label: debug
       conda_user: krandedev
-      debug_build: True
-        - type: boolean
+      debug_build: "True"
 
     steps:
       - name: dummy step
