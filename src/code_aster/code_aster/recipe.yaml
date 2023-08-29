@@ -35,11 +35,11 @@ requirements:
     - waf
     - pyyaml
     - python
-    - numpy
-    - hdf5 {{ hdf5 }}
+
 
   host:
     - python
+    - hdf5 {{ hdf5 }}
     - numpy
     - pyyaml
     - boost
@@ -58,16 +58,16 @@ requirements:
     - python
     - numpy
     - pyyaml
-    - mfront
-    - libmed
-    - scotch
-    - medcoupling
-    - metis
-    - mumps
-    - mgis
-    - homard
     - libblas
     - liblapack
+    - mfront {{ mfront_ver }}
+    - libmed {{ med_ver }}
+    - metis {{ metis_ver }}
+    - mumps {{ mumps_ver }}
+    - mgis {{ mgis_ver }}
+    - scotch {{ scotch_ver }}
+    - medcoupling {{ medcoupling_ver }}
+    - homard {{ homard_ver }}
     - hdf5 {{ hdf5 }}
 
 test:

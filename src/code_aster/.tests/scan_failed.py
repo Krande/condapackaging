@@ -156,8 +156,7 @@ def fail_checker(test_dir, aster_ver):
     print(f'{num_failed_tot} failures out of {tot_num_jobs} jobs -> {num_failed_tot / tot_num_jobs * 100:.2f}%')
     print(f'Number of unidentified failures: {unidentified_failures_num}')
 
-    all_failed_jobs = '|'.join([f.stem for f in test_dir.glob('*.mess')])
-
+    return fail_map
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

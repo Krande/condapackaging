@@ -100,5 +100,14 @@ One hypethesis might be that this is linked with a
 when compiling on a newer version of linux than the target system.
 
 Update: It seems cross-linux compilation is not the issue. The same error occurs when compiling on the target system.
+## Importing cmath at top level of failed tests
+However, by adding `import cmath` to the top of the AUTO_IMPORTS list in `aster/code_aster/Utilities/base_utils.py` the 
+issue is resolved.
 
-However, by adding `import cmath` to the top of the AUTO_IMPORTS list in `aster/code_aster/Utilities/base_utils.py` the issue is resolved.
+## Re-Running Failed Tests only present on python 3.9/3.10
+
+To re-run only the tests that fail on python 3.9/3.10, I re-ran the  following command:
+
+```bash
+run_ctest --testlist jobs_of_interest.txt --resutest=temp/reinterest --timefactor=5.0 --only-failed-results  --output-on-failure -j 6
+```
