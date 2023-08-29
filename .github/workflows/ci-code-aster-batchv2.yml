@@ -22,76 +22,76 @@ jobs:
         id: env
         run: |
           echo "done"
-
-
-  build_batch_1:
-    needs: env
-    uses: ./.github/workflows/conda-build-basic.yml
-    strategy:
-      fail-fast: false
-      matrix:
-        package: [
-          { name: scotch, boa: true },
-          { name: metis, boa: false },
-          { name: homard, boa: true },
-        ]
-    with:
-      package_name: ${{ matrix.package.name }}
-      boa: ${{ matrix.package.boa }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
-  build_batch_mumps:
-    needs: [ build_batch_1, env ]
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: mumps
-      boa: false
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
-  build_batch_libmed:
-    needs: env
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: libmed
-      boa: false
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
-  build_batch_medcoupling:
-    needs: [ build_batch_libmed, env ]
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: medcoupling
-      boa: true
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
-  build_batch_mfront:
-    needs: env
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: mfront
-      boa: false
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
-  build_batch_mgis:
-    needs: [ build_batch_mfront, env ]
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: mgis
-      boa: false
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
+#
+#
+#  build_batch_1:
+#    needs: env
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        package: [
+#          { name: scotch, boa: true },
+#          { name: metis, boa: false },
+#          { name: homard, boa: true },
+#        ]
+#    with:
+#      package_name: ${{ matrix.package.name }}
+#      boa: ${{ matrix.package.boa }}
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
+#  build_batch_mumps:
+#    needs: [ build_batch_1, env ]
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: mumps
+#      boa: false
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
+#  build_batch_libmed:
+#    needs: env
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: libmed
+#      boa: false
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
+#  build_batch_medcoupling:
+#    needs: [ build_batch_libmed, env ]
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: medcoupling
+#      boa: true
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
+#  build_batch_mfront:
+#    needs: env
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: mfront
+#      boa: false
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
+#  build_batch_mgis:
+#    needs: [ build_batch_mfront, env ]
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: mgis
+#      boa: false
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
   build_batch_code_aster:
-    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
+    needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
-      package_name: code-aster
-      boa: false
+      package_name: code_aster
+      boa: true
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
