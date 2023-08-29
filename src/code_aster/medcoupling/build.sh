@@ -14,6 +14,7 @@ export MED_INT_IS_LONG=ON
 
 cmake .. \
     -Wno-dev \
+    -DPYTHON_ROOT_DIR=${PREFIX} \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
     -DSALOME_CMAKE_DEBUG=ON \
