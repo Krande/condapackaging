@@ -16,6 +16,13 @@ jobs:
     outputs:
       conda_label: gcc8
       conda_user: krandedev
+    steps:
+        - uses: actions/checkout@v2
+        - name: set outputs
+          id: env
+          run: |
+            echo "conda_label=gcc8" >> $GITHUB_ENV
+            echo "conda_user=krandedev" >> $GITHUB_ENV
 
   build_batch_1:
     uses: ./.github/workflows/conda-build-basic.yml
