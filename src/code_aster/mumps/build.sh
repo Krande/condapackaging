@@ -17,6 +17,14 @@ fi
 export LIBPATH="$PREFIX/lib $LIBPATH"
 export INCLUDES="$PREFIX/include $INCLUDES"
 
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    echo "Debugging Enabled"
+    export CFLAGS="-g ${CFLAGS}"
+    export FCFLAGS="-g ${FCFLAGS}"
+else
+    echo "Debugging Disabled"
+fi
+
 $PYTHON waf configure install \
   --prefix="${PREFIX}" \
   --enable-openmp \

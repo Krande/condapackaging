@@ -12,6 +12,11 @@ on:
         description: 'use boa'
         type: boolean
         required: true
+      debug_build:
+        description: 'should produce a debug build'
+        type: boolean
+        required: false
+        default: true
       work_dir:
         description: 'work dir'
         type: string
@@ -28,7 +33,7 @@ on:
 
 env:
   CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
-
+  PKG_DEBUG: "False"
 
 jobs:
   build_conda:
@@ -58,6 +63,12 @@ jobs:
               - ${{ inputs.conda_user }}/label/${{ inputs.conda_label }}
           create-args: >-
             python=${{ matrix.pyver }}
+
+      - name: Check if debug build
+        run: |
+          if [[ ${{ inputs.debug_build }} == true ]]; then
+            echo "PKG_DEBUG=True" >> $GITHUB_ENV
+          fi
 
       - name: try to remove swig
         continue-on-error: true

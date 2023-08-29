@@ -6,10 +6,18 @@ export LIBPATH="$PREFIX/lib $LIBPATH"
 
 export TFELHOME="${PREFIX}"
 python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
-CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
+
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+  echo "Debugging Enabled"
+  build_type="Debug"
+else
+  build_type="Release"
+  echo "Debugging Disabled"
+fi
+
 cmake -S . -B build \
     -Wno-dev \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_BUILD_TYPE=$build_type \
     -Dlocal-castem-header=ON \
     -Denable-fortran=ON \
     -Denable-python-bindings=ON \
@@ -25,7 +33,6 @@ cmake -S . -B build \
     -DPYTHON_LIBRARY:FILEPATH="${PREFIX}/lib/libpython${python_version}.so" \
     -DPYTHON_LIBRARY_PATH:PATH="${PREFIX}/lib" \
     -DPYTHON_INCLUDE_DIRS:PATH="${PREFIX}/include" \
-    ${CMAKE_PLATFORM_FLAGS[@]} \
     -DUSE_EXTERNAL_COMPILER_FLAGS=ON
 
 

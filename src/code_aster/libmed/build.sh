@@ -15,15 +15,19 @@ export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
 
 opts=("--with-swig=yes" )
 
-# Switch to enable debug symbols
-enable_debug=0
-if [ ${enable_debug} -eq 1 ]; then
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    echo "Debugging Enabled"
+    # Set compiler flags for debugging, for instance
     export CFLAGS="-g ${CFLAGS}"
     export CXXFLAGS="-g ${CXXFLAGS}"
     export FCFLAGS="-g ${FCFLAGS}"
     opts+=( "--enable-mesgerr" )
+    # Additional debug build steps
 else
+    echo "Debugging Disabled"
+    # Set compiler flags for production
     opts+=( "--disable-mesgerr" )
+    # Additional production build steps
 fi
 
 ./configure "${opts[@]}" --prefix="$PREFIX" --with-hdf5="$PREFIX"

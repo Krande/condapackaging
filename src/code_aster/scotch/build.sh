@@ -7,6 +7,12 @@ mkinc=src/Make.inc/Makefile.inc.x86-64_pc_linux2
 sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
       -e "s|CCD\s*=.*$|CCD = cc|g" ${mkinc} > src/Makefile.inc
 
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    echo "Debugging Enabled"
+else
+    echo "Debugging Disabled"
+fi
+
 cd src
 make scotch
 make esmumps

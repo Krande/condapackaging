@@ -26,13 +26,13 @@ m2w64_fortran_compiler:        # [win]
 
 # blas
 libblas:
-  - 3.9 *netlib
+  - 3.9 *openblas
 libcblas:
-  - 3.9 *netlib
+  - 3.9 *openblas
 liblapack:
-  - 3.9 *netlib
+  - 3.9 *openblas
 liblapacke:
-  - 3.9 *netlib
+  - 3.9 *openblas
 blas_impl:
   - openblas
   - mkl          # [x86 or x86_64]

@@ -9,11 +9,16 @@ cd build
 on_mpi="OFF"
 on_seq="ON"
 
-CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
-export MED_INT_IS_LONG=ON
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    echo "Debugging Enabled"
+    build_type="Debug"
+else
+    build_type="Release"
+    echo "Debugging Disabled"
+fi
 
 cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_BUILD_TYPE=$build_type \
     -Wno-dev \
     -DPYTHON_ROOT_DIR=${PREFIX} \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
