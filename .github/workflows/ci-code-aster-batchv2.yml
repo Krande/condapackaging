@@ -1,6 +1,6 @@
 name: ci-code-aster-batchv2
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
@@ -14,15 +14,16 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      conda_label: gcc8
-      conda_user: krandedev
+      conda_label: gcc8 # ${{ steps.env.outputs.conda_label }}
+      conda_user: krandedev # ${{ steps.env.outputs.conda_user }}
     steps:
         - name: set outputs
           id: env
           # This is where the conda user and label should be set
           run: |
-            echo "conda_label=gcc8" >> $GITHUB_OUTPUT
-            echo "conda_user=krandedev" >> $GITHUB_OUTPUT
+            echo "done"
+#            echo "conda_label=gcc8" >> $GITHUB_OUTPUT
+#            echo "conda_user=krandedev" >> $GITHUB_OUTPUT
 
   build_batch_1:
     needs: env

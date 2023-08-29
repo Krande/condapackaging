@@ -98,3 +98,7 @@ Thread 1 "python3" received signal SIGFPE, Arithmetic exception.
 One hypethesis might be that this is linked with a 
 [cmake cross-linux issue](https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html#an-aside-on-cmake-and-sysroots)
 when compiling on a newer version of linux than the target system.
+
+Update: It seems cross-linux compilation is not the issue. The same error occurs when compiling on the target system.
+
+However, by adding `import cmath` to the top of the AUTO_IMPORTS list in `aster/code_aster/Utilities/base_utils.py` the issue is resolved.
