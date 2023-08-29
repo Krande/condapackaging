@@ -21,10 +21,11 @@ jobs:
         - name: set outputs
           id: env
           run: |
-            echo "conda_label=gcc8" >> $GITHUB_ENV
-            echo "conda_user=krandedev" >> $GITHUB_ENV
+            echo "conda_label=gcc8" >> $GITHUB_OUTPUT
+            echo "conda_user=krandedev" >> $GITHUB_OUTPUT
 
   build_batch_1:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     strategy:
       fail-fast: false
@@ -50,6 +51,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_libmed:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
@@ -67,6 +69,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mfront:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mfront
