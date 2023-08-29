@@ -86,17 +86,17 @@ jobs:
 #      conda_label: ${{ needs.env.outputs.conda_label }}
 #      conda_user: ${{ needs.env.outputs.conda_user }}
 #    secrets: inherit
-  build_batch_code_aster:
-    needs: [ env ]
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: code_aster
-      boa: true
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-    secrets: inherit
+#  build_batch_code_aster:
+#    needs: [ env ]
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: code_aster
+#      boa: true
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#    secrets: inherit
   test_package:
-    needs: [ build_batch_code_aster, env ]
+    needs: [ env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
