@@ -11,6 +11,10 @@ on:
         description: 'conda user'
         type: string
         required: true
+      code_aster_version:
+        description: 'code_aster version'
+        type: string
+        required: true
 
 
 jobs:
@@ -25,7 +29,7 @@ jobs:
       matrix:
         pyver: [ '3.9', '3.10', '3.11' ]
         platform: [
-          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
+          { name: linux, distver: ubuntu-latest },
         ]
     steps:
       - uses: actions/checkout@v3
@@ -40,12 +44,11 @@ jobs:
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
-            code-aster==16.4.3
-
+            code-aster==${{ inputs.code_aster_version }}
       - name: run ctest
         continue-on-error: true
         run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2 --output-on-failure
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2
 
       - name: add mamba data
         run: |
@@ -55,6 +58,10 @@ jobs:
         continue-on-error: true
         run: |
           python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest
+
+      - name: save debug logs
+        continue-on-error: true
+        run: |
           python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest > ${{ github.workspace }}/ctest/summary.txt
 
       - name: Upload ctest for packaging
