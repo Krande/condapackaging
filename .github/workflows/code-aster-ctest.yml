@@ -15,7 +15,7 @@ on:
 
 jobs:
   run_ctest:
-    name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+    name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:

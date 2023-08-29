@@ -2,7 +2,7 @@
 
 
 Once the number of failed tests reaches a low enough number, and the remaining failures can be attributed to
-either missing dependencies that are excluded on purpose or to identified bugs in the code aster source code 
+either missing dependencies that are excluded on purpose or to identified errors related to version-mismatches, 
 the conda package will be submitted to conda-forge.
 
 The official code-aster variants published in Singularity containers are compiled against the following
@@ -37,19 +37,16 @@ The dependencies in question are
 
 *Regarding the tests failing on python 3.10 and 3.9*
 
-There seems to be an issue with cmath on python 3.10 and 3.9. 
+There seems to be an issue with importing cmath on python 3.10 and 3.9. 
+Ie. there are a lot of new floating point errors in the tests not present for python 3.11, that when backtraced with
+gdb points to `/usr/local/src/conda/python-3.10.8/Modules/cmathmodule.c: No such file or directory.`.
 
-By adding `import cmath` to the top of the AUTO_IMPORT list in `lib/aster/run_aster/command_files.py` the total number
-of failed tests are reduced from
+So a test was made by adding `import cmath` to the top of the AUTO_IMPORT list in `lib/aster/run_aster/command_files.py` 
+and rerunning the floating point issue-related tests (ie. tests not failing for python 3.11), 
+the total number of failed tests are reduced by 88 (for both python 3.9 and 3.10).
 
 * Python 3.10 is reduced from 121 -> 33.
-* Python 3.9 is 
-
-ie.
-
-```
-
-```
+* Python 3.9 is reduced from 118 -> 30
 
 ## Methodology
 For now github actions is the chosen tools for quickly developing, packaging and testing code-aster for conda.
