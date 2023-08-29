@@ -16,10 +16,10 @@ package:
   version: '{{ version }}'
 
 source:
-#  - git_url: https://gitlab.com/codeaster/src.git
-#    git_depth: 1 # (Defaults to -1/not shallow)
-  - fn: '{{ name }}_{{ version }}.tar.gz'
-    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+  - git_url: https://gitlab.com/codeaster/src.git
+    git_depth: 1 # (Defaults to -1/not shallow)
+#  - fn: '{{ name }}_{{ version }}.tar.gz'
+#    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
 
 
 build:
