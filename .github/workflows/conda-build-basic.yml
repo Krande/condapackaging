@@ -14,9 +14,9 @@ on:
         required: true
       debug_build:
         description: 'should produce a debug build'
-        type: boolean
+        type: string
         required: false
-        default: true
+        default: "False"
       work_dir:
         description: 'work dir'
         type: string
@@ -66,7 +66,7 @@ jobs:
 
       - name: Check if debug build
         run: |
-          if [[ ${{ inputs.debug_build }} == true ]]; then
+          if [[ ${{ inputs.debug_build }} == "True" ]]; then
             echo "PKG_DEBUG=True" >> $GITHUB_ENV
           fi
 
