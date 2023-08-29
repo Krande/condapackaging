@@ -14,16 +14,15 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      conda_label: gcc8 # ${{ steps.env.outputs.conda_label }}
-      conda_user: krandedev # ${{ steps.env.outputs.conda_user }}
+      # This is where the conda user and label should be set
+      conda_label: gcc8
+      conda_user: krandedev
     steps:
-        - name: set outputs
-          id: env
-          # This is where the conda user and label should be set
-          run: |
-            echo "done"
-#            echo "conda_label=gcc8" >> $GITHUB_OUTPUT
-#            echo "conda_user=krandedev" >> $GITHUB_OUTPUT
+      - name: dummy step
+        id: env
+        run: |
+          echo "done"
+
 
   build_batch_1:
     needs: env
@@ -43,7 +42,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mumps:
-    needs: [build_batch_1, env]
+    needs: [ build_batch_1, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
@@ -61,11 +60,11 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_medcoupling:
-    needs: [build_batch_libmed, env]
+    needs: [ build_batch_libmed, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
-      boa: false
+      boa: true
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
@@ -79,7 +78,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mgis:
-    needs: [build_batch_mfront, env]
+    needs: [ build_batch_mfront, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mgis
@@ -97,7 +96,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   test_package:
-    needs: [build_batch_code_aster, env]
+    needs: [ build_batch_code_aster, env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
