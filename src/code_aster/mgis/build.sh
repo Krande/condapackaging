@@ -10,10 +10,10 @@ python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
   echo "Debugging Enabled"
-    build_type="Debug"
+  build_type="Debug"
 else
-    build_type="Release"
-    echo "Debugging Disabled"
+  build_type="Release"
+  echo "Debugging Disabled"
 fi
 
 cmake .. \

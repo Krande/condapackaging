@@ -90,6 +90,10 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
 fi
 
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    opt+=( "--enable-build-mode=debug" )
+fi
+
 # regen config after patches to configure.ac
 ./autogen.sh
 
