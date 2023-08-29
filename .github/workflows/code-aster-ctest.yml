@@ -40,7 +40,7 @@ jobs:
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
-            code-aster==16.4.2
+            code-aster==16.4.3
 
       - name: run ctest
         continue-on-error: true

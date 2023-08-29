@@ -35,6 +35,21 @@ The dependencies in question are
 * miss3d (1)
 * asrun (2)
 
+*Regarding the tests failing on python 3.10 and 3.9*
+
+There seems to be an issue with cmath on python 3.10 and 3.9. 
+
+By adding `import cmath` to the top of the AUTO_IMPORT list in `lib/aster/run_aster/command_files.py` the total number
+of failed tests are reduced from
+
+* Python 3.10 is reduced from 121 -> 33.
+* Python 3.9 is 
+
+ie.
+
+```
+
+```
 
 ## Methodology
 For now github actions is the chosen tools for quickly developing, packaging and testing code-aster for conda.
