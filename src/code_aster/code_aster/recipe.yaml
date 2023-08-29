@@ -1,6 +1,6 @@
 context:
   name: code-aster
-  version: 16.4.3
+  version: 16.4.2
   med_ver: 4.1.1=aster_*
   metis_ver: 5.1.0=aster4*
   mfront_ver: 4.1.0=aster_*
@@ -16,10 +16,10 @@ package:
   version: '{{ version }}'
 
 source:
-  - git_url: https://gitlab.com/codeaster/src.git
-    git_depth: 1 # (Defaults to -1/not shallow)
-#  - fn: '{{ name }}_{{ version }}.tar.gz'
-#    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+#  - git_url: https://gitlab.com/codeaster/src.git
+#    git_depth: 1 # (Defaults to -1/not shallow)
+  - fn: '{{ name }}_{{ version }}.tar.gz'
+    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
 
 
 build:
