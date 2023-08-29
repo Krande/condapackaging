@@ -1,19 +1,21 @@
 name: ci-code-aster-ctest
 
-# bump 0
 on:
-  push:
-    paths:
-      - .github/workflows/ci-code-aster-ctest.yml
-    branches:
-    - donotrun
-env:
-  WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc12
+  workflow_call:
+    inputs:
+      conda_label:
+        description: 'conda label'
+        type: string
+        required: true
+      conda_user:
+        description: 'conda user'
+        type: string
+        required: true
+
 
 jobs:
-  build_test:
-    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+  run_ctest:
+    name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
     runs-on: ${{ matrix.platform.distver }}
     defaults:
       run:
@@ -21,14 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [
-          { name: code_aster, path: src/code_aster/code_aster },
-        ]
-        pyver: [
-          { name: py39, distver: '3.9'},
-          { name: py310, distver: '3.10'},
-          { name: py311, distver: '3.11'},
-        ]
+        pyver: [ '3.9', '3.10', '3.11' ]
         platform: [
           { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
         ]
@@ -38,11 +33,13 @@ jobs:
         with:
           environment-name: test-env
           condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
             channels:
-              - krande/label/${{ env.CONDA_LABEL }}
+              - ${{ inputs.conda_user }}/label/${{ inputs.conda_label }}
               - conda-forge
           create-args: >-
-            python=${{ matrix.pyver.distver }}
+            python=${{ matrix.pyver }}
             code-aster==16.4.2
 
       - name: run ctest
@@ -55,17 +52,19 @@ jobs:
           echo "$(micromamba list)" > ${{ github.workspace }}/ctest/mamba.txt
 
       - name: print debug logs
+        continue-on-error: true
         run: |
-          python src/code_aster/scan_failed.py ${{github.workspace}}/ctest
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest > ${{ github.workspace }}/ctest/summary.txt
 
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v2
         with:
-          name: ctest-${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
+          name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver }}
           path: ${{ github.workspace }}/ctest
 
   package:
-    needs: build_test
+    needs: run_ctest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -76,14 +75,14 @@ jobs:
 
       - name: Package ctest directories
         run: |
-          tar czf ctest-results.tar.gz ctest-*
+          tar czf ctest-results-${{ inputs.conda_label }}.tar.gz ctest-*
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: code-aster-16.4.2-ctest-${{ env.CONDA_LABEL }}
-          name: CTest Results code-aster-16.4.2 [${{ env.CONDA_LABEL }}]
-          body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ env.CONDA_LABEL }}.
+          tag_name: code-aster-16.4.2-ctest-${{ inputs.conda_label }}
+          name: CTest Results code-aster-16.4.2 [${{ inputs.conda_label }}]
+          body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
           draft: false
           prerelease: false
-          files: ctest-results.tar.gz
+          files: ctest-results-${{ inputs.conda_label }}.tar.gz

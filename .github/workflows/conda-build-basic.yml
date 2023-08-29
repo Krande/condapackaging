@@ -74,7 +74,7 @@ jobs:
       - name: build local packages
         run: |
           if [[ ${{ inputs.boa }} == true ]]; then
-            boa build . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
+            boa build . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts --pkg-format=2
           else
             conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
           fi
