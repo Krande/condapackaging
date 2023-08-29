@@ -17,7 +17,6 @@ jobs:
       conda_label: gcc8
       conda_user: krandedev
     steps:
-        - uses: actions/checkout@v2
         - name: set outputs
           id: env
           run: |

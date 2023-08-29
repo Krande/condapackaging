@@ -63,8 +63,8 @@ jobs:
         continue-on-error: true
         run: |
           sudo apt remove swig make
-          ls /user/bin/
-          rm -r /usr/bin/swig4.0
+          ls /usr/bin/
+          sudo rm -r /usr/bin/swig4.0
 
       - name: make dirs
         run: |
