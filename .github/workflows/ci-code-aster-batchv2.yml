@@ -19,6 +19,7 @@ jobs:
     steps:
         - name: set outputs
           id: env
+          # This is where the conda user and label should be set
           run: |
             echo "conda_label=gcc8" >> $GITHUB_OUTPUT
             echo "conda_user=krandedev" >> $GITHUB_OUTPUT
@@ -41,7 +42,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mumps:
-    needs: build_batch_1
+    needs: [build_batch_1, env]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
@@ -59,7 +60,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_medcoupling:
-    needs: build_batch_libmed
+    needs: [build_batch_libmed, env]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
@@ -77,7 +78,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_mgis:
-    needs: build_batch_mfront
+    needs: [build_batch_mfront, env]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mgis
@@ -86,7 +87,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   build_batch_code_aster:
-    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling ]
+    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code-aster
@@ -95,7 +96,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
     secrets: inherit
   test_package:
-    needs: build_batch_code_aster
+    needs: [build_batch_code_aster, env]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}

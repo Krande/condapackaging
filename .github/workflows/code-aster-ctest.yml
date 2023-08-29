@@ -63,7 +63,7 @@ jobs:
           name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver }}
           path: ${{ github.workspace }}/ctest
 
-  package:
+  upload_test_results:
     needs: run_ctest
     runs-on: ubuntu-latest
     steps:
