@@ -35,6 +35,11 @@ on:
         type: string
         required: false
         default: ${{ inputs.conda_label }}
+      conda_upstream_user:
+        description: 'conda upstream user'
+        type: string
+        required: false
+        default: ${{ inputs.conda_user }}
 
 env:
   CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
@@ -65,7 +70,7 @@ jobs:
               zstd_compression_level: 19
             channels:
               - conda-forge
-              - ${{ inputs.conda_user }}/label/${{ inputs.conda_label }}
+              - ${{ inputs.conda_user }}/label/${{ inputs.conda_upstream_label }}
           create-args: >-
             python=${{ matrix.pyver }}
 
