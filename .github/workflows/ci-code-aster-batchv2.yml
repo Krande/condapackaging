@@ -106,7 +106,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
     secrets: inherit
   test_package:
-    needs: [ env ]
+    needs: [ build_batch_code_aster, env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
