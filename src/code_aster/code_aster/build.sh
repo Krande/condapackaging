@@ -50,7 +50,7 @@ else
     ./waf_std install
 fi
 
-pybind11-stubgen libaster --ignore-all-errors
+python -m pybind11_stubgen libaster --ignore-all-errors
 cp stubs/libaster.pyi $PREFIX/lib/aster/libaster.pyi
 
 # copy modified shell scripts and create backups of the ones we don't want.

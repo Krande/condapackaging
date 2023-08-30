@@ -37,6 +37,7 @@ requirements:
     - waf
     - pybind11-stubgen
     - pyyaml
+    - numpy
     - python
 
 
