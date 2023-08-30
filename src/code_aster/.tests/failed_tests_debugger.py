@@ -33,4 +33,4 @@ def script_contains(test_dir, search_string):
 
 
 if __name__ == '__main__':
-    script_contains("temp/debugpy310", "TEST_FONCTION")
+    script_contains("temp/py310fail_unique", "TEST_FONCTION")

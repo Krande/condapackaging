@@ -1,0 +1,71 @@
+{% set name = "medcoupling" %}
+{% set version = "9.10.0" %}
+{% set libmed_ver = "4.1.1" %}
+
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+
+  - fn: 'medcoupling_{{ version }}.tar.gz'
+    url: http://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz # 9.10
+  - fn: 'config_{{ version }}.tar.gz'
+    url: http://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=25f724f7a6c0000330a40c3851dcd8bc2493e1fa;sf=tgz # 9.10.0
+    folder: deps/config
+#  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+#    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+#    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+#    folder: deps/
+
+
+build:
+  detect_binary_files_with_prefix: true
+  number: 3
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
+    - sysroot_linux-64 2.17
+    - cmake
+    - make
+    - swig 3.0.12
+    - python
+
+  host:
+    - python
+    - numpy
+    - libmed {{ libmed_ver }}=aster_*
+    - hdf5 {{ hdf5 }}
+    - boost
+    - libxml2
+
+  run:
+    - python
+    - numpy
+    - libmed
+    - boost
+    - hdf5
+
+test:
+  imports:
+    - medcoupling
+
+about:
+  home: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  summary: 'The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)'
+  description: |
+    The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)
+  doc_url: https://docs.salome-platform.org/8/dev/MEDCoupling/index.html
+  dev_url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
+
+extra:
+  recipe-maintainers:
+    - Krande

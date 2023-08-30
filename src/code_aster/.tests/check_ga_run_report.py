@@ -39,13 +39,13 @@ def fail_evaluator(t):
     ferr311_39 = true_fails - ferr39
     ferr311_310 = true_fails - ferr310
     jobs_of_interest = ferr39_311
-    with open('jobs_of_interest.txt', 'w') as f:
+    with open('tests_diff_py310py311.txt', 'w') as f:
         f.write('\n'.join(jobs_of_interest))
 
 
 if __name__ == '__main__':
-    tag = 'gcc8crosslinux'
+    tag = 'debug'
     pyver = '3.10'
 
-    # download_github_release()
-    fail_evaluator(tag)
+    download_github_release(tag)
+    # fail_evaluator(tag)

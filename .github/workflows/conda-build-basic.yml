@@ -30,6 +30,11 @@ on:
         description: 'conda user'
         type: string
         required: true
+      conda_upstream_label:
+        description: 'conda upstream label'
+        type: string
+        required: false
+        default: ${{ inputs.conda_label }}
 
 env:
   CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}

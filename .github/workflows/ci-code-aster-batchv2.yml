@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batchv2.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -70,7 +70,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
-      boa: true
+      boa: false
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}

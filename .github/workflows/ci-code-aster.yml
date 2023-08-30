@@ -7,64 +7,15 @@ on:
       - .github/workflows/ci-code-aster.yml
 #    branches:
 #    - donotrun
-env:
-  WORK_DIR: /home/runner/work
-  CONDA_LABEL: gcc12
 
 jobs:
-  build_test:
-    name: ${{ matrix.package.name }}-${{ matrix.platform.name }}-${{ matrix.pyver.distver }}
-    runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        package: [
-          { name: code_aster, path: src/code_aster/code_aster },
-        ]
-        pyver: [
-          { name: py39, distver: '3.9'},
-          { name: py310, distver: '3.10'},
-          { name: py311, distver: '3.11'},
-        ]
-        platform: [
-#          { name: win, distver: windows-latest, pkg_dir: win-64 },
-          { name: linux, distver: ubuntu-latest, pkg_dir: linux-64 },
-#          { name: macOS, distver: macos-latest }
-        ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
-        with:
-          environment-file: environment.conda.yml
-          condarc: |
-            conda-build:
-              pkg_format: 2
-              zstd_compression_level: 19
-            channels:
-              - krande/label/${{ env.CONDA_LABEL }}
-              - conda-forge
-          create-args: >-
-            python=${{ matrix.pyver.distver }}
-
-      - name: Install mingw if on windows
-        if: matrix.platform.name == 'win'
-        run: |
-          choco install mingw
-
-      - name: build local packages
-        run: |
-          mkdir -p ${{ env.WORK_DIR }}/artifacts
-          mkdir -p ${{ env.WORK_DIR }}/build
-          boa build . --python ${{ matrix.pyver.distver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
-        working-directory: ${{ matrix.package.path }}
-
-      - name: upload to anaconda
-        run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ matrix.platform.pkg_dir }}/*.conda"
-          if [ "${{ matrix.platform.name }}" == 'Windows' ]; then
-            path="'$path'"
-          fi
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user krande --label ${{ env.CONDA_LABEL }} $path
+  build_code_aster:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: code_aster
+      boa: true
+      conda_label: stubs
+      conda_user: krandedev
+      conda_upstream_label: debug
+      debug_build: 'True'
+    secrets: inherit
