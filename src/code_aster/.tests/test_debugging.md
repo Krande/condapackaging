@@ -1,5 +1,18 @@
 # Test Debugging
 
+
+## Importing cmath at top level of failed tests
+However, by adding `import cmath` to the top of the AUTO_IMPORTS list in `run_aster/command_files.py` most 
+of the issue is resolved.
+
+## Re-Running Failed Tests only present on python 3.9/3.10
+
+To re-run only the tests that fail on python 3.9/3.10, I re-ran the  following command:
+
+```bash
+run_ctest --testlist jobs_of_interest.txt --resutest=temp/reinterest --timefactor=5.0 --only-failed-results  --output-on-failure -j 6
+```
+
 ## Difference in test results across python versions
 
 For some reason there are a far greater number of failed tests for python 3.9/3.10 compared with python 3.11.
@@ -100,15 +113,3 @@ One hypethesis might be that this is linked with a
 when compiling on a newer version of linux than the target system.
 
 Update: It seems cross-linux compilation is not the issue. The same error occurs when compiling on the target system.
-
-## Importing cmath at top level of failed tests
-However, by adding `import cmath` to the top of the AUTO_IMPORTS list in `run_aster/command_files.py` most 
-of the issue is resolved.
-
-## Re-Running Failed Tests only present on python 3.9/3.10
-
-To re-run only the tests that fail on python 3.9/3.10, I re-ran the  following command:
-
-```bash
-run_ctest --testlist jobs_of_interest.txt --resutest=temp/reinterest --timefactor=5.0 --only-failed-results  --output-on-failure -j 6
-```

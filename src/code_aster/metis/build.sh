@@ -5,7 +5,9 @@ echo "** Building METIS **"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
-    export CFLAGS="-g ${CFLAGS}"
+    export CFLAGS="-g -O0 ${CFLAGS}"
+    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+    export FCFLAGS="-g -O0 ${FCFLAGS}"
 else
     echo "Debugging Disabled"
 fi

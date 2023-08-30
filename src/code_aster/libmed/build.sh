@@ -18,9 +18,9 @@ opts=("--with-swig=yes" )
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
     # Set compiler flags for debugging, for instance
-    export CFLAGS="-g ${CFLAGS}"
-    export CXXFLAGS="-g ${CXXFLAGS}"
-    export FCFLAGS="-g ${FCFLAGS}"
+    export CFLAGS="-g -O0 ${CFLAGS}"
+    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+    export FCFLAGS="-g -O0 ${FCFLAGS}"
     opts+=( "--enable-mesgerr" )
     # Additional debug build steps
 else

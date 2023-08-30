@@ -17,7 +17,6 @@ def get_related_files_from_export(export_file: pathlib.Path):
                 continue
             yield line.split(" ")[2].strip()
 
-
 def create_suite(test_dir):
     test_dir = pathlib.Path(test_dir).resolve()
     if not test_dir.exists():
@@ -38,9 +37,10 @@ def create_suite(test_dir):
 
 
 if __name__ == '__main__':
-    argparse = argparse.ArgumentParser()
-    argparse.add_argument('test_dir', help='The directory containing the failed tests')
-    args = argparse.parse_args()
-    create_suite(args.test_dir)
+    # argparse = argparse.ArgumentParser()
+    # argparse.add_argument('test_dir', help='The directory containing the failed tests')
+    # args = argparse.parse_args()
+    # create_suite(args.test_dir)
+    create_suite("temp/debugpy310")
 
 

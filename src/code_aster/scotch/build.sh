@@ -7,7 +7,9 @@ mkinc=src/Make.inc/Makefile.inc.x86-64_pc_linux2
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
-    export CFLAGS="-g ${CFLAGS}"
+    export CFLAGS="-g -O0 ${CFLAGS}"
+    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+    export FCFLAGS="-g -O0 ${FCFLAGS}"
 else
     echo "Debugging Disabled"
 fi

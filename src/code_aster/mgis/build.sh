@@ -10,6 +10,9 @@ python_version="${CONDA_PY:0:1}.${CONDA_PY:1:2}"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
   echo "Debugging Enabled"
+  export CFLAGS="-g -O0 ${CFLAGS}"
+  export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+  export FCFLAGS="-g -O0 ${FCFLAGS}"
   build_type="Debug"
 else
   build_type="Release"
