@@ -50,8 +50,12 @@ else
     ./waf_std install
 fi
 
-python -m pybind11_stubgen libaster --ignore-all-errors
-cp stubs/libaster.pyi $PREFIX/lib/aster/libaster.pyi
+# Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
+export PYTHONPATH="$PREFIX/lib/aster"
+export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
+
+$PREFIX/bin/python -m pybind11_stubgen libaster --ignore-all-errors
+cp stubs/libaster.pyi "${PREFIX}/lib/aster/libaster.pyi"
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old

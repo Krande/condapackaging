@@ -35,15 +35,14 @@ requirements:
     - "{{ compiler('fortran') }}"
     - sysroot_linux-64 2.17
     - waf
-    - pybind11-stubgen
     - pyyaml
     - numpy
     - python
 
-
   host:
     - python
     - hdf5 {{ hdf5 }}
+    - pybind11-stubgen
     - numpy
     - pyyaml
     - boost
