@@ -1,9 +1,9 @@
 name: ci-code-aster
+
 # bump 1
 on:
   push:
     paths:
-#      - src/code_aster/code_aster/**
       - .github/workflows/ci-code-aster.yml
 #    branches:
 #    - donotrun
