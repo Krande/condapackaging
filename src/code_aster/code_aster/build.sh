@@ -28,6 +28,13 @@ export LIBPATH_MEDCOUPLING="$PREFIX/lib"
 export INCLUDES_MEDCOUPLING="$PREFIX/include"
 export PYPATH_MEDCOUPLING=$SP_DIR
 
+# Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
+export PYTHONPATH="$PREFIX/lib/aster $SRC_DIR/stubgen"
+export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
+
+# Generate stubs for pybind11
+$PREFIX/bin/python  $RECIPE_DIR/stubs/custom_stubs_gen.py
+
 # Install for standard sequential
 ./waf_std \
   --use-config=wafcfg_conda \
@@ -51,9 +58,10 @@ else
 fi
 
 # Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
-export PYTHONPATH="$PREFIX/lib/aster"
+export PYTHONPATH="$PREFIX/lib/aster $SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
+# Generate stubs for pybind11
 $PREFIX/bin/python  $RECIPE_DIR/stubs/custom_stubs_gen.py
 #cp stubs/libaster.pyi "${PREFIX}/lib/aster/libaster.pyi"
 

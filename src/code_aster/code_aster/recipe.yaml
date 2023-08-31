@@ -20,7 +20,8 @@ source:
 #    git_depth: 1 # (Defaults to -1/not shallow)
   - fn: '{{ name }}_{{ version }}.tar.gz'
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
-
+  - url: https://github.com/sizmailov/pybind11-stubgen/archive/refs/tags/v1.2.tar.gz
+    folder: stubgen
 
 build:
   detect_binary_files_with_prefix: true
@@ -42,7 +43,7 @@ requirements:
   host:
     - python
     - hdf5 {{ hdf5 }}
-    - pybind11-stubgen 1.2
+#    - pybind11-stubgen 1.2
     - astor
     - numpy
     - pyyaml
