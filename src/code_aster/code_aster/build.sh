@@ -54,8 +54,8 @@ fi
 export PYTHONPATH="$PREFIX/lib/aster"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
-$PREFIX/bin/python -m pybind11_stubgen libaster --ignore-all-errors
-cp stubs/libaster.pyi "${PREFIX}/lib/aster/libaster.pyi"
+$PREFIX/bin/python  $RECIPE_DIR/stubs/custom_stubs_gen.py
+#cp stubs/libaster.pyi "${PREFIX}/lib/aster/libaster.pyi"
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
