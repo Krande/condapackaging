@@ -4,6 +4,7 @@ import importlib
 import logging
 import pathlib
 import pkgutil
+from typing import Union
 
 import astor
 
@@ -29,7 +30,7 @@ def iter_py_files(module_name):
         yield from pathlib.Path(_fp.path).rglob('*.py')
 
 
-def parse_method(class_node: ast.FunctionDef) -> Method | Property | None:
+def parse_method(class_node: ast.FunctionDef) -> Union[Method, Property, None]:
     if class_node.name.startswith("__") or class_node.name.startswith("_"):
         return None  # Skip dunder methods and private methods
 
@@ -172,7 +173,7 @@ def run(
         printer: pybind11_stubgen.Printer,
         module_name: str,
         out_dir: pathlib.Path,
-        sub_dir: pathlib.Path | None,
+        sub_dir: Union[pathlib.Path, None],
         dry_run: bool,
 ):
     injected_classes = get_injected_classes("code_aster")
