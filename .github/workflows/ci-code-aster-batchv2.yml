@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batchv2.yml
-    branches:
-      - donotrun
+    #branches:
+    #  - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
