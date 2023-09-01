@@ -39,15 +39,20 @@ def parse_method(class_node: ast.FunctionDef) -> Union[Method, Property, None]:
     docstring = Docstring(docstring_node) if docstring_node else None
 
     # Parse decorators
+    modifier = None
     decorators: list[Decorator] = []
     for deco in class_node.decorator_list:
         if isinstance(deco, ast.Name):
+            if deco.id in ('classmethod', 'staticmethod'):
+                modifier = _modifier_map.get(deco.id, None)
+                if modifier is None:
+                    raise NotImplementedError(f"Unknown modifier {deco.id}")
+                continue
             decorators.append(Decorator(deco.id))
 
-    # Identify the decorator
+    # Identify the decorator (beyond class and static methods)
     if len(decorators) == 0:
         is_property = False
-        modifier = None
     else:
         if any(deco == 'deprecated' for deco in decorators):
             return None
@@ -68,9 +73,10 @@ def parse_method(class_node: ast.FunctionDef) -> Union[Method, Property, None]:
         default = None
         if i >= defaults_start:
             default_node = class_node.args.defaults[i - defaults_start]
-            default_source = astor.to_source(default_node).strip()
-            if default_source == '""""""':
-                default_source = '""'
+            if isinstance(default_node, ast.Constant):
+                default_source = repr(default_node.value)
+            else:
+                default_source = astor.to_source(default_node).strip()
 
             default = Value(repr=default_source, is_print_safe=True)
 
@@ -184,6 +190,11 @@ def run(
     )
 
     for clas in module.classes:
+        # Fix None property (seems to be for enums only)
+        for field in clas.fields:
+            if field.attribute.name == 'None':
+                field.attribute.name = '_None'
+
         if clas.name not in injected_classes:
             continue
 
@@ -199,6 +210,8 @@ def run(
             if prop.name in cls_prop_map:
                 continue
             clas.properties.append(prop)
+
+
 
     parser.finalize()
 
@@ -225,7 +238,7 @@ def main():
         ignore_invalid_identifiers=None,
         ignore_invalid_expressions=None,
         ignore_unresolved_names=None,
-        print_invalid_expressions_as_is=True,
+        print_invalid_expressions_as_is=False,
         output_dir=pyi_dest_dir,
         root_suffix=None,
         # set_ignored_invalid_identifiers=None,
@@ -234,6 +247,7 @@ def main():
         exit_code=False,
         numpy_array_wrap_with_annotated_fixed_size=True,
         numpy_array_remove_parameters=True,
+        numpy_array_wrap_with_annotated=True,
         dry_run=False,
     )
     # shutil.copytree('stubs', dummy_lib, dirs_exist_ok=True)

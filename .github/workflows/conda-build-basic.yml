@@ -85,6 +85,7 @@ jobs:
         run: |
           sudo apt remove swig make
           sudo rm -r /usr/bin/swig4.0
+          sudo rm -rf /usr/share/miniconda
 
       - name: make dirs
         run: |

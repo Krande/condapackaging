@@ -28,6 +28,15 @@ export LIBPATH_MEDCOUPLING="$PREFIX/lib"
 export INCLUDES_MEDCOUPLING="$PREFIX/include"
 export PYPATH_MEDCOUPLING=$SP_DIR
 
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    echo "Debugging Enabled"
+    export CFLAGS="-g -O0 ${CFLAGS}"
+    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+    export FCFLAGS="-g -O0 ${FCFLAGS}"
+else
+    echo "Debugging Disabled"
+fi
+
 # Install for standard sequential
 ./waf_std \
   --use-config=wafcfg_conda \
