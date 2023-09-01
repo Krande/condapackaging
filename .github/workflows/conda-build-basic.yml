@@ -80,9 +80,10 @@ jobs:
             conda-build:
               pkg_format: 2
               zstd_compression_level: 19
+            channel_priority: strict
             channels:
-              - conda-forge
               - ${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}
+              - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
 

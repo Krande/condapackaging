@@ -29,6 +29,7 @@ requirements:
 
   host:
     - boost
+    - zlib
     - numpy
     - python
 
