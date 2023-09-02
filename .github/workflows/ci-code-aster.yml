@@ -13,8 +13,8 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
-      boa: true
-      conda_label: stubs
+      boa: false
+      conda_label: mambabuild
       conda_user: krandedev
       conda_upstream_label: debug
       debug_build: 'True'
