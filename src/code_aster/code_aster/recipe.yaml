@@ -40,6 +40,8 @@ requirements:
     - sysroot_linux-64 2.17
     - waf
     - pyyaml
+    - llvm-openmp  # [osx]
+    - libgomp      # [linux]
 
   host:
     - python
