@@ -24,6 +24,9 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
+  rpaths:
+    - lib/
+    - lib/aster/
   number: 5
   script_env:
     PKG_DEBUG: "{{ environ.get('PKG_DEBUG', 'False') }}"
@@ -36,8 +39,6 @@ requirements:
     - sysroot_linux-64 2.17
     - waf
     - pyyaml
-    - numpy
-    - python
 
   host:
     - python
@@ -64,6 +65,7 @@ requirements:
     - pyyaml
     - libblas
     - liblapack
+    - libopenblas
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
     - metis {{ metis_ver }}

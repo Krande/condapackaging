@@ -24,6 +24,7 @@ liblapack:
   - 3.9 *openblas
 liblapacke:
   - 3.9 *openblas
+
 blas_impl:
   - openblas
   - mkl          # [x86 or x86_64]

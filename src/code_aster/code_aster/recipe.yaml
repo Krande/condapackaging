@@ -25,6 +25,9 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
+  rpaths:
+    - lib/
+    - lib/aster/
   number: 5
   script_env:
     PKG_DEBUG: "{{ environ.get('PKG_DEBUG', 'False') }}"
@@ -37,8 +40,6 @@ requirements:
     - sysroot_linux-64 2.17
     - waf
     - pyyaml
-    - numpy
-    - python
 
   host:
     - python
@@ -63,8 +64,7 @@ requirements:
     - python
     - numpy
     - pyyaml
-    - libblas
-    - liblapack
+    - libopenblas
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
     - metis {{ metis_ver }}
@@ -81,7 +81,9 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
+    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
+    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
+
   files:
     - basic_import.py
 

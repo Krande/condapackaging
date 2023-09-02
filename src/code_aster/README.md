@@ -98,7 +98,7 @@ The following graph shows the dependencies between the different packages.
 **NOTE!** Keep in mind that many of the tests require `ctest`. So you will have to install `cmake` if you haven't 
 already
 
-`run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 6`
+`run_ctest --resutest=temp/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 6`
 
 ### Debugging individual failed tests
 
