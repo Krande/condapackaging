@@ -42,7 +42,7 @@ requirements:
     - cmake
     - {{ mpi }}
     - yaml
-    - metis 5.1.0
+    - metis 5.1.0=aster*
     - parmetis 4.0.3
     - ptscotch
     - scalapack
@@ -52,7 +52,7 @@ requirements:
   run:
     - {{ mpi }}
     - yaml
-    - metis 5.1.0
+    - metis 5.1.0=aster*
     - parmetis 4.0.3
     - ptscotch
     - scalapack

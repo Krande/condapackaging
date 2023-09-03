@@ -92,6 +92,68 @@ The following graph shows the dependencies between the different packages.
     
 ```
 
+And when we include MPI and the related packages, the graph looks like this:
+
+````mermaid
+flowchart TD;
+  
+  classDef mpi fill:#f00,stroke:#333,stroke-width:2px;
+  classDef nompi fill:#008000,stroke:#333,stroke-width:2px;
+  classDef both fill:#00f,stroke:#333,stroke-width:2px;
+
+  subgraph "No-MPI"
+    C[libmed]
+    F[asrun]
+    I[mgis]
+    G[metis]
+    B[mfront]
+    J[homard]
+  end
+
+  subgraph "MPI-only"   
+    L[parmetis]
+    K[petsc]
+  end
+  
+  subgraph "Both"
+    D[scotch]
+    H[mumps]
+    E[medcoupling]
+  end
+
+  A[Code Aster v16.4.x]
+  
+  A --> B
+  A --> C
+  A --> D
+  A --> E
+  A --> F
+  A --> G
+  A --> H
+  A --> I
+  A --> J
+  A --> K
+  A --> L
+  
+  I --> B
+  H --> G
+  H --> D
+  E --> C
+  K --> L
+  K --> D
+
+  %% MPI Nodes
+  class K,L mpi;
+  
+  %% NOMPI Nodes
+  class B,C,F,I,J,G nompi;
+
+  %% Both MPI and NOMPI
+  class D,H,E both;
+
+
+````
+
 
 ## Validation
 
