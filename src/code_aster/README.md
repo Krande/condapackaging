@@ -136,6 +136,8 @@ https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readm
 
 The current status of the conda package compilation is as follows:
 
+**Sequential**
+
 - [x] Code Aster v16.4.2
 - [x] mfront
 - [x] libmed
@@ -146,8 +148,12 @@ The current status of the conda package compilation is as follows:
 - [x] mumps
 - [x] mgis
 - [x] homard
-- [x] petsc
 
+**MPI**
+- [ ] medcoupling
+- [ ] petsc
+- [ ] permetis
+- [ ] mumps
 
 
 #### Compatibility with conda-forge packages
@@ -217,39 +223,6 @@ ECREVISSE_GPL="None"
 GMSH="4.10.5-Linux64"
 GRACE="0.0.1"
 ASRUN="2021.0.0-1"
-```
-### VERSION="20220817"
-```
-VERSION="20220817"
-
-HDF5="1.10.9"
-MED="4.1.1"
-METIS="5.1.0_aster4"
-PARMETIS="4.0.3_aster3"
-MFRONT="3.4.3" # prefix 'TFEL-' added in build script
-HOMARD="11.12_aster2"
-SCOTCH="6.1.2" # prefix 'v' added in build script
-SCALAPACK="2.1.0"
-MUMPS="5.4.1_consortium_aster2"
-MUMPS_GPL="5.4.1_aster"
-PETSC="3.17.1_aster"
-_HPDDM="b9ae0dc6cf88af52b1572b990f8b1731cabceaaf"
-_HYPRE="v2.24.0"
-_ML="v13.2.0"
-_SOWING="v1.1.26-p4"
-_SPLEC="aa5f86854e5d457ce6ff5041b1c308588ba71c25"
-_SUPERLU="v5.3.0"
-MISS3D="6.7_aster7"
-MPI4PY="3.1.3"
-MEDCOUPLING="V9_9_0a2"
-_CONFIGURATION="V9_9_0a2"
-ECREVISSE="3.2.2"
-ECREVISSE_GPL="None"
-GMSH="4.10.5-Linux64"
-GRACE="0.0.1"
-ASRUN="2021.0.0-1"
-
-RESTRICTED=0
 ```
 # General tips
 

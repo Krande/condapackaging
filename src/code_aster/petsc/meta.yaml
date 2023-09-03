@@ -1,4 +1,4 @@
-{% set version = "3.19.4" %}
+{% set version = "3.17.1" %}
 {% set build = 0 %}
 
 {% set mpi = mpi or 'mpich' %}
@@ -11,19 +11,17 @@ package:
   version: {{ version }}
 
 source:
-  url: https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-{{ version }}.tar.gz
-  sha256: 7c941b71be52c3b764214e492df60109d12f97f7d854c97a44df0c4d958b3906
-  patches:
-    - ignore-not-invalid.patch
-    - no-cppflags-in-pkgconfig-cflags.patch
-    - hypre-error.patch
+    - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+      url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+      sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+      folder: deps/
 
 build:
   skip: true  # [win]
   number: {{ build }}
   string: {{ scalar }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage('petsc', max_pin='x.x') }} {{ scalar }}_*
+    - {{ pin_subpackage('petsc', max_pin='x.x') }}
   track_features:
     - petsc_complex  # [scalar == "complex"]
 
@@ -44,36 +42,23 @@ requirements:
     - cmake
     - {{ mpi }}
     - yaml
-    # FIXME: unpin hypre after next petsc release
-    - hypre 2.28
-    - metis
-    - parmetis
+    - metis 5.1.0
+    - parmetis 4.0.3
     - ptscotch
     - scalapack
-    - superlu
-    - superlu_dist
     - scotch
     - mumps-mpi
-    - suitesparse
     - hdf5
-    - hdf5 * mpi_{{ mpi }}_*
-    - fftw * mpi_{{ mpi }}_*
   run:
     - {{ mpi }}
     - yaml
-    - hypre
-    - metis
-    - parmetis
+    - metis 5.1.0
+    - parmetis 4.0.3
     - ptscotch
     - scalapack
-    - superlu
-    - superlu_dist
     - scotch
     - mumps-mpi
-    - suitesparse
     - hdf5
-    - hdf5 * mpi_{{ mpi }}_*
-    - fftw * mpi_{{ mpi }}_*
 
 test:
   requires:

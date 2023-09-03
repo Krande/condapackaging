@@ -37,7 +37,6 @@ requirements:
     - cmake
     - make
     - swig 3.0.12
-    - python
     - "{{ mpi }}"
 
   host:
@@ -47,11 +46,13 @@ requirements:
     - hdf5 {{ hdf5 }}
     - boost
     - libxml2
+    - petsc 3.17.4
 
   run:
     - python
     - numpy
     - libmed
+    - petsc 3.17.4
     - boost
     - hdf5
     - "{{ mpi }}"

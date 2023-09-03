@@ -26,12 +26,27 @@ else
     echo "Debugging Disabled"
 fi
 
-$PYTHON waf configure install \
-  --prefix="${PREFIX}" \
-  --enable-openmp \
-  --enable-metis \
-  --enable-scotch \
-  --install-tests
+if [ "${MPI_TYPE}" == "nompi" ]; then
+
+  $PYTHON waf configure install \
+    --prefix="${PREFIX}" \
+    --enable-openmp \
+    --enable-metis \
+    --enable-scotch \
+    --install-tests
+else
+
+  $PYTHON ./waf configure \
+    --enable-mpi \
+    --enable-openmp \
+    --enable-metis \
+    --enable-parmetis \
+    --enable-scotch \
+    --maths-libs=auto \
+    --install-tests \
+    --prefix="${PREFIX}"
+fi
+
 
 $PYTHON ./waf build
 $PYTHON ./waf install

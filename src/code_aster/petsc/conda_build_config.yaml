@@ -6,6 +6,10 @@ scalar:
   - real
   - complex
 
+hdf5:
+  - 1.10.6
+  - 1.10.6=mpi*
+
 pin_run_as_build:
   hypre:
     max_pin: x.x.x
@@ -17,8 +21,4 @@ pin_run_as_build:
     max_pin: x.x
   suitesparse:
     max_pin: x.x  # [not osx]
-
-numpy:
-  - '1.23'
-hdf5:
-  - 1.10.6=nompi*
+    max_pin: x.x.x  # [osx]
