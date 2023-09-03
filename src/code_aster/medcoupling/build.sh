@@ -6,8 +6,15 @@
 mkdir -p build
 cd build
 
-on_mpi="OFF"
-on_seq="ON"
+if [[ "$MPI_TYPE" == "nompi" ]]; then
+  on_mpi="OFF"
+  on_seq="ON"
+else
+  on_mpi="ON"
+  on_seq="OFF"
+fi
+
+
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"

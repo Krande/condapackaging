@@ -23,8 +23,10 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: 3
+  string:
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+    - MPI_TYPE={{ mpi }}
 
 requirements:
   build:
@@ -36,6 +38,7 @@ requirements:
     - make
     - swig 3.0.12
     - python
+    - "{{ mpi }}"
 
   host:
     - python
@@ -51,6 +54,7 @@ requirements:
     - libmed
     - boost
     - hdf5
+    - "{{ mpi }}"
 
 test:
   imports:
