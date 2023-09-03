@@ -40,6 +40,14 @@ on:
         type: string
         required: false
         default: None
+    # Return all outputs so that they can optionally be used in subsequent steps
+    outputs:
+      conda_label:
+        description: "conda label"
+        value: ${{ jobs.build_conda.outputs.conda_label }}
+      conda_user:
+        description: "conda user"
+        value: ${{ jobs.build_conda.outputs.conda_user }}
 
 env:
   CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
@@ -59,9 +67,12 @@ jobs:
       matrix:
         pyver: [ "3.9", "3.10", "3.11" ]
         platform: [ ubuntu-latest ] #, windows-latest, macos-latest]
+    outputs:
+      conda_label: ${{ inputs.conda_label }}
+      conda_user: ${{ inputs.conda_user }}
+      package_name: ${{ inputs.package_name }}
     steps:
       - uses: actions/checkout@v3
-
       - name: Check if conda upstream inputs are not None. If so set equal to output values
         run: |
             if [[ ${{ inputs.conda_upstream_label }} == "None" ]]; then

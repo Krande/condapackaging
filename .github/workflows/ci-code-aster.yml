@@ -13,9 +13,18 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
-      boa: false
-      conda_label: mambabuild
+      boa: true
+      conda_label: debug
       conda_user: krandedev
       conda_upstream_label: debug
       debug_build: 'True'
+    secrets: inherit
+
+  test_package:
+    needs: [ build_batch_code_aster ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_label: ${{ needs.build_code_aster.outputs.conda_label }}
+      conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
+      code_aster_version: 16.4.3
     secrets: inherit
