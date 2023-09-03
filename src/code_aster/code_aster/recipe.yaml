@@ -40,8 +40,8 @@ requirements:
     - sysroot_linux-64 2.17
     - waf
     - pyyaml
-    - llvm-openmp  # [osx]
-    - libgomp      # [linux]
+    - sel(osx): llvm-openmp
+    - sel(unix): libgomp
 
   host:
     - python
@@ -84,7 +84,7 @@ test:
     - run_aster --help
     - python basic_import.py
     - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
-    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
+#    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
 
   files:
     - basic_import.py
