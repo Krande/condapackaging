@@ -56,5 +56,13 @@ mpi:          # [unix]
   - openmpi   # [unix]
   - nompi     # [unix]
 
+hdf5:
+  - 1.10.6=mpi*
+  - 1.10.6=nompi*
+
+zip_keys:
+  - mpi
+  - hdf5
+
 numpy:
   - '1.23'

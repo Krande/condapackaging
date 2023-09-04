@@ -36,11 +36,13 @@ requirements:
     - sysroot_linux-64 2.17
     - waf
     - pyyaml
-    - "{{ mpi }}"
+    - {{ mpi }}                 # [mpi != "nompi"]
+    - petsc                     # [mpi != "nompi"]
+    - parmetis                  # [mpi != "nompi"]
 
   host:
     - python
-    - hdf5 {{ hdf5 }}
+    - hdf5
     - pybind11-stubgen 1.2
     - llvm-openmp         # [osx]
     - libgomp             # [unix]
@@ -58,6 +60,9 @@ requirements:
     - mgis {{ mgis_ver }}
     - medcoupling {{ medcoupling_ver }}
     - homard {{ homard_ver }}
+    - {{ mpi }}                 # [mpi != "nompi"]
+    - petsc                     # [mpi != "nompi"]
+    - parmetis                  # [mpi != "nompi"]
 
   run:
     - python
@@ -74,8 +79,10 @@ requirements:
     - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
     - homard {{ homard_ver }}
-    - hdf5 {{ hdf5 }}
-    - "{{ mpi }}"
+    - hdf5
+    - {{ mpi }}                 # [mpi != "nompi"]
+    - petsc                     # [mpi != "nompi"]
+    - parmetis                  # [mpi != "nompi"]
 
 test:
   imports:

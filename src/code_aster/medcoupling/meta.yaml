@@ -3,9 +3,6 @@
 {% set libmed_ver = "4.1.1" %}
 {% set petsc_ver = "3.17.1" %}
 
-{% set mpi = mpi or 'nompi' %}
-
-
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
@@ -22,7 +19,6 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: 3
-  string:
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 
@@ -34,17 +30,17 @@ requirements:
     - cmake
     - make
     - swig 3.0.12
-    - "{{ mpi }}"                           # [mpi != 'nompi']
-    - mpi4py
+    - {{ mpi }}                             # [mpi != 'nompi']
+    - mpi4py                                # [mpi != 'nompi']
+    - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
 
   host:
     - python
     - numpy
     - libmed {{ libmed_ver }}=aster_*
-    - hdf5 {{ hdf5 }}
+    - hdf5
     - boost
     - libxml2
-    - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
 
   run:
     - python
@@ -53,7 +49,8 @@ requirements:
     - boost
     - hdf5
     - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
-    - "{{ mpi }}"                           # [mpi != 'nompi']
+    - {{ mpi }}                             # [mpi != 'nompi']
+    - mpi4py                                # [mpi != 'nompi']
 
 test:
   imports:

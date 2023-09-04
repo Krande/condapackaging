@@ -53,5 +53,8 @@ hdf5:
 mpi:
   - openmpi  # [not win]
   - msmpi    # [win]
-#  - nompi
+  - nompi
 
+zip_keys:
+  - mpi
+  - hdf5

@@ -220,6 +220,7 @@ In order of dependency
 - [x] petsc
 - [x] libmed
 - [ ] medcoupling
+- [ ] code-aster
 
 
 
