@@ -17,11 +17,15 @@ fi
 cd src
 
 if [ "${MPI_TYPE}" == "nompi" ]; then
+  echo "Compiling non-mpi -> MPI_TYPE=$MPI_TYPE"
+
   sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
         -e "s|CCD\s*=.*$|CCD = cc|g" ${mkinc} > Makefile.inc
 
   make scotch
 else
+  echo "Compiling MPI_TYPE=$MPI_TYPE"
+
   sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
     -e "s|CCD\s*=.*$|CCD = mpicc|g" ${mkinc} > Makefile.inc
 
@@ -32,5 +36,6 @@ else
   make scotch
   make ptscotch
 fi
+
 make esmumps
 make install prefix=${PREFIX}

@@ -1,6 +1,7 @@
 {% set name = "scotch" %}
 {% set version = "7.0.1" %}
 
+{% set mpi = mpi or 'nompi' %}
 
 package:
   name: '{{ name|lower }}'
@@ -16,11 +17,11 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster1_py{{ CONDA_PY }}{{mpi}}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+  string: aster1_py{{ CONDA_PY }}mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   number: 2
   script_env:
-    PKG_DEBUG: "{{ environ.get('PKG_DEBUG', 'False') }}"
-    MPI_TYPE: "{{ mpi }}"
+    - PKG_DEBUG="{{ environ.get('PKG_DEBUG', 'False') }}"
+    - MPI_TYPE="{{ mpi }}"
 
 requirements:
   build:
@@ -30,20 +31,19 @@ requirements:
     - sysroot_linux-64 2.17
     - make
     - python
-    - mpich # [mpi != "nompi"]
-    - ptscotch # [mpi != "nompi"]
+    - {{ mpi }}       # [mpi != "nompi"]
 
   host:
     - python
     - zlib
     - bison
+    - {{ mpi }}       # [mpi != "nompi"]
 
   run:
     - zlib
     - bison
     - python
-    - mpich # [mpi != "nompi"]
-    - ptscotch # [mpi != "nompi"]
+    - {{ mpi }}       # [mpi != "nompi"]
 
 test:
   commands:
@@ -51,8 +51,8 @@ test:
     - test -f $PREFIX/lib/libscotch.a
     # Check for scotch.h header
     - test -f $PREFIX/include/scotch.h
-    - test -f $PREFIX/lib/libptscotch.a # [mpi != "nompi"]
-    - test -f $PREFIX/include/ptscotch.h # [mpi != "nompi"]
+    - test -f $PREFIX/lib/libptscotch.a       # [mpi != "nompi"]
+    - test -f $PREFIX/include/ptscotch.h      # [mpi != "nompi"]
 
 about:
   home: https://www.labri.fr/perso/pelegrin/scotch/

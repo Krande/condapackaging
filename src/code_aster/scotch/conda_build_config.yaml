@@ -26,7 +26,7 @@ blas_impl:
   - openblas
   - mkl          # [x86 or x86_64]
   - blis         # [x86 or x86_64]
-  -
+
 pin_run_as_build:
   gcc:
     max_pin: x.x
@@ -38,20 +38,15 @@ pin_run_as_build:
     max_pin: x.x.x
   bison:
     max_pin: x.x.x
+  openmpi: x.x          # [mpi != "nompi"]
 
 numpy:
   - '1.23'
 
 hdf5:
-  - 1.10.6=mpi*
-  - 1.10.6=nompi*
+  - 1.10.6=mpi*         # [mpi != "nompi"]
+  - 1.10.6=nompi*       # [mpi == "nompi"]
 
-mpi:
-  - openmpi  # [osx]
-  - mpich    # [linux]
-  - msmpi    # [win]
-  - nompi
-
-zip_keys:
-  - mpi
-  - hdf5
+mpi:          # [unix]
+  - openmpi   # [unix]
+  - nompi     # [unix]
