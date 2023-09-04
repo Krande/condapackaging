@@ -33,25 +33,17 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - sysroot_linux-64 2.17
+#    - sysroot_linux-64 2.17
     - waf
     - pyyaml
-    - {{ mpi }}                 # [mpi != "nompi"]
-    - petsc                     # [mpi != "nompi"]
-    - parmetis                  # [mpi != "nompi"]
 
   host:
     - python
     - hdf5
     - pybind11-stubgen 1.2
-    - llvm-openmp         # [osx]
-    - libgomp             # [unix]
     - astor
     - numpy
-    - pyyaml
     - boost
-    - libblas
-    - liblapack
     - metis {{ metis_ver }}
     - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}
@@ -68,9 +60,6 @@ requirements:
     - python
     - numpy
     - pyyaml
-    - llvm-openmp         # [osx]
-    - libgomp             # [unix]
-    - libopenblas
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
     - metis {{ metis_ver }}

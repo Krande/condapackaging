@@ -219,7 +219,7 @@ In order of dependency
 - [x] mumps
 - [x] petsc
 - [x] libmed
-- [ ] medcoupling
+- [x] medcoupling
 - [ ] code-aster
 
 

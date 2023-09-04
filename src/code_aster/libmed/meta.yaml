@@ -36,13 +36,15 @@ requirements:
     - {{ mpi }}                 # [mpi != "nompi"]
 
   host:
-    - hdf5
+    - hdf5=1.10.6=mpi*          # [mpi != "nompi"]
+    - hdf5=1.10.6=nompi*        # [mpi == "nompi"]
     - zlib
     - python
     - {{ mpi }}                 # [mpi != "nompi"]
 
   run:
-    - hdf5
+    - hdf5=1.10.6=mpi*          # [mpi != "nompi"]
+    - hdf5=1.10.6=nompi*        # [mpi == "nompi"]
     - python
     - zlib
     - {{ mpi }}                 # [mpi != "nompi"]

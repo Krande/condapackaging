@@ -65,15 +65,6 @@ boost:
 numpy:
   - '1.23'
 
-hdf5:
-  - 1.10.6=mpi*
-#  - 1.10.6=nompi*
-
 mpi:
-  - msmpi    # [win]
-  - openmpi  # [not win]
+  - openmpi
 #  - nompi
-
-zip_keys:
-  - mpi
-  - hdf5
