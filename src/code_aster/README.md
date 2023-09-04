@@ -212,14 +212,32 @@ The current status of the conda package compilation is as follows:
 - [x] homard
 
 **MPI**
+In order of dependency 
+
+- [x] scotch
+- [ ] mumps
 - [ ] medcoupling
 - [ ] petsc
 - [ ] permetis
-- [ ] mumps
+
 
 
 #### Compatibility with conda-forge packages
 
+Note! The following modifications are necessary on the source code of the dependencies:
+(https://gitlab.com/codeaster/src/-/issues/1#note_1520809038)
+
+* metis/parmetis: allow to define the type of integers.
+* Mumps: install headers with explicit integers size actually used.
+* PETSc: our branch just embeds some tgz to avoid issues with network access:
+
+```3rd/SuperLU_v5.3.0.tar.gz
+3rd/hpddm_b9ae0dc6cf88af52b1572b990f8b1731cabceaaf.tar.gz
+3rd/hypre_v2.24.0.tar.gz
+3rd/pkg-trilinos-ml-v13.2.0.tar.gz
+3rd/slepc-aa5f86854e5d457ce6ff5041b1c308588ba71c25.tar.gz
+3rd/sowing_v1.1.26-p4.tar.gz
+```
 * mfront
   * 
 * scotch

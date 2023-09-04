@@ -16,6 +16,8 @@ source:
 build:
   skip: true  # [win]
   number: {{ build }}
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 
 requirements:
   build:

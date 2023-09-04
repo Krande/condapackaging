@@ -1,0 +1,20 @@
+name: ci-parmetis
+
+# bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-parmetis.yml
+#    branches:
+#    - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: parmetis
+      boa: false
+      conda_label: debug
+      conda_user: krandedev
+      debug_build: 'True'
+    secrets: inherit

@@ -46,7 +46,7 @@ requirements:
     - parmetis 4.0.3
     - ptscotch
     - scalapack
-    - scotch
+    - scotch 7.0.1
     - mumps-mpi
     - hdf5
   run:
@@ -56,7 +56,7 @@ requirements:
     - parmetis 4.0.3
     - ptscotch
     - scalapack
-    - scotch
+    - scotch 7.0.1
     - mumps-mpi
     - hdf5
 

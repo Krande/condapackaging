@@ -3,7 +3,7 @@
 
 tar -xzvf "$SRC_DIR/deps/archives/scotch-7.0.1.tar.gz" -C . --strip-components=1
 
-mkinc=src/Make.inc/Makefile.inc.x86-64_pc_linux2
+mkinc=Make.inc/Makefile.inc.x86-64_pc_linux2
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
@@ -14,11 +14,23 @@ else
     echo "Debugging Disabled"
 fi
 
-sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
-      -e "s|CCD\s*=.*$|CCD = cc|g" ${mkinc} > src/Makefile.inc
-
 cd src
-make scotch
-make esmumps
 
+if [ "${MPI_TYPE}" == "nompi" ]; then
+  sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
+        -e "s|CCD\s*=.*$|CCD = cc|g" ${mkinc} > Makefile.inc
+
+  make scotch
+else
+  sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
+    -e "s|CCD\s*=.*$|CCD = mpicc|g" ${mkinc} > Makefile.inc
+
+  # see https://bugzilla.redhat.com/show_bug.cgi?id=1386707
+  # we do not use MPI_Init_Thread
+  sed -i -e "s/-DSCOTCH_PTHREAD_MPI//g" -e "s/-DSCOTCH_PTHREAD//g" Makefile.inc
+
+  make scotch
+  make ptscotch
+fi
+make esmumps
 make install prefix=${PREFIX}

@@ -54,12 +54,12 @@ requirements:
     - boost
     - libblas
     - liblapack
+    - conda-forge::metis {{ metis_ver }}
+    - conda-forge::scotch {{ scotch_ver }}
+    - mumps {{ mumps_ver }} # conda-forge::mumps is only at <=5.2.1
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}
-    - metis {{ metis_ver }}
-    - mumps {{ mumps_ver }}
     - mgis {{ mgis_ver }}
-    - scotch {{ scotch_ver }}
     - medcoupling {{ medcoupling_ver }}
     - homard {{ homard_ver }}
 

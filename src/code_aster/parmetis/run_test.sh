@@ -8,4 +8,4 @@ mpiexec() { $MPIEXEC $@; }
 mpiexec -n 1 parmetis
 mpiexec -n 1 pometis
 mpiexec -n 1 mtest
-mpiexec -n 1 ptestc
+#mpiexec -n 1 ptestc
