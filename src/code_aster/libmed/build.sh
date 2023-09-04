@@ -9,11 +9,10 @@
 
 export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
 export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
-
-export F77=${FC}
 export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
 
 if [[ "$mpi" == "nompi" ]]; then
+  export F77=${FC}
   echo "Compiling for Sequential MPI=$mpi"
 else
   echo "Compiling for MPI=$mpi"
