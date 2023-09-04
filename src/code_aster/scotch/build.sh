@@ -16,15 +16,15 @@ fi
 
 cd src
 
-if [ "${MPI_TYPE}" == "nompi" ]; then
-  echo "Compiling non-mpi -> MPI_TYPE=$MPI_TYPE"
+if [ "${mpi}" == "nompi" ]; then
+  echo "Compiling non-mpi -> mpi=$mpi"
 
   sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
         -e "s|CCD\s*=.*$|CCD = cc|g" ${mkinc} > Makefile.inc
 
   make scotch
 else
-  echo "Compiling MPI_TYPE=$MPI_TYPE"
+  echo "Compiling mpi=$mpi"
 
   sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
     -e "s|CCD\s*=.*$|CCD = mpicc|g" ${mkinc} > Makefile.inc

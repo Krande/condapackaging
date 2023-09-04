@@ -218,9 +218,10 @@ In order of dependency
 
 - [x] permetis
 - [x] scotch
-- [ ] mumps
+- [x] mumps
+- [x] petsc
 - [ ] medcoupling
-- [ ] petsc
+
 
 
 #### Compatibility with conda-forge packages

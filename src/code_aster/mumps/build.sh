@@ -31,8 +31,8 @@ else
     echo "Debugging Disabled"
 fi
 
-if [ "${MPI_TYPE}" == "nompi" ]; then
-  echo "Compiling non-mpi -> MPI_TYPE=$MPI_TYPE"
+if [ "${mpi}" == "nompi" ]; then
+  echo "Compiling non-mpi -> MPI_TYPE=$mpi"
 
   $PYTHON waf configure install \
     --prefix="${PREFIX}" \
@@ -41,7 +41,7 @@ if [ "${MPI_TYPE}" == "nompi" ]; then
     --enable-scotch \
     --install-tests
 else
-  echo "Compiling MPI_TYPE=$MPI_TYPE"
+  echo "Compiling MPI_TYPE=$mpi"
 
   export CC=mpicc
   export CXX=mpic++
