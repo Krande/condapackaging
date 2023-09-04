@@ -1,6 +1,6 @@
-# Compiling Code Aster
+# Compiling Code Aster for Conda
 
-
+## Introduction
 Once the number of failed tests reaches a low enough number, and the remaining failures can be attributed to
 either missing dependencies that are excluded on purpose or to identified errors related to version-mismatches, 
 the conda package will be submitted to conda-forge.
@@ -58,11 +58,13 @@ See https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/main/recip
 for more information.
 
 ## Dependencies relations
-The following graph shows the dependencies between the different packages.
+The following graphs shows the different relationships between the different packages.
+
+First is the simplest sequential variant:
 
 ```mermaid
   flowchart TD;
-    A[Code Aster v16.4.2]
+    A[Code Aster v16.4.x]
     B[mfront]
     C[libmed]
     D[scotch]
@@ -92,9 +94,10 @@ The following graph shows the dependencies between the different packages.
     
 ```
 
-And when we include MPI and the related packages, the graph looks like this:
+Then for the MPI variant and the related packages, the graph looks like this:
 
 ````mermaid
+
 flowchart TD;
   
   classDef mpi fill:#f00,stroke:#333,stroke-width:2px;
@@ -139,8 +142,10 @@ flowchart TD;
   H --> G
   H --> D
   E --> C
+  E --> K
   K --> L
   K --> D
+  K --> H
 
   %% MPI Nodes
   class K,L mpi;
@@ -153,7 +158,6 @@ flowchart TD;
 
 
 ````
-
 
 ## Validation
 
@@ -190,9 +194,7 @@ In order to compare apple's with apple's its important to know which default pac
 github actions environment. This can be found in the following link:
 https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
 
-
-## Conda package compilation Status
-
+## Compilation Status
 
 ### Linux
 
@@ -214,12 +216,11 @@ The current status of the conda package compilation is as follows:
 **MPI**
 In order of dependency 
 
+- [x] permetis
 - [x] scotch
 - [ ] mumps
 - [ ] medcoupling
 - [ ] petsc
-- [ ] permetis
-
 
 
 #### Compatibility with conda-forge packages
