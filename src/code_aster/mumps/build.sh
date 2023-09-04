@@ -1,13 +1,18 @@
 #!/bin/bash
 
-tar -xzvf "$SRC_DIR/deps/archives/mumps-5.5.1_aster1.tar.gz" -C . --strip-components=1
+tar -xzf "$SRC_DIR/deps/archives/mumps-5.5.1_aster1.tar.gz" -C . --strip-components=1
+
+echo "FC: $FC, Version: $($FC -dumpversion)"
+echo "CC: $CC"
+echo "CXX: $CXX"
+echo "CFLAGS: $CFLAGS"
 
 export CFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
 
 # if gfortran version > 8, we need to conditionally add -fallow-argument-mismatch
 # to avoid mismatch errors related to floats and integer types
-
-if [[ $($FC -dumpversion) -gt 8 ]]; then
+major_version=$($FC -dumpversion | awk -F. '{print $1}')
+if [[ $major_version -gt 8 ]]; then
   export FCFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space -fallow-argument-mismatch ${CFLAGS}"
 else
   # -fallow-argument-mismatch is not supported by gfortran <= 8
@@ -27,6 +32,7 @@ else
 fi
 
 if [ "${MPI_TYPE}" == "nompi" ]; then
+  echo "Compiling non-mpi -> MPI_TYPE=$MPI_TYPE"
 
   $PYTHON waf configure install \
     --prefix="${PREFIX}" \
@@ -35,6 +41,13 @@ if [ "${MPI_TYPE}" == "nompi" ]; then
     --enable-scotch \
     --install-tests
 else
+  echo "Compiling MPI_TYPE=$MPI_TYPE"
+
+  export CC=mpicc
+  export CXX=mpic++
+  export FC=mpifort
+  export F77=mpif77
+  export F90=mpif90
 
   $PYTHON ./waf configure \
     --enable-mpi \

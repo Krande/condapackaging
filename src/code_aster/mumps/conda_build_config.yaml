@@ -42,19 +42,17 @@ pin_run_as_build:
     max_pin: x.x.x
   scotch:
     max_pin: x.x.x
-  libblas:
-    max_pin: x.x.x
-  liblapack:
-    max_pin: x.x.x
+  libblas: x.x
+  liblapack: x.x
+  openmpi: x.x            # [mpi != "nompi"]
 
 numpy:
   - '1.23'
+
 hdf5:
-  - 1.10.6=mpi*
-  - 1.10.6=nompi*
+  - 1.10.6=mpi*           # [mpi != "nompi"]
+  - 1.10.6=nompi*         # [mpi == "nompi"]
 
 mpi:
-  - openmpi  # [osx]
-  - mpich    # [linux]
-  - msmpi    # [win]
-#  - nompi
+  - openmpi
+  - nompi

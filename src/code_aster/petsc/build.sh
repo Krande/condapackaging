@@ -2,7 +2,7 @@
 set -ex
 
 mkdir -p "$SRC_DIR/deps/config"
-tar -xzvf "$SRC_DIR/deps/archives/petsc-3.17.1_aster.tar.gz" -C . --strip-components=1
+tar -xzf "$SRC_DIR/deps/archives/petsc-3.17.1_aster.tar.gz" -C . --strip-components=1
 
 export BUILD_3rdParty=$SRC_DIR
 cd petsc-src

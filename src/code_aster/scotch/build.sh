@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-tar -xzvf "$SRC_DIR/deps/archives/scotch-7.0.1.tar.gz" -C . --strip-components=1
+tar -xzf "$SRC_DIR/deps/archives/scotch-7.0.1.tar.gz" -C . --strip-components=1
 
 mkinc=Make.inc/Makefile.inc.x86-64_pc_linux2
 
