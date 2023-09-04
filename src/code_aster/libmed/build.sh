@@ -13,6 +13,18 @@ export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
 export F77=${FC}
 export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
 
+if [[ "$mpi" == "nompi" ]]; then
+  echo "Compiling for Sequential MPI=$mpi"
+else
+  echo "Compiling for MPI=$mpi"
+  export OPAL_PREFIX=$PREFIX
+  export CC=mpicc
+  export CXX=mpicxx
+  export FC=mpif90
+  export F77=mpif77
+  export F90=mpif90
+fi
+
 opts=("--with-swig=yes" )
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then

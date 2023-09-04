@@ -103,7 +103,6 @@ flowchart TD;
   classDef both fill:#00f,stroke:#333,stroke-width:2px;
 
   subgraph "No-MPI"
-    C[libmed]
     F[asrun]
     I[mgis]
     G[metis]
@@ -117,6 +116,7 @@ flowchart TD;
   end
   
   subgraph "Both"
+    C[libmed]
     D[scotch]
     H[mumps]
     E[medcoupling]
@@ -149,10 +149,10 @@ flowchart TD;
   class K,L mpi;
   
   %% NOMPI Nodes
-  class B,C,F,I,J,G nompi;
+  class B,F,I,J,G nompi;
 
   %% Both MPI and NOMPI
-  class D,H,E both;
+  class D,C,H,E both;
 
 
 ````
@@ -218,6 +218,7 @@ In order of dependency
 - [x] scotch
 - [x] mumps
 - [x] petsc
+- [x] libmed
 - [ ] medcoupling
 
 
