@@ -74,7 +74,6 @@ First is the simplest sequential variant:
     H[mumps]
     I[mgis]
     J[homard]
-    K[petsc]
     
     A --> B
     A --> C
@@ -85,7 +84,6 @@ First is the simplest sequential variant:
     A --> H
     A --> I
     A --> J
-    A --> K
     
     I --> B
     H --> G

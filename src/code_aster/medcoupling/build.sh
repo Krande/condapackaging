@@ -1,20 +1,17 @@
 #!/bin/bash
 
 #mkdir -p "$SRC_DIR/deps/config"
-#tar -xzvf "$SRC_DIR/deps/archives/medcoupling-V9_10_0.tar.gz" -C . --strip-components=1
-#tar -xzvf "$SRC_DIR/deps/archives/configuration-V9_10_0.tar.gz" -C "$SRC_DIR/deps/config" --strip-components=1
+#tar -xzf "$SRC_DIR/deps/archives/medcoupling-V9_10_0.tar.gz" -C . --strip-components=1
+#tar -xzf "$SRC_DIR/deps/archives/configuration-V9_10_0.tar.gz" -C "$SRC_DIR/deps/config" --strip-components=1
+
 mkdir -p build
 cd build
 
-if [[ "$MPI_TYPE" == "nompi" ]]; then
+if [[ "$mpi" == "nompi" ]]; then
   on_mpi="OFF"
-  on_seq="ON"
 else
   on_mpi="ON"
-  on_seq="OFF"
 fi
-
-
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
@@ -29,9 +26,9 @@ fi
 
 cmake .. \
     -DCMAKE_BUILD_TYPE=$build_type \
+    -DPYTHON_ROOT_DIR="${PREFIX}" \
     -Wno-dev \
-    -DPYTHON_ROOT_DIR=${PREFIX} \
-    -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+    -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
     -DSALOME_CMAKE_DEBUG=ON \
     -DSALOME_USE_MPI=${on_mpi} \
@@ -46,7 +43,7 @@ cmake .. \
     -DMEDCOUPLING_PARTITIONER_SCOTCH=OFF \
     -DMEDCOUPLING_PARTITIONER_PTSCOTCH=${on_mpi} \
     -DMPI_C_COMPILER:PATH="$(which mpicc)" \
-    -DPYTHON_EXECUTABLE:FILEPATH=$PYTHON \
+    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
     -DHDF5_ROOT_DIR="${PREFIX}" \
     -DSWIG_ROOT_DIR="${PREFIX}" \
     -DMEDFILE_ROOT_DIR="${PREFIX}" \

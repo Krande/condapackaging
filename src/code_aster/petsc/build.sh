@@ -27,6 +27,11 @@ export LDFLAGS="-pthread -fopenmp $LDFLAGS"
 export LDFLAGS="$LDFLAGS -Wl,-rpath-link,$PREFIX/lib"
 
 # SHLIB_EXT https://docs.conda.io/projects/conda-build/en/latest/user-guide/environment-variables.html#id2
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+  enable_debugging=1
+else
+  enable_debugging=0
+fi
 
 # ensure to have consistent python3 and cython in PATH
 python3 ./configure \
@@ -39,7 +44,7 @@ python3 ./configure \
     FFLAGS="$FFLAGS" \
     LDFLAGS="$LDFLAGS" \
     LIBS="$LIBS" \
-    --with-debugging=1 \
+    --with-debugging=$enable_debugging \
     --with-mpi=1 \
     --with-ssl=0 \
     --with-x=0 \

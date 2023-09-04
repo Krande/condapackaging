@@ -1,27 +1,23 @@
-context:
-  name: code-aster
-  version: 16.4.3
-  med_ver: 4.1.1=aster_*
-  metis_ver: 5.1.0=aster4*
-  mfront_ver: 4.1.0=aster_*
-  mumps_ver: 5.5.1=aster1*
-  petsc_ver: 3.17.1_aster
-  scotch_ver: 7.0.1
-  medcoupling_ver: 9.10.0
-  homard_ver: 11.12
-  mgis_ver: 2.1
+{% set name = 'code-aster' %}
+{% set version = '16.4.3' %}
+{% set med_ver = '4.1.1=aster_*' %}
+{% set metis_ver = '5.1.0=aster4*' %}
+{% set mfront_ver = '4.1.0=aster_*' %}
+{% set mumps_ver = '5.5.1=aster1*' %}
+{% set petsc_ver = '3.17.1_aster' %}
+{% set scotch_ver = '7.0.1' %}
+{% set medcoupling_ver = '9.10.0' %}
+{% set homard_ver = '11.12' %}
+{% set mgis_ver = '2.1' %}
+
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-#  - git_url: https://gitlab.com/codeaster/src.git
-#    git_depth: 1 # (Defaults to -1/not shallow)
   - fn: '{{ name }}_{{ version }}.tar.gz'
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
-#  - url: https://github.com/sizmailov/pybind11-stubgen/archive/refs/tags/v1.2.tar.gz
-#    folder: stubgen
 
 build:
   detect_binary_files_with_prefix: true
@@ -30,7 +26,7 @@ build:
     - lib/aster/
   number: 5
   script_env:
-    PKG_DEBUG: "{{ environ.get('PKG_DEBUG', 'False') }}"
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 
 requirements:
   build:
@@ -46,8 +42,8 @@ requirements:
     - python
     - hdf5 {{ hdf5 }}
     - pybind11-stubgen 1.2
-    - sel(osx): llvm-openmp
-    - sel(unix): libgomp
+    - llvm-openmp         # [osx]
+    - libgomp             # [unix]
     - astor
     - numpy
     - pyyaml
@@ -67,7 +63,8 @@ requirements:
     - python
     - numpy
     - pyyaml
-    - sel(unix): libgomp
+    - llvm-openmp         # [osx]
+    - libgomp             # [unix]
     - libopenblas
     - mfront {{ mfront_ver }}
     - libmed {{ med_ver }}

@@ -38,28 +38,50 @@ else
     echo "Debugging Disabled"
 fi
 
-# Install for standard sequential
-./waf_std \
-  --use-config=wafcfg_conda \
-  --use-config-dir="$RECIPE_DIR"/config \
-  --prefix="${PREFIX}" \
-  --libdir="${PREFIX}/lib" \
-  --install-tests \
-  --disable-mpi \
-  --without-hg \
-  configure
+if [[ "$mpi" == "nompi" ]]; then
+  # Install for standard sequential
+  ./waf_std \
+    --use-config=wafcfg_conda \
+    --use-config-dir="$RECIPE_DIR"/config \
+    --prefix="${PREFIX}" \
+    --libdir="${PREFIX}/lib" \
+    --install-tests \
+    --disable-mpi \
+    --without-hg \
+    configure
 
-if [[ "${PKG_DEBUG}" == "True" ]]; then
-    echo "Debugging Enabled"
-    export CFLAGS="-g -O0 ${CFLAGS}"
-    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
-    export FCFLAGS="-g -O0 ${FCFLAGS}"
-    ./waf_std install_debug
+  if [[ "${PKG_DEBUG}" == "True" ]]; then
+      echo "Debugging Enabled"
+      export CFLAGS="-g -O0 ${CFLAGS}"
+      export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+      export FCFLAGS="-g -O0 ${FCFLAGS}"
+      ./waf_std install_debug
+  else
+      echo "Debugging Disabled"
+      ./waf_std install
+  fi
 else
-    echo "Debugging Disabled"
-    ./waf_std install
-fi
+  ./waf_mpi  \
+    --use-config=wafcfg_conda \
+    --use-config-dir="$RECIPE_DIR"/config \
+    --prefix="${PREFIX}" \
+    --libdir="${PREFIX}/lib" \
+    --install-tests \
+    --disable-mpi \
+    --without-hg \
+    configure
 
+  if [[ "${PKG_DEBUG}" == "True" ]]; then
+      echo "Debugging Enabled"
+      export CFLAGS="-g -O0 ${CFLAGS}"
+      export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+      export FCFLAGS="-g -O0 ${FCFLAGS}"
+      ./waf_mpi install_debug
+  else
+      echo "Debugging Disabled"
+      ./waf_mpi install
+  fi
+fi
 # Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
 export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"

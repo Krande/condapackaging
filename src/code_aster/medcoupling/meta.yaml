@@ -1,6 +1,9 @@
 {% set name = "medcoupling" %}
 {% set version = "9.10.0" %}
 {% set libmed_ver = "4.1.1" %}
+{% set petsc_ver = "3.17.1" %}
+
+{% set mpi = mpi or 'nompi' %}
 
 
 package:
@@ -14,10 +17,6 @@ source:
   - fn: 'config_{{ version }}.tar.gz'
     url: http://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=25f724f7a6c0000330a40c3851dcd8bc2493e1fa;sf=tgz # 9.10.0
     folder: deps/config
-#  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
-#    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
-#    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
-#    folder: deps/
 
 
 build:
@@ -26,18 +25,17 @@ build:
   string:
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
-    - MPI_TYPE={{ mpi }}
 
 requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - sysroot_linux-64 2.17
     - cmake
     - make
     - swig 3.0.12
-    - "{{ mpi }}"
+    - "{{ mpi }}"                           # [mpi != 'nompi']
+    - mpi4py
 
   host:
     - python
@@ -46,16 +44,16 @@ requirements:
     - hdf5 {{ hdf5 }}
     - boost
     - libxml2
-    - petsc 3.17.4
+    - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
 
   run:
     - python
     - numpy
     - libmed
-    - petsc 3.17.4
     - boost
     - hdf5
-    - "{{ mpi }}"
+    - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
+    - "{{ mpi }}"                           # [mpi != 'nompi']
 
 test:
   imports:
