@@ -30,17 +30,17 @@ requirements:
     - cmake
     - make
     - swig 3.0.12
-    - {{ mpi }}                             # [mpi != 'nompi']
-    - mpi4py                                # [mpi != 'nompi']
-    - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
 
   host:
     - python
     - numpy
     - libmed {{ libmed_ver }}=aster_*
-    - hdf5
     - boost
     - libxml2
+    - hdf5
+    - petsc {{ petsc_ver }}                 # [mpi != 'nompi']
+    - {{ mpi }}                             # [mpi != 'nompi']
+    - mpi4py                                # [mpi != 'nompi']
 
   run:
     - python
