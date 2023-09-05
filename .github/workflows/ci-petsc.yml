@@ -1,6 +1,6 @@
 name: ci-petsc
 
-# bump 1
+# bump 0
 on:
   push:
     paths:

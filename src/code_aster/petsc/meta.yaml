@@ -48,6 +48,7 @@ requirements:
     - liblapack
     - hdf5
     - yaml
+    - python
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
