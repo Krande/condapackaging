@@ -42,19 +42,20 @@ requirements:
     - libblas
     - libcblas
     - liblapack
-    - cython {{ cython_ver }}
     - python
     - numpy
-    - {{ mpi }}
+    - hdf5
     - yaml
+    - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
     - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}
-    - hdf5
-  run:
     - {{ mpi }}
+
+  run:
+    - hdf5
     - yaml
     - python
     - {{ pin_compatible('numpy') }}
@@ -63,7 +64,7 @@ requirements:
     - scalapack {{ scalapack_ver }}
     - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}
-    - hdf5
+    - {{ mpi }}
 
 test:
   commands:
