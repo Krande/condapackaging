@@ -36,9 +36,6 @@ requirements:
     - sysroot_linux-64 2.17
     - cmake
     - make
-    - python
-    - numpy
-    - cython {{ cython_ver }}
     - pkg-config
     - gnuconfig   # [unix]
 
@@ -46,6 +43,8 @@ requirements:
     - libblas
     - libcblas
     - liblapack
+    - numpy
+    - cython {{ cython_ver }} 
     - hdf5
     - yaml
     - python
