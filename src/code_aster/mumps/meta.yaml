@@ -43,20 +43,22 @@ requirements:
     - libgomp
     - libblas
     - liblapack
+    - hdf5
     - metis {{ metis_ver }}=aster4*
-    - scotch {{ scotch_ver }}             # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}=*nompi*     # [mpi == "nompi"]
     - parmetis {{ parmetis_ver }}         # [mpi != "nompi"]
-    - scotch {{ scotch_ver }}             # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}=*openmpi*   # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}       # [mpi != "nompi"]
     - {{ mpi }}                           # [mpi != "nompi"]
 
   run:
     - numpy
     - python
+    - hdf5
     - metis {{ metis_ver }}=aster4*
-    - scotch {{ scotch_ver }}             # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}=*nompi*     # [mpi == "nompi"]
     - parmetis {{ parmetis_ver }}         # [mpi != "nompi"]
-    - scotch {{ scotch_ver }}             # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}=*openmpi*   # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}       # [mpi != "nompi"]
     - {{ mpi }}                           # [mpi != "nompi"]
 

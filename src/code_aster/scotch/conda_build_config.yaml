@@ -43,14 +43,7 @@ pin_run_as_build:
 numpy:
   - '1.23'
 
-hdf5:
-  - 1.10.6=mpi*
-  - 1.10.6=nompi*
-
 mpi:          # [unix]
   - openmpi   # [unix]
   - nompi     # [unix]
 
-zip_keys:
-  - hdf5
-  - mpi
