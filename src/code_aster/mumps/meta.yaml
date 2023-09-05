@@ -34,6 +34,7 @@ requirements:
     - "{{ compiler('fortran') }}"
     - waf
     - sysroot_linux-64 2.17
+    - python
     - make
 
   host:

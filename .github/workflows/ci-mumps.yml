@@ -1,6 +1,6 @@
 name: ci-mumps
 
-# bump 0
+# bump 1
 on:
   push:
     paths:
