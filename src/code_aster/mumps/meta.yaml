@@ -31,8 +31,6 @@ requirements:
     - waf
     - sysroot_linux-64 2.17
     - make
-    - python
-    - {{ mpi }}               # [mpi != "nompi"]
 
   host:
     - python

@@ -1,7 +1,12 @@
 {% set version = "3.17.1" %}
 {% set build = 0 %}
-
-{% set mpi = mpi or 'mpich' %}
+{% set metis_ver = "5.1.0" %}
+{% set parmetis_ver = "4.0.3" %}
+{% set scalapack_ver = "2.1.0" %}
+{% set scotch_ver = "7.0.1" %}
+{% set mumps_ver = "5.5.1" %}
+{% set hdf5_ver = "1.10.6" %}
+{% set cython_ver = "0.29.36" %}
 
 package:
   name: petsc
@@ -28,37 +33,36 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - sysroot_linux-64 2.17
-    - cython 0.29.36
+    - cmake
     - make
     - pkg-config
-    - python
-    - numpy
     - gnuconfig   # [unix]
-    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
+
   host:
     - libblas
     - libcblas
     - liblapack
-    - cython 0.29.36
+    - cython {{ cython_ver }}
+    - python
     - numpy
-    - cmake
     - {{ mpi }}
     - yaml
-    - metis 5.1.0=aster*
-    - parmetis 4.0.3
-    - scalapack 2.1.0
-    - scotch 7.0.1
-    - mumps 5.5.1
+    - metis {{ metis_ver }}=aster*
+    - parmetis {{ parmetis_ver }}
+    - scalapack {{ scalapack_ver }}
+    - scotch {{ scotch_ver }}
+    - mumps {{ mumps_ver }}
     - hdf5
   run:
     - {{ mpi }}
     - yaml
+    - python
     - {{ pin_compatible('numpy') }}
-    - metis 5.1.0=aster*
-    - parmetis 4.0.3
-    - scalapack 2.1.0
-    - scotch 7.0.1
-    - mumps 5.5.1
+    - metis {{ metis_ver }}=aster*
+    - parmetis {{ parmetis_ver }}
+    - scalapack {{ scalapack_ver }}
+    - scotch {{ scotch_ver }}
+    - mumps {{ mumps_ver }}
     - hdf5
 
 test:
