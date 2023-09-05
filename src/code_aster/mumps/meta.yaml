@@ -1,7 +1,6 @@
 {% set name = "mumps" %}
 {% set version = "5.5.1" %}
-
-{% set mpi = mpi or 'nompi' %}
+{% set %}
 
 package:
   name: '{{ name|lower }}'
@@ -18,7 +17,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster1_py{{ CONDA_PY }}{{mpi}}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+  string: aster1_py{{ CONDA_PY }}_{{mpi}}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   number: 2
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
