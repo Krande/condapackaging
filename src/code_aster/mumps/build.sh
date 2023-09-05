@@ -44,7 +44,7 @@ else
   echo "Compiling MPI_TYPE=$mpi"
 
   export CC=mpicc
-  export CXX=mpic++
+  export CXX=mpicxx
   export FC=mpifort
   export F77=mpif77
   export F90=mpif90
