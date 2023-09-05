@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - conda-build 3.25
+  - conda-build 3.24
 #  - conda-verify # does not work together with .conda files
   - anaconda-client
   - pyyaml

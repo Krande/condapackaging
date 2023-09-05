@@ -26,7 +26,7 @@ build:
   run_exports:
     - {{ pin_subpackage('petsc', max_pin='x.x') }}
   script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'True') }}
 
 requirements:
   build:
@@ -38,6 +38,7 @@ requirements:
     - make
     - pkg-config
     - gnuconfig   # [unix]
+    - {{ mpi }}
 
   host:
     - libblas
