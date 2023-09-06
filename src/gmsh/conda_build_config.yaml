@@ -10,6 +10,20 @@ CONDA_BUILD_SYSROOT:
 
 c_compiler:
  - vs2022                     # [win]
-
+ - gcc                        # [unix]
 cxx_compiler:
  - vs2022                     # [win]
+ - gxx                        # [unix]
+
+
+cxx_compiler_version:         # [unix]
+- '12'                        # [unix]
+c_compiler_version:           # [unix]
+- '12'                        # [unix]
+
+zlib:
+- '1.2'
+cairo:
+- '1'
+cdt_name:
+- cos6
