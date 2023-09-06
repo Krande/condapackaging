@@ -1,9 +1,12 @@
 {% set version = "7.7.2" %}
 {% set build = 0 %}
-# Set a higher build number if occt contains 'novtk' in the variant name
 
-{% set build = build + 200 %}  # [occt_variant == "novtk"]
-{% set build = build + 100 %}  # [occt_variant == "all"]
+# Prioritize the 'novtk' build variant for reduced file size
+{% if "novtk" in occt %}
+  {% set build = build + 200 %}
+{% elif "all" in occt %}
+  {% set build = build + 100 %}
+{% endif %}
 
 package:
   name: pythonocc-core

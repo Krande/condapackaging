@@ -1,10 +1,19 @@
 {% set name = "ifcopenshell" %}
 {% set version = "0.7.0" %}
 
+{% set build = 0 %}
+
+# Prioritize the 'novtk' build variant for reduced file size
+{% if "novtk" in occt %}
+  {% set build = build + 200 %}
+{% elif "all" in occt %}
+  {% set build = build + 100 %}
+{% endif %}
 
 package:
   name: {{ name }}
   version: {{ version }}
+  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
 
 source:
   git_url: https://github.com/IfcOpenShell/ifcopenshell.git
@@ -12,7 +21,7 @@ source:
 
 build:
   binary_relocation: false [osx]
-  number: 1
+  number: {{ build }}
 
 requirements:
   build:
