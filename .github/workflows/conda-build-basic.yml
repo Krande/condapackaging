@@ -61,6 +61,8 @@ env:
   CONDA_UPSTREAM_USER: ${{ inputs.conda_upstream_user }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
   WORK_DIR: ${{ inputs.work_dir }}
+  ARTIFACTS_DIR: ${{ inputs.work_dir }}/artifacts
+  CROOT_DIR: ${{ inputs.work_dir }}/build
 
 jobs:
   build_conda:
@@ -72,6 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Add conditions to skip builds on specific platforms
         pyver: [ "3.9", "3.10", "3.11" ]
         platform: [ ubuntu-latest, windows-latest, macos-latest]
     outputs:
@@ -95,9 +98,13 @@ jobs:
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             echo "PKG_DIR=win-64" >> $GITHUB_ENV
             echo "WORK_DIR=D:\\a\\" >> $GITHUB_ENV
+            echo "ARTIFACTS_DIR=D:\\a\\artifacts" >> $GITHUB_ENV
+            echo "CROOT_DIR=D:\\a\\build" >> $GITHUB_ENV
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "PKG_DIR=osx-64" >> $GITHUB_ENV
             echo "WORK_DIR=/Users/runner/work" >> $GITHUB_ENV
+            echo "ARTIFACTS_DIR=/Users/runner/work/artifacts" >> $GITHUB_ENV
+            echo "CROOT_DIR=/Users/runner/work/build" >> $GITHUB_ENV
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
             echo "PKG_DIR=linux-64" >> $GITHUB_ENV
           fi
@@ -126,7 +133,8 @@ jobs:
             echo "PKG_DEBUG=True" >> $GITHUB_ENV
           fi
 
-      - name: try to remove swig
+      - name: try to remove swig on linux
+        if: matrix.platform == 'ubuntu-latest'
         continue-on-error: true
         run: |
           sudo apt remove swig make
@@ -135,15 +143,15 @@ jobs:
 
       - name: make dirs
         run: |
-          mkdir -p ${{ ENV.WORK_DIR }}/artifacts
-          mkdir -p ${{ ENV.WORK_DIR }}/build
+          mkdir -p ${{ env.ARTIFACTS_DIR }}
+          mkdir -p ${{ env.CROOT_DIR }}
 
       - name: build local packages
         run: |
           if [[ ${{ inputs.boa }} == true ]]; then
-            boa build . --python ${{ matrix.pyver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
+            boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2
           else
-            conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
+            conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
 
@@ -151,8 +159,8 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
-          if [ "${{ matrix.platform }}" == 'Windows' ]; then
+          path="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}/*.conda"
+          if [ "${{ matrix.platform }}" == 'windows-latest' ]; then
             path="'$path'"
           fi
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
