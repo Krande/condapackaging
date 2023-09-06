@@ -3,7 +3,11 @@ mkdir build && cd build
 set MY_PY_VER=%PY_VER:.=%
 set LIBXML2="%LIBRARY_PREFIX%/lib/libxml2.lib"
 
+rem Overwrite the CMakeLists.txt file with the one from the config folder (which has a fix for finding hdf5 and zlibs)
+copy %RECIPE_DIR%/config/CMakelists.txt %SRC_DIR%/cmake/CMakeLists.txt
+
 cmake -G "Ninja" ^
+ -Wno-dev ^
  -D SCHEMA_VERSIONS="2x3;4x1;4x3_add1" ^
  -D CMAKE_BUILD_TYPE:STRING=Release ^
  -D CMAKE_INSTALL_PREFIX:FILEPATH="%LIBRARY_PREFIX%" ^

@@ -12,7 +12,11 @@ if [ `uname` == Darwin ]; then
   export LDFLAGS="$LDFLAGS  -Wl,-flat_namespace,-undefined,suppress"
 fi
 
+# Overwrite the CMakeLists.txt file with the one from the config folder (which has a fix for finding hdf5 and zlibs)
+cp $RECIPE_DIR/config/CMakeLists.txt ${SRC_DIR}/cmake/CMakeLists.txt
+
 cmake -G Ninja \
+ -Wno-dev \
  -DSCHEMA_VERSIONS="2x3;4x1;4x3_add1" \
  -DCMAKE_BUILD_TYPE=Release \
  -DCMAKE_INSTALL_PREFIX=$PREFIX \
