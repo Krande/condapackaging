@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-ifcopenshell.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 jobs:
   build:
@@ -14,7 +14,6 @@ jobs:
     with:
       package_name: ifcopenshell
       boa: false
-      pkg_dir: src/ifcopenshell/daily
       conda_label: "dev"
       conda_user: krande
       debug_build: 'False'

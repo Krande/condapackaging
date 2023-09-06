@@ -12,9 +12,9 @@ jobs:
   build:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
-      package_name: mumps
+      package_name: occt
       boa: false
-      conda_label: debug
-      conda_user: krandedev
+      conda_label: dev
+      conda_user: krande
       debug_build: 'True'
     secrets: inherit
