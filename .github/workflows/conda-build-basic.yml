@@ -116,7 +116,7 @@ jobs:
             python=${{ matrix.pyver }}
             anaconda-client
             boa
-            conda-build 3.24
+            conda-build=3.24
             # add conditional if boa is defined here
 #            ${{ inputs.boa == true && 'boa' || '' }}
 
