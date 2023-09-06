@@ -93,7 +93,7 @@ jobs:
             fi
 
       - name: Download and extract MacOSX SDK
-        if: ${{ matrix.platform.name == 'macOS' }}
+        if: ${{ runner.os }} == 'macOS'
         run: |
           curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.15.sdk.tar.xz | tar -xvJf - -C /Users/runner/work/
 

@@ -1,8 +1,9 @@
 {% set version = "7.7.2" %}
 {% set build = 0 %}
+# Set a higher build number if occt contains 'novtk' in the variant name
 
-{% set build = build + 200 %}  # [variant == "novtk"]
-{% set build = build + 100 %}  # [variant == "all"]
+{% set build = build + 200 %}  # [occt_variant == "novtk"]
+{% set build = build + 100 %}  # [occt_variant == "all"]
 
 package:
   name: pythonocc-core
@@ -15,13 +16,10 @@ source:
 
 build:
   number: {{ build }}
-  string: {{ variant }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - numpy                                  # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ compiler('cxx') }}
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
     - {{ cdt('libxi-devel') }}           # [linux]
@@ -31,25 +29,20 @@ requirements:
 
   host:
     - python
-    - occt=*=novtk*   # [variant == "novtk"]
-    - occt            # [variant == "all"]
+    - occt
     - numpy >=1.17
 
   run:
     - python
-    - occt=*=novtk*  # [variant == "novtk"]
-    - occt  # [variant == "all"]
+    - occt
     - six
     - numpy >=1.17
 
-#test:
-#  imports:
-#    - OCC
-#    - OCC.Core.BRepPrimAPI
-#  requires:
-#    - mypy
-#    - svgwrite
-#
+test:
+  imports:
+    - OCC
+    - OCC.Core.BRepPrimAPI
+
 about:
   home: https://github.com/tpaviot/pythonocc-core
   license: LGPL

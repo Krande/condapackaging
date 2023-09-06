@@ -3,7 +3,7 @@
 declare -a CMAKE_PLATFORM_FLAGS
 
 if [[ ${HOST} =~ .*linux.* ]]; then
-    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE=$RECIPE_DIR/cross-linux.cmake)
+    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE=${RECIPE_DIR}/cross-linux.cmake)
 fi
 
 if [ `uname` == Darwin ]; then
