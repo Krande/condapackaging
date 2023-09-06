@@ -117,9 +117,6 @@ jobs:
             anaconda-client
             boa
             conda-build=3.24
-            # add conditional if boa is defined here
-#            ${{ inputs.boa == true && 'boa' || '' }}
-
       - name: Check if debug build
         run: |
           if [[ ${{ inputs.debug_build }} == "True" ]]; then
