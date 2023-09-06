@@ -13,7 +13,6 @@
 package:
   name: {{ name }}
   version: {{ version }}
-  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
 
 source:
   git_url: https://github.com/IfcOpenShell/ifcopenshell.git
@@ -22,6 +21,7 @@ source:
 build:
   binary_relocation: false [osx]
   number: {{ build }}
+  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:
