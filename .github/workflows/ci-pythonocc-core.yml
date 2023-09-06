@@ -14,7 +14,7 @@ jobs:
     with:
       package_name: pythonocc-core
       boa: false
-      conda_label: "main"
+      conda_label: "dev"
       conda_user: krande
       debug_build: 'False'
     secrets: inherit
