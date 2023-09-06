@@ -2,6 +2,9 @@
 
 tar -xzf "$SRC_DIR/deps/archives/mumps-5.5.1_aster1.tar.gz" -C . --strip-components=1
 
+# Use a slightly modified wscript that builds shared libs (.so)
+cp "$RECIPE_DIR/config/wscript" .
+
 echo "FC: $FC, Version: $($FC -dumpversion)"
 echo "CC: $CC"
 echo "CXX: $CXX"
@@ -50,6 +53,7 @@ else
   export F90=mpif90
 
   $PYTHON ./waf configure \
+    FPIC_OPT=-fPIC \
     --enable-mpi \
     --enable-openmp \
     --enable-metis \

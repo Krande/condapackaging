@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-parmetis.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   build:
@@ -14,6 +14,7 @@ jobs:
     with:
       package_name: parmetis
       boa: false
+      pkg_dir: src/code_aster
       conda_label: debug
       conda_user: krandedev
       debug_build: 'True'

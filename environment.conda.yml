@@ -1,4 +1,4 @@
-name: conda-build
+name: mamba-build
 channels:
   - conda-forge
   - nodefaults
@@ -12,6 +12,6 @@ dependencies:
   - boa
   - mercurial
   - ruamel.yaml.jinja2
-  - pybind11-stubgen 1.2
+  - pybind11-stubgen 2.0.2
   # for windows and fortran compiler install the following
 #    - m2w64-gcc-fortran

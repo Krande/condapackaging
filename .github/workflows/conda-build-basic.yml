@@ -17,6 +17,11 @@ on:
         type: string
         required: false
         default: "False"
+      pkg_dir:
+        description: 'work dir'
+        type: string
+        required: false
+        default: src
       work_dir:
         description: 'work dir'
         type: string
@@ -54,6 +59,8 @@ env:
   PKG_DEBUG: "False"
   CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
   CONDA_UPSTREAM_USER: ${{ inputs.conda_upstream_user }}
+  CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
+  WORK_DIR: ${{ inputs.work_dir }}
 
 jobs:
   build_conda:
@@ -66,7 +73,7 @@ jobs:
       fail-fast: false
       matrix:
         pyver: [ "3.9", "3.10", "3.11" ]
-        platform: [ ubuntu-latest ] #, windows-latest, macos-latest]
+        platform: [ ubuntu-latest, windows-latest, macos-latest]
     outputs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}
@@ -81,6 +88,16 @@ jobs:
             if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
                 echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
             fi
+      - name: set ENV WORK_DIR
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            echo "PKG_DIR=win-64" >> $GITHUB_ENV
+            echo "WORK_DIR=D:\\a\\" >> $GITHUB_ENV
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            echo "PKG_DIR=osx-64" >> $GITHUB_ENV
+          elif [[ "$RUNNER_OS" == "Linux" ]]; then
+            echo "PKG_DIR=linux-64" >> $GITHUB_ENV
+          fi
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
@@ -128,17 +145,9 @@ jobs:
           else
             conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
           fi
-        working-directory: src/code_aster/${{ inputs.package_name }}
+        working-directory: ${{ env.CONDA_DIR }}
 
-      - name: set ENV WORK_DIR
-        run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            echo "PKG_DIR=win-64" >> $GITHUB_ENV
-          elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            echo "PKG_DIR=osx-64" >> $GITHUB_ENV
-          elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            echo "PKG_DIR=linux-64" >> $GITHUB_ENV
-          fi
+
 
       - name: upload to anaconda
         run: |

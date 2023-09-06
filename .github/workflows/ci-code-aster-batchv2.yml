@@ -18,6 +18,7 @@ jobs:
       code_aster_version: 16.4.2
       conda_label: debug
       conda_user: krandedev
+      pkg_dir: src/code_aster
       debug_build: "True"
       mpi: "False"
 
@@ -41,6 +42,7 @@ jobs:
     with:
       package_name: ${{ matrix.package.name }}
       boa: ${{ matrix.package.boa }}
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
@@ -51,6 +53,7 @@ jobs:
     with:
       package_name: mumps
       boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
@@ -61,6 +64,7 @@ jobs:
     with:
       package_name: libmed
       boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
@@ -71,6 +75,7 @@ jobs:
     with:
       package_name: medcoupling
       boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
@@ -81,6 +86,7 @@ jobs:
     with:
       package_name: mfront
       boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
@@ -91,6 +97,7 @@ jobs:
     with:
       package_name: mgis
       boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
@@ -101,6 +108,7 @@ jobs:
     with:
       package_name: code_aster
       boa: true
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}

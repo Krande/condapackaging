@@ -1,3 +1,6 @@
+occt:
+  - 7.7.2
+
 variant:
   - vtk
   - core

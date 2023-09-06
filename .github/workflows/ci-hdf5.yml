@@ -4,7 +4,6 @@ name: ci-hdf5
 on:
   push:
     paths:
-      - src/code_aster/hdf5/**
       - .github/workflows/ci-hdf5.yml
     branches:
     - donotrun

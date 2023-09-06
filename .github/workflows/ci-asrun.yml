@@ -4,7 +4,6 @@ name: ci-asrun
 on:
   push:
     paths:
-      - src/code_aster/asrun/**
       - .github/workflows/ci-asrun.yml
     branches:
     - donotrun

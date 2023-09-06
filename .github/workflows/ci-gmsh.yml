@@ -4,10 +4,9 @@ name: ci-gmsh
 on:
   push:
     paths:
-      - src/gmsh/conda/**
       - .github/workflows/ci-gmsh.yml
     branches:
-    - main
+    - donotrun
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -34,7 +33,6 @@ jobs:
         ]
     steps:
       - uses: actions/checkout@v3
-      - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
         with:
           cache-env: true

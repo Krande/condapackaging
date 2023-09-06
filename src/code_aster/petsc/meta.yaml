@@ -44,15 +44,15 @@ requirements:
     - libblas
     - libcblas
     - liblapack
+    - cython {{ cython_ver }}
     - numpy
-    - cython {{ cython_ver }} 
     - hdf5
     - yaml
     - python
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
-    - scotch {{ scotch_ver }}=*openmpi*
+    - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}=*openmpi*
     - {{ mpi }}
 
@@ -64,7 +64,7 @@ requirements:
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
-    - scotch {{ scotch_ver }}=*openmpi*
+    - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}=*openmpi*
     - {{ mpi }}
 

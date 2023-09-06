@@ -11,54 +11,38 @@ on:
 
 jobs:
   build_wgpu:
-    name: wgpu-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
-    runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        pyver: [
-          { name: py311, distver: '3.11' },
-        ]
-        platform: [
-          { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
-        ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
-        with:
-          environment-file: environment.conda.yml
-          create-args: >-
-            python=${{ matrix.pyver.distver }}
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: wgpu
+      boa: false
+      pkg_dir: src/pygfx
+      conda_label: ""
+      conda_user: krande
+      debug_build: 'False'
+    secrets: inherit
 
-      - name: build pygfx packages
-        run: |
-          conda mambabuild wgpu --python ${{ matrix.pyver.distver }} -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-        working-directory: src/pygfx
-
-  build_noarch:
-    name: pygfx-pylinalg-noarch
+  build_pylinalg:
     needs: [build_wgpu]
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-    steps:
-        - uses: actions/checkout@v3
-        - uses: mamba-org/setup-micromamba@v1 #
-          with:
-            environment-file: environment.conda.yml
-            create-args: >-
-              python=3.11
-        - name: build pygfx packages
-          run: |
-            conda mambabuild pylinalg -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-            conda mambabuild pygfx -c conda-forge -c krande --token ${{ secrets.ANACONDA_TOKEN }} --user krande
-          working-directory: src/pygfx
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: pylinalg
+      boa: false
+      pkg_dir: src/pygfx
+      conda_label: ""
+      conda_user: krande
+      debug_build: 'False'
+    secrets: inherit
+
+  build_pygfx:
+    needs: [ build_wgpu ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: pygfx
+      boa: false
+      pkg_dir: src/pygfx
+      conda_label: ""
+      conda_user: krande
+      debug_build: 'False'
+    secrets: inherit
 
 

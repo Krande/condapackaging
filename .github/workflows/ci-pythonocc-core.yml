@@ -4,43 +4,17 @@ name: ci-pythonocc-core
 on:
   push:
     paths:
-      - src/pythonocc-core/conda/**
       - .github/workflows/ci-pythonocc-core.yml
-    branches:
-    - main
+#    branches:
+#    - donotrun
 
 jobs:
-  build_test:
-    name: pythonocc-core-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
-    runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        pyver: [
-          { name: py311, distver: '3.11'},
-        ]
-        platform: [
-          { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
-        ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
-        with:
-          cache-env: true
-          environment-name: conda-build
-          channels: conda-forge
-          channel-priority: strict
-          environment-file: environment.conda.yml
-          extra-specs: |
-            python=${{ matrix.pyver.distver }}
-
-      - name: build local packages
-        run: |
-          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
-        working-directory: src/pythonocc-core/conda
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: pythonocc-core
+      boa: false
+      conda_label: ""
+      conda_user: krande
+      debug_build: 'False'
+    secrets: inherit

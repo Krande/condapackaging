@@ -44,7 +44,16 @@ export F90=mpif90
 
 echo "python=$(which python)"
 # ensure to have consistent python3 and cython in PATH
-python ./configure \
+$PYTHON ./configure \
+    CC="mpicc" \
+    CXX="mpicxx" \
+    FC="mpifort" \
+    CFLAGS="$CFLAGS" \
+    CPPFLAGS="$CPPFLAGS" \
+    CXXFLAGS="$CXXFLAGS" \
+    FFLAGS="$FFLAGS" \
+    LDFLAGS="$LDFLAGS" \
+    LIBS="$LIBS" \
     --with-debugging=$enable_debugging \
     --with-mpi=1 \
     --with-ssl=0 \
