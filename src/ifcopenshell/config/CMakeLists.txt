@@ -588,15 +588,7 @@ if(HDF5_SUPPORT)
             endif()
             # find zlib and append to HDF5_LIBRARIES if found
             # if on linux do something a bit different
-            if(WIN32)
-                find_library(zlib NAMES zlib libz libz_debug PATHS ${HDF5_LIBRARY_DIR} NO_DEFAULT_PATH)
-                # check if zlib or libz is found
-                if(zlib)
-                    set(HDF5_LIBRARIES ${HDF5_LIBRARIES} ${zlib})
-                else()
-                    message(FATAL_ERROR "Unable to find zlib library, aborting")
-                endif()
-            elseif(UNIX)
+            if(UNIX)
                 set(zlib_post libz)
                 set(lib_ext so)
                 set(HDF5_LIBRARIES
@@ -605,14 +597,13 @@ if(HDF5_SUPPORT)
                 "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
                 )
             else()
-                # macOS
-                set(zlib_post libz)
-                set(lib_ext dylib)
-                set(HDF5_LIBRARIES
-                "${HDF5_LIBRARY_DIR}/libhdf5_cpp.${lib_ext}"
-                "${HDF5_LIBRARY_DIR}/libhdf5.${lib_ext}"
-                "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
-                )
+                find_library(zlib NAMES zlib libz libz_debug PATHS ${HDF5_LIBRARY_DIR} NO_DEFAULT_PATH)
+                # check if zlib or libz is found
+                if(zlib)
+                    set(HDF5_LIBRARIES ${HDF5_LIBRARIES} ${zlib})
+                else()
+                    message(FATAL_ERROR "Unable to find zlib library, aborting")
+                endif()
             endif()
         endif()
     endif()
