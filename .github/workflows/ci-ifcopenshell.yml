@@ -4,52 +4,18 @@ name: ci-ifcopenshell
 on:
   push:
     paths:
-      - src/ifcopenshell/conda/**
       - .github/workflows/ci-ifcopenshell.yml
-    branches:
-      - main
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+#    branches:
+#      - donotrun
 
 jobs:
-  build_test:
-    name: ifcopenshell-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{matrix.build.name}}
-    runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        build: [ { name: 'core' },{ name: 'vtk' } ]
-        pyver: [
-          { name: py311, distver: '3.11' },
-        ]
-        platform: [
-          { name: win, distver: windows-latest },
-#          { name: linux, distver: ubuntu-latest },
-#          { name: macOS, distver: macos-latest }
-        ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
-        with:
-          cache-env: true
-          environment-name: conda-build
-          channels: conda-forge
-          channel-priority: strict
-          environment-file: environment.conda.yml
-          extra-specs: |
-            python=${{ matrix.pyver.distver }}
-            sel(win): vs2022_win-64
-
-      - name: Create temp artifacts directory
-        run: |
-          mkdir $GITHUB_WORKSPACE/artifacts
-
-      - name: build local packages
-        run: |
-          conda build . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev --output-folder $GITHUB_WORKSPACE/artifacts
-        working-directory: src/ifcopenshell/conda
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: ifcopenshell
+      boa: false
+      pkg_dir: src/ifcopenshell/daily
+      conda_label: "dev"
+      conda_user: krande
+      debug_build: 'False'
+    secrets: inherit

@@ -75,7 +75,7 @@ jobs:
       fail-fast: false
       matrix:
         # Add conditions to skip builds on specific platforms
-        pyver: [ "3.9", "3.10", "3.11" ]
+        pyver: [ "3.10", "3.11" ]
         platform: [ ubuntu-latest, windows-latest, macos-latest]
     outputs:
       conda_label: ${{ inputs.conda_label }}
@@ -94,7 +94,7 @@ jobs:
 
       - name: set ENV WORK_DIR
         run: |
-          ls
+          pwd
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             echo "PKG_DIR=win-64" >> $GITHUB_ENV
             echo "WORK_DIR=D:/a/" >> $GITHUB_ENV

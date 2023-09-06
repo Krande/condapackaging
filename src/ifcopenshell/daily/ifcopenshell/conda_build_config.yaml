@@ -1,2 +1,5 @@
+occt:
+  - 7.7.2
+
 CONDA_BUILD_SYSROOT:
   - /opt/MacOSX10.13.sdk       # [osx]
