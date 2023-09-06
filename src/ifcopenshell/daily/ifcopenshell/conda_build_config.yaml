@@ -1,5 +1,6 @@
 occt:
-  - 7.7.2
+  - 7.7.2=novtk*
+  - 7.7.2=all*
 
 CONDA_BUILD_SYSROOT:
   - /opt/MacOSX10.13.sdk       # [osx]
