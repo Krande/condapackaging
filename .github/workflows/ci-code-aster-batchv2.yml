@@ -49,7 +49,6 @@ jobs:
     secrets: inherit
 
   build_mpi_parmetis:
-    if: ${{ needs.env.outputs.mpi == 'True' }}
     needs: [env]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
@@ -87,7 +86,6 @@ jobs:
 
   build_batch_petsc:
     needs: [ build_batch_mumps, build_mpi_parmetis, env ]
-    if: ${{ needs.env.outputs.mpi == 'True' }}
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
@@ -98,22 +96,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
     secrets: inherit
 
-  build_batch_mpi_medcoupling:
-    needs: [ build_batch_libmed, build_batch_petsc, env ]
-    if: ${{ needs.env.outputs.mpi == 'True' }}
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: medcoupling
-      boa: false
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
-    secrets: inherit
-
   build_batch_medcoupling:
-    needs: [ build_batch_libmed, env ]
-    if: ${{ needs.env.outputs.mpi == 'False' }}
+    needs: [ build_batch_libmed,build_batch_petsc, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
@@ -153,7 +137,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
-      boa: true
+      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
