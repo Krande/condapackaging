@@ -1,6 +1,6 @@
 name: ci-gmsh
 
-# bump 2
+# bump 1
 on:
   push:
     paths:

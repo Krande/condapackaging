@@ -578,32 +578,32 @@ if(HDF5_SUPPORT)
 
         else()
             message(STATUS "Packaging hdf5 and zlib for conda distribution")
-            # find hdf5. Append the modules to the HDF5_LIBRARIES if found
-            # Note If hdf5 > 1.12 the library no longer starts with lib.
-            find_library(hdf5 NAMES hdf5 libhdf5 libhdf5_debug PATHS ${HDF5_LIBRARY_DIR} NO_DEFAULT_PATH)
-            if(hdf5)
-                set(HDF5_LIBRARIES ${HDF5_LIBRARIES} ${hdf5})
+            if(WIN32)
+                # Windows
+                set(zlib_post zlib)
+                set(lib_ext lib)
+                set(HDF5_LIBRARIES
+                "${HDF5_LIBRARY_DIR}/hdf5_cpp.${lib_ext}"
+                "${HDF5_LIBRARY_DIR}/hdf5.${lib_ext}"
+                "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
+                )
+
             else()
-                message(FATAL_ERROR "Unable to find hdf5 library, aborting")
-            endif()
-            # find zlib and append to HDF5_LIBRARIES if found
-            # if on linux do something a bit different
-            if(UNIX)
-                set(zlib_post libz)
-                set(lib_ext so)
+                if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+                    # macOS
+                    set(zlib_post libz)
+                    set(lib_ext dylib)
+                else()
+                    # linux
+                    set(zlib_post libz)
+                    set(lib_ext so)
+                endif()
+
                 set(HDF5_LIBRARIES
                 "${HDF5_LIBRARY_DIR}/libhdf5_cpp.${lib_ext}"
                 "${HDF5_LIBRARY_DIR}/libhdf5.${lib_ext}"
                 "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
                 )
-            else()
-                find_library(zlib NAMES zlib libz libz_debug PATHS ${HDF5_LIBRARY_DIR} NO_DEFAULT_PATH)
-                # check if zlib or libz is found
-                if(zlib)
-                    set(HDF5_LIBRARIES ${HDF5_LIBRARIES} ${zlib})
-                else()
-                    message(FATAL_ERROR "Unable to find zlib library, aborting")
-                endif()
             endif()
         endif()
     endif()
