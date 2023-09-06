@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-pythonocc-core.yml
-    branches:
-    - donotrun
+#    branches:
+#    - donotrun
 
 jobs:
   build:
