@@ -60,10 +60,11 @@ outputs:
         - xorg-libxrender    # [linux]
         - xorg-libx11        # [linux]
         - xorg-libxmu        # [linux]
+        - cairo
 
       run:
         - gmp  # [not win]
-        - occt
+        - {{ pin_compatible('occt', max_pin='x.x.x') }}
         - libpng
         - jpeg
         - zlib
