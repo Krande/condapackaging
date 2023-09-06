@@ -3,6 +3,7 @@ cd build
 
 REM Configure step
 cmake -G "Ninja" ^
+    -Wno-dev ^
     -D CMAKE_INSTALL_PREFIX:FILEPATH="%LIBRARY_PREFIX%" ^
     -D PYTHONOCC_BUILD_TYPE:STRING=Release ^
     -D Python3_FIND_STRATEGY:STRING=LOCATION ^

@@ -6,10 +6,11 @@ pin_run_as_build:
   occt: x.x.x
 
 CONDA_BUILD_SYSROOT:
-  - /opt/MacOSX10.13.sdk       # [osx]
+  - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
 
 c_compiler:
-  - vs2019                     # [win]
-
+  - vs2022                     # [win]
+#  - vs2019                     # [win]
 cxx_compiler:
-  - vs2019                     # [win]
+#  - vs2019                     # [win]
+  - vs2022                     # [win]
