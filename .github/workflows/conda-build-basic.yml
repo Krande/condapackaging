@@ -88,13 +88,16 @@ jobs:
             if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
                 echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
             fi
+
       - name: set ENV WORK_DIR
         run: |
+          ls
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             echo "PKG_DIR=win-64" >> $GITHUB_ENV
             echo "WORK_DIR=D:\\a\\" >> $GITHUB_ENV
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "PKG_DIR=osx-64" >> $GITHUB_ENV
+            echo "WORK_DIR=/Users/runner/work" >> $GITHUB_ENV
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
             echo "PKG_DIR=linux-64" >> $GITHUB_ENV
           fi
@@ -132,15 +135,15 @@ jobs:
 
       - name: make dirs
         run: |
-          mkdir -p ${{ inputs.work_dir }}/artifacts
-          mkdir -p ${{ inputs.work_dir }}/build
+          mkdir -p ${{ ENV.WORK_DIR }}/artifacts
+          mkdir -p ${{ ENV.WORK_DIR }}/build
 
       - name: build local packages
         run: |
           if [[ ${{ inputs.boa }} == true ]]; then
-            boa build . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts --pkg-format=2
+            boa build . --python ${{ matrix.pyver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts --pkg-format=2
           else
-            conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ inputs.work_dir }}/build --output-folder ${{ inputs.work_dir }}/artifacts
+            conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ env.WORK_DIR }}/build --output-folder ${{ env.WORK_DIR }}/artifacts
           fi
         working-directory: ${{ env.CONDA_DIR }}
 
@@ -148,7 +151,7 @@ jobs:
 
       - name: upload to anaconda
         run: |
-          path="${{ inputs.work_dir }}/artifacts/${{ env.PKG_DIR }}/*.conda"
+          path="${{ env.WORK_DIR }}/artifacts/${{ env.PKG_DIR }}/*.conda"
           if [ "${{ matrix.platform }}" == 'Windows' ]; then
             path="'$path'"
           fi
