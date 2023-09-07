@@ -1,6 +1,6 @@
 name: ci-code-aster-batchv2
 
-# bump 0
+# bump 1
 on:
   push:
     paths:
@@ -171,4 +171,3 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
-    secrets: inherit

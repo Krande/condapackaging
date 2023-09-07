@@ -52,9 +52,9 @@ pin_run_as_build:
     max_pin: x.x
   openmpi: x.x               # [mpi != "nompi"]
 
-mpi:          # [unix]
-  - openmpi   # [unix]
-  - nompi     # [unix]
+mpi:
+  - openmpi
+  - nompi
 
 hdf5:
   - 1.10.6=mpi*

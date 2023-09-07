@@ -22,19 +22,23 @@ on:
         required: false
 
 jobs:
+  # run a preceding job to get the matrix only if matrix_str is None
+  build_matrix:
+    uses: ./.github/workflows/matrix-builder.yml
+    with:
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      
   run_ctest:
-    name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver }}
-    runs-on: ${{ matrix.platform.distver }}
+    needs: build_matrix
+    name: ctest-code_aster-${{ matrix.platform }}-${{ matrix.pyver }}
+    runs-on: ${{ matrix.platform }}
     defaults:
       run:
         shell: bash -l {0}
     strategy:
       fail-fast: false
-      matrix:
-        pyver: [ '3.9', '3.10', '3.11' ]
-        platform: [
-          { name: linux, distver: ubuntu-latest },
-        ]
+      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
     steps:
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
@@ -48,7 +52,7 @@ jobs:
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
-            code-aster==${{ inputs.code_aster_version }}
+            code-aster=${{ inputs.code_aster_version }}
       - name: run ctest
         continue-on-error: true
         run: |
@@ -71,7 +75,7 @@ jobs:
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v2
         with:
-          name: ctest-code_aster-${{ matrix.platform.name }}-${{ matrix.pyver }}
+          name: ctest-code_aster-${{ matrix.platform }}-${{ matrix.pyver }}
           path: ${{ github.workspace }}/ctest
 
   upload_test_results:
