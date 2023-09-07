@@ -13,6 +13,7 @@ on:
 jobs:
   env:
     runs-on: ubuntu-latest
+
     outputs:
       # This is where the conda user and label should be set
       code_aster_version: 16.4.3
@@ -21,24 +22,18 @@ jobs:
       pkg_dir: src/code_aster
       debug_build: "True"
       mpi: "True"
-      python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest"
-
+      final_matrix: ${{ steps.matrix.outputs.final_matrix }}
+    
     steps:
-      - name: dummy step
-        id: env
-        run: |
-          echo "done"
-  
-  build_matrix:
-    needs: env
-    uses: ./.github/workflows/matrix-builder.yml
-    with:
-      python_versions: ${{ needs.env.outputs.python_versions }}
-      platforms: ${{ needs.env.outputs.platforms }}
-      
+      - name: Build Matrix
+        id: matrix
+        uses: ./.github/workflows/matrix-builder.yml
+        with:
+          python_versions: "3.10,3.11"
+          platforms: "ubuntu-latest"
+
   build_batch_1:
-    needs: [env, build_matrix]
+    needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml
     strategy:
       fail-fast: false
@@ -55,11 +50,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_mpi_parmetis:
-    needs: [env, build_matrix]
+    needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: parmetis
@@ -68,11 +63,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_mumps:
-    needs: [ build_batch_1, env, build_matrix ]
+    needs: [ build_batch_1, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
@@ -81,11 +76,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_libmed:
-    needs: [env, build_matrix]
+    needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
@@ -94,11 +89,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_petsc:
-    needs: [ build_batch_mumps, build_mpi_parmetis, env, build_matrix ]
+    needs: [ build_batch_mumps, build_mpi_parmetis, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: petsc
@@ -107,11 +102,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_medcoupling:
-    needs: [ build_batch_libmed, build_batch_petsc, env, build_matrix ]
+    needs: [ build_batch_libmed, build_batch_petsc, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
@@ -120,11 +115,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_mfront:
-    needs: [env, build_matrix]
+    needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mfront
@@ -133,11 +128,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_mgis:
-    needs: [ build_batch_mfront, env, build_matrix ]
+    needs: [ build_batch_mfront, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mgis
@@ -146,11 +141,11 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   build_batch_code_aster:
-    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env, build_matrix ]
+    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
@@ -159,7 +154,7 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      matrix_str: ${{ needs.build_matrix.outputs.final_matrix }}
+      matrix_str: ${{ needs.env.outputs.final_matrix }}
     secrets: inherit
 
   test_package:
