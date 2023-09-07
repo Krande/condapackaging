@@ -4,7 +4,7 @@ name: ci-ifcopenshell
 on:
   push:
     paths:
-      - .github/workflows/ci-ifcopenshell.yml
+      - .github/workflows/ci-test-matrix-builder.yml
 #    branches:
 #      - donotrun
 
