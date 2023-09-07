@@ -3,7 +3,7 @@
 tar -xzf "$SRC_DIR/deps/archives/mumps-5.5.1_aster1.tar.gz" -C . --strip-components=1
 
 # Use a slightly modified wscript that builds shared libs (.so)
-cp "$RECIPE_DIR/config/wscript" .
+#cp "$RECIPE_DIR/config/wscript" .
 
 echo "FC: $FC, Version: $($FC -dumpversion)"
 echo "CC: $CC"

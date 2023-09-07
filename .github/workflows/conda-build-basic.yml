@@ -145,7 +145,7 @@ jobs:
             python=${{ matrix.pyver }}
             anaconda-client
             boa
-            conda-build=3.24
+            conda-build=3.25
 
       - name: Check if debug build
         run: |
