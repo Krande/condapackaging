@@ -82,6 +82,7 @@ jobs:
       platforms: ${{ inputs.platforms }}
 
   build_conda:
+    needs: build_matrix
     name: ${{ inputs.package_name }}-${{ matrix.platform }}-${{ matrix.pyver }}
     runs-on: ${{ matrix.platform }}
     defaults:
