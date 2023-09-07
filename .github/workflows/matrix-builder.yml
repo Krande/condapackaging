@@ -16,18 +16,18 @@ on:
     outputs:
       python_matrix:
         description: "matrix"
-        value: ${{ steps.build.outputs.python_matrix }}
+        value: ${{ jobs.build.outputs.python_matrix }}
       platform_matrix:
         description: "matrix"
-        value: ${{ steps.build.outputs.platform_matrix }}
+        value: ${{ jobs.build.outputs.platform_matrix }}
 
 jobs:
   build:
     name: generate matrix
-    runs-on: ubuntu-latest
     outputs:
       python_matrix: ${{ steps.set-matrix.outputs.python_matrix }}
       platform_matrix: ${{ steps.set-matrix.outputs.platform_matrix }}
+    runs-on: ubuntu-latest
     steps:
       - name: set matrix
         id: set-matrix

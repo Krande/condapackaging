@@ -1,4 +1,4 @@
-name: ci-ifcopenshell
+name: ci-test-matrix-builder
 
 # bump 1
 on:
@@ -24,8 +24,8 @@ jobs:
         python_version: ${{ fromJson(needs.build_matrix.outputs.python_matrix) }}
         platform_version: ${{ fromJson(needs.build_matrix.outputs.platform_matrix) }}
     steps:
-        - name: build local packages
-          run: |
-            echo ${{ matrix.python_version }}
-            echo ${{ matrix.platform_version }}
-          working-directory: src/ifcopenshell/conda
+      - name: build local packages
+        run: |
+          echo ${{ matrix.python_version }}
+          echo ${{ matrix.platform_version }}
+        working-directory: src/ifcopenshell/conda
