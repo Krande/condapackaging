@@ -136,7 +136,11 @@ jobs:
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5
+            anaconda_upload: True
             conda-build:
+              root-dir: ${{ env.CROOT_DIR }}
+              output_folder: ${{ env.ARTIFACTS_DIR }}
+              anaconda_token: ${{ env.CONDA_TOKEN }}
               pkg_format: 2
               zstd_compression_level: 19
             channel_priority: strict
@@ -173,37 +177,6 @@ jobs:
           if [[ ${{ inputs.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2
           else
-            conda mambabuild . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }}
+            conda mambabuild . --python ${{ matrix.pyver }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
-
-      - name: upload to anaconda
-        run: |
-          pkg_dir="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}"
-          noarch_dir="${{ env.ARTIFACTS_DIR }}/noarch"
-
-          # Check if the regular directory exists
-          if [ -d "$pkg_dir" ]; then
-              # Check if there are any .conda files to upload in the regular directory
-              if ls "$pkg_dir"/*.conda 1> /dev/null 2>&1; then
-                  path="${pkg_dir}/*.conda"
-                  anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
-              else
-                  echo "No .conda files found in $pkg_dir, skipping upload."
-              fi
-          else
-              echo "Regular directory does not exist, skipping upload."
-          fi
-
-          # Check if the noarch directory exists
-          if [ -d "$noarch_dir" ]; then
-              # Check if there are any .conda files to upload in the noarch directory
-              if ls "$noarch_dir"/*.conda 1> /dev/null 2>&1; then
-                  path="${noarch_dir}/*.conda"
-                  anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
-              else
-                  echo "No .conda files found in $noarch_dir, skipping upload."
-              fi
-          else
-              echo "Noarch directory does not exist, skipping upload."
-          fi
