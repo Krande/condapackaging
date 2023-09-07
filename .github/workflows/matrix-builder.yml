@@ -14,27 +14,32 @@ on:
         required: false
 
     outputs:
-      python_matrix:
+      final_matrix:
         description: "matrix"
-        value: ${{ jobs.build.outputs.python_matrix }}
-      platform_matrix:
-        description: "matrix"
-        value: ${{ jobs.build.outputs.platform_matrix }}
+        value: ${{ jobs.build.outputs.final_matrix }}
 
 jobs:
   build:
     name: generate matrix
     outputs:
-      python_matrix: ${{ steps.set-matrix.outputs.python_matrix }}
-      platform_matrix: ${{ steps.set-matrix.outputs.platform_matrix }}
+      final_matrix: ${{ steps.set-matrix.outputs.final_matrix }}
     runs-on: ubuntu-latest
     steps:
       - name: set matrix
         id: set-matrix
         run: |
-          python_versions=${{ github.event.inputs.python_versions }}
-          platforms=${{ github.event.inputs.platforms }}
-          python_matrix=$(python -c "import json; print(json.dumps({'python': [x.strip() for x in '${python_versions}'.split(',')]}))")
-          platform_matrix=$(python -c "import json; print(json.dumps({'platform': [x.strip() for x in '${platforms}'.split(',')]}))")
-          echo "::set-output name=python_matrix::${python_matrix}"
-          echo "::set-output name=platform_matrix::${platform_matrix}"
+          python_versions = "${{ github.event.inputs.python_versions }}"
+          platforms = "${{ github.event.inputs.platforms }}"
+          if python_versions:
+            python_versions = python_versions.split(',')
+          else:
+            python_versions = []
+          if platforms:
+            platforms = platforms.split(',')
+          else:
+            platforms = []
+          matrix = {
+            "python_versions": python_versions,
+            "platforms": platforms
+          }
+          print(f"::set-output name=final_matrix::{matrix}")

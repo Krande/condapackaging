@@ -20,12 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        python_version: ${{ fromJson(needs.build_matrix.outputs.python_matrix) }}
-        platform_version: ${{ fromJson(needs.build_matrix.outputs.platform_matrix) }}
+      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
     steps:
       - name: build local packages
         run: |
-          echo ${{ matrix.python_version }}
-          echo ${{ matrix.platform_version }}
-        working-directory: src/ifcopenshell/conda
+          echo ${{ matrix.python_versions }}
+          echo ${{ matrix.platforms }}
