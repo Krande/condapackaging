@@ -76,7 +76,7 @@ jobs:
       matrix:
         # Add conditions to skip builds on specific platforms
         pyver: [ "3.10", "3.11" ]
-        platform: [ windows-latest ]
+        platform: [ ubuntu-latest, windows-latest, macos-latest]
     outputs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}
@@ -132,6 +132,7 @@ jobs:
             anaconda-client
             boa
             conda-build=3.24
+
       - name: Check if debug build
         run: |
           if [[ ${{ inputs.debug_build }} == "True" ]]; then
@@ -160,11 +161,11 @@ jobs:
           fi
         working-directory: ${{ env.CONDA_DIR }}
 
-
-
       - name: upload to anaconda
         run: |
           path="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}/*.conda"
-          
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
-
+          
+          # Upload from noarch folder if it exists
+          path="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}/noarch/*.conda"
+          anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
