@@ -38,7 +38,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
+      matrix: ${{ fromJson(needs.build_matrix_2.outputs.final_matrix) }}
     steps:
       - name: build local packages
         run: |
