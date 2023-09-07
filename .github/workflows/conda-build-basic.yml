@@ -76,7 +76,7 @@ jobs:
       matrix:
         # Add conditions to skip builds on specific platforms
         pyver: [ "3.10", "3.11" ]
-        platform: [ ubuntu-latest, windows-latest, macos-latest]
+        platform: [ windows-latest ]
     outputs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}
@@ -165,8 +165,6 @@ jobs:
       - name: upload to anaconda
         run: |
           path="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}/*.conda"
-          if [ "${{ matrix.platform }}" == 'windows-latest' ]; then
-            path="'$path'"
-          fi
+          
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
 
