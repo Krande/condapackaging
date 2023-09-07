@@ -180,5 +180,5 @@ jobs:
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
           
           # Upload from noarch folder if it exists
-          path="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}/noarch/*.conda"
+          path="${{ env.ARTIFACTS_DIR }}/noarch/*.conda"
           anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
