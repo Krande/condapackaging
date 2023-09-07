@@ -1,5 +1,5 @@
 # a callable workflow that returns a json string of a matrix for either platforms or python versions
-name: matrix-builder
+name: ci-matrix-builder
 
 on:
   workflow_call:
@@ -23,17 +23,18 @@ on:
 
 jobs:
   build:
+    name: generate matrix
     runs-on: ubuntu-latest
     outputs:
-        python_matrix: ${{ steps.set-matrix.outputs.python_matrix }}
-        platform_matrix: ${{ steps.set-matrix.outputs.platform_matrix }}
+      python_matrix: ${{ steps.set-matrix.outputs.python_matrix }}
+      platform_matrix: ${{ steps.set-matrix.outputs.platform_matrix }}
     steps:
-        - name: set matrix
-          id: set-matrix
-          run: |
-            python_versions=${{ github.event.inputs.python_versions }}
-            platforms=${{ github.event.inputs.platforms }}
-            python_matrix=$(python -c "import json; print(json.dumps({'python': [x.strip() for x in '${python_versions}'.split(',')]}))")
-            platform_matrix=$(python -c "import json; print(json.dumps({'platform': [x.strip() for x in '${platforms}'.split(',')]}))")
-            echo "::set-output name=python_matrix::${python_matrix}"
-            echo "::set-output name=platform_matrix::${platform_matrix}"
+      - name: set matrix
+        id: set-matrix
+        run: |
+          python_versions=${{ github.event.inputs.python_versions }}
+          platforms=${{ github.event.inputs.platforms }}
+          python_matrix=$(python -c "import json; print(json.dumps({'python': [x.strip() for x in '${python_versions}'.split(',')]}))")
+          platform_matrix=$(python -c "import json; print(json.dumps({'platform': [x.strip() for x in '${platforms}'.split(',')]}))")
+          echo "::set-output name=python_matrix::${python_matrix}"
+          echo "::set-output name=platform_matrix::${platform_matrix}"
