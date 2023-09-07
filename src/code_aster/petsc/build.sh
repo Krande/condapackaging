@@ -58,9 +58,8 @@ $PYTHON ./configure \
     --with-64-bit-indices=0 \
     --with-mumps-lib="-L${PREFIX}/lib -lzmumps -ldmumps -lmumps_common -lpord -lesmumps -lptscotch -lptscotcherr -lptscotcherrexit -lscotch -lscotcherr -lscotcherrexit -lmetis" \
     --with-mumps-include="${PREFIX}/include" \
-    --with-blas-lib=libblas"${SHLIB_EXT}" \
-    --with-lapack-lib=liblapack"${SHLIB_EXT}" \
-    --with-scalapack=1 \
+    --with-blas-lapack-lib="-L${PREFIX}/lib -lopenblas" \
+    --with-scalapack-lib="-L$PREFIX/lib -lscalapack" \
     --with-python=1 \
     --with-petsc4py=1 \
     --with-shared-libraries \
@@ -71,7 +70,8 @@ $PYTHON ./configure \
     --download-slepc="${BUILD_3rdParty}"/3rd/slepc-${_SPLEC}.tar.gz \
     --download-hpddm="${BUILD_3rdParty}"/3rd/hpddm_${_HPDDM}.tar.gz \
     --with-openmp=0 \
-    --prefix="${PREFIX}"
+    --prefix="${PREFIX}" \
+    LIBS="-lgomp"
 
 [ $? -eq 0 ] || exit 1
 
