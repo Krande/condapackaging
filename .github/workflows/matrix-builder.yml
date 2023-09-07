@@ -28,18 +28,8 @@ jobs:
       - name: set matrix
         id: set-matrix
         run: |
-          python_versions = "${{ inputs.python_versions }}"
-          platforms = "${{ inputs.platforms }}"
-          if python_versions:
-            python_versions = python_versions.split(',')
-          else:
-            python_versions = []
-          if platforms:
-            platforms = platforms.split(',')
-          else:
-            platforms = []
-          matrix = {
-            "python_versions": python_versions,
-            "platforms": platforms
-          }
-          print(f"::set-output name=final_matrix::{matrix}")
+          python_versions="${{ inputs.python_versions }}"
+          platforms="${{ inputs.platforms }}"
+          python_versions=(${python_versions//,/ })
+          platforms=(${platforms//,/ })
+          echo "::set-output name=final_matrix::{\"python_versions\": [\"${python_versions[@]}\"], \"platforms\": [\"${platforms[@]}\"]}"
