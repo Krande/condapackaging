@@ -18,7 +18,7 @@ source:
 build:
   detect_binary_files_with_prefix: true
   string: aster1_py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
-  string: aster1_py{{ CONDA_PY }}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi == "nompi"]
+  string: aster1_py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
   number: 2
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}

@@ -51,7 +51,7 @@ requirements:
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
-    - scotch {{ scotch_ver }}
+    - scotch {{ scotch_ver }}=*openmpi*
     - mumps {{ mumps_ver }}=*openmpi*
     - {{ mpi }}
 
@@ -63,7 +63,7 @@ requirements:
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
-    - scotch {{ scotch_ver }}
+    - scotch {{ scotch_ver }}=*openmpi*
     - mumps {{ mumps_ver }}=*openmpi*
     - {{ mpi }}
 
