@@ -5,19 +5,19 @@ on:
   push:
     paths:
       - .github/workflows/ci-test-matrix-builder.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 jobs:
   build_matrix:
     uses: ./.github/workflows/matrix-builder.yml
     with:
-      python_versions: "3.10,3.9,3.11"
-      platforms: "windows-latest,ubuntu-latest,macOS"
+      python_versions: "3.9,3.10,3.11"
+      platforms: "windows-latest,ubuntu-latest,macos-latest"
 
   consume_matrix:
     needs: build_matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platforms }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}

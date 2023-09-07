@@ -37,8 +37,8 @@ jobs:
           python_versions = python_versions.split(',') if python_versions else []
           platforms = platforms.split(',') if platforms else []
           matrix = {
-            "python_versions": python_versions,
-            "platforms": platforms
+            "pyver": python_versions,
+            "platform": platforms
           }
           
           with open(env_file, "a") as my_file:
