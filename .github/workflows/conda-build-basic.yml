@@ -92,7 +92,7 @@ jobs:
         shell: bash -l {0}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(inputs.matrix_str) }}
+      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
     outputs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}

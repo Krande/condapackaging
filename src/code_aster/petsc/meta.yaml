@@ -22,7 +22,7 @@ source:
 build:
   skip: true  # [win]
   number: {{ build }}
-  string: aster_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+  string: aster_py{{ CONDA_PY }}_{{mpi}}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage('petsc', max_pin='x.x') }}
   script_env:
@@ -54,7 +54,6 @@ requirements:
     - scalapack {{ scalapack_ver }}
     - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}
-    - {{ mpi }}
 
   run:
     - hdf5
