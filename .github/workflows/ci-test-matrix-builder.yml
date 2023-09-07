@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/matrix-builder.yml
     with:
       python_versions: "3.10,3.9,3.11"
-      platform_versions: "windows-latest,ubuntu-latest,macOS"
+      platforms: "windows-latest,ubuntu-latest,macOS"
 
   consume_matrix:
     needs: build_matrix
