@@ -1,6 +1,5 @@
-context:
-  name: homard
-  version: 11.12
+{% set name = "homard" %}
+{% set version = "11.12" %}
 
 package:
   name: '{{ name|lower }}'
