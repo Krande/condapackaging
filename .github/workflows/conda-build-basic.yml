@@ -49,7 +49,7 @@ on:
         description: 'matrix type'
         type: string
         required: false
-        default: "None"
+        default: ""
       python_versions:
         description: 'matrix type'
         type: string
@@ -83,7 +83,7 @@ env:
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
   build_matrix:
-    if: ${{ inputs.matrix_str == "None" }}
+    if: ${{ inputs.matrix_str == "" }}
     uses: ./.github/workflows/matrix-builder.yml
     with:
       python_versions: ${{ inputs.python_versions }}
