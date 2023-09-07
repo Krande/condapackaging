@@ -28,8 +28,8 @@ jobs:
       - name: set matrix
         id: set-matrix
         run: |
-          python_versions = "${{ github.event.inputs.python_versions }}"
-          platforms = "${{ github.event.inputs.platforms }}"
+          python_versions = "${{ inputs.python_versions }}"
+          platforms = "${{ inputs.platforms }}"
           if python_versions:
             python_versions = python_versions.split(',')
           else:
