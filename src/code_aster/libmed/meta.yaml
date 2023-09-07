@@ -31,9 +31,7 @@ requirements:
     - sysroot_linux-64 2.17
     - autoconf
     - swig 3.0.12
-    - python
     - make
-    - {{ mpi }}                 # [mpi != "nompi"]
 
   host:
     - hdf5=1.10.6=mpi*          # [mpi != "nompi"]

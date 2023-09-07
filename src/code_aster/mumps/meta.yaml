@@ -35,7 +35,6 @@ requirements:
     - "{{ compiler('fortran') }}"
     - waf
     - sysroot_linux-64 2.17
-    - python
     - make
 
   host:
@@ -46,7 +45,7 @@ requirements:
     - libcblas
     - liblapack
     - hdf5
-    - scotch {{ scotch_ver }}
+    - scotch {{ scotch_ver }}=aster1*
     - metis {{ metis_ver }}=aster4*
     - parmetis {{ parmetis_ver }}         # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}       # [mpi != "nompi"]
@@ -56,7 +55,7 @@ requirements:
     - numpy
     - python
     - hdf5
-    - scotch {{ scotch_ver }}
+    - scotch {{ scotch_ver }}=aster1*
     - metis {{ metis_ver }}=aster4*
     - parmetis {{ parmetis_ver }}         # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}       # [mpi != "nompi"]

@@ -177,7 +177,7 @@ jobs:
           if [[ ${{ inputs.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2
           else
-            conda mambabuild . --python ${{ matrix.pyver }}
+            conda mambabuild . --python ${{ matrix.pyver }} --label ${{ inputs.conda_label }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
 

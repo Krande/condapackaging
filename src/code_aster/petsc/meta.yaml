@@ -38,7 +38,6 @@ requirements:
     - make
     - pkg-config
     - gnuconfig   # [unix]
-    - {{ mpi }}
 
   host:
     - libblas
@@ -59,7 +58,7 @@ requirements:
     - hdf5
     - yaml
     - python
-    - {{ pin_compatible('numpy') }}
+    - numpy
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}

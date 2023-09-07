@@ -26,7 +26,6 @@ requirements:
     - cmake >=3.26.4
     - make
     - autoconf
-    - python
 
   host:
     - python
