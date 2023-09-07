@@ -53,6 +53,7 @@ requirements:
     - scalapack {{ scalapack_ver }}
     - scotch {{ scotch_ver }}
     - mumps {{ mumps_ver }}
+    - {{ mpi }}
 
   run:
     - hdf5

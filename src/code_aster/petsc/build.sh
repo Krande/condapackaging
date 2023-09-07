@@ -58,8 +58,9 @@ $PYTHON ./configure \
     --with-64-bit-indices=0 \
     --with-mumps-lib="-L${PREFIX}/lib -lzmumps -ldmumps -lmumps_common -lpord -lesmumps -lptscotch -lptscotcherr -lptscotcherrexit -lscotch -lscotcherr -lscotcherrexit -lmetis" \
     --with-mumps-include="${PREFIX}/include" \
-    --with-blas-lapack-lib="-L${PREFIX}/lib -lopenblas" \
     --with-scalapack-lib="-L$PREFIX/lib -lscalapack" \
+    --with-blas-lib=libblas"${SHLIB_EXT}" \
+    --with-lapack-lib=liblapack"${SHLIB_EXT}" \
     --with-python=1 \
     --with-petsc4py=1 \
     --with-shared-libraries \
