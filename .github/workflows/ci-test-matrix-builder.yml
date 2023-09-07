@@ -35,7 +35,7 @@ jobs:
 
   consume_matrix_2:
     needs: build_matrix_2
-    runs-on: ${{ matrix.platforms }}
+    runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}

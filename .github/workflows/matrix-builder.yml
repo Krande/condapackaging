@@ -45,3 +45,6 @@ jobs:
             my_file.write(f"final_matrix={matrix}\n")
           
           EOF
+      - name: print matrix string
+        run: |
+          echo ${{ steps.set-matrix.outputs.final_matrix }}
