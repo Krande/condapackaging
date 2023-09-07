@@ -578,32 +578,24 @@ if(HDF5_SUPPORT)
 
         else()
             message(STATUS "Packaging hdf5 and zlib for conda distribution")
-            if(WIN32)
-                # Windows
-                set(zlib_post zlib)
-                set(lib_ext lib)
-                set(HDF5_LIBRARIES
-                "${HDF5_LIBRARY_DIR}/hdf5_cpp.${lib_ext}"
-                "${HDF5_LIBRARY_DIR}/hdf5.${lib_ext}"
-                "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
-                )
-
+            # HDF5
+            find_package(HDF5 REQUIRED COMPONENTS C CXX)
+            if(HDF5_FOUND)
+                message(STATUS "HDF5 Found: ${HDF5_VERSION}")
+                target_include_directories(your_target PRIVATE ${HDF5_INCLUDE_DIRS})
+                target_link_libraries(your_target PRIVATE ${HDF5_LIBRARIES})
             else()
-                if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-                    # macOS
-                    set(zlib_post libz)
-                    set(lib_ext dylib)
-                else()
-                    # linux
-                    set(zlib_post libz)
-                    set(lib_ext so)
-                endif()
+                message(FATAL_ERROR "HDF5 not found.")
+            endif()
 
-                set(HDF5_LIBRARIES
-                "${HDF5_LIBRARY_DIR}/libhdf5_cpp.${lib_ext}"
-                "${HDF5_LIBRARY_DIR}/libhdf5.${lib_ext}"
-                "${HDF5_LIBRARY_DIR}/${zlib_post}.${lib_ext}"
-                )
+            find_package(ZLIB REQUIRED)
+
+            if(ZLIB_FOUND)
+                message(STATUS "Zlib Found: ${ZLIB_VERSION_STRING}")
+                target_include_directories(your_target PRIVATE ${ZLIB_INCLUDE_DIRS})
+                target_link_libraries(your_target PRIVATE ${ZLIB_LIBRARIES})
+            else()
+                message(FATAL_ERROR "Zlib not found.")
             endif()
         endif()
     endif()

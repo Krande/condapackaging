@@ -45,16 +45,12 @@ on:
         type: string
         required: false
         default: None
-      python_versions:
+      matrix_str:
         description: 'matrix type'
         type: string
         required: false
-        default: "3.9,3.10,3.11"
-      platforms:
-        description: 'matrix type'
-        type: string
-        required: false
-        default: "windows-latest,ubuntu-latest,macos-latest"
+        default: "None"
+
     # Return all outputs so that they can optionally be used in subsequent steps
     outputs:
       conda_label:
@@ -75,12 +71,6 @@ env:
   CROOT_DIR: ${{ inputs.work_dir }}/build
 
 jobs:
-  build_matrix:
-    uses: ./.github/workflows/matrix-builder.yml
-    with:
-      python_versions: ${{ inputs.python_versions }}
-      platforms: ${{ inputs.platforms }}
-
   build_conda:
     needs: build_matrix
     name: ${{ inputs.package_name }}-${{ matrix.platform }}-${{ matrix.pyver }}
@@ -90,7 +80,7 @@ jobs:
         shell: bash -l {0}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
+      matrix: ${{ fromJson(inputs.matrix_str) }}
     outputs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}
@@ -99,12 +89,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check if conda upstream inputs are not None. If so set equal to output values
         run: |
-            if [[ ${{ inputs.conda_upstream_label }} == "None" ]]; then
-                echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_label }}" >> $GITHUB_ENV
-            fi
-            if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
-                echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
-            fi
+          if [[ ${{ inputs.conda_upstream_label }} == "None" ]]; then
+              echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_label }}" >> $GITHUB_ENV
+          fi
+          if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
+              echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
+          fi
 
       - name: Download and extract MacOSX SDK
         if: ${{ runner.os == 'macOS' }}
