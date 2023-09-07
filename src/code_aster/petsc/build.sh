@@ -56,7 +56,7 @@ $PYTHON ./configure \
     --with-ssl=0 \
     --with-x=0 \
     --with-64-bit-indices=0 \
-    --with-mumps-lib="-L${PREFIX}/lib -lzmumps -ldmumps -lmumps_common -lpord -lesmumps -lptscotch -lptscotcherr -lptscotcherrexit -lscotch -lscotcherr -lscotcherrexit -lmetis" \
+    --with-mumps-lib="-L${PREFIX}/lib -lzmumps -ldmumps -lmumps_common -lpord -lesmumps -lptscotch -lptscotcherr -lptscotcherrexit -lscotch -lscotcherr -lscotcherrexit -lparmetis -lmetis" \
     --with-mumps-include="${PREFIX}/include" \
     --with-scalapack-lib="-L$PREFIX/lib -lscalapack" \
     --with-blas-lib=libblas"${SHLIB_EXT}" \

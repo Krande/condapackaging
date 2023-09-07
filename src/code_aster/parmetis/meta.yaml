@@ -24,9 +24,12 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - make
+
   host:
+    - numpy
     - {{ mpi }}
   run:
+    - numpy
     - {{ mpi }}
 
 test:
