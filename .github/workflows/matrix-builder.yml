@@ -28,12 +28,12 @@ jobs:
       - name: set matrix
         id: set-matrix
         run: |
-          python_versions="${{ inputs.python_versions }}"
-          platforms="${{ inputs.platforms }}"
           python3 << EOF
           import os
-          env_file = os.environ.get("GITHUB_OUTPUT", None)
           
+          env_file = os.environ.get("GITHUB_OUTPUT", None)
+          python_versions="${{ inputs.python_versions }}"
+          platforms="${{ inputs.platforms }}"
           python_versions = python_versions.split(',') if python_versions else []
           platforms = platforms.split(',') if platforms else []
           matrix = {
