@@ -52,7 +52,7 @@ requirements:
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
     - scotch {{ scotch_ver }}
-    - mumps {{ mumps_ver }}
+    - mumps {{ mumps_ver }}=*openmpi*
     - {{ mpi }}
 
   run:
@@ -64,7 +64,7 @@ requirements:
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
     - scotch {{ scotch_ver }}
-    - mumps {{ mumps_ver }}
+    - mumps {{ mumps_ver }}=*openmpi*
     - {{ mpi }}
 
 test:
