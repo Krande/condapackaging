@@ -17,4 +17,5 @@ jobs:
       conda_label: dev
       conda_user: krande
       debug_build: 'False'
+      python_versions: "3.10,3.11"
     secrets: inherit

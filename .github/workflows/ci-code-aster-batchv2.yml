@@ -48,8 +48,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -62,8 +62,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_mumps:
@@ -76,8 +76,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_libmed:
@@ -90,8 +90,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_petsc:
@@ -104,8 +104,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_medcoupling:
@@ -118,8 +118,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_mfront:
@@ -132,8 +132,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_mgis:
@@ -146,8 +146,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   build_batch_code_aster:
@@ -160,8 +160,8 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.debug_build }}
-      platforms: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
     secrets: inherit
 
   test_package:
