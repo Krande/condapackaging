@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-test-matrix-builder.yml
-    branches:
-      - donotrun
+#    branches:
+#      - donotrun
 
 jobs:
   build_matrix:
@@ -24,5 +24,23 @@ jobs:
     steps:
       - name: build local packages
         run: |
-          echo ${{ matrix.python_versions }}
-          echo ${{ matrix.platforms }}
+          echo ${{ matrix.pyver }}
+          echo ${{ matrix.platform }}
+
+  build_matrix_2:
+    uses: ./.github/workflows/matrix-builder.yml
+    with:
+      python_versions: "3.9,3.10"
+      platforms: "windows-latest"
+
+  consume_matrix_2:
+    needs: build_matrix_2
+    runs-on: ${{ matrix.platforms }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
+    steps:
+      - name: build local packages
+        run: |
+          echo ${{ matrix.pyver }}
+          echo ${{ matrix.platform }}
