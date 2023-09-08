@@ -92,7 +92,7 @@ jobs:
 
   build_conda:
     needs: [ build_matrix ]
-    name: ${{ inputs.package_name }}-${{ matrix.platform }}-${{ matrix.pyver }}-${{ steps.variant_name.outputs.name }}
+    name: ${{ inputs.package_name }}-${{ matrix.platform }}-${{ matrix.pyver }}-${{ matrix.variants.key }}=${{ matrix.variants.value }}
     runs-on: ${{ matrix.platform }}
     defaults:
       run:
@@ -105,15 +105,6 @@ jobs:
       conda_user: ${{ inputs.conda_user }}
       package_name: ${{ inputs.package_name }}
     steps:
-      - name: Set variant name
-        id: variant_name
-        run: |
-          if [[ "${{ matrix.variants.key }}" != "" ]]; then
-            echo "name=${{ matrix.variants.key }}=${{ matrix.variants.value }}" >> $GITHUB_OUTPUT
-          else
-            echo "name=''" >> $GITHUB_OUTPUT
-          fi
-
       - uses: actions/checkout@v3
       - name: Check if conda upstream inputs are not None. If so set equal to output values
         run: |
