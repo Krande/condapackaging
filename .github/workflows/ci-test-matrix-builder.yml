@@ -14,6 +14,7 @@ jobs:
     with:
       python_versions: "3.9,3.10,3.11"
       platforms: "windows-latest,ubuntu-latest,macos-latest"
+      variants: "mpi=openmpi,mpi=nompi"
 
   consume_matrix:
     needs: build_matrix
@@ -26,6 +27,7 @@ jobs:
         run: |
           echo ${{ matrix.pyver }}
           echo ${{ matrix.platform }}
+          echo "key=${{ matrix.variants.key }}, value=${{ matrix.variants.value }}"
 
   build_matrix_2:
     uses: ./.github/workflows/matrix-builder.yml

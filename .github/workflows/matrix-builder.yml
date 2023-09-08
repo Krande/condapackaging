@@ -5,11 +5,15 @@ on:
   workflow_call:
     inputs:
       python_versions:
-        description: 'matrix type'
+        description: 'Python version'
         type: string
         required: false
       platforms:
-        description: 'matrix type'
+        description: 'Runner OS'
+        type: string
+        required: false
+      variants:
+        description: 'Conda package variant; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
         type: string
         required: false
 
@@ -29,20 +33,29 @@ jobs:
         id: set-matrix
         run: |
           python3 << EOF
-          import os
-          
           env_file = os.environ.get("GITHUB_OUTPUT", None)
-          python_versions="${{ inputs.python_versions }}"
-          platforms="${{ inputs.platforms }}"
+          python_versions = "${{ inputs.python_versions }}"
+          platforms = "${{ inputs.platforms }}"
+          variants = "${{ inputs.variants }}"
+      
           python_versions = python_versions.split(',') if python_versions else []
           platforms = platforms.split(',') if platforms else []
+          variants = variants.split(',') if variants else []
+      
           matrix = {
-            "pyver": python_versions,
-            "platform": platforms
+              "pyver": python_versions,
+              "platform": platforms
           }
-          
+      
+          if len(variants) > 0:
+              variant_list_of_dicts = []
+              for v in variants:
+                  key, value = v.split('=')
+                  variant_list_of_dicts.append({"key": key, "value": value})
+              matrix["variants"] = variants
+      
           with open(env_file, "a") as my_file:
-            my_file.write(f"final_matrix={matrix}\n")
+              my_file.write(f"final_matrix={matrix}\n")
           
           EOF
       - name: print matrix string
