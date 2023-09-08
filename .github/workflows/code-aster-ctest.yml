@@ -48,8 +48,8 @@ jobs:
       
   run_ctest:
     needs: build_matrix
-    name: ctest-code_aster-${{ matrix.platform }}-${{ matrix.pyver }}
-    runs-on: ${{ matrix.platform }}
+    name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
+    runs-on: ${{ matrix.platform.os }}
     defaults:
       run:
         shell: bash -l {0}
@@ -109,7 +109,7 @@ jobs:
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v2
         with:
-          name: ctest-code_aster-${{ matrix.platform }}-${{ matrix.pyver }}
+          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
           path: ${{ github.workspace }}/ctest
 
   upload_test_results:

@@ -92,8 +92,8 @@ jobs:
 
   build_conda:
     needs: [ build_matrix ]
-    name: ${{ inputs.package_name }}-${{ matrix.platform }}-${{ matrix.pyver }}-${{ matrix.variants.key }}=${{ matrix.variants.value }}
-    runs-on: ${{ matrix.platform }}
+    name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.key }}=${{ matrix.variants.value }}
+    runs-on: ${{ matrix.platform.os }}
     defaults:
       run:
         shell: bash -l {0}
@@ -172,7 +172,7 @@ jobs:
           fi
 
       - name: try to remove swig on linux
-        if: matrix.platform == 'ubuntu-latest'
+        if: ${{ runner.os == 'Linux' }} # https://docs.github.com/en/actions/learn-github-actions/contexts#runner-context
         continue-on-error: true
         run: |
           sudo apt remove swig make

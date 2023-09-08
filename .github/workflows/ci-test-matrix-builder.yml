@@ -18,7 +18,7 @@ jobs:
 
   consume_matrix:
     needs: build_matrix
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform.os }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
@@ -26,7 +26,7 @@ jobs:
       - name: build local packages
         run: |
           echo ${{ matrix.pyver }}
-          echo ${{ matrix.platform }}
+          echo ${{ matrix.platform.short }}
           echo "key=${{ matrix.variants.key }}, value=${{ matrix.variants.value }}"
 
   build_matrix_2:
@@ -37,7 +37,7 @@ jobs:
 
   consume_matrix_2:
     needs: build_matrix_2
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform.os }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.build_matrix_2.outputs.final_matrix) }}
@@ -45,4 +45,4 @@ jobs:
       - name: build local packages
         run: |
           echo ${{ matrix.pyver }}
-          echo ${{ matrix.platform }}
+          echo ${{ matrix.platform.short }}
