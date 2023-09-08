@@ -10,7 +10,7 @@ CONDA_BUILD_SYSROOT:
 
 
 c_compiler:
- - vs2022                     # [win]
+ - vs2019                     # [win]
 
 cxx_compiler:
- - vs2022                     # [win]
+ - vs2019                     # [win]
