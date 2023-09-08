@@ -52,6 +52,7 @@ jobs:
       mpi: true
       python_versions: ${{ needs.build_code_aster.outputs.python_versions }}
       platforms: ${{ needs.build_code_aster.outputs.platforms }}
+      suffix: "mpi"
     secrets: inherit
 
   test_seq:
@@ -64,4 +65,5 @@ jobs:
       mpi: false
       python_versions: ${{ needs.build_code_aster.outputs.python_versions }}
       platforms: ${{ needs.build_code_aster.outputs.platforms }}
+      suffix: "seq"
     secrets: inherit
