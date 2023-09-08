@@ -21,7 +21,7 @@ def main():
         for v in variants:
             key, value = v.split('=')
             variant_list_of_dicts.append({"key": key, "value": value})
-        matrix["variants"] = variants
+        matrix["variants"] = variant_list_of_dicts
 
     with open(env_file, "a") as my_file:
         my_file.write(f"final_matrix={matrix}\n")
