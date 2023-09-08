@@ -13,19 +13,34 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
-      boa: true
+      boa: false
       pkg_dir: src/code_aster
       conda_label: debug
       conda_user: krandedev
       conda_upstream_label: debug
       debug_build: 'True'
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
     secrets: inherit
 
-  test_package:
+  test_mpi:
     needs: [ build_code_aster ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.build_code_aster.outputs.conda_label }}
       conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
-      code_aster_version: 16.4.3
+      code_aster_version: 16.4.3=*openmpi*
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+    secrets: inherit
+
+  test_seq:
+    needs: [ build_code_aster ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_label: ${{ needs.build_code_aster.outputs.conda_label }}
+      conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
+      code_aster_version: 16.4.3=*seq*
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
     secrets: inherit

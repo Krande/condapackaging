@@ -61,15 +61,21 @@ if [[ "$mpi" == "nompi" ]]; then
       ./waf_std install
   fi
 else
-  ./waf_mpi  \
+  export ENABLE_MPI=1
+  sed -i 's/self.check_mpi_get_rank()/#self.check_mpi_get_rank()/g' data/wscript
+
+  export CONFIG_PARAMETERS_addmem=4096
+  export CONFIG_PARAMETERS_mpiexec="mpirun -np %(mpi_nbcpu)s --hostfile %(mpi_hostfile)s %(program)s --allow-run-as-root"
+  export CONFIG_PARAMETERS_mpi_get_rank="echo ${OMPI_COMM_WORLD_RANK}"
+
+  ./waf_mpi configure \
     --use-config=wafcfg_conda \
     --use-config-dir="$RECIPE_DIR"/config \
     --prefix="${PREFIX}" \
     --libdir="${PREFIX}/lib" \
     --install-tests \
-    --disable-mpi \
-    --without-hg \
-    configure
+    --without-hg
+
 
   if [[ "${PKG_DEBUG}" == "True" ]]; then
       echo "Debugging Enabled"

@@ -218,8 +218,8 @@ In order of dependency
 - [x] scotch
 - [x] libmed
 - [x] mumps 
-- [ ] petsc
-- [ ] medcoupling
+- [x] petsc
+- [x] medcoupling
 - [ ] code-aster
 
 
