@@ -74,6 +74,10 @@ env:
   WORK_DIR: ${{ inputs.work_dir }}
   ARTIFACTS_DIR: ${{ inputs.work_dir }}/artifacts
   CROOT_DIR: ${{ inputs.work_dir }}/build
+  CLICOLOR_FORCE: "1"
+  AM_COLOR_TESTS: "always"
+  MAKE_TERMOUT: "1"
+  CMAKE_COLOR_MAKEFILE: "ON"
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
