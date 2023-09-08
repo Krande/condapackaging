@@ -9,6 +9,25 @@ on:
 #    - donotrun
 
 jobs:
+  build_code_aster:
+    runs-on: ubuntu-latest
+    outputs:
+      # This is where the conda user and label should be set
+      code_aster_version: 16.4.3
+      conda_label: debug
+      conda_user: krandedev
+      pkg_dir: src/code_aster
+      debug_build: "True"
+      mpi: "True"
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+      mpi_variants: "mpi=openmpi,mpi=nompi"
+
+    steps:
+      - name: dummy step
+        id: env
+        run: |
+          echo "done"
 #  build_code_aster:
 #    uses: ./.github/workflows/conda-build-basic.yml
 #    with:
@@ -31,8 +50,8 @@ jobs:
       conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
       code_aster_version: 16.4.3
       mpi: true
-      python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ needs.build_code_aster.outputs.python_versions }}
+      platforms: ${{ needs.build_code_aster.outputs.platforms }}
     secrets: inherit
 
   test_seq:
@@ -43,6 +62,6 @@ jobs:
       conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
       code_aster_version: 16.4.3
       mpi: false
-      python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ needs.build_code_aster.outputs.python_versions }}
+      platforms: ${{ needs.build_code_aster.outputs.platforms }}
     secrets: inherit
