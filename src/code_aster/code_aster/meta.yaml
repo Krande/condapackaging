@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '16.4.2' %}
+{% set version = '16.4.4' %}
 {% set med_ver = '4.1.1=aster_*' %}
 {% set metis_ver = '5.1.0=aster4*' %}
 {% set mfront_ver = '4.1.0=aster_*' %}
