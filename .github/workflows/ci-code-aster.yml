@@ -30,6 +30,7 @@ jobs:
       conda_label: ${{ needs.build_code_aster.outputs.conda_label }}
       conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
       code_aster_version: 16.4.3=*openmpi*
+      mpi: true
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
     secrets: inherit
@@ -41,6 +42,7 @@ jobs:
       conda_label: ${{ needs.build_code_aster.outputs.conda_label }}
       conda_user: ${{ needs.build_code_aster.outputs.conda_user }}
       code_aster_version: 16.4.3=*seq*
+      mpi: false
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
     secrets: inherit

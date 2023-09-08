@@ -29,6 +29,8 @@ export LIBPATH_MEDCOUPLING="$PREFIX/lib"
 export INCLUDES_MEDCOUPLING="$PREFIX/include"
 export PYPATH_MEDCOUPLING=$SP_DIR
 
+
+
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
     export CFLAGS="-g -O0 ${CFLAGS}"
@@ -61,17 +63,28 @@ if [[ "$mpi" == "nompi" ]]; then
       ./waf_std install
   fi
 else
+  export LIBPATH_PETSC4PY="$PREFIX/lib/petsc4py/lib"
+  export INCLUDES_PETSC4PY="$PREFIX/petsc4py/include"
+  export PYPATH_PETSC4PY="$PREFIX/lib/petsc4py"
+  export PYTHONPATH="$PYTHONPATH:$PREFIX/lib"
+
   export ENABLE_MPI=1
-  sed -i 's/self.check_mpi_get_rank()/#self.check_mpi_get_rank()/g' data/wscript
+  #sed -i 's/self.check_mpi_get_rank()/#self.check_mpi_get_rank()/g' data/wscript
 
   export CONFIG_PARAMETERS_addmem=4096
-  export CONFIG_PARAMETERS_mpiexec="mpirun -np %(mpi_nbcpu)s --hostfile %(mpi_hostfile)s %(program)s --allow-run-as-root"
-  export CONFIG_PARAMETERS_mpi_get_rank="echo ${OMPI_COMM_WORLD_RANK}"
+
+  export CC=mpicc
+  export CXX=mpicxx
+  export FC=mpifort
+  export F77=mpif77
+  export F90=mpif90
+  export OPAL_PREFIX=$PREFIX
 
   ./waf_mpi configure \
     --use-config=wafcfg_conda \
     --use-config-dir="$RECIPE_DIR"/config \
     --prefix="${PREFIX}" \
+    --enable-mpi \
     --libdir="${PREFIX}/lib" \
     --install-tests \
     --without-hg

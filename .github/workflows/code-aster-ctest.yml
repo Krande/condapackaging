@@ -15,11 +15,25 @@ on:
         description: 'code_aster version'
         type: string
         required: true
+      mpi:
+        description: 'Run MPI variant'
+        type: boolean
+        required: true
       suffix:
         description: 'Release suffix'
         default: ""
         type: string
         required: false
+      python_versions:
+        description: 'matrix type'
+        type: string
+        required: false
+        default: "3.9,3.10,3.11"
+      platforms:
+        description: 'matrix type'
+        type: string
+        required: false
+        default: "windows-latest,ubuntu-latest,macos-latest"
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
@@ -47,6 +61,7 @@ jobs:
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5
+            channel_priority: strict
             channels:
               - ${{ inputs.conda_user }}/label/${{ inputs.conda_label }}
               - conda-forge
