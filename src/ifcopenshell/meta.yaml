@@ -16,8 +16,8 @@ package:
 
 source:
   git_url: https://github.com/IfcOpenShell/ifcopenshell.git
-  git_rev: 9a34b945680e7cc5179b91157e72bd8c07370ecc
-  git_depth: -1
+  git_rev: d4e47178578c16dddf05ff72f179c7ddb42dfe12
+  git_depth: 1
 
 build:
   binary_relocation: false [osx]

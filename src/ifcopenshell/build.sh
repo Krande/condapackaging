@@ -1,9 +1,10 @@
 #!/bin/bash
+export CLICOLOR_FORCE=1
 
 declare -a CMAKE_PLATFORM_FLAGS
 
 if [[ ${HOST} =~ .*linux.* ]]; then
-    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE=${RECIPE_DIR}/cross-linux.cmake)
+    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
 fi
 
 if [ `uname` == Darwin ]; then
@@ -13,7 +14,7 @@ if [ `uname` == Darwin ]; then
 fi
 
 # Overwrite the CMakeLists.txt file with the one from the config folder (which has a fix for finding hdf5 and zlibs)
-cp $RECIPE_DIR/config/CMakeLists.txt ${SRC_DIR}/cmake/CMakeLists.txt
+cp $RECIPE_DIR/config/CMakeLists.txt "${SRC_DIR}/cmake/CMakeLists.txt"
 
 cmake -G Ninja \
  -Wno-dev \

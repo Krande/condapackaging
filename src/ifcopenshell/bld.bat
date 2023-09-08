@@ -1,7 +1,4 @@
-@echo off
-setlocal enabledelayedexpansion
-
-for /f %%i in ('where cl.exe') do set CL_FULL_PATH=%%i
+set CLICOLOR_FORCE=1
 
 mkdir build && cd build
 
