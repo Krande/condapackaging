@@ -8,9 +8,9 @@ if [[ ${HOST} =~ .*linux.* ]]; then
 fi
 
 if [ `uname` == Darwin ]; then
-  export CFLAGS="$CFLAGS   -Wl,-twolevel_namespace,-undefined,suppress"
-  export CXXFLAGS="$CXXFLAGS -Wl,-twolevel_namespace,-undefined,suppress"
-  export LDFLAGS="$LDFLAGS  -Wl,-twolevel_namespace,-undefined,suppress"
+  export CFLAGS="$CFLAGS -Wl,-twolevel_namespace"
+  export CXXFLAGS="$CXXFLAGS -Wl,-twolevel_namespace"
+  export LDFLAGS="$LDFLAGS -Wl,-twolevel_namespace"
 fi
 
 # Overwrite the CMakeLists.txt file with the one from the config folder (which has a fix for finding hdf5 and zlibs)
