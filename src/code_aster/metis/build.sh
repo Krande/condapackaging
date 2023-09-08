@@ -1,4 +1,5 @@
 #!/bin/bash
+export CLICOLOR_FORCE=1
 
 # Install metis-aster
 echo "** Building METIS **"

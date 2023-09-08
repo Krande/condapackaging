@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+export CLICOLOR_FORCE=1
 
 mkdir -p "$SRC_DIR/deps/config"
 tar -xzf "$SRC_DIR/deps/archives/petsc-3.17.1_aster.tar.gz" -C . --strip-components=1

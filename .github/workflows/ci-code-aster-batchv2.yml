@@ -1,6 +1,6 @@
 name: ci-code-aster-batchv2
 
-# bump 1
+# bump 2
 on:
   push:
     paths:

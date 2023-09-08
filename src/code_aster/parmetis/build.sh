@@ -1,4 +1,5 @@
 #!/bin/bash
+export CLICOLOR_FORCE=1
 
 # for cross compiling with openmpi
 export OPAL_PREFIX=$PREFIX

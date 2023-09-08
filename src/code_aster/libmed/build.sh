@@ -1,4 +1,5 @@
 #!/bin/bash
+export CLICOLOR_FORCE=1
 
 #mkdir -p "$SRC_DIR/deps/config"
 #tar -xzvf "$SRC_DIR/deps/archives/med-4.1.1.tar.gz" -C . --strip-components=1

@@ -1,4 +1,5 @@
 #!/bin/bash
+export CLICOLOR_FORCE=1
 
 #mkdir -p "$SRC_DIR/deps/config"
 #tar -xzf "$SRC_DIR/deps/archives/medcoupling-V9_10_0.tar.gz" -C . --strip-components=1

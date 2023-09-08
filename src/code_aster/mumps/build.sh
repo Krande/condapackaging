@@ -1,4 +1,5 @@
 #!/bin/bash
+export CLICOLOR_FORCE=1
 
 tar -xzf "$SRC_DIR/deps/archives/mumps-5.5.1_aster1.tar.gz" -C . --strip-components=1
 

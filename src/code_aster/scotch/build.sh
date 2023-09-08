@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export CLICOLOR_FORCE=1
+
 
 tar -xzf "$SRC_DIR/deps/archives/scotch-7.0.1.tar.gz" -C . --strip-components=1
 

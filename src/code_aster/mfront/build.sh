@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export CLICOLOR_FORCE=1
 
 export LDFLAGS="-L$PREFIX/lib -lm -lpthread -lrt -ldl -lz -lgomp ${LDFLAGS}"
 export LIBPATH="$PREFIX/lib $LIBPATH"
