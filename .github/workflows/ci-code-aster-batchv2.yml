@@ -23,6 +23,7 @@ jobs:
       mpi: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
+      mpi_variants: "mpi=openmpi,mpi=nompi"
 
     steps:
       - name: dummy step
@@ -78,6 +79,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
     secrets: inherit
 
   build_batch_libmed:
@@ -92,6 +94,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
     secrets: inherit
 
   build_batch_petsc:
@@ -120,6 +123,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
     secrets: inherit
 
   build_batch_mfront:
@@ -162,12 +166,29 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
     secrets: inherit
 
-  test_package:
+  test_mpi:
     needs: [ build_batch_code_aster, env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
+      mpi: true
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+    secrets: inherit
+
+  test_seq:
+    needs: [ build_batch_code_aster, env ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      code_aster_version: ${{ needs.env.outputs.code_aster_version }}
+      mpi: false
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+    secrets: inherit

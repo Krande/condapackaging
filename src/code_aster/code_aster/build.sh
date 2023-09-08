@@ -1,10 +1,6 @@
 #!/bin/bash
 
-
-
-
-
-
+export CLICOLOR_FORCE=1
 
 # This adds a printout of the error when trying to import the code_aster module. Useful when debugging
 #cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py

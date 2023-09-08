@@ -55,6 +55,10 @@ on:
         type: string
         required: false
         default: "windows-latest,ubuntu-latest,macos-latest"
+      variants:
+        description: 'Conda package variant; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
+        type: string
+        required: false
 
     # Return all outputs so that they can optionally be used in subsequent steps
     outputs:
@@ -75,9 +79,7 @@ env:
   ARTIFACTS_DIR: ${{ inputs.work_dir }}/artifacts
   CROOT_DIR: ${{ inputs.work_dir }}/build
   CLICOLOR_FORCE: "1"
-  AM_COLOR_TESTS: "always"
-  MAKE_TERMOUT: "1"
-  CMAKE_COLOR_MAKEFILE: "ON"
+  VARIANT_STR: ""
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
@@ -86,6 +88,7 @@ jobs:
     with:
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
 
   build_conda:
     needs: [ build_matrix ]
@@ -111,6 +114,11 @@ jobs:
           if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
               echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
           fi
+
+      - name: check if variant_str exists
+        if: ${{ inputs.variants != "" }}
+        run: |
+          echo "VARIANT_STR= --variants \"{'${{ matrix.variants.key }}': '${{ matrix.variants.value }}'}\"" >> $GITHUB_ENV
 
       - name: Download and extract MacOSX SDK
         if: ${{ runner.os == 'macOS' }}
@@ -181,7 +189,7 @@ jobs:
           if [[ ${{ inputs.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2
           else
-            conda mambabuild . --python ${{ matrix.pyver }} --label ${{ inputs.conda_label }}
+            conda mambabuild . --python ${{ matrix.pyver }} --label ${{ inputs.conda_label }}${{ env.VARIANT_STR }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
 

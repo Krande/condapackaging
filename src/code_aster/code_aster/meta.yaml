@@ -93,7 +93,17 @@ test:
     - python basic_import.py
     - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
-
+  requires:
+    - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
+    - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}openmpi*               # [mpi != "nompi"]
+    - mumps {{ mumps_ver }}seq*                     # [mpi == "nompi"]
+    - mumps {{ mumps_ver }}openmpi*                 # [mpi != "nompi"]
+    - medcoupling {{ medcoupling_ver }}seq*         # [mpi == "nompi"]
+    - medcoupling {{ medcoupling_ver }}openmpi*     # [mpi != "nompi"]
+    - petsc {{ petsc_ver }}=aster*                  # [mpi != "nompi"]
+    - parmetis                                      # [mpi != "nompi"]
   files:
     - basic_import.py
 
