@@ -108,7 +108,7 @@ jobs:
           python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }} > ${{ github.workspace }}/ctest/summary.txt
 
       - name: Upload ctest for packaging
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
           path: ${{ github.workspace }}/ctest
