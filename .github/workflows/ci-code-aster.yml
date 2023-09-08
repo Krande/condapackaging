@@ -30,23 +30,24 @@ jobs:
         run: |
           echo "done"
 
-  build_code_aster:
-    needs: [ env ]
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: ${{ needs.env.outputs.package_name }}
-      boa: false
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
-      python_versions: ${{ needs.env.outputs.python_versions }}
-      platforms: ${{ needs.env.outputs.platforms }}
-      variants: ${{ needs.env.outputs.variants }}
-    secrets: inherit
+#  build_code_aster:
+#    needs: [ env ]
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: ${{ needs.env.outputs.package_name }}
+#      boa: false
+#      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+#      conda_label: ${{ needs.env.outputs.conda_label }}
+#      conda_user: ${{ needs.env.outputs.conda_user }}
+#      debug_build: ${{ needs.env.outputs.debug_build }}
+#      python_versions: ${{ needs.env.outputs.python_versions }}
+#      platforms: ${{ needs.env.outputs.platforms }}
+#      variants: ${{ needs.env.outputs.variants }}
+#    secrets: inherit
 
   test_mpi:
-    needs: [ build_code_aster ]
+#    needs: [ build_code_aster, env ]
+    needs: [ env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
@@ -59,7 +60,8 @@ jobs:
     secrets: inherit
 
   test_seq:
-    needs: [ build_code_aster ]
+#    needs: [ build_code_aster, env ]
+    needs: [ env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
