@@ -52,7 +52,8 @@ jobs:
           if len(variants) > 0:
               variant_list_of_dicts = []
               for v in variants:
-                  key, value = v.split('=')
+                  key, *value = v.split('=')
+                  value = '='.join(value) 
                   variant_list_of_dicts.append({"key": key, "value": value})
               matrix["variants"] = variant_list_of_dicts
       
