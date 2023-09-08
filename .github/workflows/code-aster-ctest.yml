@@ -35,6 +35,9 @@ on:
         required: false
         default: "windows-latest,ubuntu-latest,macos-latest"
 
+env:
+  VARIANT_FLAG: "*seq*"
+
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
   build_matrix:
@@ -55,6 +58,14 @@ jobs:
       matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
     steps:
       - uses: actions/checkout@v3
+
+
+      - name: evaluate if seq or mpi
+        run: |
+          if [[ ${{ inputs.mpi }} == true ]]; then
+            echo "VARIANT_FLAG=*openmpi*" >> $GITHUB_ENV
+          fi
+
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
@@ -67,7 +78,7 @@ jobs:
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
-            code-aster=${{ inputs.code_aster_version }}
+            code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
 
       - name: run ctest [seq]
         if: ${{ inputs.mpi == false }}
