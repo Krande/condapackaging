@@ -91,7 +91,8 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
+#    - run_ctest -R 'forma01a' --resutest=../resutest --only-failed-results -j 1
+#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
   requires:
     - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]

@@ -67,8 +67,6 @@ else
   export PYTHONPATH="$PYTHONPATH:$PREFIX/lib"
 
   export ENABLE_MPI=1
-  #sed -i 's/self.check_mpi_get_rank()/#self.check_mpi_get_rank()/g' data/wscript
-
   export CONFIG_PARAMETERS_addmem=4096
 
   export CC=mpicc

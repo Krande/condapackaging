@@ -41,22 +41,6 @@ pin_run_as_build:
     max_pin: x.x
   boost:
     max_pin: x.x
-  mfront:
-    max_pin: x.x.x
-  libmed:
-    max_pin: x.x.x
-  scotch:
-    max_pin: x.x.x
-  medcoupling:
-    max_pin: x.x.x
-  metis:
-    max_pin: x.x.x
-  mumps:
-    max_pin: x.x.x
-  mgis:
-    max_pin: x.x.x
-  homard:
-    max_pin: x.x.x
   hdf5:
     max_pin: x.x.x
 
@@ -68,3 +52,11 @@ numpy:
 mpi:
   - openmpi
   - nompi
+
+hdf5:
+  - 1.10.6=mpi*
+  - 1.10.6=nompi*
+
+zip_keys:
+  - mpi
+  - hdf5
