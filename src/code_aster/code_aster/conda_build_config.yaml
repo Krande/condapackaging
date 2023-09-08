@@ -67,4 +67,4 @@ numpy:
 
 mpi:
   - openmpi
-#  - nompi
+  - nompi

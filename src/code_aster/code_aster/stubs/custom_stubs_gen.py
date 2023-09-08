@@ -268,15 +268,17 @@ def main():
         sub_dir = None
     else:
         sub_dir = pathlib.Path(f"{args.module_name}{args.root_suffix}")
-
-    run(
-        parser,
-        printer,
-        args.module_name,
-        out_dir,
-        sub_dir=sub_dir,
-        dry_run=args.dry_run,
-    )
+    try:
+        run(
+            parser,
+            printer,
+            args.module_name,
+            out_dir,
+            sub_dir=sub_dir,
+            dry_run=args.dry_run,
+        )
+    except BaseException as e:
+        logger.error(f'generator error -> {e}')
 
 
 if __name__ == "__main__":

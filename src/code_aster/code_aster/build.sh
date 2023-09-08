@@ -63,9 +63,6 @@ if [[ "$mpi" == "nompi" ]]; then
       ./waf_std install
   fi
 else
-  export LIBPATH_PETSC4PY="$PREFIX/lib/petsc4py/lib"
-  export INCLUDES_PETSC4PY="$PREFIX/petsc4py/include"
-  export PYPATH_PETSC4PY="$PREFIX/lib/petsc4py"
   export PYTHONPATH="$PYTHONPATH:$PREFIX/lib"
 
   export ENABLE_MPI=1
@@ -106,8 +103,9 @@ export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
 # Generate stubs for pybind11
-$PREFIX/bin/python  $RECIPE_DIR/stubs/custom_stubs_gen.py
+$PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
 #cp stubs/libaster.pyi "${PREFIX}/lib/aster/libaster.pyi"
+echo "Stubs generation completed"
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
