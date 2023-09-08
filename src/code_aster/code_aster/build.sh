@@ -4,7 +4,7 @@
 # This adds a printout of the error when trying to import the code_aster module. Useful when debugging
 #cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
 
-python $RECIPE_DIR/config/update_version.py
+python "${RECIPE_DIR}/config/update_version.py"
 
 export CONFIG_PARAMETERS_addmem=3000
 export TFELHOME=$PREFIX

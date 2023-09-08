@@ -21,6 +21,7 @@ def configure(self):
     self.env.append_value('INCLUDES', [
         conda_prefix + "/include",
     ])
+
     if mpi_variant is False:
         self.env.append_value('INCLUDES', [
             conda_prefix + '/include_seq',
@@ -28,6 +29,12 @@ def configure(self):
     else:
         opts.parallel = 1
         opts.enable_petsc = True
+        self.env.append_value('LIBPATH', [
+            conda_prefix + '/lib/petsc4py/lib',
+        ])
+        self.env.append_value('INCLUDES', [
+            conda_prefix + '/lib/petsc4py/include',
+        ])
 
     # to fail if not found
     opts.enable_hdf5 = True
