@@ -55,7 +55,7 @@ jobs:
     secrets: inherit
 
   test_seq:
-#    needs: [ build_code_aster ]
+    needs: [ build_code_aster ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_label: ${{ needs.build_code_aster.outputs.conda_label }}
