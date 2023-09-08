@@ -116,7 +116,7 @@ jobs:
           fi
 
       - name: check if variant_str exists
-        if: ${{ inputs.variants != "" }}
+        if: ${{ inputs.variants }}
         run: |
           echo "VARIANT_STR= --variants \"{'${{ matrix.variants.key }}': '${{ matrix.variants.value }}'}\"" >> $GITHUB_ENV
 
