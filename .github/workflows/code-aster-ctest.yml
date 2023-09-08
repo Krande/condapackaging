@@ -68,10 +68,18 @@ jobs:
           create-args: >-
             python=${{ matrix.pyver }}
             code-aster=${{ inputs.code_aster_version }}
-      - name: run ctest
+
+      - name: run ctest [seq]
+        if: ${{ mpi == false }}
         continue-on-error: true
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2
+
+      - name: run ctest [mpi]
+        if: ${{ mpi == true }}
+        continue-on-error: true
+        run: |
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=5.0 --only-failed-results -j 2
 
       - name: add mamba data
         run: |
