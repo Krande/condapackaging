@@ -20,5 +20,4 @@ jobs:
       debug_build: 'True'
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      mpi_variants: "mpi=nompi"
     secrets: inherit
