@@ -5,15 +5,15 @@ on:
   push:
     paths:
       - .github/workflows/ci-homard.yml
-    branches:
-    - donotrun
+#    branches:
+#    - donotrun
 
 jobs:
   build:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: homard
-      boa: true
+      boa: false
       conda_label: debug
       conda_user: krandedev
       debug_build: 'True'

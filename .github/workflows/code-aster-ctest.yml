@@ -100,12 +100,26 @@ jobs:
       - name: print debug logs
         continue-on-error: true
         run: |
-          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}
+          if [[ ${{ inputs.mpi }} == true ]]; then
+            echo "MPI variant"
+            add_str="--mpi"
+          else
+            echo "SEQ variant"
+            add_str=""
+          fi
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str
 
       - name: save debug logs
         continue-on-error: true
         run: |
-          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }} > ${{ github.workspace }}/ctest/summary.txt
+          if [[ ${{ inputs.mpi }} == true ]]; then
+            echo "MPI variant"
+            add_str="--mpi"
+          else
+            echo "SEQ variant"
+            add_str=""
+          fi
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str > ${{ github.workspace }}/ctest/summary.txt
 
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v3

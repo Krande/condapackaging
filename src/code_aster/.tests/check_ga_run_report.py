@@ -47,7 +47,7 @@ class GATestChecker:
             py_ver = d.split('-')[-1]
             if python_version is not None and py_ver != python_version:
                 continue
-            fmap[py_ver] = fail_checker(self.dest_dir / d, self.ca_version)
+            fmap[py_ver] = fail_checker(self.dest_dir / d, self.ca_version, self.mpi)
 
     @property
     def dest_dir(self):
