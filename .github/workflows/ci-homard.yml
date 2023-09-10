@@ -16,5 +16,9 @@ jobs:
       boa: false
       conda_label: debug
       conda_user: krandedev
+      pkg_dir: src/code_aster
       debug_build: 'True'
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+      mpi_variants: "mpi=nompi"
     secrets: inherit
