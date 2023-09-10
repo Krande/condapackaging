@@ -14,12 +14,11 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: 16.4.4
+      code_aster_version: 16.4.2
       conda_label: debug
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "True"
-      mpi: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       variants: "mpi=openmpi,mpi=nompi"
@@ -59,16 +58,16 @@ jobs:
       suffix: "mpi"
     secrets: inherit
 
-#  test_seq:
+  test_seq:
 #    needs: [ build_code_aster, env ]
-#    needs: [ env ]
- #   uses: ./.github/workflows/code-aster-ctest.yml
- #   with:
-  #    conda_label: ${{ needs.env.outputs.conda_label }}
- #     conda_user: ${{ needs.env.outputs.conda_user }}
- #     code_aster_version:  ${{ needs.env.outputs.code_aster_version }}
-#      mpi: false
- #     python_versions: ${{ needs.env.outputs.python_versions }}
-#      platforms: ${{ needs.env.outputs.platforms }}
-#      suffix: "seq"
-#    secrets: inherit
+    needs: [ env ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      code_aster_version:  ${{ needs.env.outputs.code_aster_version }}
+      mpi: false
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      suffix: "seq"
+    secrets: inherit
