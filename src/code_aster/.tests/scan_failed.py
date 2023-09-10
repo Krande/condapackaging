@@ -1,7 +1,8 @@
 import pathlib
 import argparse
 from dataclasses import dataclass
-
+import logging
+logger = logging.getLogger(__name__)
 
 # Run all using
 # run_ctest --resutest=ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results
@@ -99,7 +100,11 @@ def fail_checker(test_dir, aster_ver):
         has_failed = False
         is_identified = False
         for fail_msg in unclassified_fail_messages + missing_packages + numpy_failures:
-            data = failed_mess.read_text(encoding='utf-8')
+            try:
+                data = failed_mess.read_text(encoding='utf-8')
+            except UnicodeDecodeError as e:
+                logger.error(e)
+                continue
 
             if failed_termination_msg in data or abnormal_termination_msg in data or not_ok_result in data:
                 has_failed = True
