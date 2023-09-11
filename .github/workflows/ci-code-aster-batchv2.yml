@@ -20,7 +20,6 @@ jobs:
       conda_user: krandedev2
       pkg_dir: src/code_aster
       debug_build: "True"
-      mpi: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi"
