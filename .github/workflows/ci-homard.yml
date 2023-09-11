@@ -33,5 +33,5 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
     secrets:
-#      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
+#      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
