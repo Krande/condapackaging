@@ -5,6 +5,12 @@
 Using the recipe from https://gitlab.com/codeaster-opensource-documentation/opensource-installation-development/-/blob/main/devel/compile.md?ref_type=heads#working-within-the-container
 in the container `salome_meca-lgpl-2022.1.0-1-20221225-scibian-9.sif` I got the following config and install logs:
 
+Once installed, make sure you are standing in the "src" directory. Then do
+
+```bash
+../install/mpi/bin/run_ctest --resutest=../resutest -L submit -LE need_data --timefactor=5.0 --only-failed-results -j 6
+```
+
 ```bash
 Singularity> ./waf configure
 waf install -j 4
