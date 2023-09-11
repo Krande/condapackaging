@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batchv2.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -24,6 +24,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
+      conda_token: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
     steps:
       - name: dummy step
@@ -51,7 +52,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_mpi_parmetis:
     needs: [env]
@@ -65,7 +67,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_mumps:
     needs: [ build_batch_1, env ]
@@ -80,7 +83,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_libmed:
     needs: env
@@ -95,7 +99,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_petsc:
     needs: [ build_batch_mumps, build_mpi_parmetis, env ]
@@ -109,7 +114,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_medcoupling:
     needs: [ build_batch_libmed, build_batch_petsc, env ]
@@ -124,7 +130,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_mfront:
     needs: [ env ]
@@ -138,7 +145,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_mgis:
     needs: [ build_batch_mfront, env ]
@@ -152,7 +160,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   build_batch_code_aster:
     needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
@@ -167,7 +176,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
 
   test_mpi:
     needs: [ build_batch_code_aster, env ]
