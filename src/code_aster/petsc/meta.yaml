@@ -60,6 +60,10 @@ requirements:
     - yaml
     - python
     - numpy
+    - libblas
+    - libcblas
+    - liblapack
+    - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}

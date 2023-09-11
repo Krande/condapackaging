@@ -1,8 +1,9 @@
-import pathlib
 import argparse
-from dataclasses import dataclass
 import logging
-from colorama import Fore, Style
+import pathlib
+from dataclasses import dataclass
+
+from colorama import Fore
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +18,6 @@ logger = logging.getLogger(__name__)
 class FailedJob:
     num_failed: int
     jobs_failed: list[str]
-
-
-def get_number_of_jobs(test_dir: pathlib.Path):
-    last_failed = test_dir / "Testing/Temporary/CTestCheckpoint.txt"
-    if not last_failed.exists():
-        return 2182
-
-    with open(last_failed) as f:
-        return len(f.readlines())
 
 
 def get_last_failed(test_dir: pathlib.Path, aster_ver):
@@ -64,7 +56,6 @@ class ErrorLogger:
         self._mis_pkg_n = self._calc_sum_failed(self.missing_packages)
         self._numpy_n = self._calc_sum_failed(self.numpy_failures)
         self._unclassified_n = self._calc_sum_failed(self.unclassified_fail_messages)
-
 
     def _calc_sum_failed(self, packages: list[tuple[str]]) -> int:
         return sum([len(self.fail_map.get(nf, FailedJob(0, [])).jobs_failed) for nf in packages])
@@ -113,22 +104,38 @@ class ErrorLogger:
             print(f"\n  errors=({len(errors)}), error_code(s): {error_code}:\n")
             print("    " + "|".join(errors))
 
+    def check_for_jobs_in_multiple_categories(self):
+        # Check if there exists overlap
+        tot_reported = self._unidentified_failures_num + self._mis_pkg_n + self._numpy_n + self._unclassified_n
+        if self.num_failed_tot != tot_reported:
+            print(
+                f"\nNumber of failures {self.num_failed_tot=} does not match total {tot_reported=}. "
+                f"Likely overlap errors\n"
+            )
+
+        jobs = dict()
+        for error_code, failed_jobs in self.fail_map.items():
+            for job in failed_jobs.jobs_failed:
+                if job not in jobs:
+                    jobs[job] = [error_code]
+                else:
+                    jobs[job].append(error_code)
+
+        for key, value in jobs.items():
+            if len(value) == 1:
+                continue
+
+            print(f"{key} in multiple categories: {value}")
+
     def print_summary(self):
         tot_num_jobs = 2182 if not self.mpi else 2256
+
         not_failures_num = self._not_failures_num
         num_identified_failed = self.num_identified_failed
         unidentified_failures_num = self._unidentified_failures_num
-
-        # Check if there exists overlap
-        total_num_failures = unidentified_failures_num + self._mis_pkg_n + self._numpy_n + self._unclassified_n
-        if self.num_failed_tot != total_num_failures:
-            print(
-                f"Number of failures {self.num_failed_tot=} does not match total {total_num_failures=}. "
-                f"Likely overlap errors"
-            )
+        num_failed_tot = self.num_failed_tot
 
         print(Fore.GREEN + "\n")
-        num_failed_tot = self.num_failed_tot
 
         perc_tests_passed = (tot_num_jobs - num_failed_tot) / tot_num_jobs * 100
         perc_tests_all_passed = (tot_num_jobs - num_failed_tot - not_failures_num) / tot_num_jobs * 100
@@ -151,6 +158,7 @@ class ErrorLogger:
             self.print_numpy_errors()
 
         self.print_unclassified_failures()
+        self.check_for_jobs_in_multiple_categories()
         self.print_unidentified_failures()
 
         self.print_summary()
@@ -187,9 +195,24 @@ def fail_checker(test_dir, aster_ver, mpi):
         # Uncategorized
         # mpi-related
         ("sysmalloc: Assertion `(old_top == initial_top (av)",),
-        ("malloc(): invalid size (unsorted)", "CALC_MODES", "METHODE='MUMPS'"),
-        ("malloc(): invalid size (unsorted)", "STAT_NON_LINE", "RENUM='METIS'"),
+        ("malloc(): invalid size (unsorted)", "=134", "<F>_ABNORMAL_ABORT"),
         ("malloc(): mismatching next->prev_size (unsorted)",),
+        ("PETSC ERROR", "Caught signal number 11 SEGV: Segmentation Violation"),
+        ("munmap_chunk(): invalid pointer", "LinearSolver.cxx"),
+        ("munmap_chunk(): invalid pointer", "Avancement du calcul"),
+        ("<EXCEPTION> <FACTOR_10>", "la matrice est singulière ou presque singulière"),
+        ("malloc.c:4302: _int_malloc: Assertion `(unsigned long) (size) >= (unsigned long) (nb)'",),
+        ("free(): invalid next size (fast)", "Fatal Python error: Aborted"),
+        ("python3: malloc.c:4105: _int_malloc: Assertion `chunk_main_arena (bck->bk)' failed.",),
+        (
+            "<F> <FACTOR_55>",
+            "PARMETIS ERROR: Poor initial vertex distribution. Processor 0 has no vertices assigned to it!",
+        ),
+        # ("PARTITIONNEUR='METIS'", "=139", "<F>_ABNORMAL_ABORT"),
+        ("malloc(): unaligned tcache chunk detected", ),
+        ("corrupted size vs. prev_size", "<F>_ABNORMAL_ABORT", "=134"),
+        ("<F> <ALGORITH9_17>", "Le nombre de pas est négatif"),
+        ("double free or corruption (!prev)","<F>_ABNORMAL_ABORT"),
         # non-mpi (likely)
         (
             "<F> <DVP_1>",
@@ -221,7 +244,6 @@ def fail_checker(test_dir, aster_ver, mpi):
     abnormal_termination_msg = "_ABNORMAL_ABORT"
     not_ok_result = "NOOK_TEST_RESU"
 
-    tot_num_jobs = 2182 if not mpi else 2256  # get_number_of_jobs(test_dir)
     num_identified_failed = 0
 
     num_failed_tot = 0
@@ -263,8 +285,6 @@ def fail_checker(test_dir, aster_ver, mpi):
             no_signs_of_failure.append(mess_name)
             # print(f'{failed_mess} did not fail')
 
-
-
     el = ErrorLogger(
         fail_map=fail_map,
         num_identified_failed=num_identified_failed,
@@ -285,8 +305,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--test-dir",
-        default="temp/ctestpy310",
         type=str,
+        required=True,
         help="Path to the test directory",
     )
     parser.add_argument("--aster-ver", type=str, default="16.4.2", help="Code_Aster version")

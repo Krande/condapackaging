@@ -71,7 +71,7 @@ else
 
   export CC=mpicc
   export CXX=mpicxx
-  export FC=mpifort
+  export FC=mpif90
   export F77=mpif77
   export F90=mpif90
   export OPAL_PREFIX=$PREFIX

@@ -1,5 +1,7 @@
 import os
 import pathlib
+import shutil
+
 import requests
 import tarfile
 from dataclasses import dataclass
@@ -48,6 +50,15 @@ class GATestChecker:
             if python_version is not None and py_ver != python_version:
                 continue
             fmap[py_ver] = fail_checker(self.dest_dir / d, self.ca_version, self.mpi)
+
+    def prep_ctests_for_local_rerunning(self, local_env_path):
+        cmake_file = self.dest_dir / "CTestTestfile.cmake"
+
+        with open(cmake_file, 'r') as f:
+            data = f.read().replace('/home/runner/micromamba/envs/test-env', "local_env_path")
+        shutil.copy(cmake_file, cmake_file.with_suffix('.bak'))
+        with open(cmake_file, 'w') as f:
+            f.write(data)
 
     @property
     def dest_dir(self):

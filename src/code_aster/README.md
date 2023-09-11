@@ -212,7 +212,10 @@ The current status of the conda package compilation is as follows:
 - [x] homard
 
 **MPI**
-In order of dependency 
+The following packages needs either to be created in the first place, or if a sequential version exists,
+a MPI variant will be added.
+
+Updating the packages in order of dependencies.
 
 - [x] permetis
 - [x] scotch
@@ -220,7 +223,7 @@ In order of dependency
 - [x] mumps 
 - [x] petsc
 - [x] medcoupling
-- [ ] code-aster
+- [x] code-aster
 
 
 

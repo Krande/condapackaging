@@ -20,6 +20,8 @@ fi
 
 mkdir -p build
 cd build
+
+export CFLAGS="-fPIC ${CFLAGS}"
 cmake ${CMAKE_ARGS} \
   -DGKLIB_PATH=$SRC_DIR/metis/GKlib \
   -DMETIS_PATH=$SRC_DIR/metis \
