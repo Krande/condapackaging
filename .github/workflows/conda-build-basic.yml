@@ -70,7 +70,7 @@ on:
         value: ${{ jobs.build_conda.outputs.conda_user }}
 
 env:
-  CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+  CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
   PKG_DEBUG: "False"
   CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
   CONDA_UPSTREAM_USER: ${{ inputs.conda_upstream_user }}

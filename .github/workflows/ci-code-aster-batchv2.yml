@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # This is where the conda user and label should be set
-      code_aster_version: 16.4.3
+      code_aster_version: 16.4.5
       conda_label: debug
-      conda_user: krandedev
+      conda_user: krandedev2
       pkg_dir: src/code_aster
       debug_build: "True"
       mpi: "True"
