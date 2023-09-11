@@ -257,13 +257,12 @@ def fail_checker(test_dir, aster_ver, mpi):
         mess_name = failed_mess.name.split(".")[0].strip()
         has_failed = False
         is_identified = False
+        try:
+            data = failed_mess.read_text(encoding="utf-8")
+        except UnicodeDecodeError as e:
+            logger.error(f"Unable to read '{mess_name}' due to {e}")
+            continue
         for fail_msg in unclassified_fail_messages + missing_packages + numpy_failures:
-            try:
-                data = failed_mess.read_text(encoding="utf-8")
-            except UnicodeDecodeError as e:
-                logger.error(e)
-                continue
-
             if failed_termination_msg in data or abnormal_termination_msg in data or not_ok_result in data:
                 has_failed = True
 

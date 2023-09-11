@@ -1,8 +1,14 @@
 # Logs from singularity installatino
 
+## salome_meca-lgpl-2022.1.0-1-20221225-scibian-9.sif
+
+Using the recipe from https://gitlab.com/codeaster-opensource-documentation/opensource-installation-development/-/blob/main/devel/compile.md?ref_type=heads#working-within-the-container
+in the container `salome_meca-lgpl-2022.1.0-1-20221225-scibian-9.sif` I got the following config and install logs:
+
 ```bash
 Singularity> ./waf configure
-af install -j 4
+waf install -j 4
+
 checking environment... loading /opt/public/scibian9_mpi.sh
 executing: ./waf.engine configure --out=build/mpi --jobs=4
 Setting top to                           : /home/kristoffer/dev/codeaster/src

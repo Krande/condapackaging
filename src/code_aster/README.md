@@ -162,7 +162,13 @@ flowchart TD;
 **NOTE!** Keep in mind that many of the tests require `ctest`. So you will have to install `cmake` if you haven't 
 already
 
+*sequential*
+
 `run_ctest --resutest=temp/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 6`
+
+*mpi*
+
+`run_ctest --resutest=temp/ctest -L submit -LE need_data --timefactor=5.0 --only-failed-results -j 6`
 
 ### Debugging individual failed tests
 

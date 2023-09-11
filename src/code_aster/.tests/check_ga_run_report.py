@@ -85,7 +85,7 @@ class GATestChecker:
 
 
 if __name__ == '__main__':
-    gatc = GATestChecker('16.4.4', debug_build=True, mpi=True)
+    gatc = GATestChecker('16.4.5', debug_build=True, mpi=True)
     gatc.run_check(python_version='3.11')
 
     # download_github_release(ca_ver_, tag_, mpi_, pyver_)
