@@ -9,7 +9,19 @@ on:
 #    - donotrun
 
 jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      # This is where the conda user and label should be set
+      conda_token: ${{ secrets.ANACONDA_DEV2_TOKEN }}
+
+    steps:
+      - name: dummy step
+        id: env
+        run: |
+          echo "done"
   build:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: homard
@@ -21,4 +33,5 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
     secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
+#      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
+      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
