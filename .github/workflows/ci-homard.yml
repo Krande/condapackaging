@@ -15,9 +15,10 @@ jobs:
       package_name: homard
       boa: false
       conda_label: debug
-      conda_user: krandedev
+      conda_user: krandedev2
       pkg_dir: src/code_aster
       debug_build: 'True'
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
