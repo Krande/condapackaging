@@ -59,6 +59,9 @@ on:
         description: 'Conda package variant; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
         type: string
         required: false
+    secrets: 
+      CONDA_TOKEN:
+        required: true
 
     # Return all outputs so that they can optionally be used in subsequent steps
     outputs:
@@ -70,7 +73,6 @@ on:
         value: ${{ jobs.build_conda.outputs.conda_user }}
 
 env:
-  CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
   PKG_DEBUG: "False"
   CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
   CONDA_UPSTREAM_USER: ${{ inputs.conda_upstream_user }}
@@ -152,7 +154,7 @@ jobs:
             conda-build:
               root-dir: ${{ env.CROOT_DIR }}
               output_folder: ${{ env.ARTIFACTS_DIR }}
-              anaconda_token: ${{ env.CONDA_TOKEN }}
+              anaconda_token: ${{ secrets.CONDA_TOKEN }}
               pkg_format: 2
               zstd_compression_level: 19
             channel_priority: strict
@@ -204,7 +206,7 @@ jobs:
               # Check if there are any .conda files to upload in the regular directory
               if ls "$pkg_dir"/*.conda 1> /dev/null 2>&1; then
                   path="${pkg_dir}/*.conda"
-                  anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
+                  anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
               else
                   echo "No .conda files found in $pkg_dir, skipping upload."
               fi
@@ -217,7 +219,7 @@ jobs:
               # Check if there are any .conda files to upload in the noarch directory
               if ls "$noarch_dir"/*.conda 1> /dev/null 2>&1; then
                   path="${noarch_dir}/*.conda"
-                  anaconda -t ${{ env.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
+                  anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
               else
                   echo "No .conda files found in $noarch_dir, skipping upload."
               fi
