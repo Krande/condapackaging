@@ -43,6 +43,8 @@ pin_run_as_build:
     max_pin: x.x
   hdf5:
     max_pin: x.x.x
+  openblas:
+    max_pin: x.x
 
 boost:
   - 1.78

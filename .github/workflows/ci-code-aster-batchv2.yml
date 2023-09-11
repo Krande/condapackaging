@@ -23,7 +23,7 @@ jobs:
       mpi: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi,mpi=nompi"
+      mpi_variants: "mpi=openmpi"
       conda_token: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
     steps:

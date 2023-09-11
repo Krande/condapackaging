@@ -48,6 +48,7 @@ requirements:
     - astor
     - numpy
     - boost
+    - openblas
     - homard {{ homard_ver }}
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
@@ -69,6 +70,7 @@ requirements:
     - numpy
     - pyyaml
     - hdf5
+    - openblas
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
