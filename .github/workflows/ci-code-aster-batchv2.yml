@@ -15,15 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # This is where the conda user and label should be set
-      code_aster_version: 16.4.5
+      code_aster_version: 16.4.2
       conda_label: debug
       conda_user: krandedev2
       pkg_dir: src/code_aster
       debug_build: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi"
-      conda_token: ${{ secrets.ANACONDA_DEV2_TOKEN }}
+      mpi_variants: "mpi=openmpi,mpi=nompi"
 
     steps:
       - name: dummy step
@@ -52,7 +51,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_mpi_parmetis:
     needs: [env]
@@ -67,7 +66,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_mumps:
     needs: [ build_batch_1, env ]
@@ -83,7 +82,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_libmed:
     needs: env
@@ -99,7 +98,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_petsc:
     needs: [ build_batch_mumps, build_mpi_parmetis, env ]
@@ -114,7 +113,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_medcoupling:
     needs: [ build_batch_libmed, build_batch_petsc, env ]
@@ -130,7 +129,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_mfront:
     needs: [ env ]
@@ -145,7 +144,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_mgis:
     needs: [ build_batch_mfront, env ]
@@ -160,7 +159,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   build_batch_code_aster:
     needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
@@ -176,7 +175,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
     secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
 
   test_mpi:
     needs: [ build_batch_code_aster, env ]

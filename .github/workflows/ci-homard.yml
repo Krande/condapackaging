@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-homard.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   env:
@@ -35,4 +35,5 @@ jobs:
       platforms: "ubuntu-latest"
     secrets:
 #      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+#      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}

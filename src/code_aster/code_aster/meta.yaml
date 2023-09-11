@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '16.4.5' %}
+{% set version = '16.4.2' %}
 {% set med_ver = '4.1.1=aster_*' %}
 {% set metis_ver = '5.1.0=aster4*' %}
 {% set mfront_ver = '4.1.0=aster_*' %}
@@ -24,7 +24,7 @@ build:
   rpaths:
     - lib/
     - lib/aster/
-    - lib/petsc4py/lib
+    - lib/petsc4py/lib      # [mpi != "nompi"]
   number: 5
   string: py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
   string: py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]

@@ -7,22 +7,27 @@ set -e
 # Useful for iterating version changes to compilers and flags that needs to stay consistent
 # across all packages
 
+mpi=true
 pyver=3.11
 
-#boa build scotch --python=$pyver
+conda mambabuild scotch --python=$pyver
 
 conda mambabuild metis --python=$pyver
 
+if [[ $mpi ]]; then
+  conda mambabuild parmetis --python=$pyver
+fi
+
 conda mambabuild libmed --python=$pyver
 
-boa build homard --python=$pyver
+conda mambabuild homard --python=$pyver
 
-#conda mambabuild mfront --python=$pyver
+conda mambabuild mfront --python=$pyver
 
-boa build medcoupling --python=$pyver
+conda mambabuild medcoupling --python=$pyver
 
 conda mambabuild mumps --python=$pyver
 
-boa build mgis --python=$pyver
+conda mambabuild mgis --python=$pyver
 
-boa build code_aster --python=$pyver
+conda mambabuild build code_aster --python=$pyver
