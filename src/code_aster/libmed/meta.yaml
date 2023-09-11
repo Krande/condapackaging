@@ -35,14 +35,14 @@ requirements:
     - make
 
   host:
+    - python
     - hdf5
     - zlib
-    - python
     - {{ mpi }}                 # [mpi != "nompi"]
 
   run:
-    - hdf5
     - python
+    - hdf5
     - zlib
     - {{ mpi }}                 # [mpi != "nompi"]
 

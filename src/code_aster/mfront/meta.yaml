@@ -24,17 +24,16 @@ requirements:
     - sysroot_linux-64 2.17
     - cmake
     - make
-    - python
-    - numpy
 
   host:
-    - boost
+    - python
     - zlib
     - numpy
-    - python
+    - boost
 
   run:
     - python
+    - zlib
     - numpy
     - boost
 

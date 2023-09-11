@@ -6,6 +6,8 @@ mkdir -p "$SRC_DIR/deps/config"
 tar -xzf "$SRC_DIR/deps/archives/petsc-3.17.1_aster.tar.gz" -C . --strip-components=1
 
 export BUILD_3rdParty=$SRC_DIR
+export PETSC_ARCH=arch-linux2-codeaster
+
 cd petsc-src
 
 echo "mpi=$mpi"
@@ -16,16 +18,6 @@ _SOWING="v1.1.26-p4"
 _SPLEC="aa5f86854e5d457ce6ff5041b1c308588ba71c25"
 _SUPERLU="v5.3.0"
 _HPDDM="b9ae0dc6cf88af52b1572b990f8b1731cabceaaf"
-
-#export LIBS="-Wl,-rpath,$PREFIX/lib -lmpi_mpifh -lgfortran"
-## OpenMPI related
-#export OMPI_MCA_plm=isolated
-#export OMPI_MCA_rmaps_base_oversubscribe=yes
-#export OMPI_MCA_btl_vader_single_copy_mechanism=none
-#export OMPI_CC=$CC
-#export OPAL_PREFIX=$PREFIX
-#export LDFLAGS="-pthread -fopenmp $LDFLAGS"
-#export LDFLAGS="$LDFLAGS -Wl,-rpath-link,$PREFIX/lib"
 
 # SHLIB_EXT https://docs.conda.io/projects/conda-build/en/latest/user-guide/environment-variables.html#id2
 if [[ "${PKG_DEBUG}" == "True" ]]; then

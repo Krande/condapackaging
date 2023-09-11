@@ -40,4 +40,4 @@ else
 fi
 
 make esmumps
-make install prefix=${PREFIX}
+make install prefix="${PREFIX}"

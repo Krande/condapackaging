@@ -35,13 +35,13 @@ requirements:
     - python
     - zlib
     - bison
-    - {{ mpi }}       # [mpi != "nompi"]
     - hdf5
+    - {{ mpi }}       # [mpi != "nompi"]
 
   run:
+    - python
     - zlib
     - bison
-    - python
     - hdf5
     - {{ mpi }}       # [mpi != "nompi"]
 

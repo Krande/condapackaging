@@ -12,9 +12,7 @@ if [[ "${PKG_DEBUG}" == "True" ]]; then
   export CFLAGS="-g -O0 ${CFLAGS}"
   export CXXFLAGS="-g -O0 ${CXXFLAGS}"
   export FCFLAGS="-g -O0 ${FCFLAGS}"
-  build_type="Debug"
 else
-  build_type="Release"
   echo "Debugging Disabled"
 fi
 

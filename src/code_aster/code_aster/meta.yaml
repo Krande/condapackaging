@@ -1,5 +1,7 @@
 {% set name = 'code-aster' %}
 {% set version = '16.4.2' %}
+
+# Dependencies
 {% set med_ver = '4.1.1=aster_*' %}
 {% set metis_ver = '5.1.0=aster4*' %}
 {% set mfront_ver = '4.1.0=aster_*' %}
@@ -9,6 +11,7 @@
 {% set medcoupling_ver = '9.10.0=aster*' %}
 {% set homard_ver = '11.12' %}
 {% set mgis_ver = '2.1' %}
+{% set mpi4py_ver = "3.1.3" %}
 
 
 package:
@@ -53,6 +56,7 @@ requirements:
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
+    - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
     - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
     - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
@@ -75,6 +79,7 @@ requirements:
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
+    - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
     - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
     - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]

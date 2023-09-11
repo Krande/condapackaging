@@ -34,10 +34,11 @@ requirements:
     - mfront {{ mfront_ver }} =aster_*
 
   run:
+    - python
     - numpy
     - boost
     - mfront {{ mfront_ver }} =aster_*
-    - python
+
 #
 #test:
 #  commands:
