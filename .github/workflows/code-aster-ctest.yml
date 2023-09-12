@@ -79,7 +79,7 @@ jobs:
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
-           colorama
+            colorama
             code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
 
       - name: run ctest [seq]
