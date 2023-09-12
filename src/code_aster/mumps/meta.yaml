@@ -43,8 +43,8 @@ requirements:
     - hdf5
     - zlib
     - libblas
-    - libcblas
     - liblapack
+    - libgomp
     - metis {{ metis_ver }}=aster4*
     - scotch {{ scotch_ver }}=aster1*seq*       # [mpi == "nompi"]
     - scotch {{ scotch_ver }}=aster1*openmpi*   # [mpi != "nompi"]
@@ -58,8 +58,8 @@ requirements:
     - hdf5
     - zlib
     - libblas
-    - libcblas
     - liblapack
+    - libgomp
     - metis {{ metis_ver }}=aster4*
     - scotch {{ scotch_ver }}=aster1*seq*       # [mpi == "nompi"]
     - scotch {{ scotch_ver }}=aster1*openmpi*   # [mpi != "nompi"]

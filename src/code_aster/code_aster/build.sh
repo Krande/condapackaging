@@ -30,7 +30,9 @@ export LIBPATH_MEDCOUPLING="$PREFIX/lib"
 export INCLUDES_MEDCOUPLING="$PREFIX/include"
 export PYPATH_MEDCOUPLING=$SP_DIR
 
-
+# Tried with cleaner flags (but did nothing to reduce compilation errors for MPI)
+#export CFLAGS="-fPIC"
+#export CXXFLAGS="-fPIC -std=c++17 -Wno-attributes"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"

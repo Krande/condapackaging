@@ -45,9 +45,6 @@ requirements:
     - hdf5
     - yaml
     - numpy
-    - libblas
-    - libcblas
-    - liblapack
     - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
@@ -61,9 +58,6 @@ requirements:
     - hdf5
     - yaml
     - numpy
-    - libblas
-    - libcblas
-    - liblapack
     - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}

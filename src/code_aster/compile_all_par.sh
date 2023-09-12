@@ -10,6 +10,20 @@ set -e
 mpi=true
 pyver=3.11
 
+# Function to build a package
+build_package() {
+  package=$1
+  pyver=$2
+  conda mambabuild $package --python=$pyver
+}
+
+# No-MPI group
+build_package "asrun" $pyver &
+build_package "mgis" $pyver &
+build_package "metis" $pyver &
+build_package "mfront" $pyver &
+build_package "homard" $pyver &
+
 conda mambabuild scotch --python=$pyver
 
 conda mambabuild metis --python=$pyver
