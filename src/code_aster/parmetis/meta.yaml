@@ -28,9 +28,12 @@ requirements:
   host:
     - numpy
     - {{ mpi }}
+    - libgomp
+
   run:
     - numpy
     - {{ mpi }}
+    - libgomp
 
 test:
   commands:

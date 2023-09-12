@@ -40,6 +40,7 @@ requirements:
     - boost
     - libxml2
     - hdf5
+    - libgomp
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
@@ -51,6 +52,7 @@ requirements:
     - boost
     - libxml2
     - hdf5
+    - libgomp
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']

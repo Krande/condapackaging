@@ -36,6 +36,7 @@ requirements:
     - zlib
     - bison
     - hdf5
+    - libgomp
     - {{ mpi }}       # [mpi != "nompi"]
 
   run:
@@ -43,6 +44,7 @@ requirements:
     - zlib
     - bison
     - hdf5
+    - libgomp
     - {{ mpi }}       # [mpi != "nompi"]
 
 test:

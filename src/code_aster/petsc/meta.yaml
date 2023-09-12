@@ -45,6 +45,7 @@ requirements:
     - hdf5
     - yaml
     - numpy
+    - libgomp
     - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
@@ -58,6 +59,7 @@ requirements:
     - hdf5
     - yaml
     - numpy
+    - libgomp
     - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}

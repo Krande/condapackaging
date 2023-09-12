@@ -30,12 +30,14 @@ requirements:
     - zlib
     - numpy
     - boost
+    - libgomp
 
   run:
     - python
     - zlib
     - numpy
     - boost
+    - libgomp
 
 test:
   commands:
