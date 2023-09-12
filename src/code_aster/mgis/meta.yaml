@@ -32,14 +32,12 @@ requirements:
     - numpy
     - boost
     - mfront {{ mfront_ver }} =aster_*
-    - libgomp
 
   run:
     - python
     - numpy
     - boost
     - mfront {{ mfront_ver }} =aster_*
-    - libgomp
 
 #
 #test:

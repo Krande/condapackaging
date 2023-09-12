@@ -13,8 +13,6 @@ fortran_compiler:
 fortran_compiler_version:
   - 8      # [unix]
 
-libgomp:
-  - 8
 blas_impl:
   - openblas
   - mkl          # [x86 or x86_64]

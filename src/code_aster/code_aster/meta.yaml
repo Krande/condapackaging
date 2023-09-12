@@ -57,7 +57,6 @@ requirements:
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
-    - libgomp                                       # [mpi != 'nompi']
     - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
     - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
     - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
@@ -80,7 +79,6 @@ requirements:
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
-    - libgomp                                       # [mpi != 'nompi']
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
     - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]

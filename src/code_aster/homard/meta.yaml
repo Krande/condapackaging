@@ -16,11 +16,9 @@ build:
 requirements:
   host:
     - python
-    - libgomp
 
   run:
     - python
-    - libgomp
 
 test:
   commands:
