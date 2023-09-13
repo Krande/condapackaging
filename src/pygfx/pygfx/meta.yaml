@@ -32,8 +32,12 @@ test:
     - pygfx
   commands:
     - pip check
+    - pytest .
+  files:
+    - ./test_install_validation.py
   requires:
     - pip
+    - pytest
 
 about:
   home: https://github.com/pygfx/pygfx

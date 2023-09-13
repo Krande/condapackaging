@@ -1,12 +1,12 @@
-# Copying pypi packages to conda
+# Converting pypi packages to conda
 
-## Install needed packages
+## Install required packages for making conda recipe's
 
 ```bash
 mamba env update -f environment.gfx.yml
 ```
 
-## Build the packages using grayskull
+## Create conda recipe's using grayskull
 
 ```bash
 grayskull pypi pygfx pylinalg wgpu
