@@ -39,7 +39,7 @@ requirements:
 
   run:
     - python
-    - pin_compatible('occt', max_pin='x.x.x')
+    - {{ pin_compatible('occt', max_pin='x.x.x') }}
     - six
     - numpy >=1.22
 
