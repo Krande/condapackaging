@@ -1,6 +1,6 @@
 name: ci-ifcopenshell
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
@@ -21,4 +21,4 @@ jobs:
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
     secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}

@@ -12,7 +12,7 @@ cp $RECIPE_DIR/config/CMakeLists.txt "${SRC_DIR}/cmake/CMakeLists.txt"
 
 cmake -G Ninja \
  -Wno-dev \
- -DSCHEMA_VERSIONS="2x3;4x1;4x3_add1" \
+ -DSCHEMA_VERSIONS="2x3;4;4x1;4x3_add1" \
  -DCMAKE_BUILD_TYPE=Release \
  -DCMAKE_INSTALL_PREFIX=$PREFIX \
  -DCMAKE_PREFIX_PATH=$PREFIX \
