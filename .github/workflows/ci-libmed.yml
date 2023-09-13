@@ -1,0 +1,21 @@
+name: ci-libmed
+
+# Bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-libmed.yml
+    branches:
+    - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: libmed
+      boa: false
+      pkg_dir: src/code_aster
+      conda_label: debug
+      conda_user: krandedev
+      debug_build: 'True'
+    secrets: inherit

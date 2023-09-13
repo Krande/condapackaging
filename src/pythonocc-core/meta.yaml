@@ -1,0 +1,52 @@
+{% set version = "7.7.2" %}
+{% set build = 0 %}
+
+# Prioritize the 'novtk' build variant for reduced file size
+{% if "novtk" in occt %}
+  {% set build = build + 200 %}
+{% elif "all" in occt %}
+  {% set build = build + 100 %}
+{% endif %}
+
+package:
+  name: pythonocc-core
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/tpaviot/pythonocc-core.git
+  git_rev: 943bf30dbabcac36d3bf4a04d6bbee93fd1597ec
+  git_depth: 1
+
+build:
+  number: {{ build }}
+  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ cdt('mesa-libgl-devel') }}      # [linux]
+    - {{ cdt('libxi-devel') }}           # [linux]
+    - ninja
+    - cmake
+    - swig >=4.1.1
+
+  host:
+    - python
+    - occt
+    - numpy >=1.17
+
+  run:
+    - python
+    - occt
+    - six
+    - numpy >=1.17
+
+test:
+  imports:
+    - OCC
+    - OCC.Core.BRepPrimAPI
+
+about:
+  home: https://github.com/tpaviot/pythonocc-core
+  license: LGPL
+  summary: An industrial strength 3D CAD python package

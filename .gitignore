@@ -10,3 +10,4 @@ temp/
 *.tgz
 *.tar.gz
 .env
+__pycache__/

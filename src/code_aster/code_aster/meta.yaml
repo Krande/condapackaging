@@ -1,0 +1,132 @@
+{% set name = 'code-aster' %}
+{% set version = '16.4.2' %}
+
+# Dependencies
+{% set med_ver = '4.1.1=aster_*' %}
+{% set metis_ver = '5.1.0=aster4*' %}
+{% set mfront_ver = '4.1.0=aster_*' %}
+{% set mumps_ver = '5.5.1=aster1*' %}
+{% set petsc_ver = '3.17.1' %}
+{% set scotch_ver = '7.0.1=aster*' %}
+{% set medcoupling_ver = '9.10.0=aster*' %}
+{% set homard_ver = '11.12' %}
+{% set mgis_ver = '2.1' %}
+{% set mpi4py_ver = "3.1.3" %}
+
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - fn: '{{ name }}_{{ version }}.tar.gz'
+    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+
+build:
+  detect_binary_files_with_prefix: true
+  rpaths:
+    - lib/
+    - lib/aster/
+    - lib/petsc4py/lib      # [mpi != "nompi"]
+  number: 5
+  string: py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
+  string: py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
+    - sysroot_linux-64 2.17
+    - pyyaml
+    - waf
+
+  host:
+    - python
+    - hdf5
+    - pybind11-stubgen 1.2
+    - pyyaml
+    - astor
+    - numpy
+    - boost
+    - openblas
+    - homard {{ homard_ver }}
+    - metis {{ metis_ver }}
+    - mfront {{ mfront_ver }}
+    - mgis {{ mgis_ver }}
+    - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
+    - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
+    - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}openmpi*               # [mpi != "nompi"]
+    - mumps {{ mumps_ver }}seq*                     # [mpi == "nompi"]
+    - mumps {{ mumps_ver }}openmpi*                 # [mpi != "nompi"]
+    - medcoupling {{ medcoupling_ver }}seq*         # [mpi == "nompi"]
+    - medcoupling {{ medcoupling_ver }}openmpi*     # [mpi != "nompi"]
+    - {{ mpi }}                                     # [mpi != "nompi"]
+    - petsc {{ petsc_ver }}=aster*                  # [mpi != "nompi"]
+    - parmetis                                      # [mpi != "nompi"]
+
+  run:
+    - python
+    - numpy
+    - pyyaml
+    - hdf5
+    - openblas
+    - metis {{ metis_ver }}
+    - mfront {{ mfront_ver }}
+    - mgis {{ mgis_ver }}
+    - homard {{ homard_ver }}
+    - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
+    - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
+    - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}openmpi*               # [mpi != "nompi"]
+    - mumps {{ mumps_ver }}seq*                     # [mpi == "nompi"]
+    - mumps {{ mumps_ver }}openmpi*                 # [mpi != "nompi"]
+    - medcoupling {{ medcoupling_ver }}seq*         # [mpi == "nompi"]
+    - medcoupling {{ medcoupling_ver }}openmpi*     # [mpi != "nompi"]
+    - {{ mpi }}                                     # [mpi != "nompi"]
+    - petsc {{ petsc_ver }}=aster*                  # [mpi != "nompi"]
+    - parmetis                                      # [mpi != "nompi"]
+  ignore_run_exports:
+    - libcblas
+test:
+  imports:
+    - code_aster
+  commands:
+    - run_aster --help
+    - python basic_import.py
+#    - run_ctest -R 'forma01a' --resutest=../resutest --only-failed-results -j 1
+#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
+#    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
+  requires:
+    - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
+    - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}openmpi*               # [mpi != "nompi"]
+    - mumps {{ mumps_ver }}seq*                     # [mpi == "nompi"]
+    - mumps {{ mumps_ver }}openmpi*                 # [mpi != "nompi"]
+    - medcoupling {{ medcoupling_ver }}seq*         # [mpi == "nompi"]
+    - medcoupling {{ medcoupling_ver }}openmpi*     # [mpi != "nompi"]
+    - petsc {{ petsc_ver }}=aster*                  # [mpi != "nompi"]
+    - parmetis                                      # [mpi != "nompi"]
+  files:
+    - basic_import.py
+
+
+about:
+  home: https://www.code-aster.org
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license_family: GPL
+  summary: 'Code_Aster : a finite element solver'
+  description: |
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+  doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
+  dev_url: https://sourceforge.net/projects/codeaster/
+
+extra:
+  recipe-maintainers:
+    - Krande

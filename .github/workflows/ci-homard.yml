@@ -1,0 +1,39 @@
+name: ci-homard
+
+# bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-homard.yml
+    branches:
+    - donotrun
+
+jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      # This is where the conda user and label should be set
+      conda_token: ${{ secrets.ANACONDA_DEV2_TOKEN }}
+
+    steps:
+      - name: dummy step
+        id: env
+        run: |
+          echo "done"
+          echo "conda_token=${{ inputs.conda_token }}" >> $GITHUB_OUTPUT
+  build:
+    needs: env
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: homard
+      boa: false
+      conda_label: debug
+      conda_user: krandedev2
+      pkg_dir: src/code_aster
+      debug_build: 'True'
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+    secrets:
+#      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
+#      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}

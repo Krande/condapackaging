@@ -1,95 +1,75 @@
-{% set version = "3.19.4" %}
+{% set name = "petsc" %}
+{% set version = "3.17.1" %}
 {% set build = 0 %}
-
-{% set mpi = mpi or 'mpich' %}
-{% if scalar == "real" %}
-{% set build = build + 100 %}
-{% endif %}
+# Dependencies
+{% set metis_ver = "5.1.0" %}
+{% set parmetis_ver = "4.0.3" %}
+{% set scalapack_ver = "2.1.0" %}
+{% set scotch_ver = "7.0.1" %}
+{% set mumps_ver = "5.5.1" %}
+{% set hdf5_ver = "1.10.6" %}
+{% set cython_ver = "0.29.36" %}
 
 package:
-  name: petsc
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-{{ version }}.tar.gz
-  sha256: 7c941b71be52c3b764214e492df60109d12f97f7d854c97a44df0c4d958b3906
-  patches:
-    - ignore-not-invalid.patch
-    - no-cppflags-in-pkgconfig-cflags.patch
-    - hypre-error.patch
+    - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+      url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+      sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+      folder: deps/
 
 build:
   skip: true  # [win]
   number: {{ build }}
-  string: {{ scalar }}_h{{ PKG_HASH }}_{{ build }}
+  string: aster_py{{ CONDA_PY }}_{{mpi}}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage('petsc', max_pin='x.x') }} {{ scalar }}_*
-  track_features:
-    - petsc_complex  # [scalar == "complex"]
+    - {{ pin_subpackage('petsc', max_pin='x.x') }}
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'True') }}
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
+    - sysroot_linux-64 2.17
+    - cmake
     - make
     - pkg-config
-    - python
     - gnuconfig   # [unix]
-    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
+
   host:
-    - libblas
-    - libcblas
-    - liblapack
-    - cmake
-    - {{ mpi }}
-    - yaml
-    # FIXME: unpin hypre after next petsc release
-    - hypre 2.28
-    - metis
-    - parmetis
-    - ptscotch
-    - scalapack
-    - superlu
-    - superlu_dist
-    - scotch
-    - mumps-mpi
-    - suitesparse
+    - python
     - hdf5
-    - hdf5 * mpi_{{ mpi }}_*
-    - fftw * mpi_{{ mpi }}_*
+    - yaml
+    - numpy
+    - cython {{ cython_ver }}
+    - metis {{ metis_ver }}=aster*
+    - parmetis {{ parmetis_ver }}
+    - scalapack {{ scalapack_ver }}
+    - scotch {{ scotch_ver }}=*openmpi*
+    - mumps {{ mumps_ver }}=*openmpi*
+    - {{ mpi }}
+
   run:
-    - {{ mpi }}
-    - yaml
-    - hypre
-    - metis
-    - parmetis
-    - ptscotch
-    - scalapack
-    - superlu
-    - superlu_dist
-    - scotch
-    - mumps-mpi
-    - suitesparse
+    - python
     - hdf5
-    - hdf5 * mpi_{{ mpi }}_*
-    - fftw * mpi_{{ mpi }}_*
+    - yaml
+    - numpy
+    - cython {{ cython_ver }}
+    - metis {{ metis_ver }}=aster*
+    - parmetis {{ parmetis_ver }}
+    - scalapack {{ scalapack_ver }}
+    - scotch {{ scotch_ver }}=*openmpi*
+    - mumps {{ mumps_ver }}=*openmpi*
+    - {{ mpi }}
 
 test:
-  requires:
-    - pkg-config
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - make
-  files:
-    - tests/ex1.c
-    - tests/ex1f.F90
-    - tests/makefile
   commands:
-    - pkg-config --validate PETSc
-    - pkg-config --cflags PETSc
-    - pkg-config --libs PETSc
+    - test -f $PREFIX/include/petsc.h
+    - test -f $PREFIX/lib/libpetsc.so
 
 about:
   home: https://www.mcs.anl.gov/petsc/

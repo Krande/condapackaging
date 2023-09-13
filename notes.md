@@ -1,5 +1,9 @@
 # Notes
- 
+
+## Github Actions Runners
+
+https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
+
 ## Observations
 
 ## OpenBLAS vs MKL and dependency size

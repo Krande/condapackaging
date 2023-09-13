@@ -1,0 +1,124 @@
+{% set name = "gmsh" %}
+{% set version = "4.11.1" %}
+{% set sha256 = "c5fe1b7cbd403888a814929f2fd0f5d69e27600222a18c786db5b76e8005b365" %}
+{% set build = 0 %}
+
+# Prioritize the 'novtk' build variant for reduced file size
+{% if "novtk" in occt %}
+  {% set build = build + 200 %}
+{% elif "all" in occt %}
+  {% set build = build + 100 %}
+{% endif %}
+
+package:
+  name: gmsh-packages
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}-source.tgz
+  url: https://gmsh.info/src/{{ name }}-{{ version }}-source.tgz
+  sha256: {{ sha256 }}
+  patches:
+    - patches/fltk_nominmax.patch
+    - patches/disable_wmain.patch
+
+outputs:
+  - name: gmsh
+    build:
+      skip: true  # [win and vc<14]
+      number: {{ build }}
+      string: py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}
+    script: build_gmsh.sh  # [not win]
+    script: bld_gmsh.bat  # [win]
+    requirements:
+      build:
+        - cmake
+        - make  # [unix]
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ cdt('libselinux') }}        # [linux]
+        - {{ cdt('libxcb') }}            # [linux]
+        - {{ cdt('libxau') }}            # [linux]
+        - {{ cdt('libxdamage') }}        # [linux]
+        - {{ cdt('libxxf86vm') }}        # [linux]
+        - {{ cdt('mesa-libgl-devel') }}  # [linux]
+        - {{ cdt('mesa-dri-drivers') }}  # [linux]
+        - python *
+
+      host:
+        - libblas
+        - liblapack
+        - gmp  # [not win]
+        - occt
+        - fltk
+        - libpng
+        - jpeg
+        - libglu  # [linux]
+        - zlib
+        - xorg-libxfixes     # [linux]
+        - xorg-libxext       # [linux]
+        - xorg-libxrender    # [linux]
+        - xorg-libx11        # [linux]
+        - xorg-libxmu        # [linux]
+        - cairo
+
+      run:
+        - gmp  # [not win]
+        - {{ pin_compatible('occt', max_pin='x.x.x') }}
+        - libpng
+        - jpeg
+        - zlib
+        - libglu  # [linux]
+        - xorg-libxfixes     # [linux]
+        - xorg-libxext       # [linux]
+        - xorg-libxrender    # [linux]
+        - xorg-libx11        # [linux]
+        - xorg-libxmu        # [linux]
+
+    test:
+      commands:
+        - gmsh -help
+        - test "$(gmsh --version 2>&1)" == "{{ version }}"   # [unix]
+
+  - name: python-gmsh
+    build:
+      noarch: python
+      skip: true  # [build_platform != target_platform]
+      number: {{ build }}
+      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+    script: install_python.sh  # [not win]
+    script: install_python.bat  # [win]
+    requirements:
+      run:
+        - {{ pin_subpackage("gmsh", max_pin="x.x.x") }}
+        - numpy
+        - python
+    test:
+      imports:
+        - gmsh
+
+about:
+  home: https://gmsh.info/
+  license: GPL-2.0-or-later
+  license_family: GPL
+  license_file: {{ environ["RECIPE_DIR"] }}/LICENSE.txt
+  summary: A three-dimensional finite element mesh generator with built-in pre- and post-processing facilities
+  description: |
+    Gmsh is a free 3D finite element grid generator with a build-in CAD
+    engine and post-processor. Its design goal is to provide a fast, light
+    and user-friendly meshing tool with parametric input and advanced
+    visualization capabilities. Gmsh is built around four modules:
+    geometry, mesh, solver and post-processing. The specification of any
+    input to these modules is done either interactively using the graphical
+    user interface or in ASCII text files using Gmsh's own scripting
+    language.
+  dev_url: https://gitlab.onelab.info/gmsh/gmsh/
+  doc_url: https://gmsh.info/doc/texinfo/gmsh.html
+
+extra:
+  recipe-maintainers:
+    - guyer
+    - isuruf
+    - xywei
+    - looooo
+    - matthiasdiener

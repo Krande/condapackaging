@@ -1,0 +1,153 @@
+name: ci-code-aster-ctest
+
+on:
+  workflow_call:
+    inputs:
+      conda_label:
+        description: 'conda label'
+        type: string
+        required: true
+      conda_user:
+        description: 'conda user'
+        type: string
+        required: true
+      code_aster_version:
+        description: 'code_aster version'
+        type: string
+        required: true
+      mpi:
+        description: 'Run MPI variant'
+        type: boolean
+        required: true
+      suffix:
+        description: 'Release suffix'
+        default: ""
+        type: string
+        required: false
+      python_versions:
+        description: 'matrix type'
+        type: string
+        required: false
+        default: "3.9,3.10,3.11"
+      platforms:
+        description: 'matrix type'
+        type: string
+        required: false
+        default: "windows-latest,ubuntu-latest,macos-latest"
+
+env:
+  VARIANT_FLAG: "*seq*"
+  PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
+
+jobs:
+  # run a preceding job to get the matrix only if matrix_str is None
+  build_matrix:
+    uses: ./.github/workflows/matrix-builder.yml
+    with:
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      
+  run_ctest:
+    needs: build_matrix
+    name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
+    runs-on: ${{ matrix.platform.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
+    steps:
+      - uses: actions/checkout@v3
+
+
+      - name: evaluate if seq or mpi
+        run: |
+          if [[ ${{ inputs.mpi }} == true ]]; then
+            echo "VARIANT_FLAG=*openmpi*" >> $GITHUB_ENV
+          fi
+
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-name: test-env
+          condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
+            channel_priority: strict
+            channels:
+              - ${{ inputs.conda_user }}/label/${{ inputs.conda_label }}
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver }}
+            colorama
+            code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
+
+      - name: run ctest [seq]
+        if: ${{ inputs.mpi == false }}
+        continue-on-error: true
+        run: |
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2
+
+      - name: run ctest [mpi]
+        if: ${{ inputs.mpi == true }}
+        continue-on-error: true
+        run: |
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=5.0 --only-failed-results -j 2
+
+      - name: add mamba data
+        run: |
+          echo "$(micromamba list)" > ${{ github.workspace }}/ctest/mamba.txt
+
+      - name: print debug logs
+        continue-on-error: true
+        run: |
+          if [[ ${{ inputs.mpi }} == true ]]; then
+            echo "MPI variant"
+            add_str="--mpi"
+          else
+            echo "SEQ variant"
+            add_str=""
+          fi
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str
+
+      - name: save debug logs
+        continue-on-error: true
+        run: |
+          if [[ ${{ inputs.mpi }} == true ]]; then
+            echo "MPI variant"
+            add_str="--mpi"
+          else
+            echo "SEQ variant"
+            add_str=""
+          fi
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str > ${{ github.workspace }}/ctest/summary.txt
+
+      - name: Upload ctest for packaging
+        uses: actions/upload-artifact@v3
+        with:
+          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
+          path: ${{ github.workspace }}/ctest
+
+  upload_test_results:
+    needs: run_ctest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download all ctest artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Package ctest directories
+        run: |
+          tar czf ${{ env.PKG_TAR }} ctest-*
+
+      - name: Create Release and Upload Tarball
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_label }}-${{ inputs.suffix }}
+          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_label }}-${{ inputs.suffix }}]
+          body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
+          draft: false
+          prerelease: false
+          files: ${{ env.PKG_TAR }}

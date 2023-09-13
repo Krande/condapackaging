@@ -1,0 +1,15 @@
+occt:
+  - 7.7.2=novtk*
+  - 7.7.2=all*
+
+pin_run_as_build:
+  occt: x.x.x
+
+CONDA_BUILD_SYSROOT:
+  - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
+
+#c_compiler:
+# - vs2019                     # [win]
+#
+#cxx_compiler:
+# - vs2019                     # [win]

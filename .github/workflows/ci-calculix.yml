@@ -4,7 +4,6 @@ name: ci-calculix
 on:
   push:
     paths:
-      - src/**
       - .github/workflows/ci-calculix.yml
     branches:
     - donotrun

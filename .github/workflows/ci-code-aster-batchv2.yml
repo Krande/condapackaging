@@ -1,0 +1,204 @@
+name: ci-code-aster-batchv2
+
+# bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-code-aster-batchv2.yml
+#    branches:
+#      - donotrun
+
+
+# https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
+jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      # This is where the conda user and label should be set
+      code_aster_version: 16.4.2
+      conda_label: main
+      conda_user: krandedev
+      pkg_dir: src/code_aster
+      debug_build: "False"
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+      mpi_variants: "mpi=openmpi,mpi=nompi"
+
+    steps:
+      - name: dummy step
+        id: env
+        run: |
+          echo "done"
+
+  build_batch_1:
+    needs: env
+    uses: ./.github/workflows/conda-build-basic.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [
+          { name: scotch, boa: false },
+          { name: metis, boa: false },
+          { name: homard, boa: false },
+        ]
+    with:
+      package_name: ${{ matrix.package.name }}
+      boa: ${{ matrix.package.boa }}
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_mpi_parmetis:
+    needs: [env]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: parmetis
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_mumps:
+    needs: [ build_batch_1, env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mumps
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_libmed:
+    needs: env
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: libmed
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_petsc:
+    needs: [ build_batch_mumps, build_mpi_parmetis, env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: petsc
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_medcoupling:
+    needs: [ build_batch_libmed, build_batch_petsc, env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: medcoupling
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_mfront:
+    needs: [ env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mfront
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_mgis:
+    needs: [ build_batch_mfront, env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mgis
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  build_batch_code_aster:
+    needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: code_aster
+      boa: false
+      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.mpi_variants }}
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+
+  test_mpi:
+    needs: [ build_batch_code_aster, env ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      code_aster_version: ${{ needs.env.outputs.code_aster_version }}
+      mpi: true
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+      suffix: "mpi"
+    secrets: inherit
+
+  test_seq:
+    needs: [ build_batch_code_aster, env ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      code_aster_version: ${{ needs.env.outputs.code_aster_version }}
+      mpi: false
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest"
+      suffix: "seq"
+    secrets: inherit

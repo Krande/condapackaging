@@ -1,6 +1,6 @@
 {% set name = "libmed" %}
-{% set version = "4.0.0" %}
-#{% set sha256 = "dc2b5d54ebf0666e3ff2e974041d2ab0da906061323537023ab165d573389dd0" %}
+{% set version = "4.1.1" %}
+{% set sha256 = "dc2b5d54ebf0666e3ff2e974041d2ab0da906061323537023ab165d573389dd0" %}
 
 
 package:
@@ -8,35 +8,53 @@ package:
   version: {{ version }}
 
 source:
-  fn: {{ name }}_{{ version }}.tar.gz
-  url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
-  #sha256: {{ sha256 }}
-    #git_url: https://salsa.debian.org/science-team/med-fichier
-    #git_rev: 8a0b0d21d4bac79772797b0a800cf4d5bf77bc32    
+  - fn: {{ name }}_{{ version }}.tar.gz
+    url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
+    sha256: {{ sha256 }}
+    patches:
+      - patches/med-4.1.1-check-hdf5-parallel.diff
+      # Only relevant for hdf5 == '1.10.9'
+#      - patches/med-4.1.1-check-hdf5-with-tabs.diff
 
 build:
-  number: 0
+  number: 5
+  string: aster_py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
+  string: aster_py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
+  skip: true  # [py2k or osx]
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 
 requirements:
   build:
-      - {{ compiler('fortran') }} # [unix] 
-      - {{ compiler('c') }}
-      - {{ compiler('cxx') }}
-      - swig
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - sysroot_linux-64 2.17
+    - autoconf
+    - swig 3.0.12
+    - make
+
   host:
-      - autoconf  # [linux]
-      - make  # [linux]
-      - ninja  # [win]
-      - cmake  # [win]  
-      - hdf5 >=1.10.2,<1.11
-      - python
+    - python
+    - hdf5
+    - zlib
+    - {{ mpi }}                 # [mpi != "nompi"]
+
   run:
-      - {{ pin_compatible('hdf5', min_pin='x.x', max_pin='x.x') }}
-      - python
+    - python
+    - hdf5
+    - zlib
+    - {{ mpi }}                 # [mpi != "nompi"]
 
 test:
   imports:
     - med
+  commands:
+    - |
+      if [[ -z $(nm -D $CONDA_PREFIX/lib/libmed.so | grep MEDlibraryNumVersion) ]]; then
+        echo "MEDlibraryNumVersion is not present in libmed.so";
+        exit 1;
+      fi
 
 about:
   home: https://www.salome-platform.org/user-section/about/med
@@ -47,9 +65,10 @@ about:
   description: |
     The purpose of the MED module is to provide a standard for storing and recovering computer data associated to numerical meshes and fields, and to facilitate the exchange between codes and solvers.
   doc_url: http://www.salome-platform.org/
-  dev_url: http://www.salome-platform.org/
+  dev_url: https://git.salome-platform.org/gitweb/?p=modules/med.git;a=summary
 
 extra:
   recipe-maintainers:
+    - ldallolio
     - looooo
     - ldallolio-irt

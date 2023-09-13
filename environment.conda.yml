@@ -1,13 +1,17 @@
-name: conda-build
+name: mamba-build
 channels:
   - conda-forge
+  - nodefaults
 dependencies:
-  - conda-build
-  - conda-verify
+  - conda-build 3.24
+#  - conda-verify # does not work together with .conda files
   - anaconda-client
+  - pyyaml
   - ninja
   - doxygen
   - boa
   - mercurial
+  - ruamel.yaml.jinja2
+  - pybind11-stubgen 2.0.2
   # for windows and fortran compiler install the following
 #    - m2w64-gcc-fortran

@@ -1,9 +1,0 @@
-variant:
-  - vtk
-  - core
-
-c_compiler:
- - vs2022                     # [win]
- 
-cxx_compiler:
- - vs2022                     # [win]

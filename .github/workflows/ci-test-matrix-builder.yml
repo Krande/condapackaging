@@ -1,0 +1,48 @@
+name: ci-test-matrix-builder
+
+# bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-test-matrix-builder.yml
+#    branches:
+#      - donotrun
+
+jobs:
+  build_matrix:
+    uses: ./.github/workflows/matrix-builder.yml
+    with:
+      python_versions: "3.9,3.10,3.11"
+      platforms: "windows-latest,ubuntu-latest,macos-latest"
+      variants: "mpi=openmpi,mpi=nompi"
+
+  consume_matrix:
+    needs: build_matrix
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
+    steps:
+      - name: build local packages
+        run: |
+          echo ${{ matrix.pyver }}
+          echo ${{ matrix.platform.short }}
+          echo "key=${{ matrix.variants.key }}, value=${{ matrix.variants.value }}"
+
+  build_matrix_2:
+    uses: ./.github/workflows/matrix-builder.yml
+    with:
+      python_versions: "3.9,3.10"
+      platforms: "windows-latest"
+
+  consume_matrix_2:
+    needs: build_matrix_2
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build_matrix_2.outputs.final_matrix) }}
+    steps:
+      - name: build local packages
+        run: |
+          echo ${{ matrix.pyver }}
+          echo ${{ matrix.platform.short }}

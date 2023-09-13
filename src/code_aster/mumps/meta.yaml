@@ -1,0 +1,91 @@
+{% set name = "mumps" %}
+{% set version = "5.5.1" %}
+# Dependencies
+{% set metis_ver = "5.1.0" %}
+{% set parmetis_ver = "4.0.3" %}
+{% set scalapack_ver = "2.1.0" %}
+{% set scotch_ver = "7.0.1" %}
+
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
+    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
+    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+    folder: deps/
+#  - hg_url: http://hg.code.sf.net/p/prereq/mumps
+#    hg_tag: '{{ version }}'
+
+
+build:
+  detect_binary_files_with_prefix: true
+  string: aster1_py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
+  string: aster1_py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
+  number: 2
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
+    - waf
+    - sysroot_linux-64 2.17
+    - make
+
+  host:
+    - python
+    - numpy
+    - hdf5
+    - zlib
+    - libblas
+    - liblapack
+    - metis {{ metis_ver }}=aster4*
+    - scotch {{ scotch_ver }}=aster1*seq*       # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}=aster1*openmpi*   # [mpi != "nompi"]
+    - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
+    - scalapack {{ scalapack_ver }}             # [mpi != "nompi"]
+    - {{ mpi }}                                 # [mpi != "nompi"]
+
+  run:
+    - numpy
+    - python
+    - hdf5
+    - zlib
+    - libblas
+    - liblapack
+    - libgomp
+    - metis {{ metis_ver }}=aster4*
+    - scotch {{ scotch_ver }}=aster1*seq*       # [mpi == "nompi"]
+    - scotch {{ scotch_ver }}=aster1*openmpi*   # [mpi != "nompi"]
+    - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
+    - scalapack {{ scalapack_ver }}             # [mpi != "nompi"]
+    - {{ mpi }}                                 # [mpi != "nompi"]
+
+
+test:
+  commands:
+    # Check for existence of mumps libraries
+    - test -f $PREFIX/lib/libcmumps.a
+    - test -f $PREFIX/lib/libdmumps.a
+    - test -f $PREFIX/lib/libmumps_common.a
+    - test -f $PREFIX/lib/libmpiseq.a           # [mpi == "nompi"]
+    - test -f $PREFIX/lib/libpord.a
+    - test -f $PREFIX/lib/libsmumps.a
+    - test -f $PREFIX/lib/libzmumps.a
+
+about:
+  home: http://mumps.enseeiht.fr/
+  license: CeCILL-C free/libre
+  summary: 'MUMPS is a library which provides a powerful sparse direct parallel solver'
+  description: |
+    MUMPS is a library which provides a powerful sparse direct parallel solver. It is available in Code_Aster’s linear solvers both for sequential and parallel use.
+  dev_url: https://github.com/scivision/mumps
+
+extra:
+  recipe-maintainers:
+    - Krande

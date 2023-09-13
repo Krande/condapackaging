@@ -1,0 +1,52 @@
+{% set name = "metis" %}
+{% set version = "5.1.0" %}
+{% set aster_variant = "aster4" %}
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - hg_url: http://hg.code.sf.net/p/prereq/metis
+    hg_tag: '{{ version }}_{{ aster_variant }}'
+
+build:
+  detect_binary_files_with_prefix: true
+  string: '{{ aster_variant }}_py{{ CONDA_PY }}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  number: 2
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
+    - sysroot_linux-64 2.17
+    - make
+
+  host:
+    - python
+
+  run:
+    - python
+
+test:
+  commands:
+    # Check for existence of files and directories
+    - test -f $PREFIX/lib/libmetis.a
+    - test -f $PREFIX/include/metis.h
+
+about:
+  home: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html
+  license: Apache-2.0
+  license_family: Apache
+  summary: 'METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering'
+  description: |
+    METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.
+  doc_url: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html
+
+
+extra:
+  recipe-maintainers:
+    - Krande

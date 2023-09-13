@@ -1,0 +1,334 @@
+# coding=utf-8
+
+"""
+The waf scripts have been added by the Code_Aster team to configure the
+Makefile.inc of Mumps.
+
+See http://www.code-aster.org and https://code.google.com/p/waf for more informations.
+"""
+
+top = "."
+out = "build"
+
+import os
+import os.path as osp
+import sys
+import platform
+from itertools import chain
+from waflib import Configure, Utils, Logs
+
+
+def options(self):
+    ori_get_usage = self.parser.get_usage
+
+    def _usage():
+        return ori_get_usage() + os.linesep.join(
+            (
+                "",
+                "Environment variables:",
+                "  INCLUDES       : space separated list of directories extending the include"
+                " path",
+                "  CC             : C compiler",
+                "  FC             : Fortran compiler",
+                "  INCLUDES       : extra include paths",
+                "  DEFINES        : extra preprocessor defines",
+                "  LINKFLAGS      : extra C linker options",
+                "  LIBPATH        : extra paths where to find libraries",
+                "  OPTLIB_FLAGS   : extra linker flags inserted after static libs "
+                "(for example when -Wl,start-group options are necessary)",
+                "  CFLAGS         : extra C compilation options",
+                "  FCFLAGS        : extra Fortran compilation options",
+                "  PREFIX         : default installation prefix to be used, "
+                "if no --prefix option is given.",
+                "",
+            )
+        )
+
+    self.parser.get_usage = _usage
+
+    self.load("gnu_dirs")
+    self.load("python")
+
+    group = self.add_option_group("Global options")
+
+    self.load("parallel", tooldir="waftools")
+    self.load("mathematics", tooldir="waftools")
+    self.load("metis", tooldir="waftools")
+    self.load("parmetis", tooldir="waftools")
+    self.load("scotch", tooldir="waftools")
+
+    group.add_option(
+        "-E",
+        "--embed-all",
+        dest="embed_all",
+        action="store_true",
+        default=False,
+        help="activate all embed-* options",
+    )
+    group.add_option(
+        "--install-tests",
+        dest="install_tests",
+        action="store_true",
+        default=False,
+        help="build and install the testcases files",
+    )
+    group.add_option(
+        "--build-shared",
+        dest="build_shared",
+        action="store_true",
+        default=False,
+        help="build shared libraries",
+    )
+
+
+def configure(self):
+    opts = self.options
+    self.env.install_tests = opts.install_tests
+    self.load("gnu_dirs")
+    self.add_os_flags("FLAGS")
+    self.add_os_flags("CFLAGS")
+    self.add_os_flags("FCFLAGS")
+    self.add_os_flags("LINKFLAGS")
+    self.add_os_flags("LIB")
+    self.add_os_flags("LIBPATH")
+    self.add_os_flags("STLIB")
+    self.add_os_flags("STLIBPATH")
+    self.add_os_flags("INCLUDES")
+    self.add_os_flags("DEFINES")
+    self.add_os_flags("OPTLIB_FLAGS")
+
+    # Add *LIBPATH paths to LD_LIBRARY_PATH
+    libpaths = list(
+        chain(*[Utils.to_list(self.env[key]) for key in self.env.table if "libpath" in key.lower()])
+    )
+    ldpaths = [p for p in os.environ.get("LD_LIBRARY_PATH", "").split(os.pathsep)]
+    paths = libpaths + ldpaths
+    os.environ["LD_LIBRARY_PATH"] = os.pathsep.join(p for p in paths if p)
+
+    self.load("ext_aster", tooldir="waftools")
+    self.load("parallel", tooldir="waftools")
+    self.load("mathematics", tooldir="waftools")
+    self.load("metis", tooldir="waftools")
+    if self.env.HAVE_MPI:
+        self.load("parmetis", tooldir="waftools")
+    self.load("scotch", tooldir="waftools")
+
+    self.check_linkflags()
+    self.check_cflags()
+    self.check_fcflags()
+
+    self.check_cc(uselib_store="SYS", lib="dl")
+    self.check_cc(uselib_store="SYS", lib="util")
+    self.check_cc(uselib_store="SYS", lib="pthread")
+    if not self.env.HAVE_MPI:
+        self.env.INCS = "$(INCSEQ)"
+        self.env.LIBS = "$(LIBSEQ)"
+        self.env.LIBSEQNEEDED = "libseqneeded"
+    else:
+        self.env.INCS = "$(INCPAR)"
+        self.env.LIBS = "$(LIBPAR)"
+    self.env.append_value("ORDERINGS", "pord")
+    if self.env.LIB_METIS:
+        self.env.append_unique("ORDERINGS", [self.env.METIS_ORDERING])
+        self.env.append_unique("DEFINES", [self.env.METIS_ORDERING])
+    if self.env.HAVE_MPI:
+        if self.env.LIB_PARMETIS:
+            self.env.append_unique("ORDERINGS", [self.env.PARMETIS_ORDERING])
+            self.env.append_unique("DEFINES", [self.env.PARMETIS_ORDERING])
+    if self.env.LIB_SCOTCH:
+        self.env.append_value("ORDERINGS", "scotch")
+        if self.env.HAVE_MPI:
+            self.env.append_value("ORDERINGS", "ptscotch")
+
+
+@Configure.conf
+def check_cflags(self):
+    self.start_msg("Getting C compiler flags")
+    if platform.machine() in "x86_64":
+        self.env.append_unique("CFLAGS", ["-fPIC", "-O"])
+    else:
+        self.env.append_unique("CFLAGS", ["-fPIC", "-O", "-DINTSIZE32"])
+    self.end_msg(self.env["CFLAGS"])
+
+
+@Configure.conf
+def check_fcflags(self):
+    self.check_fortran()
+    self.check_fortran_dummy_main()
+    if "MAIN_" in self.env.FC_MAIN:
+        # for examples/c_example unittest
+        self.env.append_unique("CFLAGS", ["-DMAIN_COMP"])
+    self.check_fortran_mangling()
+    if self.env.FORTRAN_MANGLING:
+        underscore = self.env.FORTRAN_MANGLING[0] + self.env.FORTRAN_MANGLING[1]
+        if underscore:
+            self.env.append_value("DEFINES", "Add" + underscore)
+        if self.env.FORTRAN_MANGLING[2] == "upper":
+            self.env.append_value("DEFINES", "UPPER")
+    self.start_msg("Getting Fortran compiler flags")
+    if platform.machine() in "x86_64":
+        self.env.append_unique("FCFLAGS", ["-fPIC", "-O", "-DPORD_INTSIZE64"])
+    else:
+        self.env.append_unique("FCFLAGS", ["-fPIC", "-O"])
+    self.end_msg(self.env["FCFLAGS"])
+
+
+@Configure.conf
+def check_linkflags(self):
+    opts = self.options
+    if sys.platform != "darwin":
+        self.env.append_unique("LINKFLAGS", ["-Wl,--export-dynamic"])
+    else:
+        # '--export-dynamic' is '-export_dynamic' in OS X linker
+        # http://stackoverflow.com/questions/21279036/what-is-clangs-equivalent-to-rdynamic-gcc-flag
+        self.env.append_unique("LINKFLAGS", ["-Wl,-export_dynamic"])
+
+    if "ifort" in self.env.FC_NAME.lower():
+        self.env.append_value("LINKFLAGS_fcprogram", ["-nofor_main"])
+        if opts.embed_all:
+            self.env.append_value("LINKFLAGS_fcprogram", ["-static-intel"])
+            if self.get_define("HAVE_MPI"):
+                self.env.append_value("LINKFLAGS_fcprogram", ["-static_mpi"])
+
+
+################################################################################
+def build(self):
+    opts = self.options
+    shlib_ext = "a" if opts.build_shared is False else "so"
+
+    self.load("ext_aster", tooldir="waftools")
+    if self.cmd == "clean":
+        return clean(self)
+    mkn = self.path.make_node
+    makeinc = mkn("Makefile.inc")
+    self(
+        name="create_makefile_inc",
+        rule=build_makefile,
+        vars=[
+            "AR",
+            "ARFLAGS",
+            "DEFINES",
+            "INCLUDES",
+            "CC",
+            "CFLAGS",
+            "CFLAGS_OPENMP",
+            "FC",
+            "FCFLAGS",
+            "FCFLAGS_OPENMP",
+            "LINK_FC",
+            "LINKFLAGS",
+            "LINKFLAGS_CLIB",
+            "FCLINKFLAGS_OPENMP",
+            "FCLINKFLAGS_MPI",
+            "LIBPATH",
+            "LIB_SCOTCH",
+            "LIB_METIS",
+            "LIB_PARMETIS",
+            "LIB_MATH",
+            "LIB_SYS",
+            "STLIB_SCOTCH",
+            "STLIB_METIS",
+            "STLIB_PARMETIS",
+            "STLIB_MATH",
+            "STLIB_SYS",
+            "OPTLIB_FLAGS",
+            "OPTLIB_FLAGS_MATH",
+            # Makefile variables
+            "INCS",
+            "LIBS",
+            "LIB_SCALAPACK",
+            "LIBSEQNEEDED",
+            "ORDERINGS",
+        ],
+        source="Makefile.inc.in",
+        target=makeinc,
+        always=True,
+        update_outputs=True,  # because target is written in src
+    )
+    libs = [
+        mkn(f"lib/lib%s.{shlib_ext}" % i)
+        for i in ("smumps", "dmumps", "cmumps", "zmumps", "mumps_common", "pord")
+    ]
+    if not self.env.HAVE_MPI:
+        libs.append(mkn(f"libseq/libmpiseq.{shlib_ext}"))
+    bins = []
+    datas = []
+    if self.env.install_tests:
+        bins = [mkn("examples/%ssimpletest" % i) for i in "sdcz"]
+        bins.append(mkn("examples/c_example"))
+        datas = [
+            mkn(i)
+            for i in (
+                "examples/input_simpletest_cmplx",
+                "examples/input_simpletest_real",
+                "examples/README",
+            )
+        ]
+    self(
+        name="make_mumps_libs",
+        rule=call_make,
+        source=makeinc,
+        target=libs + bins + datas,
+        update_outputs=True,  # because targets are built in src
+        after="create_makefile_inc",
+    )
+    self.install_files("${PREFIX}/lib", libs)
+    if self.env.install_tests:
+        self.install_files("${PREFIX}/share/examples", bins, chmod=Utils.O755)
+        self.install_files("${PREFIX}/share/examples", datas)
+    get_srcs = self.path.get_src().ant_glob
+    self.install_files("${PREFIX}/include", get_srcs("include/*.h"))
+    self.install_files("${PREFIX}/include_seq", get_srcs("libseq/mpi*.h"))
+
+
+def build_makefile(self):
+    """Change variables to be inserted in the Makefile.inc.in template,
+    change text and write Makefile.inc"""
+    content = self.inputs[0].read()
+    Logs.debug("changing '%s'..." % self.inputs[0])
+    for varn in self.vars:
+        fmt = None
+        prefix = None
+        if varn in ("DEFINES", "ORDERINGS"):
+            fmt = self.env.DEFINES_ST
+        elif varn == "INCLUDES":
+            fmt = self.env.CPPPATH_ST
+        elif varn == "LIBPATH":
+            fmt = self.env.LIBPATH_ST
+        elif varn.startswith("LIB_"):
+            fmt = self.env.LIB_ST
+            prefix = self.env.SHLIB_MARKER
+        elif varn.startswith("STLIB_"):
+            fmt = self.env.LIB_ST
+            prefix = self.env.STLIB_MARKER
+        if fmt:
+            value = " ".join([fmt % i for i in self.env[varn]])
+        else:
+            value = self.env.get_flat(varn)
+        if prefix and value.strip():
+            value = prefix + " " + value
+        # print("%s=%r" % (varn, value))
+        content = content.replace("?%s?" % varn, value)
+    # assert '?' not in content
+    Logs.debug("writing '%s'" % self.outputs[0])
+    self.outputs[0].write(content)
+    return 0
+
+
+def call_make(self):
+    """Call the standard Mumps build"""
+    from waflib.Options import options as opts
+
+    inc = self.inputs[0]
+    path = osp.dirname(inc.get_src().abspath())
+    cmd = "cd %s ; make allshared -j %s" % (path, opts.jobs)
+    ret = self.exec_command(cmd)
+    return ret
+
+
+def clean(self):
+    root = self.path.abspath()
+    inc = osp.join(root, "Makefile.inc")
+    if osp.isfile(inc):
+        self.exec_command("make clean")
+        os.remove(inc)
