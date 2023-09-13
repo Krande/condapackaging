@@ -20,4 +20,5 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
-    secrets: inherit
+    secrets:
+      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
