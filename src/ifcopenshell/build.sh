@@ -1,12 +1,6 @@
 #!/bin/bash
 export CLICOLOR_FORCE=1
 
-declare -a CMAKE_PLATFORM_FLAGS
-
-if [[ ${HOST} =~ .*linux.* ]]; then
-    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_TOOLCHAIN_FILE="${RECIPE_DIR}/cross-linux.cmake")
-fi
-
 if [ `uname` == Darwin ]; then
   export CFLAGS="$CFLAGS -Wl,-twolevel_namespace"
   export CXXFLAGS="$CXXFLAGS -Wl,-twolevel_namespace"
@@ -21,7 +15,6 @@ cmake -G Ninja \
  -DSCHEMA_VERSIONS="2x3;4x1;4x3_add1" \
  -DCMAKE_BUILD_TYPE=Release \
  -DCMAKE_INSTALL_PREFIX=$PREFIX \
-  ${CMAKE_PLATFORM_FLAGS[@]} \
  -DCMAKE_PREFIX_PATH=$PREFIX \
  -DCMAKE_SYSTEM_PREFIX_PATH=$PREFIX \
  -DPYTHON_EXECUTABLE:FILEPATH=$PYTHON \

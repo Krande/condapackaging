@@ -4,6 +4,7 @@ occt:
 
 pin_run_as_build:
   occt: x.x.x
+  cgal-cpp: x.x.x
 
 CONDA_BUILD_SYSROOT:
   - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]

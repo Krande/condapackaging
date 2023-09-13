@@ -6,8 +6,10 @@
 # Prioritize the 'novtk' build variant for reduced file size
 {% if "novtk" in occt %}
   {% set build = build + 200 %}
+  {% set variant_name = "novtk" %}
 {% elif "all" in occt %}
   {% set build = build + 100 %}
+  {% set variant_name = "all" %}
 {% endif %}
 
 package:
@@ -27,7 +29,7 @@ outputs:
     build:
       skip: true  # [win and vc<14]
       number: {{ build }}
-      string: py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ variant_name }}_h{{ PKG_HASH }}_{{ build }}
     script: build_gmsh.sh  # [not win]
     script: bld_gmsh.bat  # [win]
     requirements:

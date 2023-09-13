@@ -6,8 +6,10 @@
 # Prioritize the 'novtk' build variant for reduced file size
 {% if "novtk" in occt %}
   {% set build = build + 200 %}
+  {% set variant_name = "novtk" %}
 {% elif "all" in occt %}
   {% set build = build + 100 %}
+  {% set variant_name = "all" %}
 {% endif %}
 
 package:
@@ -21,7 +23,7 @@ source:
 build:
   binary_relocation: false [osx]
   number: {{ build }}
-  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+  string: py{{ CONDA_PY }}_{{ variant_name }}_h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:
@@ -33,12 +35,13 @@ requirements:
 
   host:
     - python
-    - boost-cpp
     - occt
-    - libxml2
     - cgal-cpp
+    - boost-cpp
+    - libxml2
     - hdf5
     - mpfr
+    - numpy >1.22
     - gmp  # [unix]
     - mpir  # [win]
     - nlohmann_json
@@ -52,6 +55,8 @@ requirements:
     - libxml2
     - hdf5
     - mpfr
+    - numpy >1.22
+    - lark # [unix]
     - gmp  # [unix]
     - mpir  # [win]
     - nlohmann_json
@@ -60,7 +65,12 @@ requirements:
 test:
   imports:
     - ifcopenshell
-
+  commands:
+    - pytest .
+  files:
+    - ./test_basic_ifc_ops.py
+  requires:
+    - pytest
 about:
   home: http://ifcopenshell.org
   license: LGPL-3.0-or-later

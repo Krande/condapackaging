@@ -4,8 +4,10 @@
 # Prioritize the 'novtk' build variant for reduced file size
 {% if "novtk" in occt %}
   {% set build = build + 200 %}
+  {% set variant_name = "novtk" %}
 {% elif "all" in occt %}
   {% set build = build + 100 %}
+  {% set variant_name = "all" %}
 {% endif %}
 
 package:
@@ -19,7 +21,7 @@ source:
 
 build:
   number: {{ build }}
-  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+  string: py{{ CONDA_PY }}_{{ variant_name }}_h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:
@@ -33,13 +35,13 @@ requirements:
   host:
     - python
     - occt
-    - numpy >=1.17
+    - numpy >=1.22
 
   run:
     - python
-    - occt
+    - pin_compatible('occt', max_pin='x.x.x')
     - six
-    - numpy >=1.17
+    - numpy >=1.22
 
 test:
   imports:
