@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-homard.yml
-    branches:
-    - donotrun
+#    branches:
+#    - donotrun
 
 jobs:
   env:
