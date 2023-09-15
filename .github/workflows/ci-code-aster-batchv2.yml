@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - .github/workflows/ci-code-aster-batchv2.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -34,7 +34,8 @@ jobs:
           import os
           import datetime
 
-          suffix = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+          #suffix = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+          suffix = ${{ github.run_id }} # with this, it should never come into conflict with other builds
 
           env_file = os.environ.get("GITHUB_OUTPUT", None)
           with open(env_file, "a") as my_file:
