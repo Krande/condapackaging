@@ -59,7 +59,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
-
+    secrets: inherit
+    
   test_seq:
   #  needs: [ build_code_aster, env ]
     needs: [ env ]
