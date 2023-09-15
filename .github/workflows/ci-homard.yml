@@ -34,5 +34,4 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       use_quetz: true
-    secrets:
-      inherit: true
+    secrets: inherit
