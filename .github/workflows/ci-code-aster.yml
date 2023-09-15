@@ -14,15 +14,15 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: 16.4.5
-      conda_label: debug
+      code_aster_version: 16.4.6
+      conda_label: dev-6200231394
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       variants: "mpi=openmpi"
-      conda_token: ${{ secrets.ANACONDA_DEV_TOKEN }}
+      use_quetz: "True"
 
     steps:
       - name: dummy step
@@ -43,9 +43,9 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
-    secrets:
-      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
-
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+    secrets: inherit
+    
   test_mpi:
     needs: [ build_code_aster, env ]
 #    needs: [ env ]
@@ -58,6 +58,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       suffix: "mpi"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
 
   test_seq:
     needs: [ build_code_aster, env ]
@@ -71,4 +72,5 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       suffix: "seq"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
