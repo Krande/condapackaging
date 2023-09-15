@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: homard
