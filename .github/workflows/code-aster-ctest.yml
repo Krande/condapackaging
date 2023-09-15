@@ -34,10 +34,15 @@ on:
         type: string
         required: false
         default: "windows-latest,ubuntu-latest,macos-latest"
-
+      use_quetz:
+        description: 'use quetz server'
+        type: string
+        required: false
+        default: False
 env:
   VARIANT_FLAG: "*seq*"
   PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
+  CONDA_CHANNEL: ""
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
@@ -59,13 +64,22 @@ jobs:
       matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
     steps:
       - uses: actions/checkout@v3
-
-
       - name: evaluate if seq or mpi
         run: |
           if [[ ${{ inputs.mpi }} == true ]]; then
             echo "VARIANT_FLAG=*openmpi*" >> $GITHUB_ENV
           fi
+
+      - name: set ENV CONDA_CHANNEL
+        run: |
+            if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
+                echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
+            else
+                echo "CONDA_CHANNEL=${{ inputs.conda_user }}/label/${{ inputs.conda_label }}" >> $GITHUB_ENV
+            fi
+        env:
+          QUETZ_URL: ${{ secrets.QUETZ_URL }}
+          QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
@@ -75,7 +89,7 @@ jobs:
             remote_backoff_factor: 5
             channel_priority: strict
             channels:
-              - ${{ inputs.conda_user }}/label/${{ inputs.conda_label }}
+              - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}

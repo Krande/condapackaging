@@ -110,6 +110,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   build_batch_petsc:
@@ -124,6 +125,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   build_batch_medcoupling:
@@ -139,6 +141,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   build_batch_mfront:
@@ -153,6 +156,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   build_batch_mgis:
@@ -167,6 +171,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   build_batch_code_aster:
@@ -182,6 +187,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   test_mpi:
@@ -195,6 +201,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       suffix: "mpi"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
   test_seq:
@@ -208,4 +215,5 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       suffix: "seq"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
