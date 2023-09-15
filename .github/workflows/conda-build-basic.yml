@@ -65,10 +65,6 @@ on:
         required: false
         default: false
 
-    secrets:
-      CONDA_TOKEN:
-        required: true
-
     # Return all outputs so that they can optionally be used in subsequent steps
     outputs:
       conda_label:

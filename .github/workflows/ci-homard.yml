@@ -35,6 +35,4 @@ jobs:
       platforms: "ubuntu-latest"
       use_quetz: true
     secrets:
-#      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
-#      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV2_TOKEN }}
+      inherit: true
