@@ -216,6 +216,8 @@ jobs:
             conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
+        env:
+          QUETZ_URL: ${{ secrets.QUETZ_URL }}
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
