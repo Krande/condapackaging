@@ -212,7 +212,7 @@ jobs:
         working-directory: ${{ env.CONDA_DIR }}
 
       - name: Upload packages to Quetz Server
-        if: ${{ secrets.QUETZ_SERVER }} && ${{ inputs.use_quetz }}
+        if: ${{ inputs.use_quetz }}
         run: |
           python conda_uploader.py ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
         env:
