@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      extra_build_args: " --variants \"{ 'numpy'='1.25'}\""
+      extra_build_args: " --variants \"{ 'numpy': '1.25'}\""
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
