@@ -15,20 +15,32 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # This is where the conda user and label should be set
-      code_aster_version: 16.4.2
-      conda_label: main
+      code_aster_version: 16.4.6
+      conda_label: dev-${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "False"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
+      unique_suffix: ${{ steps.env.outputs.unique_suffix }}
+      use_quetz: "True"
 
     steps:
       - name: dummy step
         id: env
         run: |
-          echo "done"
+          python3 << EOF
+          import os
+          import datetime
+
+          suffix = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+
+          env_file = os.environ.get("GITHUB_OUTPUT", None)
+          with open(env_file, "a") as my_file:
+              my_file.write(f"unique_suffix={suffix}\n")
+          
+          EOF
 
   build_batch_1:
     needs: env
@@ -50,8 +62,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+    secrets: inherit
 
   build_mpi_parmetis:
     needs: [env]
@@ -65,8 +77,8 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+    secrets: inherit
 
   build_batch_mumps:
     needs: [ build_batch_1, env ]
@@ -81,8 +93,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+    secrets: inherit
 
   build_batch_libmed:
     needs: env
@@ -97,8 +109,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
 
   build_batch_petsc:
     needs: [ build_batch_mumps, build_mpi_parmetis, env ]
@@ -112,8 +123,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
 
   build_batch_medcoupling:
     needs: [ build_batch_libmed, build_batch_petsc, env ]
@@ -128,8 +138,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
 
   build_batch_mfront:
     needs: [ env ]
@@ -143,8 +152,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
 
   build_batch_mgis:
     needs: [ build_batch_mfront, env ]
@@ -158,8 +166,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
 
   build_batch_code_aster:
     needs: [ build_batch_mumps, build_batch_mgis, build_batch_medcoupling, env ]
@@ -174,8 +181,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.mpi_variants }}
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
 
   test_mpi:
     needs: [ build_batch_code_aster, env ]

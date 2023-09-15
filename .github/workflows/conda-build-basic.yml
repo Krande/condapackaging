@@ -61,9 +61,9 @@ on:
         required: false
       use_quetz:
         description: 'use quetz server'
-        type: boolean
+        type: string
         required: false
-        default: false
+        default: False
 
     # Return all outputs so that they can optionally be used in subsequent steps
     outputs:
@@ -154,11 +154,11 @@ jobs:
 
       - name: set ENV CONDA_CHANNEL
         run: |
-            if [[ ${{ inputs.use_quetz }} == false ]]; then
-                echo "CONDA_CHANNEL=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
-            else
+            if [[ ${{ inputs.use_quetz }} == "True" ]]; then
                 echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
                 python .github/workflows/conda_uploader.py create-channel ${{ inputs.conda_label }} --create-public-channel --channel-description="CondaPackaging Temp Channel"
+            else
+                echo "CONDA_CHANNEL=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
             fi
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
@@ -171,11 +171,9 @@ jobs:
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5
-            anaconda_upload: false
             conda-build:
               root-dir: ${{ env.CROOT_DIR }}
               output_folder: ${{ env.ARTIFACTS_DIR }}
-              anaconda_token: ${{ secrets.CONDA_TOKEN }}
               pkg_format: 2
               zstd_compression_level: 19
             channel_priority: strict
@@ -220,7 +218,7 @@ jobs:
         working-directory: ${{ env.CONDA_DIR }}
 
       - name: Upload packages to Quetz Server
-        if: ${{ inputs.use_quetz }}
+        if: ${{ inputs.use_quetz == "True" }}
         run: |
           python .github/workflows/conda_uploader.py upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
         env:
@@ -238,7 +236,7 @@ jobs:
               # Check if there are any .conda files to upload in the regular directory
               if ls "$pkg_dir"/*.conda 1> /dev/null 2>&1; then
                   path="${pkg_dir}/*.conda"
-                  anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
+                  anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
               else
                   echo "No .conda files found in $pkg_dir, skipping upload."
               fi
@@ -251,7 +249,7 @@ jobs:
               # Check if there are any .conda files to upload in the noarch directory
               if ls "$noarch_dir"/*.conda 1> /dev/null 2>&1; then
                   path="${noarch_dir}/*.conda"
-                  anaconda -t ${{ secrets.CONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
+                  anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force --user ${{ inputs.conda_user }} --label ${{ inputs.conda_label }} $path
               else
                   echo "No .conda files found in $noarch_dir, skipping upload."
               fi
