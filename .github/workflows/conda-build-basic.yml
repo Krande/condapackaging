@@ -161,8 +161,8 @@ jobs:
                 python .github/workflows/conda_uploader.py create-channel ${{ inputs.conda_label }} --create-public-channel --channel-description="CondaPackaging Temp Channel"
             fi
         env:
-          QUETZ_SERVER: ${{ secrets.QUETZ_SERVER }}
-          QUETZ_TOKEN: ${{ secrets.QUETZ_TOKEN }}
+          QUETZ_SERVER: ${{ secrets.QUETZ_URL }}
+          QUETZ_TOKEN: ${{ secrets.QUETZ_API_KEY }}
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
@@ -224,8 +224,8 @@ jobs:
         run: |
           python .github/workflows/conda_uploader.py upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
         env:
-          QUETZ_SERVER: ${{ secrets.QUETZ_SERVER }}
-          QUETZ_TOKEN: ${{ secrets.QUETZ_TOKEN }}
+          QUETZ_SERVER: ${{ secrets.QUETZ_URL }}
+          QUETZ_TOKEN: ${{ secrets.QUETZ_API_KEY }}
 
       - name: upload to anaconda
         if: ${{ inputs.boa == false }}
