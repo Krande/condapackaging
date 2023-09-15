@@ -59,7 +59,13 @@ on:
         description: 'Conda package variant; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
         type: string
         required: false
-    secrets: 
+      use_quetz:
+        description: 'use quetz server'
+        type: boolean
+        required: false
+        default: false
+
+    secrets:
       CONDA_TOKEN:
         required: true
 
@@ -82,6 +88,7 @@ env:
   CROOT_DIR: ${{ inputs.work_dir }}/build
   CLICOLOR_FORCE: "1"
   VARIANT_STR: ""
+  CONDA_CHANNEL: ""
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
@@ -108,6 +115,7 @@ jobs:
       package_name: ${{ inputs.package_name }}
     steps:
       - uses: actions/checkout@v3
+
       - name: Check if conda upstream inputs are not None. If so set equal to output values
         run: |
           if [[ ${{ inputs.conda_upstream_label }} == "None" ]]; then
@@ -144,13 +152,22 @@ jobs:
             echo "PKG_DIR=linux-64" >> $GITHUB_ENV
           fi
 
+      - name: set ENV CONDA_CHANNEL
+        run: |
+            if [[ ${{ inputs.use_quetz }} == false ]]; then
+                echo "CONDA_CHANNEL=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
+            else
+                echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}" >> $GITHUB_ENV
+            fi
+
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: build-env
+          cache-environment: true
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5
-            anaconda_upload: True
+            anaconda_upload: false
             conda-build:
               root-dir: ${{ env.CROOT_DIR }}
               output_folder: ${{ env.ARTIFACTS_DIR }}
@@ -165,6 +182,9 @@ jobs:
             python=${{ matrix.pyver }}
             anaconda-client
             boa
+            python-dotenv
+            typer
+            quetz-client
             conda-build=3.25
 
       - name: Check if debug build
@@ -195,8 +215,16 @@ jobs:
           fi
         working-directory: ${{ env.CONDA_DIR }}
 
+      - name: Upload packages to Quetz Server
+        if: ${{ secrets.QUETZ_SERVER }} && ${{ inputs.use_quetz }}
+        run: |
+          python conda_uploader.py ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
+        env:
+          QUETZ_SERVER: ${{ secrets.QUETZ_SERVER }}
+          QUETZ_TOKEN: ${{ secrets.QUETZ_TOKEN }}
+
       - name: upload to anaconda
-        if: ${{ inputs.boa == true }}
+        if: ${{ inputs.boa == false }}
         run: |
           pkg_dir="${{ env.ARTIFACTS_DIR }}/${{ env.PKG_DIR }}"
           noarch_dir="${{ env.ARTIFACTS_DIR }}/noarch"

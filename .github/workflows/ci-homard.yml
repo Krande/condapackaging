@@ -33,6 +33,7 @@ jobs:
       debug_build: 'True'
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
+      use_quetz: true
     secrets:
 #      CONDA_TOKEN: ${{ secrets[format('{0}', needs.env.outputs.conda_token)] }}
 #      CONDA_TOKEN: ${{ needs.env.outputs.conda_token }}
