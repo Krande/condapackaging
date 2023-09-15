@@ -50,16 +50,15 @@ class QuetzManager:
             print(channel)
 
 
-@app.command()
-def quetz_manager(package_dir: str, channel: str, channel_description: str="", make_unique_label: bool = False, create_public_channel: bool = True):
+@app.command(name="create-channel")
+def create_channel(channel: str, channel_description: str="", create_public_channel: bool = True):
     qm = QuetzManager()
-    # if make_unique_label add a date string suffix to the channel name
-    if make_unique_label:
-        import datetime
-
-        channel = f"{channel}-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
-
     qm.add_channel(channel, private=not create_public_channel, description=channel_description)
+
+
+@app.command(name="upload")
+def quetz_manager(package_dir: str, channel: str):
+    qm = QuetzManager()
     # Loop of recursive globbing find .conda and .tar.bz2 files
     for package_file in pathlib.Path(package_dir).rglob("*.conda"):
         qm.upload_package_to_channel(package_file, channel)
