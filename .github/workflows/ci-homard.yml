@@ -1,6 +1,6 @@
 name: ci-homard
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
