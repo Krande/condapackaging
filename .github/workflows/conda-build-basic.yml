@@ -64,6 +64,11 @@ on:
         type: string
         required: false
         default: False
+      extra_build_args:
+        description: 'extra build args'
+        type: string
+        required: false
+        default: ""
 
     # Return all outputs so that they can optionally be used in subsequent steps
     outputs:
@@ -211,9 +216,9 @@ jobs:
       - name: build local packages
         run: |
           if [[ ${{ inputs.boa }} == true ]]; then
-            boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2
+            boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2${{ inputs.extra_build_args }}
           else
-            conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}
+            conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ inputs.extra_build_args }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
         env:
