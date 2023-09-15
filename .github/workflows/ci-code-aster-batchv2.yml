@@ -22,7 +22,7 @@ jobs:
       debug_build: "False"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi,mpi=nompi,numpy=1.25"
+      mpi_variants: "mpi=openmpi,mpi=nompi,numpy=>1.23"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
@@ -63,6 +63,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: "numpy=>1.23"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
@@ -76,6 +77,7 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       debug_build: ${{ needs.env.outputs.debug_build }}
+      variants: "numpy=>1.23"
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
@@ -125,6 +127,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: "numpy=>1.23"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
@@ -156,6 +159,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: "numpy=>1.23"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
@@ -171,6 +175,7 @@ jobs:
       debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: "numpy=>1.23"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
 
