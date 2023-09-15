@@ -153,7 +153,7 @@ jobs:
             if [[ ${{ inputs.use_quetz }} == false ]]; then
                 echo "CONDA_CHANNEL=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
             else
-                echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}" >> $GITHUB_ENV
+                echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
             fi
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
@@ -172,7 +172,7 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
-              - ${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}
+              - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
@@ -207,14 +207,14 @@ jobs:
           if [[ ${{ inputs.boa }} == true ]]; then
             boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2
           else
-            conda mambabuild . --python ${{ matrix.pyver }} --label ${{ inputs.conda_label }}${{ env.VARIANT_STR }}
+            conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}
           fi
         working-directory: ${{ env.CONDA_DIR }}
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz }}
         run: |
-          python conda_uploader.py ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
+          python conda_uploader.py ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --create-public-channel --channel-description="CondaPackaging Temp Channel"
         env:
           QUETZ_SERVER: ${{ secrets.QUETZ_SERVER }}
           QUETZ_TOKEN: ${{ secrets.QUETZ_TOKEN }}

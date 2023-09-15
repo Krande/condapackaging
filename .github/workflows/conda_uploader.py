@@ -23,17 +23,15 @@ class QuetzManager:
     def __post_init__(self):
         self.client = QuetzClient.from_token(QUETZ_URL, API_KEY)
 
-    def add_channel(self, channel_name: str, force: bool = False):
+    def add_channel(self, channel_name: str, private: bool = False, description: str = None):
         try:
-            self.client.set_channel(channel_name)
+            self.client.set_channel(channel_name, private=private, description=description)
         # except 409 client exception
-        except requests.exceptions.HTTPError as e:
-            logger.info(f"Channel {channel_name} already exists")
-            if not force:
-                raise e
+        except requests.exceptions.HTTPError:
+            print(f"Channel {channel_name} already exists")
 
         for channel in self.client.yield_channels():
-            logger.info(channel)
+            print(channel)
 
     def upload_package_to_channel(self, package_file: str | pathlib.Path, channel: str, force: bool = False):
         if isinstance(package_file, str):
@@ -53,7 +51,7 @@ class QuetzManager:
 
 
 @app.command()
-def quetz_manager(package_dir: str, channel: str, make_unique_label: bool = False):
+def quetz_manager(package_dir: str, channel: str, channel_description: str="", make_unique_label: bool = False, create_public_channel: bool = True):
     qm = QuetzManager()
     # if make_unique_label add a date string suffix to the channel name
     if make_unique_label:
@@ -61,7 +59,7 @@ def quetz_manager(package_dir: str, channel: str, make_unique_label: bool = Fals
 
         channel = f"{channel}-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
 
-    qm.add_channel(channel)
+    qm.add_channel(channel, private=not create_public_channel, description=channel_description)
     # Loop of recursive globbing find .conda and .tar.bz2 files
     for package_file in pathlib.Path(package_dir).rglob("*.conda"):
         qm.upload_package_to_channel(package_file, channel)
