@@ -122,6 +122,12 @@ jobs:
       package_name: ${{ inputs.package_name }}
     steps:
       - uses: actions/checkout@v3
+      # if macos update directory permissions
+      - name: Update directory permissions
+        if: ${{ runner.os == 'macOS' }}
+        run: |
+          sudo mkdir -p /Users/runner/hostedtoolcache
+          sudo chmod -R 777 /Users/runner/hostedtoolcache
       # ensure that all the runner base python versions are the same
       - uses: actions/setup-python@v4
         with:
