@@ -12,7 +12,7 @@ def main(variant_string):
             var_str += ', '
         key, *value = v.split('=')
         value_str = '='.join(value)
-        var_str += f"'{key}': '{value_str}'"
+        var_str += f"\'{key}\': \'{value_str}\'"
     var_str += '}\"'
 
     return var_str

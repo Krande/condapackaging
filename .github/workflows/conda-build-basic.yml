@@ -118,7 +118,7 @@ jobs:
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
         run: |
-          echo "VARIANT_STR=matrix.variants.var_str" >> $GITHUB_ENV
+          echo "VARIANT_STR=${{ matrix.variants.var_str }}" >> $GITHUB_ENV
 
       - name: Download and extract MacOSX SDK
         if: ${{ runner.os == 'macOS' }}

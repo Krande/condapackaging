@@ -1,5 +1,6 @@
+import json
+
 from cpack.matrix_builder import main as matrix_builder_main
-from cpack.variant_str_builder import main as variant_str_builder_main
 
 
 def test_matrix_builder_variant1():
