@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # This is where the conda user and label should be set
-      conda_label: occtdeps
+      conda_label: adapydeps
       conda_user: krandedev
       debug_build: "False"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
       extra_build_args: " --variants \"{ 'hdf5': '1.10.6'}\""
-      description: "dev build"
+      description: "Compilations of adapy dependencies"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
