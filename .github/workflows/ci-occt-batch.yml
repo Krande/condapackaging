@@ -1,4 +1,4 @@
-name: ci-code-aster-batchv2
+name: ci-occt-batch
 
 # bump 0
 on:
@@ -44,6 +44,7 @@ jobs:
           EOF
 
   ifcopenshell:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ifcopenshell
@@ -59,6 +60,7 @@ jobs:
     secrets: inherit
 
   gmsh:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: gmsh
@@ -74,6 +76,7 @@ jobs:
     secrets: inherit
 
   pythonocc-core:
+    needs: env
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: pythonocc-core
