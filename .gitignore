@@ -10,4 +10,5 @@ temp/
 *.tgz
 *.tar.gz
 .env
+.secrets
 __pycache__/
