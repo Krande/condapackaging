@@ -3,20 +3,22 @@ import os
 import pathlib
 
 import argparse
+import typer
 from dotenv import load_dotenv
 from binstar_client.commands.upload import Uploader
 
+app = typer.Typer()
 load_dotenv()
 
 
-def main(artifacts_dir, label) -> None:
+def main(artifacts_dir, label, user) -> None:
     """Entrypoint of the :code:`upload` command."""
     if isinstance(artifacts_dir, str):
         artifacts_dir = pathlib.Path(artifacts_dir).resolve().absolute()
 
     arguments = argparse.Namespace(
         token=os.getenv("ANACONDA_TOKEN"),
-        user=os.getenv("ANACONDA_USER"),
+        user=user,
         label=label,
         labels=[label],
         site=None,
@@ -30,7 +32,7 @@ def main(artifacts_dir, label) -> None:
         private=False,
         mode="force",
         keep_basename=False,
-        force_metadata_update=True
+        force_metadata_update=True,
     )
     uploader: Uploader = Uploader(arguments=arguments)
     uploader.api.check_server()
@@ -47,5 +49,11 @@ def main(artifacts_dir, label) -> None:
         uploader.cleanup()
 
 
+@app.command(name="upload")
+def upload(artifacts_dir: str, label: str, user: str):
+    main(artifacts_dir, label, user)
+
+
 if __name__ == "__main__":
-    main(artifacts_dir="artifacts", label="test")
+    app()
+

@@ -29,6 +29,7 @@ classifiers = [
 [project.scripts]
 cpack-quetz = "cpack.cli_quetz_uploader:app"
 cpack-actions = "cpack.cli_cpack_actions:app"
+cpack-anaconda = "cpack.cli_anaconda_upload:app"
 
 [project.optional-dependencies]
 tests = [
