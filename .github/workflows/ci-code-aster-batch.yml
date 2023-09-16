@@ -22,9 +22,8 @@ jobs:
       debug_build: "False"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi,mpi=nompi"
-      extra_build_args: " --variants \"{ 'numpy': '1.25'}\""
-      description: "dev build"
+      mpi_variants: "mpi=openmpi;hdf5=1.14,mpi=nompi;hdf5=1.14"
+      description: "Test using a more recent hdf5 version"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
