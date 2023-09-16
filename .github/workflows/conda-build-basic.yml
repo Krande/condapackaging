@@ -127,7 +127,7 @@ jobs:
           decoded_str = decoded_bytes.decode("utf-8")
           
           with open(env_file, "a") as my_file:
-            my_file.write(f"VARIANT_STR={var_str}\n")
+            my_file.write(f"VARIANT_STR={decoded_str}\n")
           EOF
 
       - name: Download and extract MacOSX SDK

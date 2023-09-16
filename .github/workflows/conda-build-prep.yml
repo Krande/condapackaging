@@ -69,7 +69,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: build-env
-          cache-environment: false
+          cache-environment: true
           create-args: >-
             python=3.11
             anaconda-client
@@ -84,7 +84,7 @@ jobs:
       - name: set matrix
         id: set-matrix
         run: |
-          cpack-actions matrix-builder --python-versions=${{ inputs.python_versions }} --platforms=${{ inputs.platforms }} --variants=${{ inputs.variants }}
+          cpack-actions matrix-builder --python-versions=${{ inputs.python_versions }} --platforms=${{ inputs.platforms }} --variants="${{ inputs.variants }}"
 
       - name: print final_matrix
         run: |

@@ -2,10 +2,11 @@ import base64
 
 from cpack.variant_str_builder import main as variant_str_builder_main
 
-def main(python_versions, platforms, variants):
+
+def main(python_versions, platforms, variants_in):
     python_versions = python_versions.split(',') if python_versions else []
     platforms = platforms.split(',') if platforms else []
-    variants = variants.split(',') if variants else []
+
     platforms_dicts = []
     for platform in platforms:
         if platform == 'windows-latest':
@@ -22,12 +23,15 @@ def main(python_versions, platforms, variants):
         "platform": platforms_dicts
     }
 
+    print(f"Starting to process: '{variants_in=}'")
+    variants = variants_in.split(',') if variants_in else []
     if len(variants) > 0:
         variant_list_of_dicts = []
         for v in variants:
             key, *value = v.split('=')
             value = key+'=' + '='.join(value)
             key_str = ','.join([sv.split('=')[0] for sv in value.split(';')])
+
             var_str = variant_str_builder_main(value)
             encoded_bytes = base64.b64encode(var_str.encode("utf-8"))
             var_bytes_str = encoded_bytes.decode("utf-8")
