@@ -47,7 +47,7 @@ env:
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
   build_matrix:
-    uses: ./.github/workflows/matrix-builder.yml
+    uses: ./.github/workflows/conda-build-prep.yml
     with:
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
