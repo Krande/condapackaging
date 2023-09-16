@@ -6,7 +6,7 @@ env_file = os.environ.get("GITHUB_OUTPUT", None)
 
 def main(variant_string):
     variants = variant_string.split(';')
-    var_str = ' --variants= \"{'
+    var_str = ' --variants=\"{'
     for i, v in enumerate(variants):
         if i > 0:
             var_str += ', '
@@ -18,11 +18,8 @@ def main(variant_string):
     return var_str
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--variant-string', dest='variant_string', default='')
+    parser.add_argument("--variant-string", dest="variant_string", default="")
     args = parser.parse_args()
     main(**vars(args))
-

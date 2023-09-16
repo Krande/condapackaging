@@ -1,3 +1,5 @@
+import base64
+
 from cpack.variant_str_builder import main as variant_str_builder_main
 
 def main(python_versions, platforms, variants):
@@ -27,7 +29,10 @@ def main(python_versions, platforms, variants):
             value = key+'=' + '='.join(value)
             key_str = ','.join([sv.split('=')[0] for sv in value.split(';')])
             var_str = variant_str_builder_main(value)
-            variant_list_of_dicts.append({"key": key_str, "value": value, "var_str": var_str})
+            encoded_bytes = base64.b64encode(var_str.encode("utf-8"))
+            var_bytes_str = encoded_bytes.decode("utf-8")
+
+            variant_list_of_dicts.append({"key": key_str, "value": value, "var_str": var_bytes_str})
         matrix["variants"] = variant_list_of_dicts
 
     return matrix
