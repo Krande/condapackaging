@@ -3,6 +3,9 @@ mpi:
   - mpich  # [not win]
   - openmpi  # [not win]
 
+numpy:
+  1.25
+
 hdf5:
   - 1.10.6=*nompi*        # [mpi == 'nompi']
   - 1.10.6=*mpi*openmpi*  # [mpi != 'nompi']

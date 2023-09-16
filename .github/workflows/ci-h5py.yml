@@ -1,24 +1,24 @@
-name: ci-hdf5
+name: ci-h5py
 
 # bump 0
 on:
   push:
     paths:
-      - .github/workflows/ci-hdf5.yml
-    branches:
-    - donotrun
+      - .github/workflows/ci-h5py.yml
+#    branches:
+#      - donotrun
 
 jobs:
   build:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
-      package_name: hdf5
+      package_name: h5py
       conda_label: "adapydeps"
       conda_user: krande
       debug_build: 'False'
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest,windows-latest,macos-latest"
-      variants: ""
-      description: "Compilations of hdf5"
+      variants: "mpi=nompi;numpy=1.25;hdf5=1.10.6=*nompi*,mpi=openmpi;numpy=1.25;hdf5=1.10.6=*mpi*openmpi*"
+      description: "Compilations of h5py"
       use_quetz: "True"
     secrets: inherit
