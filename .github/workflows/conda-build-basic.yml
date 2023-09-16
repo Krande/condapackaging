@@ -152,6 +152,14 @@ jobs:
             echo "PKG_DIR=linux-64" >> $GITHUB_ENV
           fi
 
+      - name: set quetz channel if using quetz or anaconda
+        run: |
+          if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
+            echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
+          else
+            echo "CONDA_CHANNEL=${{ needs.build_prep.outputs.conda_channel }}" >> $GITHUB_ENV
+          fi
+
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: build-env
@@ -166,7 +174,7 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
-              - ${{ needs.build_prep.outputs.conda_channel }}
+              - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}

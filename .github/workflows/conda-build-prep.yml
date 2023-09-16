@@ -104,7 +104,6 @@ jobs:
         id: set-channel
         run: |
           if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
-              echo "conda_channel=${{ secrets.QUETZ_URL }}/get/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_OUTPUT
               cpack-quetz create-channel ${{ inputs.conda_label }} --create-public-channel --channel-description='${{ inputs.description }}'
           else
               echo "conda_channel=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_OUTPUT
