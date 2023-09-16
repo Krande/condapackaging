@@ -14,7 +14,7 @@ jobs:
     with:
       package_name: ifcopenshell
       boa: false
-      conda_label: "dev"
+      conda_label: "adapydeps"
       conda_user: krande
       debug_build: 'False'
       python_versions: "3.10,3.11"
