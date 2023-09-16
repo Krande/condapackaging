@@ -8,11 +8,6 @@ on:
         description: 'package name'
         type: string
         required: true
-      boa:
-        description: 'use boa'
-        type: boolean
-        required: false
-        default: false
       debug_build:
         description: 'should produce a debug build'
         type: string
@@ -205,11 +200,8 @@ jobs:
 
       - name: build local packages
         run: |
-          if [[ ${{ inputs.boa }} == true ]]; then
-            boa build . --python ${{ matrix.pyver }} --croot ${{ env.CROOT_DIR }} --output-folder ${{ env.ARTIFACTS_DIR }} --pkg-format=2${{ inputs.extra_build_args }}
-          else
-            conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ inputs.extra_build_args }}
-          fi
+          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ inputs.extra_build_args }}
+
         working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
@@ -226,3 +218,5 @@ jobs:
         if: ${{ inputs.use_quetz == 'False' }}
         run: |
           cpack-anaconda ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} ${{ inputs.conda_user }}
+        env:
+          ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
