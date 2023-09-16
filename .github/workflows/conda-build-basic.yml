@@ -76,19 +76,8 @@ on:
         required: false
         default: "CondaPackaging Temp Channel"
 
-    # Return all outputs so that they can optionally be used in subsequent steps
-    outputs:
-      conda_label:
-        description: "conda label"
-        value: ${{ jobs.build_conda.outputs.conda_label }}
-      conda_user:
-        description: "conda user"
-        value: ${{ jobs.build_conda.outputs.conda_user }}
-
 env:
-  PKG_DEBUG: "False"
-  CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
-  CONDA_UPSTREAM_USER: ${{ inputs.conda_upstream_user }}
+  PKG_DEBUG: ${{ inputs.debug_build }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
   WORK_DIR: ${{ inputs.work_dir }}
   ARTIFACTS_DIR: ${{ inputs.work_dir }}/artifacts
@@ -99,15 +88,22 @@ env:
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
-  build_matrix:
-    uses: ./.github/workflows/matrix-builder.yml
+  build_prep:
+    uses: ./.github/workflows/conda-build-prep.yml
     with:
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
       variants: ${{ inputs.variants }}
+      conda_label: ${{ inputs.conda_label }}
+      conda_user: ${{ inputs.conda_user }}
+      conda_upstream_label: ${{ inputs.conda_upstream_label }}
+      conda_upstream_user: ${{ inputs.conda_upstream_user }}
+      use_quetz: ${{ inputs.use_quetz }}
+      description: ${{ inputs.description }}
+    secrets: inherit
 
   build_conda:
-    needs: [ build_matrix ]
+    needs: [ build_prep ]
     name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.key }}=${{ matrix.variants.value }}
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -115,44 +111,14 @@ jobs:
         shell: bash -l {0}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
-    outputs:
-      conda_label: ${{ inputs.conda_label }}
-      conda_user: ${{ inputs.conda_user }}
-      package_name: ${{ inputs.package_name }}
+      matrix: ${{ fromJson(needs.build_prep.outputs.final_matrix) }}
     steps:
       - uses: actions/checkout@v3
-      # if macos update directory permissions
-      - name: Update directory permissions
-        if: ${{ runner.os == 'macOS' }}
-        run: |
-          sudo mkdir -p /Users/runner/hostedtoolcache
-          sudo chmod -R 777 /Users/runner/hostedtoolcache
-      # ensure that all the runner base python versions are the same
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          cache: 'pip' # caching pip dependencies
 
-      - name: Install base dependencies
-        run: |
-          pip install -r requirements.txt
-        working-directory: .github/workflows
-        
-
-      - name: Check if conda upstream inputs are not None. If so set equal to output values
-        run: |
-          if [[ ${{ inputs.conda_upstream_label }} == "None" ]]; then
-              echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_label }}" >> $GITHUB_ENV
-          fi
-          if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
-              echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
-          fi
-
-      - name: check if variant_str exists
+      - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
         run: |
-          echo "VARIANT_STR= --variants \"{'${{ matrix.variants.key }}': '${{ matrix.variants.value }}'}\"" >> $GITHUB_ENV
+          echo "VARIANT_STR=matrix.variants.var_str" >> $GITHUB_ENV
 
       - name: Download and extract MacOSX SDK
         if: ${{ runner.os == 'macOS' }}
@@ -176,18 +142,6 @@ jobs:
             echo "PKG_DIR=linux-64" >> $GITHUB_ENV
           fi
 
-      - name: set ENV CONDA_CHANNEL
-        run: |
-            if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
-                echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
-                python .github/workflows/conda_uploader.py create-channel ${{ inputs.conda_label }} --create-public-channel --channel-description='${{ inputs.description }}'
-            else
-                echo "CONDA_CHANNEL=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_ENV
-            fi
-        env:
-          QUETZ_URL: ${{ secrets.QUETZ_URL }}
-          QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
-
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: build-env
@@ -202,7 +156,7 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
-              - ${{ env.CONDA_CHANNEL }}
+              - ${{ needs.build_prep.outputs.conda_channel }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
@@ -213,11 +167,10 @@ jobs:
             quetz-client
             conda-build=3.25
 
-      - name: Check if debug build
+      - name: Install cpack-actions
         run: |
-          if [[ ${{ inputs.debug_build }} == 'True' ]]; then
-            echo "PKG_DEBUG=True" >> $GITHUB_ENV
-          fi
+          python -m pip install .
+        working-directory: src/cpack
 
       - name: try to remove swig on linux
         if: ${{ runner.os == 'Linux' }} # https://docs.github.com/en/actions/learn-github-actions/contexts#runner-context

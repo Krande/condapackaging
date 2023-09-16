@@ -1,0 +1,110 @@
+# a callable workflow that returns a json string of a matrix for either platforms or python versions
+name: ci-matrix-builder
+
+on:
+  workflow_call:
+    inputs:
+      python_versions:
+        description: 'Python version'
+        type: string
+        required: false
+      platforms:
+        description: 'Runner OS'
+        type: string
+        required: false
+      variants:
+        description: 'Conda package variant; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
+        type: string
+        required: false
+      conda_label:
+        description: 'Conda label'
+        type: string
+        required: false
+      conda_user:
+        description: 'Conda user'
+        type: string
+        required: false
+      conda_upstream_label:
+        description: 'Conda upstream label'
+        type: string
+        required: false
+      conda_upstream_user:
+        description: 'Conda upstream user'
+        type: string
+        required: false
+      use_quetz:
+        description: 'Use quetz'
+        type: string
+        required: false
+      description:
+        description: 'Conda channel description'
+        type: string
+        required: false
+
+
+    outputs:
+      final_matrix:
+        description: "matrix"
+        value: ${{ jobs.build.outputs.final_matrix }}
+      conda_channel:
+        description: "conda channel"
+        value: ${{ jobs.build.outputs.conda_channel }}
+
+env:
+  CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
+
+jobs:
+  build:
+    name: generate matrix
+    defaults:
+      run:
+        shell: bash -l {0}
+    outputs:
+      final_matrix: ${{ steps.set-matrix.outputs.final_matrix }}
+      conda_upstream_label: ${{ steps.set-upstream.outputs.upstream_label }}
+      conda_channel: ${{ steps.set-channel.outputs.conda_channel }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-name: build-env
+          cache-environment: true
+          create-args: >-
+            python=3.11
+            anaconda-client
+            typer
+            quetz-client
+
+      - name: Install cpack-actions
+        run: |
+          python -m pip install .
+        working-directory: src/cpack
+
+      - name: set matrix
+        id: set-matrix
+        run: |
+          cpack-actions matrix-builder --python-versions=${{ inputs.python_versions }} --platforms=${{ inputs.platforms }} --variants=${{ inputs.variants }}
+
+      - name: Check if conda upstream inputs are not None. If so set equal to output values
+        id: set-upstream
+        run: |
+          if [[ ${{ inputs.conda_upstream_label }} == "None" ]]; then
+              echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_label }}" >> $GITHUB_ENV
+          fi
+          if [[ ${{ inputs.conda_upstream_user }} == "None" ]]; then
+              echo "CONDA_UPSTREAM_USER=${{ inputs.conda_user }}" >> $GITHUB_ENV
+          fi
+
+      - name: set custom conda channel
+        id: set-channel
+        run: |
+          if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
+              echo "conda_channel=${{ secrets.QUETZ_URL }}/get/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_OUTPUT
+              cpack-quetz create-channel ${{ inputs.conda_label }} --create-public-channel --channel-description='${{ inputs.description }}'
+          else
+              echo "conda_channel=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_OUTPUT
+          fi
+        env:
+          QUETZ_URL: ${{ secrets.QUETZ_URL }}
+          QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

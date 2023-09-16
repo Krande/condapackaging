@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=41", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cpack"
+version = "0.0.1"
+authors = [
+    { name = "Kristoffer H. Andersen", email = "kristoffer_andersen@outlook.com" },
+]
+dependencies = [
+    "typer",
+    "quetz-client",
+]
+
+description = "cpack - a small packaging utility for conda python packages"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Utilities",
+]
+[project.scripts]
+cpack-quetz = "cpack.cli_quetz_uploader:app"
+cpack-actions = "cpack.cli_cpack_actions:app"
+
+[project.optional-dependencies]
+tests = [
+  'pytest'
+]
+[project.urls]
+"Homepage" = "https://github.com/Krande/condapackaging"
+"Bug Tracker" = "https://github.com/Krande/condapackaging/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"

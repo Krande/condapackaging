@@ -4,6 +4,16 @@
 
 https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
 
+*Running locally*
+
+Use act to run Github actions locally
+https://github.com/nektos/act
+
+Once installed, you would first have to pull the act docker image (ie. `docker pull catthehacker/ubuntu:act-latest`)
+due to a bug https://github.com/nektos/act/issues/1983
+
+Then to run a single job you can do `act --workflows .github/workflows/ci-ifcopenshell.yml --pull=false --env-file=.env`
+
 ## Observations
 
 ## OpenBLAS vs MKL and dependency size

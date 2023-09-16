@@ -5,10 +5,13 @@ occt:
 pin_run_as_build:
   occt: x.x.x
   cgal-cpp: x.x.x
+  hdf5: x.x.x
 
 CONDA_BUILD_SYSROOT:
   - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
 
+hdf5:
+  - 1.10.6
 
 c_compiler:
  - vs2019                     # [win]
