@@ -217,7 +217,7 @@ jobs:
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
         run: |
-          python .github/workflows/conda_uploader.py upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
+          cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

@@ -1,6 +1,6 @@
 name: ci-ifcopenshell
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
@@ -18,7 +18,7 @@ jobs:
       conda_user: krande
       debug_build: 'False'
       python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest,windows-latest,macos-latest"
+      platforms: "ubuntu-latest,macos-latest"
       variants: "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*,occt=7.7.2=*novtk*;hdf5=1.10.6=*mpi*openmpi*"
       description: "Compilations of ifcopenshell"
       use_quetz: "True"
