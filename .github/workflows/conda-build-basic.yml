@@ -120,6 +120,8 @@ jobs:
         run: |
           python3 <<EOF
           import base64
+          
+          env_file = os.environ.get("GITHUB_ENV", None)
           decoded_bytes = base64.b64decode("${{ matrix.variants.var_str }}")
           decoded_str = decoded_bytes.decode("utf-8")
           
