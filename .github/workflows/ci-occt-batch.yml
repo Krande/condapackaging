@@ -18,6 +18,7 @@ jobs:
       conda_label: occtdeps
       conda_user: krandedev
       debug_build: "False"
+      python_versions: "3.10,3.11"
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
       extra_build_args: " --variants \"{ 'hdf5': '1.10.6'}\""
