@@ -1,12 +1,12 @@
-name: ci-code-aster-batchv2
+name: ci-code-aster-batch
 
 # bump 0
 on:
   push:
     paths:
-      - .github/workflows/ci-code-aster-batchv2.yml
-#    branches:
-#      - donotrun
+      - .github/workflows/ci-code-aster-batch.yml
+    branches:
+      - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -24,6 +24,7 @@ jobs:
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
       extra_build_args: " --variants \"{ 'numpy': '1.25'}\""
+      description: "dev build"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

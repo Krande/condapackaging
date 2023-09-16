@@ -1,0 +1,88 @@
+name: ci-code-aster-batchv2
+
+# bump 0
+on:
+  push:
+    paths:
+      - .github/workflows/ci-occt-batch.yml
+#    branches:
+#      - donotrun
+
+
+# https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
+jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      # This is where the conda user and label should be set
+      conda_label: occtdeps
+      conda_user: krandedev
+      debug_build: "False"
+      platforms: "ubuntu-latest,windows-latest,macos-latest"
+      variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
+      extra_build_args: " --variants \"{ 'hdf5': '1.10.6'}\""
+      description: "dev build"
+      unique_suffix: ${{ steps.env.outputs.unique_suffix }}
+      use_quetz: "True"
+
+    steps:
+      - name: dummy step
+        id: env
+        run: |
+          python3 << EOF
+          import os
+          import datetime
+
+          #suffix = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+          suffix = ${{ github.run_id }} # with this, it should never come into conflict with other builds
+
+          env_file = os.environ.get("GITHUB_OUTPUT", None)
+          with open(env_file, "a") as my_file:
+              my_file.write(f"unique_suffix={suffix}\n")
+          
+          EOF
+
+  ifcopenshell:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: ifcopenshell
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.variants }}
+      description: ${{ needs.env.outputs.description }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+      extra_build_args: ${{ needs.env.outputs.extra_build_args }}
+    secrets: inherit
+
+  gmsh:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: gmsh
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.variants }}
+      description: ${{ needs.env.outputs.description }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+      extra_build_args: ${{ needs.env.outputs.extra_build_args }}
+    secrets: inherit
+
+  pythonocc-core:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: pythonocc-core
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      debug_build: ${{ needs.env.outputs.debug_build }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.variants }}
+      description: ${{ needs.env.outputs.description }}
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
+      extra_build_args: ${{ needs.env.outputs.extra_build_args }}
+    secrets: inherit
