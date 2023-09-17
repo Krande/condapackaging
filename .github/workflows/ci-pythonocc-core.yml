@@ -13,7 +13,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: pythonocc-core
-      boa: false
       conda_label: "dev2"
       conda_user: krande
       debug_build: 'False'
