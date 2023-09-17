@@ -50,6 +50,9 @@ test:
     - OCC.Core.BRepPrimAPI
     - OCC.Core.MeshDS
     - OCC.Core.Tesselator
+  files:
+    - test/
+
   requires:
     - pyqt >=5
     - mypy
