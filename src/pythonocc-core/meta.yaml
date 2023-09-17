@@ -22,6 +22,7 @@ source:
 build:
   number: {{ build }}
   string: py{{ CONDA_PY }}_{{ variant_name }}_h{{ PKG_HASH }}_{{ build }}
+  binary_relocation: false [osx]
 
 requirements:
   build:
@@ -30,7 +31,7 @@ requirements:
     - {{ cdt('libxi-devel') }}           # [linux]
     - ninja
     - cmake
-    - swig >=4.1.1
+    - swig ==4.1.1
 
   host:
     - python
@@ -47,6 +48,14 @@ test:
   imports:
     - OCC
     - OCC.Core.BRepPrimAPI
+    - OCC.Core.MeshDS
+    - OCC.Core.Tesselator
+  requires:
+    - pyqt >=5
+    - mypy
+    - svgwrite
+    - wxpython >=4
+    - pyside2 >=5
 
 about:
   home: https://github.com/tpaviot/pythonocc-core

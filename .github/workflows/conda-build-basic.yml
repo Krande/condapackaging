@@ -185,6 +185,7 @@ jobs:
           python -m pip install .
         working-directory: src/cpack
 
+      # For some reason on linux, the runner swig is chosen over the conda swig
       - name: try to remove swig on linux
         if: ${{ runner.os == 'Linux' }} # https://docs.github.com/en/actions/learn-github-actions/contexts#runner-context
         continue-on-error: true
