@@ -20,5 +20,4 @@ jobs:
       python_versions: "3.10,3.11"
       variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
       use_quetz: "False"
-    secrets:
-      CONDA_TOKEN: ${{ secrets.ANACONDA_DEV_TOKEN }}
+    secrets: inherit
