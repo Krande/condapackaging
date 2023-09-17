@@ -1,6 +1,6 @@
 name: ci-pythonocc-core
 
-# bump 0
+# bump 1
 on:
   push:
     paths:
