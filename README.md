@@ -14,7 +14,7 @@ Improve understanding of the c++/fortran compilation process and linking with py
 * calculix
 * code_aster
 
-## Running locally using Boa
+## Running locally using Boa/MambaBuild
 
 Assuming you have mambaforge (or an equivalent conda installation).
 
@@ -30,7 +30,13 @@ Go to the subdirectory of choice and find whichever subdirectory with a `recipe.
 To compile the package run using
 
 ```bash
-boa build . --python=3.10 --croot=../temp/build
+boa build . --python=3.11
+```
+
+or
+
+```bash
+conda mambabuild . --python=3.11
 ```
 
 Note that `--python` and `--croot` are optional flags. The latter comes in handy if you want to quickly browse the

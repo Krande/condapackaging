@@ -1,0 +1,16 @@
+hdf5:
+  - 1.10.6=*mpi*openmpi
+  - 1.10.6=*nompi*
+
+mpi:
+  - openmpi
+  - nompi
+
+numpy:
+  - 1.25
+  - 1.25
+
+zip_keys:
+  - hdf5
+  - mpi
+  - numpy

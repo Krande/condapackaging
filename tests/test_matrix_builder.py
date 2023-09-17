@@ -1,4 +1,4 @@
-from cpack.matrix_builder import main as matrix_builder_main
+from cpack.matrix_builder import main as matrix_builder_main, convert_from_bytes_str
 import base64
 
 
@@ -30,15 +30,11 @@ def test_matrix_builder_variant1():
     # decode the var_strings to see what they look like
 
     # decode the first var_str
-    var_str = matrix["variants"][0]["var_str"]
-    decoded_bytes = base64.b64decode(var_str)
-    decoded_str = decoded_bytes.decode("utf-8")
+    decoded_str = convert_from_bytes_str(matrix["variants"][0]["var_str"])
     assert decoded_str == " --variants=\"{'occt': '7.7.2=*novtk*', 'hdf5': '1.10.6=*nompi*'}\""
 
     # decode the second var_str
-    var_str = matrix["variants"][1]["var_str"]
-    decoded_bytes = base64.b64decode(var_str)
-    decoded_str = decoded_bytes.decode("utf-8")
+    decoded_str = convert_from_bytes_str(matrix["variants"][1]["var_str"])
     assert decoded_str == " --variants=\"{'occt': '7.7.2=*novtk*', 'hdf5': '1.10.6=*mpi*'}\""
 
 
@@ -69,12 +65,34 @@ def test_matrix_builder_variant2():
     }
 
     # decode the var_strings to see what they look like
-    var_str = matrix["variants"][0]["var_str"]
-    decoded_bytes = base64.b64decode(var_str)
-    decoded_str = decoded_bytes.decode("utf-8")
+    decoded_str = convert_from_bytes_str(matrix["variants"][0]["var_str"])
     assert decoded_str == " --variants=\"{'occt': '7.7.2=*novtk*'}\""
 
-    var_str = matrix["variants"][1]["var_str"]
-    decoded_bytes = base64.b64decode(var_str)
-    decoded_str = decoded_bytes.decode("utf-8")
+    decoded_str = convert_from_bytes_str(matrix["variants"][1]["var_str"])
     assert decoded_str == " --variants=\"{'occt': '7.7.2=*all*'}\""
+
+
+def test_matrix_builder_variant_config_only_hdf5_file(root_dir):
+    pyver = "3.10,3.11"
+    platforms = "windows-latest,ubuntu-latest,macos-latest"
+    variants = root_dir / "files" / "variant_config_hdf5_only.yaml"
+    matrix = matrix_builder_main(pyver, platforms, variants.as_posix())
+
+    decoded_str = convert_from_bytes_str(matrix["variants"][0]["var_str"])
+    assert decoded_str == " --variants=\"{'hdf5': '1.10.6=*mpi*openmpi'}\""
+
+    decoded_str = convert_from_bytes_str(matrix["variants"][1]["var_str"])
+    assert decoded_str == " --variants=\"{'hdf5': '1.10.6=*nompi*'}\""
+
+
+def test_matrix_builder_zip_keys_config_file(root_dir):
+    pyver = "3.10,3.11"
+    platforms = "windows-latest,ubuntu-latest,macos-latest"
+    variants = root_dir / "files" / "variant_config_zip_keys.yaml"
+    matrix = matrix_builder_main(pyver, platforms, variants.as_posix())
+
+    decoded_str = convert_from_bytes_str(matrix["variants"][0]["var_str"])
+    assert decoded_str == " --variants=\"{'hdf5': '1.10.6=*mpi*openmpi'}\""
+
+    decoded_str = convert_from_bytes_str(matrix["variants"][1]["var_str"])
+    assert decoded_str == " --variants=\"{'hdf5': '1.10.6=*nompi*'}\""
