@@ -35,7 +35,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ${{ needs.env.outputs.package_name }}
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
