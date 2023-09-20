@@ -14,14 +14,14 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: 16.4.6
+      code_aster_version: 16.4.7a1
       conda_label: dev-6200231394
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      variants: "mpi=openmpi"
+      variants: "mpi=openmpi,mpi=nompi"
       use_quetz: "True"
 
     steps:
