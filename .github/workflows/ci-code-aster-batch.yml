@@ -57,7 +57,6 @@ jobs:
         ]
     with:
       package_name: ${{ matrix.package.name }}
-      boa: ${{ matrix.package.boa }}
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -73,7 +72,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: parmetis
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -89,7 +87,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -106,7 +103,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -123,7 +119,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: petsc
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -139,7 +134,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -156,7 +150,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mfront
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -172,7 +165,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mgis
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -188,7 +180,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
-      boa: false
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
