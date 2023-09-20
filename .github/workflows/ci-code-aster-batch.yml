@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # This is where the conda user and label should be set
-      code_aster_version: 16.4.2
-      conda_label: dev-${{ steps.env.outputs.unique_suffix }}
+      code_aster_version: 16.4.7a1
+      conda_label: ca-${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "False"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi;hdf5=1.14=*mpi*openmpi*,mpi=nompi;hdf5=1.14=*nompi*"
-      description: "Test using a more recent hdf5 version"
+      mpi_variants: "mpi=openmpi,mpi=nompi"
+      description: "Test using latest code_aster git version with seq fixes"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
