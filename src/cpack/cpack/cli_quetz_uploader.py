@@ -1,11 +1,12 @@
-import os
-
 import logging
+import os
 import pathlib
+from dataclasses import dataclass
+
 import requests
 import typer
-from dataclasses import dataclass
 from quetz_client import QuetzClient
+from typing_extensions import Annotated
 
 logger = logging.getLogger(__name__)
 
@@ -57,16 +58,29 @@ def create_channel(channel: str, channel_description: str="", create_public_chan
 
 
 @app.command(name="upload")
-def quetz_manager(package_dir: str, channel: str):
+def quetz_manager(package_dir: str, channel: str, api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")]=None,
+                  quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")]=None,):
+    global API_KEY
+    global QUETZ_URL
+
+    if API_KEY is None and api_key is not None:
+        API_KEY = api_key
+    if QUETZ_URL is None and quetz_url is not None:
+        QUETZ_URL = quetz_url
+
     qm = QuetzManager()
+    logger.info(f"uploading to channel: {channel}")
     # Loop of recursive globbing find .conda and .tar.bz2 files
     for package_file in pathlib.Path(package_dir).rglob("*.conda"):
+        logger.info(f"uploading file: {package_file}")
         qm.upload_package_to_channel(package_file, channel)
     for package_file in pathlib.Path(package_dir).rglob("*.tar.bz2"):
+        logger.info(f"uploading file: {package_file}")
         qm.upload_package_to_channel(package_file, channel)
 
     qm.list_packages_for_channel(channel)
 
 
 if __name__ == "__main__":
+    logger.setLevel(logging.INFO)
     app()

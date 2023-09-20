@@ -6,6 +6,8 @@ dependencies:
   - conda-build 3.24
 #  - conda-verify # does not work together with .conda files
   - anaconda-client
+  - typer
+  - quetz-client
   - pyyaml
   - ninja
   - doxygen
