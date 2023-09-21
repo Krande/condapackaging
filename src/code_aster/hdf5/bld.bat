@@ -5,6 +5,8 @@ cd build
 set HDF5_EXT_ZLIB=zlib.lib
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
+:: strip all FCFLAGS
+set FCFLAGS=""
 
 :: Use CMake to configure
 cmake ^
