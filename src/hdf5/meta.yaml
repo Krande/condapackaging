@@ -63,7 +63,8 @@ requirements:
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler('fortran') }}
+#    - {{ compiler('m2w64_fortran') }}     # [win]
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]

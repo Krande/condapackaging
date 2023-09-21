@@ -227,8 +227,8 @@ def run(
     writer.write_module(module, printer, to=out_dir, sub_dir=sub_dir)
 
 
-def main():
-    module_name = "libaster"
+def main(module_name):
+
     pyi_dest_dir = pathlib.Path(__import__(module_name).__file__).parent
     # pyi_dest_dir = ".stubs"
 
@@ -238,7 +238,9 @@ def main():
         ignore_invalid_identifiers=None,
         ignore_invalid_expressions=None,
         ignore_unresolved_names=None,
+        enum_class_locations=None,
         print_invalid_expressions_as_is=False,
+        print_safe_value_reprs=None,
         output_dir=pyi_dest_dir,
         root_suffix=None,
         # set_ignored_invalid_identifiers=None,
@@ -282,4 +284,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(module_name="libaster")
+    main(module_name="medcoupling")

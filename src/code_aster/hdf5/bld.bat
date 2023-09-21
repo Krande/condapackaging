@@ -1,0 +1,30 @@
+mkdir build
+cd build
+
+:: Set environment variables.
+set HDF5_EXT_ZLIB=zlib.lib
+
+set "CXXFLAGS=%CXXFLAGS% -LTCG"
+
+:: Use CMake to configure
+cmake ^
+  -G "Ninja" ^
+  -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
+  -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
+  -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
+  -D HDF5_BUILD_CPP_LIB:BOOL=ON ^
+  -D ALLOW_UNSUPPORTED:BOOL=ON ^
+  -D HDF5_BUILD_FORTRAN=ON ^
+  -D HDF5_ENABLE_THREADSAFE=ON ^
+  -D BUILD_SHARED_LIBS:BOOL=ON ^
+  -D ONLY_SHARED_LIBS:BOOL=ON ^
+  -D MEDFILE_INSTALL_DOC=OFF ^
+  -D MEDFILE_BUILD_PYTHON=ON ^
+  -D "PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib" ^
+  -D "PYTHON_INCLUDE_DIR:FILEPATH=%PREFIX%\include" ^
+  ..
+
+:: Build and install
+ninja install
+
+

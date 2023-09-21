@@ -1,3 +1,5 @@
+
+
 mkdir build
 cd build
 
@@ -5,6 +7,35 @@ cd build
 set HDF5_EXT_ZLIB=zlib.lib
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
+
+:: Mingw-w64
+if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
+    echo "Mingw-w64 found"
+    set CC_PATH=%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe
+    set CXX_PATH=%BUILD_PREFIX%\Library\mingw-w64\bin\g++.exe
+    set GF_PATH=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
+) else (
+    if exist "%BUILD_PREFIX%\Library\bin\gcc.exe" (
+        echo "GCC found"
+        set CC_PATH=%BUILD_PREFIX%\Library\bin\gcc.exe
+        set CXX_PATH=%BUILD_PREFIX%\Library\bin\g++.exe
+        set GF_PATH=%BUILD_PREFIX%\Library\bin\gfortran.exe
+    ) else (
+        if exist "%BUILD_PREFIX%\Library\bin\clang.exe" (
+            echo "Flang found!"
+            set CC_PATH=%BUILD_PREFIX%\Library\bin\clang.exe
+            set CXX_PATH=%BUILD_PREFIX%\Library\bin\clang++.exe
+            set GF_PATH=%BUILD_PREFIX%\Library\bin\flang.exe
+        )
+    )
+)
+echo "CC_PATH=%CC_PATH%"
+echo "CXX_PATH=%CXX_PATH%"
+echo "GF_PATH=%GF_PATH%"
+
+set CC=%CC_PATH%
+set CXX=%CXX_PATH%
+set FC=%GF_PATH%
 
 :: Configure step.
 cmake -G "Ninja" ^
@@ -24,6 +55,7 @@ cmake -G "Ninja" ^
       -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
       -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
+      -D HDF5_BUILD_FORTRAN=ON ^
       %SRC_DIR%
 if errorlevel 1 exit 1
 

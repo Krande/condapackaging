@@ -48,7 +48,7 @@ requirements:
   host:
     - python
     - hdf5
-    - pybind11-stubgen 1.2
+    - pybind11-stubgen 2.1
     - pyyaml
     - astor
     - numpy

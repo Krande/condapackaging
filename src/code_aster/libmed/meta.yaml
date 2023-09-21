@@ -11,8 +11,8 @@ source:
   - fn: {{ name }}_{{ version }}.tar.gz
     url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
     sha256: {{ sha256 }}
-    patches:
-      - patches/med-4.1.1-check-hdf5-parallel.diff
+    patches:                                        # [unix]
+      - patches/med-4.1.1-check-hdf5-parallel.diff  # [unix]
       # Only relevant for hdf5 == '1.10.9'
 #      - patches/med-4.1.1-check-hdf5-with-tabs.diff
 
@@ -28,11 +28,14 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - sysroot_linux-64 2.17
-    - autoconf
+#    - {{ compiler('fortran') }}           # [unix]
+#    - {{ compiler('fortran') }}
+    - {{ compiler('m2w64_fortran') }}     # [win]
+    - sysroot_linux-64 2.17               # [unix]
+    - autoconf                            # [unix]
+    - ninja                               # [win]
     - swig 3.0.12
-    - make
+    - make                                # [not win]
 
   host:
     - python
