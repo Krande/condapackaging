@@ -14,8 +14,8 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: 16.4.7a1
-      conda_label: dev-6200231394
+      code_aster_version: 16.4.7
+      conda_label: ca-6251156226
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "True"
