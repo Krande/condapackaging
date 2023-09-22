@@ -54,6 +54,7 @@ jobs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}
       use_quetz: ${{ inputs.use_quetz }}
+    secrets: inherit
       
   run_ctest:
     needs: build_matrix
