@@ -13,9 +13,12 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
-      boa: false
-      pkg_dir: src/code_aster
-      conda_label: debug
-      conda_user: krandedev
-      debug_build: 'True'
+      conda_label: "adapydeps"
+      conda_user: krande
+      debug_build: 'False'
+      python_versions: "3.10,3.11"
+      platforms: "windows-latest"
+      variants: "mpi=nompi"
+      description: "Compilations of LibMED for Windows"
+      use_quetz: "True"
     secrets: inherit
