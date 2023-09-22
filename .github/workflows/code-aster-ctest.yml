@@ -51,6 +51,9 @@ jobs:
     with:
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
+      conda_label: ${{ inputs.conda_label }}
+      conda_user: ${{ inputs.conda_user }}
+      use_quetz: ${{ inputs.use_quetz }}
       
   run_ctest:
     needs: build_matrix
