@@ -6,8 +6,9 @@ set MY_PY_VER=%PY_VER:.=%
 
 set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
 set FFLAGS=-fdefault-integer-8 %FFLAGS%
-set CMAKE_C_FLAGS=-fdefault-integer-8 %CMAKE_C_FLAGS%
-set CMAKE_CXX_FLAGS=-fdefault-integer-8 %CMAKE_CXX_FLAGS%
+::set CMAKE_C_FLAGS=-fdefault-integer-8 %CMAKE_C_FLAGS%
+::set CMAKE_CXX_FLAGS=-fdefault-integer-8 %CMAKE_CXX_FLAGS%
+set CMAKE_CXX_FLAGS=-std=gnu++98 %CMAKE_CXX_FLAGS%
 set MED_MEDINT_TYPE=int
 
 if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
@@ -15,7 +16,20 @@ if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     set CC=%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe
     set CXX=%BUILD_PREFIX%\Library\mingw-w64\bin\g++.exe
     set FC=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
+    set F77=${FC}
 )
+
+IF "%PKG_DEBUG%"=="True" (
+    echo Debugging Enabled
+    REM Set compiler flags for debugging, for instance
+    set CFLAGS=-g -O0 %CFLAGS%
+    set CXXFLAGS=-g -O0 %CXXFLAGS%
+    set FCFLAGS=-g -O0 %FCFLAGS%
+    REM Additional debug build steps
+) ELSE (
+    echo Debugging Disabled
+)
+
 
 cmake -G "Ninja" -S %SRC_DIR%^
     -Wno-dev ^
