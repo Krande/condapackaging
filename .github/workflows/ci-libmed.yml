@@ -16,6 +16,7 @@ jobs:
       conda_label: "adapydeps"
       conda_user: krande
       debug_build: 'False'
+      pkg_dir: src/code_aster
       python_versions: "3.10,3.11"
       platforms: "windows-latest"
       variants: "mpi=nompi"
