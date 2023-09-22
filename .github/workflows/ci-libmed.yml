@@ -19,7 +19,7 @@ jobs:
       pkg_dir: src/code_aster
       python_versions: "3.10,3.11"
       platforms: "windows-latest"
-      variants: "mpi=nompi"
+#      variants: "mpi=nompi"
       description: "Compilations of LibMED for Windows"
       use_quetz: "True"
     secrets: inherit
