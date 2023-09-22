@@ -56,8 +56,6 @@ OR
 -D HDF5_ENABLE_THREADSAFE:BOOL=ON ^
 ```
 
-
-
 *VS2022 + Intel Fortran Rt*
 Hm, it seems these does not distribute the actual ifort.exe binaries... 
 https://anaconda.org/conda-forge/intel-fortran-rt
@@ -65,8 +63,9 @@ https://anaconda.org/conda-forge/intel-fortran-rt
 *VS2022 + flang*
 https://github.com/llvm/llvm-project/tree/main/flang/
 
-It seems flang classic (which I believe supports intrinsic functions) is not distributed on conda-forge?
-
+* It seems flang classic (which I believe supports intrinsic functions) is not distributed on conda-forge?
+* Flang-new is distributed as release candidates https://anaconda.org/conda-forge/flang/files]. Could test these out
+* Must use a different linker than link.exe. Lld-link.exe is distributed with the llvm package
 
 From compilation of HDF5 1.10.9*
 ```
