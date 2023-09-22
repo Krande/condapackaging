@@ -5,7 +5,8 @@ cd build
 
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
-
+set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
+set FFLAGS=-fdefault-integer-8 %FFLAGS%
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     echo "Mingw-w64 found"
