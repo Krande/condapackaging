@@ -1,7 +1,7 @@
 c_compiler:
-  - vs2022
+  - m2w64-toolchain
 cxx_compiler:
-  - vs2022
+  - m2w64-toolchain
 
 #fortran_compiler:
 #  - flang  # this is a popular choice for Fortran on Windows, but you can adjust as needed

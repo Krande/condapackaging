@@ -1,23 +1,20 @@
 c_compiler:
-  - vs2022                     # [win and arm64]
+  - m2w64-toolchain            # [win]
   - gcc                        # [unix]
 c_compiler_version:
   - 8                          # [unix]
 cxx_compiler:
-  - vs2022                     # [win and arm64]
+  - m2w64-toolchain            # [win]
   - gxx                        # [unix]
 cxx_compiler_version:
   - 8                          # [unix]
 fortran_compiler:
   - gfortran                   # [linux64 or (osx and x86_64)]
   - gfortran                   # [aarch64 or ppc64le or armv7l or s390x]
-#  - flang                      # [win64]
-  - m2w64_fortran              # [win64]
+  - m2w64-toolchain            # [win64]
+
 fortran_compiler_version:
   - 8                          # [unix]
-
-#m2w64_fortran_compiler:        # [win]
-#  - m2w64-toolchain            # [win]
 
 blas_impl:
   - openblas
@@ -40,11 +37,11 @@ pin_run_as_build:
   openmpi: x.x               # [mpi != "nompi"]
 
 mpi:
-  - openmpi
+  - openmpi                  # [unix] # for now
   - nompi
 
 hdf5:
-  - 1.10.6=mpi*
+  - 1.10.6=mpi*             # [unix] # for now
   - 1.10.6=nompi*
 
 zip_keys:

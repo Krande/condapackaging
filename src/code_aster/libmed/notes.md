@@ -6,12 +6,41 @@
 `The HDF5 library version used by med-fichier4.y.z MUST NOT be > 1.10 and have to be at least HDF5-1.10.2.`
 
 
+Compiling with the conda-forge hdf5 variant results in the following error:
+
+```bash
+[1255/1568] Linking CXX shared library src\libmedC.dll
+FAILED: src/libmedC.dll src/libmedC.dll.a
+cmd.exe /C "cd . && %BUILD_PREFIX%\Library\mingw-w64\bin\c++.exe -O3 -DNDEBUG   -shared -o src\libmedC.dll -Wl,--out-implib,src\libmedC.dll.a -Wl,--major-image-version,11,--minor-image-version,1 "Warning: corrupt .drectve at end of def file
+Warning: corrupt .drectve at end of def file
+Warning: corrupt .drectve at end of def file
+... (this is printed a lot of times)
+C:/work/mambaforge/envs/mamba-build/conda-bld/libmed_1695368212328/_h_env/Library/lib/libhdf5.lib(src/CMakeFiles/hdf5-static.dir/H5Spoint.c.obj):(.text$mn+0x249): undefined reference to `__securi'
+```
 
 ## Windows Compilation
 
 Combination of cxx,c++ and fortran compilers:
 
-### VS2022 + Mingw64-gfortran
+### Mingw64-toolchain GCC + gfortran
+This seems to be the most promising combination.
+
+I was able to compile HDF5 1.10.9* with this toolchain, however it was only possible by changing
+the following cmake options:
+
+```bash
+# cmake args
+-D HDF5_ENABLE_THREADSAFE:BOOL=ON ^ ->  -D HDF5_ENABLE_THREADSAFE:BOOL=OFF ^
+```
+
+OR 
+
+```bash
+# cmake args
+-D HDF5_ENABLE_THREADSAFE:BOOL=ON ^
+```
+
+
 
 ### VS2022 + Intel Fortran Rt
 Hm, it seems these does not distribute the actual ifort.exe binaries... 
