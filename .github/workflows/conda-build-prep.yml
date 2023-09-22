@@ -64,8 +64,8 @@ jobs:
         shell: bash -l {0}
     outputs:
       final_matrix: ${{ steps.set-matrix.outputs.final_matrix }}
-      conda_upstream_label: ${{ env.CONDA_UPSTREAM_LABEL }}
-      conda_upstream_user: ${{ env.CONDA_UPSTREAM_USER }}
+      conda_upstream_label: ${{ steps.set-channel.outputs.conda_upstream_label }}
+      conda_upstream_user: ${{ steps.set-channel.outputs.conda_upstream_user }}
       conda_channel: ${{ steps.set-channel.outputs.conda_channel }}
     runs-on: ubuntu-latest
     steps:
@@ -112,6 +112,9 @@ jobs:
           else
               echo "conda_channel=${{ env.CONDA_UPSTREAM_USER }}/label/${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_OUTPUT
           fi
+          
+          echo "conda_upstream_label=${{ env.CONDA_UPSTREAM_LABEL }}" >> $GITHUB_OUTPUT
+          echo "conda_upstream_user=${{ env.CONDA_UPSTREAM_USER }}" >> $GITHUB_OUTPUT
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
