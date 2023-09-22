@@ -5,10 +5,19 @@ cd build
 set HDF5_EXT_ZLIB=zlib.lib
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
-:: strip all FCFLAGS
-::set FCFLAGS=""
-echo "CMAKE_PREFIX_PATH: %LIBRARY_PREFIX%"
 
+:: will have to remove the VS flags from FCFLAGS given that we are using flang
+set FCFLAGS=-fdefault-integer-8
+set FFLAGS=-fdefault-integer-8
+
+echo "CMAKE_PREFIX_PATH: %LIBRARY_PREFIX%"
+if exist "%BUILD_PREFIX%\Library\bin\flang-new.exe" (
+    echo "Flang NEW found"
+
+    set CC=%BUILD_PREFIX%\Library\bin\clang-cl.exe
+    set CXX=%BUILD_PREFIX%\Library\bin\clang-cl.exe
+    set FC=%BUILD_PREFIX%\Library\bin\flang-new.exe
+)
 :: Use CMake to configure
 cmake ^
   -G "Ninja" ^

@@ -17,15 +17,14 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-#    - {{ compiler('fortran') }}           # [unix]
-    - {{ compiler('m2w64_fortran') }}     # [win]
-#    - intel-fortran-rt
+    - {{ compiler('fortran') }}
+#    - {{ compiler('m2w64_fortran') }}     # [win]
     - cmake
     - ninja  # optional: can use make if you prefer
 
 test:
   commands:
-    - test -f ${PREFIX}/lib/libhdf5_fortran.lib  # [win]
+    - if exist %LIBRARY_PREFIX%\lib\libhdf5_fortran.lib (exit 0) else (exit 1)  # [win]
 
 about:
   home: https://www.hdfgroup.org/

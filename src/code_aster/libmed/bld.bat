@@ -8,7 +8,7 @@ set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
 set FFLAGS=-fdefault-integer-8 %FFLAGS%
 ::set CMAKE_C_FLAGS=-fdefault-integer-8 %CMAKE_C_FLAGS%
 ::set CMAKE_CXX_FLAGS=-fdefault-integer-8 %CMAKE_CXX_FLAGS%
-set CMAKE_CXX_FLAGS=-std=gnu++98 %CMAKE_CXX_FLAGS%
+::set CMAKE_CXX_FLAGS=-std=gnu++98 %CMAKE_CXX_FLAGS%
 set MED_MEDINT_TYPE=int
 
 if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (

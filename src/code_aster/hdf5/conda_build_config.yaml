@@ -1,18 +1,25 @@
 c_compiler:
-  - m2w64-toolchain
+#  - m2w64-toolchain
+  - clang
+#  - vs2022
 cxx_compiler:
-  - m2w64-toolchain
-
-#fortran_compiler:
-#  - flang  # this is a popular choice for Fortran on Windows, but you can adjust as needed
+#  - m2w64-toolchain
+  - clang
+#  - vs2022
+fortran_compiler:
+  - flang
 #  - m2w64_fortran  # this is a popular choice for Fortran on Windows, but you can adjust as needed
 #  - intel-fortran-rt
 
-m2w64_fortran_compiler:        # [win]
-  - m2w64-toolchain            # [win]
+#m2w64_fortran_compiler:        # [win]
+#  - m2w64-toolchain            # [win]
 
+#c_compiler_version:
+#  - '17'
+#cxx_compiler_version:
+#  - '17'
 #fortran_compiler_version:
-#  - '5'
+#  - '17'
 #  - '2023.2.0'
 
 python:
