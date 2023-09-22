@@ -51,6 +51,13 @@ on:
       conda_channel:
         description: "conda channel"
         value: ${{ jobs.build.outputs.conda_channel }}
+      conda_upstream_label:
+        description: "conda upstream label"
+        value: ${{ jobs.build.outputs.conda_upstream_label }}
+      conda_upstream_user:
+        description: "conda upstream user"
+        value: ${{ jobs.build.outputs.conda_upstream_user }}
+
 
 env:
   CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
