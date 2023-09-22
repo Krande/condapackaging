@@ -28,10 +28,12 @@ on:
         description: 'Conda upstream label'
         type: string
         required: false
+        default: None
       conda_upstream_user:
         description: 'Conda upstream user'
         type: string
         required: false
+        default: None
       use_quetz:
         description: 'Use quetz'
         type: string
@@ -52,6 +54,7 @@ on:
 
 env:
   CONDA_UPSTREAM_LABEL: ${{ inputs.conda_upstream_label }}
+  CONDA_UPSTREAM_USER: ${{ inputs.conda_upstream_user }}
 
 jobs:
   build:
@@ -61,7 +64,8 @@ jobs:
         shell: bash -l {0}
     outputs:
       final_matrix: ${{ steps.set-matrix.outputs.final_matrix }}
-      conda_upstream_label: ${{ steps.set-upstream.outputs.upstream_label }}
+      conda_upstream_label: ${{ env.CONDA_UPSTREAM_LABEL }}
+      conda_upstream_user: ${{ env.CONDA_UPSTREAM_USER }}
       conda_channel: ${{ steps.set-channel.outputs.conda_channel }}
     runs-on: ubuntu-latest
     steps:

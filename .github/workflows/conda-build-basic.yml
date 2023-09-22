@@ -150,7 +150,7 @@ jobs:
       - name: set quetz channel if using quetz or anaconda
         run: |
           if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
-            echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
+            echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ needs.build_prep.outputs.conda_upstream_label }}" >> $GITHUB_ENV
           else
             echo "CONDA_CHANNEL=${{ needs.build_prep.outputs.conda_channel }}" >> $GITHUB_ENV
           fi
