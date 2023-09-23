@@ -70,6 +70,11 @@ on:
         type: string
         required: false
         default: "CondaPackaging Temp Channel"
+      prep_script:
+        description: 'script to run before build'
+        type: string
+        required: false
+        default: ""
 
 env:
   PKG_DEBUG: ${{ inputs.debug_build }}
@@ -109,6 +114,12 @@ jobs:
       matrix: ${{ fromJson(needs.build_prep.outputs.final_matrix) }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: pre script
+        if: ${{ inputs.prep_script }}
+        continue-on-error: true
+        run: |
+          ${{ inputs.prep_script }}
 
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
@@ -210,7 +221,7 @@ jobs:
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
         run: |
-          cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }}
+          cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --force
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

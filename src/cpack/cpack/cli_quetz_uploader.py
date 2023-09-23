@@ -58,7 +58,7 @@ def create_channel(channel: str, channel_description: str="", create_public_chan
 
 
 @app.command(name="upload")
-def quetz_manager(package_dir: str, channel: str, api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")]=None,
+def quetz_manager(package_dir: str, channel: str, force=False, api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")]=None,
                   quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")]=None,):
     global API_KEY
     global QUETZ_URL
@@ -73,10 +73,10 @@ def quetz_manager(package_dir: str, channel: str, api_key: Annotated[str, typer.
     # Loop of recursive globbing find .conda and .tar.bz2 files
     for package_file in pathlib.Path(package_dir).rglob("*.conda"):
         logger.info(f"uploading file: {package_file}")
-        qm.upload_package_to_channel(package_file, channel)
+        qm.upload_package_to_channel(package_file, channel, force=force)
     for package_file in pathlib.Path(package_dir).rglob("*.tar.bz2"):
         logger.info(f"uploading file: {package_file}")
-        qm.upload_package_to_channel(package_file, channel)
+        qm.upload_package_to_channel(package_file, channel, force=force)
 
     qm.list_packages_for_channel(channel)
 

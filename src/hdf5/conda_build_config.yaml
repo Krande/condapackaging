@@ -1,11 +1,13 @@
 c_compiler:
   - m2w64-toolchain            # [win and arm64]
-  - gcc                        # [unix]
+  - gcc                        # [linux]
+  - clang                      # [osx]
 c_compiler_version:
   - 8                          # [unix]
 cxx_compiler:
   - m2w64-toolchain            # [win and arm64]
-  - gxx                        # [unix]
+  - gxx                        # [linux]
+  - clangxx                    # [osx
 cxx_compiler_version:
   - 8                          # [unix]
 fortran_compiler:
@@ -14,7 +16,8 @@ fortran_compiler:
   - m2w64-toolchain            # [win64]
 
 fortran_compiler_version:
-  - 8                          # [unix]
+  - '8'                          # [linux]
+  - '12'                         # [osx]
 
 mpi:
   - nompi
@@ -22,5 +25,5 @@ mpi:
   - openmpi  # [unix]
 
 MACOSX_SDK_VERSION:        # [osx and x86_64]
-  - "10.12"                # [osx and x86_64]
+  - "10.15"                # [osx and x86_64]
 

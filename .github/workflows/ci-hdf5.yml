@@ -21,4 +21,5 @@ jobs:
       variants: "mpi=nompi,mpi=openmpi"
       description: "Compilations of hdf5"
       use_quetz: "True"
+      pre_script: "chmod +x /home/runner/work/condapackaging/condapackaging/src/hdf5/mpiexec.sh"
     secrets: inherit
