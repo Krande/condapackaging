@@ -3,13 +3,15 @@ c_compiler:
   - gcc                        # [linux]
   - clang                      # [osx]
 c_compiler_version:
-  - 8                          # [unix]
+  - 8                          # [linux]
+  - 15                         # [osx]
 cxx_compiler:
   - m2w64-toolchain            # [win and arm64]
   - gxx                        # [linux]
-  - clangxx                    # [osx
+  - clangxx                    # [osx]
 cxx_compiler_version:
-  - 8                          # [unix]
+  - 8                          # [linux]
+  - 8                          # [osx]
 fortran_compiler:
   - gfortran                   # [linux64 or (osx and x86_64)]
   - gfortran                   # [aarch64 or ppc64le or armv7l or s390x]
