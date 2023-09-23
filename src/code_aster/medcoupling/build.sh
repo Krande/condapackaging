@@ -1,10 +1,6 @@
 #!/bin/bash
 export CLICOLOR_FORCE=1
 
-#mkdir -p "$SRC_DIR/deps/config"
-#tar -xzf "$SRC_DIR/deps/archives/medcoupling-V9_10_0.tar.gz" -C . --strip-components=1
-#tar -xzf "$SRC_DIR/deps/archives/configuration-V9_10_0.tar.gz" -C "$SRC_DIR/deps/config" --strip-components=1
-
 mkdir -p build
 cd build
 
