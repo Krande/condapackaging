@@ -18,7 +18,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-#    - {{ compiler('m2w64_fortran') }}     # [win]
+    - lld=17.0.0.rc3 # [win]
     - cmake
     - ninja  # optional: can use make if you prefer
 

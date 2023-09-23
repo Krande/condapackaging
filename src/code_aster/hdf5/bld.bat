@@ -13,15 +13,17 @@ set FFLAGS=-fdefault-integer-8
 echo "CMAKE_PREFIX_PATH: %LIBRARY_PREFIX%"
 if exist "%BUILD_PREFIX%\Library\bin\flang-new.exe" (
     echo "Flang NEW found"
-
-    set CC=%BUILD_PREFIX%\Library\bin\clang-cl.exe
-    set CXX=%BUILD_PREFIX%\Library\bin\clang-cl.exe
+    :: Set the linker to lld-link.exe
+    set CMAKE_LINKER=%BUILD_PREFIX%\Library\bin\lld-link.exe
     set FC=%BUILD_PREFIX%\Library\bin\flang-new.exe
 )
 :: Use CMake to configure
+if errorlevel 1 exit 1
 cmake ^
   -G "Ninja" ^
   -Wno-strict-overflow ^
+  -D CMAKE_EXPORT_COMPILE_COMMANDS
+  -D CMAKE_LINKER:FILEPATH="%CMAKE_LINKER%" ^
   -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
   -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
   -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
@@ -34,7 +36,9 @@ cmake ^
   -D BUILD_STATIC_LIBS:BOOL=OFF ^
   %SRC_DIR%
 
-:: Build and install
-ninja install
+if errorlevel 1 exit 1
+ninja -v
+if errorlevel 1 exit 1
+ninja install -v
 
 
