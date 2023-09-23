@@ -12,6 +12,7 @@ if exist "%PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     set CC=%PREFIX%\Library\mingw-w64\bin\gcc.exe
     set CXX=%PREFIX%\Library\mingw-w64\bin\g++.exe
     set FC=%PREFIX%\Library\mingw-w64\bin\gfortran.exe
+    set RC=%PREFIX%\Library\mingw-w64\bin\windres.exe
     set F77=${FC}
 )
 
@@ -28,12 +29,14 @@ IF "%PKG_DEBUG%"=="True" (
 
 
 cmake -G "Ninja" -S %SRC_DIR%^
-    -Wno-dev ^
-    -Wdeprecated-declarations ^
     -D CMAKE_BUILD_TYPE=Debug ^
     -D CMAKE_Fortran_FLAGS=-fdefault-integer-8 %CMAKE_Fortran_FLAGS% ^
     -D CMAKE_INSTALL_PREFIX:FILEPATH="%LIBRARY_PREFIX%" ^
     -D CMAKE_PREFIX_PATH:FILEPATH="%LIBRARY_PREFIX%" ^
+    -D CMAKE_C_COMPILER:FILEPATH="%CC%" ^
+    -D CMAKE_CXX_COMPILER:FILEPATH="%CXX%" ^
+    -D CMAKE_Fortran_COMPILER:FILEPATH="%FC%" ^
+    -D CMAKE_RC_COMPILER:FILEPATH="%RC%" ^
     -D MED_INT_TYPE:STRING=int ^
     -D MEDFILE_INSTALL_DOC=OFF ^
     -D MEDFILE_BUILD_PYTHON=ON ^
