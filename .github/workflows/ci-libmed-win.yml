@@ -15,7 +15,7 @@ jobs:
       package_name: hdf5
       conda_label: "windows"
       conda_user: krande
-      conda_extra_channel: ${{ secrets.QUETZ_URL }}/get/compilers
+      quetz_extra_channel: compilers
       debug_build: 'False'
       python_versions: "3.10,3.11"
       platforms: "windows-latest"
@@ -30,7 +30,7 @@ jobs:
       package_name: libmed
       conda_label: "windows"
       conda_user: krande
-      conda_extra_channel: ${{ secrets.QUETZ_URL }}/get/compilers
+      quetz_extra_channel: compilers
       extra_build_args: " -m ${{ github.workspace }}/src/hdf5/config.win.gcc.yml"
       debug_build: 'False'
       pkg_dir: src/code_aster
