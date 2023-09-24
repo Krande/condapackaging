@@ -20,7 +20,6 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "windows-latest"
       description: "Compilations of HDF5 for Windows"
-      extra_build_args: " -m ${{ github.workspace }}/src/hdf5/config.win.gcc.yml"
       use_quetz: "True"
     secrets: inherit
   libmed:
@@ -31,7 +30,6 @@ jobs:
       conda_label: "windows"
       conda_user: krande
       quetz_extra_channel: compilers
-      extra_build_args: " -m ${{ github.workspace }}/src/hdf5/config.win.gcc.yml"
       debug_build: 'False'
       pkg_dir: src/code_aster
       python_versions: "3.10,3.11"

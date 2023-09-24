@@ -67,7 +67,7 @@ requirements:
     - {{ compiler('cxx') }}   # [not win]
     - {{ compiler('fortran') }}   # [not win]
 #    - intel-fortran-rt          # [win]
-    - mingw64_win-64 13.1        # [win]
+    - mingw64 13.1                # [win]
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]
