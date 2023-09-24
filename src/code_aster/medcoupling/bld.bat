@@ -1,20 +1,32 @@
 mkdir build
 cd build
 
-
 :: -fdefault-integer-8 is not supported on msvc. Should consider moving to clang/msys2
 set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
 set FFLAGS=-fdefault-integer-8 %FFLAGS%
+set CMAKE_CXX_FLAGS=-fvisibility=hidden %CMAKE_CXX_FLAGS%
+
+IF "%PKG_DEBUG%"=="True" (
+    echo Debugging Enabled
+    REM Set compiler flags for debugging, for instance
+    set CFLAGS=-g -O0 %CFLAGS%
+    set CXXFLAGS=-g -O0 %CXXFLAGS%
+    set FCFLAGS=-g -O0 %FCFLAGS%
+    set BUILD_TYPE=Debug
+    REM Additional debug build steps
+) ELSE (
+    set BUILD_TYPE=Release
+    echo Debugging Disabled
+)
 
 cmake -G "Ninja" %SRC_DIR% ^
     -Wno-dev ^
-    -D CMAKE_BUILD_TYPE=Release ^
-    -D CMAKE_CXX_FLAGS=/bigobj %CMAKE_CXX_FLAGS% ^
+    -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
     -D PYTHON_ROOT_DIR="%PREFIX%" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PYTHON%" ^
     -D CMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -D CONFIGURATION_ROOT_DIR="%SRC_DIR%/deps/config" ^
-    -D SALOME_CMAKE_DEBUG=OFF ^
+    -D SALOME_CMAKE_DEBUG=ON ^
     -D SALOME_USE_MPI=OFF ^
     -D MEDCOUPLING_BUILD_TESTS=OFF ^
     -D MEDCOUPLING_BUILD_DOC=OFF ^
@@ -39,3 +51,7 @@ if errorlevel 1 exit 1
 ninja -v
 if errorlevel 1 exit 1
 ninja install -v
+
+:: Generate stubs for pybind11
+%PYTHON% %RECIPE_DIR%/stubs/custom_stubs_gen.py
+echo "Stubs generation completed"

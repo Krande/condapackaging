@@ -1,19 +1,15 @@
-c_compiler:
-  - vs2022  # [win]
-  - gcc     # [unix]
-c_compiler_version:
-  - 8     # [unix]
-cxx_compiler:
-  - vs2022  # [win]
-  - gxx     # [unix]
-cxx_compiler_version:
-  - 8      # [unix]
-fortran_compiler:
-  - gfortran # [unix]
-  - flang    # [win]
-
-fortran_compiler_version:
-  - 8      # [unix]
+c_compiler:               # [unix]
+  - gcc                   # [unix]
+c_compiler_version:       # [unix]
+  - 8                     # [unix]
+cxx_compiler:             # [unix]
+  - gxx                   # [unix]
+cxx_compiler_version:     # [unix]
+  - 8                     # [unix]
+fortran_compiler:         # [unix]
+  - gfortran              # [unix]
+fortran_compiler_version: # [unix]
+  - 8                     # [unix]
 
 blas_impl:
   - openblas
@@ -38,12 +34,12 @@ numpy:
   - '1.23'
 
 hdf5:
-  - 1.10.6=mpi*openmpi* # [unix] # for now
-  - 1.10.6=nompi* # [unix]
-  - 1.10.10=nompi* # [win]
+  - 1.10.6=mpi*openmpi*   # [unix]
+  - 1.10.6=nompi*         # [unix]
+  - 1.10.10=nompi*        # [win]
 
 mpi:
-  - openmpi  # [not win]
+  - openmpi               # [not win]
   - nompi
 
 zip_keys:

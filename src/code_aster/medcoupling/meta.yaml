@@ -31,6 +31,7 @@ requirements:
     - "{{ compiler('cxx') }}"                   # [not win]
     - "{{ compiler('fortran') }}"               # [not win]
     - mingw64 13.1                              # [win]
+    - ninja                                     # [win]
     - cmake
     - make
     - swig >=4.0.2
@@ -40,9 +41,10 @@ requirements:
     - numpy
     - boost
     - libxml2
+    - astor
+    - pybind11-stubgen
     - hdf5
-    - libmed {{ libmed_ver }}                   # [win]
-    - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"] [not win]
+    - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']
@@ -53,8 +55,7 @@ requirements:
     - boost
     - libxml2
     - hdf5
-    - libmed {{ libmed_ver }}                   # [win]
-    - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"] [not win]
+    - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']

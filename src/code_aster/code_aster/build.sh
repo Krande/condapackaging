@@ -105,7 +105,6 @@ export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
 # Generate stubs for pybind11
 $PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
-#cp stubs/libaster.pyi "${PREFIX}/lib/aster/libaster.pyi"
 echo "Stubs generation completed"
 
 # copy modified shell scripts and create backups of the ones we don't want.

@@ -40,6 +40,8 @@ requirements:
   host:
     - python
     - hdf5
+    - astor
+    - pybind11-stubgen
     - zlib
     - {{ mpi }}                 # [mpi != "nompi"]
 
