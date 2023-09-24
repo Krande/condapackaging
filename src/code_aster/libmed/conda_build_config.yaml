@@ -40,7 +40,7 @@ mpi:
 
 hdf5:
   - 1.10.6=mpi*             # [unix] # for now
-  - 1.10.9=nompi*
+  - 1.10.10=nompi*
 
 zip_keys:
   - mpi
