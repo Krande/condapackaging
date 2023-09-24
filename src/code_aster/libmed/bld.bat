@@ -6,6 +6,7 @@ set MY_PY_VER=%PY_VER:.=%
 
 set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
 set FFLAGS=-fdefault-integer-8 %FFLAGS%
+set MED_MEDINT_TYPE=int
 
 if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     echo "Mingw-w64 found"
@@ -22,21 +23,20 @@ IF "%PKG_DEBUG%"=="True" (
     set CFLAGS=-g -O0 %CFLAGS%
     set CXXFLAGS=-g -O0 %CXXFLAGS%
     set FCFLAGS=-g -O0 %FCFLAGS%
+    set BUILD_TYPE=Debug
     REM Additional debug build steps
 ) ELSE (
+    set BUILD_TYPE=Release
     echo Debugging Disabled
 )
 set INCLUDE=%LIBRARY_PREFIX%\include;%INCLUDE%
 
 cmake -G "Ninja" -S %SRC_DIR%^
     -Wno-dev ^
-    -D CMAKE_BUILD_TYPE=Debug ^
+    -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
     -D CMAKE_INSTALL_PREFIX:FILEPATH=%LIBRARY_PREFIX% ^
     -D CMAKE_PREFIX_PATH:FILEPATH=%LIBRARY_PREFIX% ^
     -D CMAKE_INCLUDE_PATH:FILEPATH=%LIBRARY_PREFIX%\include ^
-    -D CMAKE_CXX_FLAGS:STRING="%CMAKE_CXX_FLAGS% -lz" ^
-    -D CMAKE_C_FLAGS:STRING="%CMAKE_C_FLAGS% -lz" ^
-    -D MED_MEDINT_TYPE:STRING=int ^
     -D HDF5_ROOT_DIR:FILEPATH="%LIBRARY_PREFIX%" ^
     -D HDF5_INCLUDE_DIRS:FILEPATH="%LIBRARY_PREFIX%\include" ^
     -D MEDFILE_INSTALL_DOC=OFF ^
