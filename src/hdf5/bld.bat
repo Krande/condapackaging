@@ -1,19 +1,23 @@
-
-
 mkdir build
 cd build
 
+set "CXXFLAGS=%CXXFLAGS% -LTCG"
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
-set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
-set FFLAGS=-fdefault-integer-8 %FFLAGS%
-set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     echo "Mingw-w64 found"
+    set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
+    set FFLAGS=-fdefault-integer-8 %FFLAGS%
+
     set CC=%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe
     set CXX=%BUILD_PREFIX%\Library\mingw-w64\bin\g++.exe
     set FC=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
 )
+echo %CC%
+echo %CXX%
+echo %FC%
+echo %FCFLAGS%
+
 :: Configure step.
 cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^

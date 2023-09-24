@@ -1,0 +1,24 @@
+name: ci-libmed
+
+# Bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-mingw64.yml
+#    branches:
+#    - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mingw64
+      conda_label: "compilers"
+      conda_user: krande
+      debug_build: 'False'
+      python_versions: "3.11"
+      platforms: "windows-latest"
+#      variants: "mpi=nompi"
+      description: "Compilations of mingw64 for Windows"
+      use_quetz: "True"
+    secrets: inherit

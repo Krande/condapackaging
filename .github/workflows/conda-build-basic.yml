@@ -75,6 +75,11 @@ on:
         type: string
         required: false
         default: ""
+      use_sys_fortran:
+        description: 'use system fortran'
+        type: string
+        required: false
+        default: False
 
 env:
   PKG_DEBUG: ${{ inputs.debug_build }}
@@ -120,6 +125,13 @@ jobs:
         continue-on-error: true
         run: |
           ${{ inputs.prep_script }}
+
+      - uses: awvwgk/setup-fortran@v1
+        if: ${{ inputs.use_sys_fortran == 'True' }}
+        id: setup-fortran
+        with:
+          compiler: intel-classic
+          version: '2023.2'
 
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}

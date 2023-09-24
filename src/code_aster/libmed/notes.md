@@ -57,7 +57,8 @@ OR
 ```
 
 *VS2022 + Intel Fortran Rt*
-Hm, it seems these does not distribute the actual ifort.exe binaries... 
+Hm, it seems these does not distribute the actual ifort.exe binaries... But it can be installed on a runner.
+Same as what vs2022 does on conda. 
 https://anaconda.org/conda-forge/intel-fortran-rt
 
 *VS2022 + flang*

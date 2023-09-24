@@ -1,31 +1,33 @@
 c_compiler:
-  - m2w64-toolchain            # [win and arm64]
+  - vs2022                     # [win]
   - gcc                        # [linux]
   - clang                      # [osx]
-c_compiler_version:
-  - 8                          # [linux]
-  - 15                         # [osx]
 cxx_compiler:
-  - m2w64-toolchain            # [win and arm64]
+  - vs2022                     # [win]
   - gxx                        # [linux]
   - clangxx                    # [osx]
-cxx_compiler_version:
+
+c_compiler_version:           # [not win]
   - 8                          # [linux]
   - 15                         # [osx]
+cxx_compiler_version:          # [not win]
+  - 8                          # [linux]
+  - 15                         # [osx]
+
 fortran_compiler:
   - gfortran                   # [linux64 or (osx and x86_64)]
   - gfortran                   # [aarch64 or ppc64le or armv7l or s390x]
-  - m2w64-toolchain            # [win64]
+  - intel-fortran-rt           # [win]
 
 fortran_compiler_version:
   - '8'                          # [linux]
   - '12'                         # [osx]
+  - '2023.2'                     # [win]
 
 mpi:
   - nompi
   - mpich  # [unix]
   - openmpi  # [unix]
 
-MACOSX_SDK_VERSION:        # [osx and x86_64]
+MACOSX_SDK_VERSION: # [osx and x86_64]
   - "10.15"                # [osx and x86_64]
-
