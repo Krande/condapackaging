@@ -14,6 +14,12 @@ if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     set FC=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
 )
 
+if "%USE_FLANG%"=="True" (
+    set FC=flang-new.exe
+    set FC90=flang-new.exe
+    set FC77=flang-new.exe
+    set FCFLAGS=%FCFLAGS% -fpp
+)
 :: Check if ONEAPI_ROOT is set
 if "%USE_INTEL%"=="True" (
     if not "%ONEAPI_ROOT%"=="" (

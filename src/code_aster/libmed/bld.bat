@@ -50,6 +50,13 @@ cmake -G "Ninja" -S %SRC_DIR%^
     -D SIZEOF_LONG_LONG=8
 
 if errorlevel 1 exit 1
-ninja -v
+ninja
 if errorlevel 1 exit 1
-ninja install -v
+ninja install
+
+REM DEL /q %PREFIX%\bin\mdump %PREFIX%\bin\xmdump
+COPY /y %LIBRARY_PREFIX%\bin\mdump4.exe %LIBRARY_PREFIX%\bin\mdump.exe
+COPY /y %LIBRARY_PREFIX%\bin\xmdump4.exe %LIBRARY_PREFIX%\bin\xmdump.exe
+MKDIR %SP_DIR%\med
+MOVE %LIBRARY_PREFIX%\lib\python%PY_VER%\site-packages\med %SP_DIR%\med
+MOVE %LIBRARY_PREFIX%\lib\libmedC.* %LIBRARY_PREFIX%\bin\

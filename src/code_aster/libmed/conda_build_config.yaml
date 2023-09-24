@@ -37,7 +37,8 @@ mpi:
 
 hdf5:
   - 1.10.6=mpi*             # [unix] # for now
-  - 1.10.10=nompi*
+  - 1.10.6=nompi*           # [unix]
+  - 1.10.10=nompi*          # [win]
 
 zip_keys:
   - mpi

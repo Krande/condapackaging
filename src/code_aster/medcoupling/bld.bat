@@ -3,7 +3,8 @@ cd build
 
 
 :: -fdefault-integer-8 is not supported on msvc. Should consider moving to clang/msys2
-
+set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
+set FFLAGS=-fdefault-integer-8 %FFLAGS%
 
 cmake -G "Ninja" %SRC_DIR% ^
     -Wno-dev ^

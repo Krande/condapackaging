@@ -59,15 +59,16 @@ build:
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
     - USE_INTEL={{ environ.get('USE_INTEL', 'False') }}
+    - USE_FLANG={{ environ.get('USE_FLANG', 'False') }}
 
 requirements:
   build:
     - gnuconfig  # [unix]
-    - {{ compiler('c') }}       # [not win]
-    - {{ compiler('cxx') }}   # [not win]
-    - {{ compiler('fortran') }}   # [not win]
-#    - intel-fortran-rt          # [win]
-    - mingw64 13.1                # [win]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+#    - intel-fortran-rt           # [win]
+#    - mingw64 13.1                # [win]
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]

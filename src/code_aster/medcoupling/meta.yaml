@@ -27,12 +27,13 @@ build:
 
 requirements:
   build:
-    - "{{ compiler('c') }}"
-    - "{{ compiler('cxx') }}"
+    - "{{ compiler('c') }}"                     # [not win]
+    - "{{ compiler('cxx') }}"                   # [not win]
     - "{{ compiler('fortran') }}"               # [not win]
+    - mingw64 13.1                              # [win]
     - cmake
     - make
-    - swig 3.0.12
+    - swig >=4.0.2
 
   host:
     - python

@@ -39,7 +39,8 @@ numpy:
 
 hdf5:
   - 1.10.6=mpi*openmpi* # [unix] # for now
-  - 1.10.6=nompi*
+  - 1.10.6=nompi* # [unix]
+  - 1.10.10=nompi* # [win]
 
 mpi:
   - openmpi  # [not win]

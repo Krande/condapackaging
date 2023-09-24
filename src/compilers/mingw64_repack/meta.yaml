@@ -1,0 +1,33 @@
+package:
+  name: mingw64
+  version: 13.1.0
+
+source:
+  url: https://github.com/niXman/mingw-builds-binaries/releases/download/13.1.0-rt_v11-rev1/x86_64-13.1.0-release-win32-seh-msvcrt-rt_v11-rev1.7z
+  sha256: e2c4de78e48be8db170fc6d4ccc9195eb913790fbce880da476532ad0bb66ae9
+  folder: mingw64
+
+build:
+  number: 0
+  skip: True  # [not win]
+  binary_relocation: false
+
+requirements:
+  build:
+    - 7za  # [win]
+
+test:
+  commands:
+    - g++.exe --version
+    - gcc.exe --version
+    - gfortran.exe --version
+
+about:
+  home: https://github.com/niXman/mingw-builds-binaries
+  license: GPL-3.0-or-later
+  license_family: GPL
+  summary: MinGW-w64 toolchain for Windows
+  description: |
+    MinGW-w64 is a compiler suite for Windows based on the GNU tool chain.
+  doc_url: https://mingw-w64.org/
+  dev_url: https://github.com/niXman/mingw-builds-binaries
