@@ -4,7 +4,7 @@ name: ci-libmed-win
 on:
   push:
     paths:
-      - .github/workflows/ci-libmed.yml
+      - .github/workflows/ci-libmed-win.yml
 #    branches:
 #    - donotrun
 
