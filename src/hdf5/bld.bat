@@ -13,13 +13,29 @@ if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     set CXX=%BUILD_PREFIX%\Library\mingw-w64\bin\g++.exe
     set FC=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
 )
-echo %CC%
-echo %CXX%
-echo %FC%
-echo %FCFLAGS%
+
+:: Check if ONEAPI_ROOT is set
+if "%USE_INTEL%"=="True" (
+    if not "%ONEAPI_ROOT%"=="" (
+        echo "ONEAPI_ROOT=%ONEAPI_ROOT%"
+        :: run the setvars.bat for oneAPI to initialize the necessary env variables
+        call "%ONEAPI_ROOT%\setvars.bat"
+        set FC=ifx.exe
+        set FC90=ifx.exe
+        set FC77=ifx.exe
+        set FCFLAGS=%FCFLAGS% -fpp
+    )
+)
+
+echo CC=%CC%
+echo CXX=%CXX%
+echo FC=%FC%
+echo FCFLAGS=%FCFLAGS%
+echo CXXFLAGS=%CXXFLAGS%
 
 :: Configure step.
 cmake -G "Ninja" ^
+      -Wno-dev ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
@@ -29,6 +45,7 @@ cmake -G "Ninja" ^
       -D BUILD_STATIC_LIBS:BOOL=OFF ^
       -D ONLY_SHARED_LIBS:BOOL=ON ^
       -D HDF5_BUILD_HL_LIB:BOOL=ON ^
+      -D BUILD_TESTING:BOOL=ON ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
       -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=ON ^
       -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^

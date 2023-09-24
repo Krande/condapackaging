@@ -1,0 +1,17 @@
+c_compiler:
+  - mingw64                   # [win]
+
+cxx_compiler:
+  - mingw64                   # [win]
+
+fortran_compiler:
+  - mingw64                   # [win]
+
+c_compiler_version:
+  - '13.1.*'                     # [win]
+
+cxx_compiler_version:
+  - '13.1.*'                     # [win]
+
+fortran_compiler_version:
+  - '13.1.*'                     # [win]

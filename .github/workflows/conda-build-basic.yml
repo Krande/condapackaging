@@ -75,12 +75,16 @@ on:
         type: string
         required: false
         default: ""
-      use_sys_fortran:
-        description: 'use system fortran'
+      use_intel_fortran:
+        description: 'Install intel fortran'
         type: string
         required: false
         default: False
-
+      conda_extra_channel:
+        description: 'Extra channel to add to conda'
+        type: string
+        required: false
+        default: ""
 env:
   PKG_DEBUG: ${{ inputs.debug_build }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
@@ -192,6 +196,7 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
+              - ${{ inputs.extra_channel }}
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-

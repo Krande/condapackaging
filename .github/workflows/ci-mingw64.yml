@@ -1,12 +1,12 @@
-name: ci-libmed
+name: ci-mingw64
 
 # Bump 1
 on:
   push:
     paths:
       - .github/workflows/ci-mingw64.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   build:
@@ -15,6 +15,7 @@ jobs:
       package_name: mingw64
       conda_label: "compilers"
       conda_user: krande
+      pkg_dir: src/compilers
       debug_build: 'False'
       python_versions: "3.11"
       platforms: "windows-latest"
