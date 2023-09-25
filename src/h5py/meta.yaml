@@ -17,20 +17,22 @@ source:
   url: https://github.com/h5py/h5py/archive/{{ version }}.tar.gz
   sha256: ac46f5caae570c9312edea6f65ad4e894e8da44a868b7f263e15265bc3de7a16
 
+
+# add build string so packages can depend on
+# mpi or nompi variants
+# dependencies:
+# `pkg * mpi_mpich_*` for mpich
+# `hdf5 * mpi_*` for any mpi
+# `hdf5 * nompi_*` for no mpi
+{% if mpi != 'nompi' %}
+{% set mpi_prefix = "mpi_" + mpi %}
+{% else %}
+{% set mpi_prefix = "nompi" %}
+{% endif %}
+
 build:
   skip: true  # [py<=36]
   number: {{ build }}
-  {% if mpi != 'nompi' %}
-  {% set mpi_prefix = "mpi_" + mpi %}
-  {% else %}
-  {% set mpi_prefix = "nompi" %}
-  {% endif %}
-  # add build string so packages can depend on
-  # mpi or nompi variants
-  # dependencies:
-  # `pkg * mpi_mpich_*` for mpich
-  # `hdf5 * mpi_*` for any mpi
-  # `hdf5 * nompi_*` for no mpi
   string: {{ mpi_prefix }}_py{{ py }}h{{ PKG_HASH }}_{{ build }}
   script_env:
     - HDF5_HAS_ROS3=1  # [build_platform != target_platform]
@@ -53,18 +55,16 @@ requirements:
     - mpi4py >=3.0  # [mpi != 'nompi']
     # need to list hdf5 twice to get version pinning from conda_build_config
     # and build pinning from {{ mpi_prefix }}
-    - hdf5
-    - hdf5 * {{ mpi_prefix }}_*
+    - hdf5 {{ hdf5 }}=*{{ mpi_prefix }}_*
     - cython >=0.29.14,<3a
     - pkgconfig
   run:
     - python
     - cached-property
     - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('hdf5', exact=True) }}
     - {{ mpi }}  # [mpi != 'nompi']
     - mpi4py >=3.0  # [mpi != 'nompi']
-    # hdf5 >=1.10.4 has run_exports
-    - hdf5
 
 test:
   imports:

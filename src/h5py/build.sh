@@ -2,6 +2,7 @@
 
 export HDF5_VERSION=${hdf5}
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+  echo "This is a CROSS-COMPILATION"
   # load HDF5 library from _build_env
   export HDF5_DIR=${BUILD_PREFIX}
 else
