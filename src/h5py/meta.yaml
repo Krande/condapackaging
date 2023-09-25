@@ -62,7 +62,7 @@ requirements:
     - python
     - cached-property
     - {{ pin_compatible('numpy') }}
-    - {{ pin_compatible('hdf5', exact=True) }}
+    - {{ pin_compatible('hdf5', max_pin='x.x.x') }}
     - {{ mpi }}  # [mpi != 'nompi']
     - mpi4py >=3.0  # [mpi != 'nompi']
 
