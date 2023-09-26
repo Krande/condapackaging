@@ -41,7 +41,6 @@ requirements:
     - libxml2
     - hdf5
     - mpfr
-    - numpy >1.22
     - gmp  # [unix]
     - mpir  # [win]
     - nlohmann_json
@@ -54,8 +53,8 @@ requirements:
     - {{ pin_compatible('boost-cpp', max_pin='x.x.x') }}
     - libxml2
     - hdf5
+    - numpy
     - mpfr
-    - numpy >1.22
     - lark # [unix]
     - gmp  # [unix]
     - mpir  # [win]
@@ -71,6 +70,7 @@ test:
     - ./test_basic_ifc_ops.py
   requires:
     - pytest
+
 about:
   home: http://ifcopenshell.org
   license: LGPL-3.0-or-later

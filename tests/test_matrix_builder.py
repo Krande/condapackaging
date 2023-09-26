@@ -1,5 +1,4 @@
 from cpack.matrix_builder import main as matrix_builder_main, convert_from_bytes_str
-import base64
 
 
 def test_matrix_builder_variant1():
