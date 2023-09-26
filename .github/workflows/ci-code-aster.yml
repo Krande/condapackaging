@@ -21,7 +21,7 @@ jobs:
       debug_build: "True"
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      variants: "mpi=openmpi"
+      variants: "mpi=openmpi,mpi=nompi"
       use_quetz: "True"
 
     steps:
