@@ -1,0 +1,24 @@
+name: ci-netcdf4
+
+# bump 1
+on:
+  push:
+    paths:
+      - .github/workflows/ci-netcdf4.yml
+#    branches:
+#      - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: netcdf4
+      conda_label: "dev"
+      conda_user: krande
+      debug_build: 'False'
+      python_versions: "3.10,3.11"
+      platforms: "ubuntu-latest,windows-latest,macos-latest"
+      variants: "mpi=nompi,mpi=openmpi"
+      description: "Compilations of netcdf4"
+      use_quetz: "True"
+    secrets: inherit
