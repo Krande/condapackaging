@@ -203,7 +203,6 @@ jobs:
               pkg_format: 2
               zstd_compression_level: 19
             channel_priority: strict
-            solver: libmamba
             channels:
               - ${{ env.EXTRA_CHANNEL }}
               - ${{ env.CONDA_CHANNEL }}
