@@ -1,0 +1,7 @@
+mpi:
+  - nompi
+  - mpich
+  - openmpi
+
+hdf5:
+  - 1.10.6
