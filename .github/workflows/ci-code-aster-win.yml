@@ -1,10 +1,10 @@
-name: ci-libmed-win
+name: ci-code-aster-win
 
 # Bump 1
 on:
   push:
     paths:
-      - .github/workflows/ci-libmed-win.yml
+      - .github/workflows/ci-code-aster-win.yml
 #    branches:
 #    - donotrun
 
