@@ -1,4 +1,4 @@
-name: mamba-build
+name: mamba-build # For local testing
 channels:
   - conda-forge
   - nodefaults
@@ -8,6 +8,7 @@ dependencies:
   - anaconda-client
   - typer
   - quetz-client
+  - python-dotenv
   - pyyaml
   - ninja
   - doxygen
@@ -15,5 +16,8 @@ dependencies:
   - mercurial
   - ruamel.yaml.jinja2
   - pybind11-stubgen 2.0.2
+  - pip
+  - pip:
+      - -e src/cpack
   # for windows and fortran compiler install the following
 #    - m2w64-gcc-fortran
