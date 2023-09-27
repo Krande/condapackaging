@@ -107,6 +107,12 @@ export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 $PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
 echo "Stubs generation completed"
 
+# This is planned for reducing reliance on conda activation scripts. But it's not yet working
+#mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
+#mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
+#mv $PREFIX/lib/aster/* $PREFIX/lib
+#mv $PREFIX/include/aster/* $PREFIX/include
+
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
 cp $PREFIX/bin/run_ctest $PREFIX/bin/_run_ctest_old
