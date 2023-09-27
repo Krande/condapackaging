@@ -164,7 +164,7 @@ class ErrorLogger:
         self.print_summary()
 
 
-def fail_checker(test_dir, aster_ver, mpi) -> ErrorLogger:
+def fail_checker(test_dir, aster_ver, mpi, print=True) -> ErrorLogger:
     test_dir = pathlib.Path(test_dir).resolve()
     if not test_dir.exists():
         raise ValueError(f"{test_dir} does not exist")
@@ -295,7 +295,9 @@ def fail_checker(test_dir, aster_ver, mpi) -> ErrorLogger:
         numpy_failures=numpy_failures,
         mpi=mpi,
     )
-    el.print_all()
+
+    if print:
+        el.print_all()
 
     return el
 

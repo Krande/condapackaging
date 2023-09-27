@@ -9,6 +9,7 @@ import tarfile
 from dataclasses import dataclass
 from scan_failed import fail_checker, ErrorLogger
 
+
 @dataclass
 class TestPackage:
     rel_tag: str
@@ -38,7 +39,7 @@ class GATestChecker:
             tag_name = release["tag_name"]
 
             mpi_str = re.search('mpi|seq', rel_name).group(0)
-            rel_tag = re.search('\[(.*?)\]', rel_name).group(1).replace('-'+mpi_str, '')
+            rel_tag = re.search('\[(.*?)\]', rel_name).group(1).replace('-' + mpi_str, '')
             ca_version = tag_name.split('-')[2]
             dest_file = self.temp_dir / "files" / name
             dest_dir = self.temp_dir / name.replace('.tar.gz', '')
@@ -53,7 +54,7 @@ class GATestChecker:
             for d in os.listdir(dest_dir):
                 py_ver = d.split('-')[-1]
                 sim_dir = dest_dir / d
-                error_log = fail_checker(sim_dir, ca_version, mpi_str)
+                error_log = fail_checker(sim_dir, ca_version, mpi_str, print=False)
                 res = TestPackage(rel_tag, error_log, ca_version, py_ver)
                 results.append(res)
 
@@ -70,10 +71,6 @@ class GATestChecker:
             f.write(data)
 
 
-
 if __name__ == '__main__':
     gatc = GATestChecker()
     gatc.create_report()
-
-
-

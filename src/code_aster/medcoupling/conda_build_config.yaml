@@ -31,7 +31,7 @@ pin_run_as_build:
 boost:
   - 1.78
 numpy:
-  - '1.23'
+  - '1.25'
 
 hdf5:
   - 1.10.6=mpi*openmpi*   # [unix]

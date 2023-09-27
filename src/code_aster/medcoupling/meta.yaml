@@ -43,7 +43,6 @@ requirements:
     - libxml2
     - astor
     - pybind11-stubgen
-    - hdf5
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
@@ -54,7 +53,6 @@ requirements:
     - numpy
     - boost
     - libxml2
-    - hdf5
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']

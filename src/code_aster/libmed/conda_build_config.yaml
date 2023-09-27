@@ -32,11 +32,11 @@ pin_run_as_build:
   openmpi: x.x               # [mpi != "nompi"]
 
 mpi:
-  - openmpi                  # [unix] # for now
+  - openmpi                  # [unix]
   - nompi
 
 hdf5:
-  - 1.10.6=mpi*             # [unix] # for now
+  - 1.10.6=mpi*             # [unix]
   - 1.10.6=nompi*           # [unix]
   - 1.10.10=nompi*          # [win]
 
@@ -45,4 +45,4 @@ zip_keys:
   - hdf5
 
 numpy:
-  - '1.23'        # [unix]
+  - '1.25'        # [unix]
