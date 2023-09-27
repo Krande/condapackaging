@@ -62,5 +62,5 @@ MOVE %LIBRARY_PREFIX%\lib\python%PY_VER%\site-packages\med %SP_DIR%\med
 :: MOVE %LIBRARY_PREFIX%\lib\libmedC.* %LIBRARY_PREFIX%\bin\
 
 :: Generate stubs for pybind11
-%PYTHON% %RECIPE_DIR%/stubs/custom_stubs_gen.py
-echo "Stubs generation completed"
+::%PYTHON% %RECIPE_DIR%/stubs/custom_stubs_gen.py
+::echo "Stubs generation completed"

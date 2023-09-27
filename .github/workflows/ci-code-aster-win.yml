@@ -34,7 +34,22 @@ jobs:
       pkg_dir: src/code_aster
       python_versions: "3.10,3.11"
       platforms: "windows-latest"
-#      variants: "mpi=nompi"
       description: "Compilations of LibMED for Windows"
+      use_quetz: "True"
+    secrets: inherit
+
+  medcoupling:
+    needs: libmed
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: medcoupling
+      conda_label: "windows"
+      conda_user: krande
+      quetz_extra_channel: compilers
+      debug_build: 'False'
+      pkg_dir: src/code_aster
+      python_versions: "3.10,3.11"
+      platforms: "windows-latest"
+      description: "Compilations of medcoupling for Windows"
       use_quetz: "True"
     secrets: inherit
