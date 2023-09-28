@@ -1,9 +1,12 @@
 mkdir build
 cd build
+if "%CXX%" == "cl.exe" (
+    set "CXXFLAGS=%CXXFLAGS% -LTCG"
+)
 
-set "CXXFLAGS=%CXXFLAGS% -LTCG"
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
+
 if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
     echo "Mingw-w64 found"
     set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
