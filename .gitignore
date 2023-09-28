@@ -11,4 +11,5 @@ temp/
 *.tar.gz
 .env
 .secrets
+*.egg-info
 __pycache__/
