@@ -45,9 +45,9 @@ outputs:
         - {{ cdt('libxxf86vm') }}        # [linux]
         - {{ cdt('mesa-libgl-devel') }}  # [linux]
         - {{ cdt('mesa-dri-drivers') }}  # [linux]
-        - python *
 
       host:
+        - python
         - libblas
         - liblapack
         - gmp  # [not win]
@@ -67,6 +67,7 @@ outputs:
       run:
         - gmp  # [not win]
         - {{ pin_compatible('occt', max_pin='x.x.x') }}
+        - python
         - libpng
         - jpeg
         - zlib
