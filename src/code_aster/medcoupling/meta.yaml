@@ -29,7 +29,6 @@ requirements:
   build:
     - "{{ compiler('c') }}"                     # [not win]
     - "{{ compiler('cxx') }}"                   # [not win]
-    - "{{ compiler('fortran') }}"               # [not win]
     - make                                      # [not win]
     - mingw64 13.1                              # [win]
     - ninja                                     # [win]

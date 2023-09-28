@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: hdf5
-      conda_label: "adapydeps"
+      conda_label: "hdf5"
       conda_user: krande
       debug_build: 'False'
       python_versions: "3.10,3.11"

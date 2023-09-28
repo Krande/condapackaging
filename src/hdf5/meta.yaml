@@ -1,4 +1,4 @@
-{% set version = "1.10.10" %}
+{% set version = "1.10.9" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 {% set build = 0 %}
 
