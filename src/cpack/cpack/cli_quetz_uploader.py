@@ -55,9 +55,11 @@ def create_channel(channel: str, channel_description: str = "", create_public_ch
 
 
 @app.command(name="upload")
-def quetz_manager(package_dir: str, channel: str, force: Annotated[bool, typer.Option(default=False)],
+def quetz_manager(package_dir: str, channel: str,
                   api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
-                  quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")], ):
+                  quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")],
+                  force: bool = False,
+                  ):
     client = QuetzClient.from_token(quetz_url, api_key)
     qm = QuetzManager(client=client)
     logger.info(f"uploading to channel: {channel}")

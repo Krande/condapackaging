@@ -1,6 +1,6 @@
 name: ci-code-aster-win
 
-# Bump 1
+# Bump 0
 on:
   push:
     paths:
