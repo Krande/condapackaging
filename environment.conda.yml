@@ -15,9 +15,7 @@ dependencies:
   - boa
   - mercurial
   - ruamel.yaml.jinja2
-  - pybind11-stubgen 2.0.2
+  - pybind11-stubgen 2.1
   - pip
   - pip:
       - -e src/cpack
-  # for windows and fortran compiler install the following
-#    - m2w64-gcc-fortran
