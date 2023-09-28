@@ -39,7 +39,7 @@ jobs:
 #    secrets: inherit
 
   medcoupling:
-    needs: libmed
+#    needs: libmed
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
