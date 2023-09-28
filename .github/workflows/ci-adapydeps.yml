@@ -17,6 +17,7 @@ jobs:
       numpy: '1.25'
       conda_label: main
       conda_user: krande
+      use_quetz: "True"
 
     steps:
       - name: dummy step
@@ -36,7 +37,7 @@ jobs:
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "mpi=nompi;numpy=${{ needs.env.outputs.numpy }},mpi=openmpi;numpy=${{ needs.env.outputs.numpy }}"
       description: "Compilations of hdf5"
-      use_quetz: "False"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
   h5py:
     uses: ./.github/workflows/conda-build-basic.yml
@@ -50,7 +51,7 @@ jobs:
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "mpi=nompi;numpy=${{ needs.env.outputs.numpy }};hdf5=${{ needs.env.outputs.hdf5 }},mpi=openmpi;numpy=${{ needs.env.outputs.numpy }};hdf5=${{ needs.env.outputs.hdf5 }}"
       description: "Compilations of h5py"
-      use_quetz: "False"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
   ifcopenshell:
     uses: ./.github/workflows/conda-build-basic.yml
@@ -64,7 +65,7 @@ jobs:
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "occt=7.7.2=*novtk*;hdf5=${{ needs.env.outputs.hdf5 }},occt=7.7.2=*novtk*;hdf5=${{ needs.env.outputs.hdf5 }}"
       description: "Compilations of ifcopenshell"
-      use_quetz: "False"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
   netcdf4:
     uses: ./.github/workflows/conda-build-basic.yml
@@ -78,5 +79,5 @@ jobs:
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "mpi=nompi;hdf5=${{ needs.env.outputs.hdf5 }},mpi=openmpi;hdf5=${{ needs.env.outputs.hdf5 }}"
       description: "Compilations of netcdf4"
-      use_quetz: "False"
+      use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
