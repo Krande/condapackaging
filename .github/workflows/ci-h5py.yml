@@ -1,6 +1,6 @@
 name: ci-h5py
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
@@ -13,12 +13,12 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: h5py
-      conda_label: "dev"
+      conda_label: "main"
       conda_user: krande
       debug_build: 'False'
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest,windows-latest,macos-latest"
       variants: "mpi=nompi;numpy=1.25;hdf5=1.10.6,mpi=openmpi;numpy=1.25;hdf5=1.10.6"
       description: "Compilations of h5py"
-      use_quetz: "True"
+      use_quetz: "False"
     secrets: inherit
