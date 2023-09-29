@@ -18,3 +18,4 @@ cxx_compiler:
 # Compile with specific HDF5 so that the linux variant can be used together with Code_Aster
 hdf5:                 # [linux]
   - 1.10.6=*nompi*    # [linux]
+  - 1.10.6=*openmpi*  # [linux]
