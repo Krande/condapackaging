@@ -17,7 +17,7 @@ jobs:
       conda_user: krande
       debug_build: 'False'
       python_versions: "3.11"
-      platforms: "windows-2019"
+      platforms: "windows-2022"
       variants: "mpi=nompi,mpi=openmpi"
       description: "Compilations of hdf5"
       use_intel_fortran: "True"
