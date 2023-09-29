@@ -18,7 +18,7 @@ jobs:
       debug_build: 'False'
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
-      variants: "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*,occt=7.7.2=*novtk*;hdf5=1.10.6=*openmpi*"
+      variants: "occt=7.7.2=*novtk*;mpi=nompi,occt=7.7.2=*novtk*;mpi=openmpi"
       description: "Compilations of ifcopenshell"
       use_quetz: "False"
     secrets: inherit
