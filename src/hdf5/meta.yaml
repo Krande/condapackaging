@@ -62,6 +62,7 @@ requirements:
     - {{ compiler('cxx') }}      # [not win]
     - {{ compiler('fortran') }}  # [not win]
     {% if USE_INTEL == 'True' %}
+    - vs2022_win-64=*19.36*       # [win]
     - {{ compiler('c') }}         # [win]
     - {{ compiler('cxx') }}       # [win]
     - intel-fortran-rt            # [win]

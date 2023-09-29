@@ -1,6 +1,7 @@
 {% set name = "libmed" %}
 {% set version = "4.1.1" %}
-{% set sha256 = "dc2b5d54ebf0666e3ff2e974041d2ab0da906061323537023ab165d573389dd0" %}
+{% set sha256 = "3ddd44008a2d87887d599d583e1b8abf1245697949a7d35395590fcc9b1ce42b" %}
+
 
 
 package:
@@ -9,11 +10,10 @@ package:
 
 source:
   - fn: {{ name }}_{{ version }}.tar.gz
-    url: https://files.salome-platform.org/Salome/other/med-{{ version }}.tar.gz
+    url: https://github.com/Krande/med-copy/archive/refs/tags/{{ version }}.tar.gz
     sha256: {{ sha256 }}
-    patches:                                        # [unix]
-      - patches/med-4.1.1-check-hdf5-parallel.diff  # [unix]
-      # Only relevant for hdf5 == '1.10.9'
+#    patches:                                        # [unix]
+#       Only relevant for hdf5 == '1.10.9'
 #      - patches/med-4.1.1-check-hdf5-with-tabs.diff
 
 build:
