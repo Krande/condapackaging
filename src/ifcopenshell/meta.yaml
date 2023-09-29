@@ -43,7 +43,7 @@ requirements:
     - cgal-cpp
     - boost-cpp
     - libxml2
-    - hdf5
+    - hdf5 * {{ mpi }}
     - mpfr
     - {{ mpi }}     # [mpi != 'nompi']
     - mpi4py        # [mpi != 'nompi']
@@ -57,7 +57,7 @@ requirements:
     - {{ pin_compatible('occt', max_pin='x.x.x') }}
     - {{ pin_compatible('cgal-cpp', max_pin='x.x.x') }}
     - {{ pin_compatible('boost-cpp', max_pin='x.x.x') }}
-    - {{ pin_compatible('hdf5', max_pin='x.x.x') }}
+    - hdf5 * {{ mpi }}
     - libxml2
     - numpy
     - mpfr

@@ -1,8 +1,11 @@
+@echo off
+setlocal enabledelayedexpansion
+
 mkdir build
 cd build
-if "%CXX%" == "cl.exe" (
-    set "CXXFLAGS=%CXXFLAGS% -LTCG"
-)
+:: if "%CXX%" == "cl.exe" (
+::     set "CXXFLAGS=%CXXFLAGS% -LTCG"
+:: )
 
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
@@ -23,16 +26,28 @@ if "%USE_FLANG%"=="True" (
     set FC77=flang-new.exe
     set FCFLAGS=%FCFLAGS% -fpp
 )
+
+set FC=empty
+set SHORT_PATH=empty
+set LONG_PATH=empty
 :: Check if ONEAPI_ROOT is set
 if "%USE_INTEL%"=="True" (
     if not "%ONEAPI_ROOT%"=="" (
         echo "ONEAPI_ROOT=%ONEAPI_ROOT%"
+
         :: run the setvars.bat for oneAPI to initialize the necessary env variables
         call "%ONEAPI_ROOT%\setvars.bat"
-        set FC=ifx.exe
-        set FC90=ifx.exe
-        set FC77=ifx.exe
-        set FCFLAGS=%FCFLAGS% -fpp
+
+        echo "IFORT_COMPILER23=%IFORT_COMPILER23%"
+
+        set "LONG_PATH=%IFORT_COMPILER23%"
+        for %%A in ("!LONG_PATH!") do set "SHORT_PATH=%%~sA"
+
+        echo Long Path:  !LONG_PATH!
+        echo Short Path: !SHORT_PATH!
+
+        ::set FC=!SHORT_PATH!bin\ifx.exe
+        set FC=%SHORT_PATH%bin\intel64\ifort.exe
     )
 )
 

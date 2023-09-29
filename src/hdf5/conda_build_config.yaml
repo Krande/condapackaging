@@ -1,7 +1,9 @@
-c_compiler:                     # [not win]
+c_compiler:
+  - vs2022                      # [win]
   - gcc                         # [linux]
   - clang                       # [osx]
-cxx_compiler:                   # [not win]
+cxx_compiler:
+  - vs2022                      # [win]
   - gxx                         # [linux]
   - clangxx                     # [osx]
 
@@ -24,11 +26,6 @@ mpi:
   - nompi
   - mpich                       # [unix]
   - openmpi                     # [unix]
-
-compiler_win:
-  - intel
-  - mingw
-  - flang
 
 MACOSX_SDK_VERSION:           # [osx and x86_64]
   - "10.15"                   # [osx and x86_64]

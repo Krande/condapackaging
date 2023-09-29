@@ -5,14 +5,14 @@
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
 {% if mpi == "nompi" %}
-# prioritize nompi via build number
-{% set build = build + 100 %}
+  # prioritize nompi via build number
+  {% set build = build + 100 %}
 {% endif %}
 
 {% if mpi != "nompi" %}
-{% set mpi_prefix = "mpi_" + mpi %}
+  {% set mpi_prefix = "mpi_" + mpi %}
 {% else %}
-{% set mpi_prefix = "nompi" %}
+  {% set mpi_prefix = "nompi" %}
 {% endif %}
 # add build string so packages can depend on
 # mpi or nompi variants
@@ -26,10 +26,14 @@
 # at least not always
 
 {% if mpi != 'nompi' %}
-{% set build_pin = mpi_prefix + '_*' %}
+  {% set build_pin = mpi_prefix + '_*' %}
 {% else %}
-{% set build_pin = '' %}
+  {% set build_pin = '' %}
 {% endif %}
+
+{% set PKG_DEBUG = environ.get('PKG_DEBUG', 'False') %}
+{% set USE_INTEL = environ.get('USE_INTEL', 'False') %}
+{% set USE_FLANG = environ.get('USE_FLANG', 'False') %}
 
 package:
   name: hdf5
@@ -57,9 +61,9 @@ build:
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
   script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
-    - USE_INTEL={{ environ.get('USE_INTEL', 'False') }}
-    - USE_FLANG={{ environ.get('USE_FLANG', 'False') }}
+    - PKG_DEBUG={{ PKG_DEBUG }}
+    - USE_INTEL={{ USE_INTEL }}
+    - USE_FLANG={{ USE_FLANG }}
 
 requirements:
   build:
@@ -67,8 +71,13 @@ requirements:
     - {{ compiler('c') }}        # [not win]
     - {{ compiler('cxx') }}      # [not win]
     - {{ compiler('fortran') }}  # [not win]
-#    - intel-fortran-rt          # [win]
+    {% if USE_INTEL == 'True' %}
+    - {{ compiler('c') }}         # [win]
+    - {{ compiler('cxx') }}       # [win]
+    - intel-fortran-rt            # [win]
+    {% else %}
     - mingw64 13.1               # [win]
+    {% endif %}
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]
