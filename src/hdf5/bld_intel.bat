@@ -22,7 +22,8 @@ for %%A in ("!LONG_PATH!") do set "SHORT_PATH=%%~sA"
 echo Long Path:  !LONG_PATH!
 echo Short Path: !SHORT_PATH!
 
-set FC=!SHORT_PATH!bin\intel64\ifx.exe
+set FC=!SHORT_PATH!bin\ifx.exe
+::set FC=!SHORT_PATH!bin\intel64\ifx.exe
 
 
 echo CC=%CC%

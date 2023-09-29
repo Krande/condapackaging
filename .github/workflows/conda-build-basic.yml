@@ -130,7 +130,7 @@ jobs:
         run: |
           ${{ inputs.prep_script }}
 
-      - uses: awvwgk/setup-fortran@v1
+      - uses: awvwgk/setup-fortran@v1.1 # https://github.com/awvwgk/setup-fortran
         if: ${{ inputs.use_intel_fortran == 'True' }}
         id: setup-fortran
         with:
