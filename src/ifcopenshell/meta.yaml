@@ -12,6 +12,10 @@
   {% set variant_name = "all" %}
 {% endif %}
 
+{% if mpi == 'nompi' %}
+  {% set build = build + 1 %}
+{% endif %}
+
 package:
   name: {{ name }}
   version: {{ version }}
@@ -23,7 +27,7 @@ source:
 build:
   binary_relocation: false [osx]
   number: {{ build }}
-  string: py{{ CONDA_PY }}_{{ variant_name }}_h{{ PKG_HASH }}_{{ build }}
+  string: py{{ CONDA_PY }}_{{ variant_name }}_{{ mpi }}_h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:

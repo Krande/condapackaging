@@ -19,3 +19,11 @@ cxx_compiler:
 hdf5:                 # [linux]
   - 1.10.6=*nompi*    # [linux]
   - 1.10.6=*openmpi*  # [linux]
+
+mpi:                  # [linux]
+  - nompi             # [linux]
+  - openmpi           # [linux]
+
+zip_keys:             # [linux]
+  - mpi               # [linux]
+  - hdf5              # [linux]

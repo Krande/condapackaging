@@ -20,5 +20,5 @@ jobs:
       platforms: "ubuntu-latest"
       variants: "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*,occt=7.7.2=*novtk*;hdf5=1.10.6=*openmpi*"
       description: "Compilations of ifcopenshell"
-      use_quetz: "True"
+      use_quetz: "False"
     secrets: inherit
