@@ -9,16 +9,16 @@ pin_run_as_build:
 CONDA_BUILD_SYSROOT:
   - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
 
-c_compiler:
+c_compiler:                   # [win]
  - vs2019                     # [win]
 
-cxx_compiler:
+cxx_compiler:                 # [win]
  - vs2019                     # [win]
 
 # Compile with specific HDF5 so that the linux variant can be used together with Code_Aster
 hdf5:                 # [linux]
-  - 1.10.6=*nompi*    # [linux]
-  - 1.10.6=*openmpi*  # [linux]
+  - 1.10.6            # [linux]
+  - 1.10.6            # [linux]
 
 mpi:                  # [linux]
   - nompi             # [linux]
