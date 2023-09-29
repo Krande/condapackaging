@@ -45,6 +45,8 @@ requirements:
     - libxml2
     - hdf5
     - mpfr
+    - {{ mpi }}     # [mpi != 'nompi']
+    - mpi4py        # [mpi != 'nompi']
     - gmp  # [unix]
     - mpir  # [win]
     - nlohmann_json
@@ -64,6 +66,8 @@ requirements:
     - mpir  # [win]
     - nlohmann_json
     - zlib
+    - {{ mpi }}       # [mpi != 'nompi']
+    - mpi4py          # [mpi != 'nompi']
 
 test:
   imports:
