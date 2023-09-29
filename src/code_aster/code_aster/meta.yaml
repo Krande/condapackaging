@@ -19,10 +19,10 @@ package:
   version: '{{ version }}'
 
 source:
-#  - fn: '{{ name }}_{{ version }}.tar.gz'
-#    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
-  - git_url: https://gitlab.com/codeaster/src.git
-    git_depth: 1
+  - fn: '{{ name }}_{{ version }}.tar.gz'
+    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
+#  - git_url: https://gitlab.com/codeaster/src.git
+#    git_depth: 1
 
 build:
   detect_binary_files_with_prefix: true
@@ -30,7 +30,7 @@ build:
     - lib/
     - lib/aster/
     - lib/petsc4py/lib      # [mpi != "nompi"]
-  number: 5
+  number: 6
   string: py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
   string: py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
   script_env:

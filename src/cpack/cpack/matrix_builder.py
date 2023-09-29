@@ -9,11 +9,11 @@ def main(python_versions, platforms, variants_in):
 
     platforms_dicts = []
     for platform in platforms:
-        if platform == 'windows-latest':
+        if platform.startswith('windows'):
             platforms_dicts.append({"os": platform, "short": "win"})
-        elif platform == 'ubuntu-latest':
+        elif platform.startswith('ubuntu'):
             platforms_dicts.append({"os": platform, "short": "linux"})
-        elif platform == 'macos-latest':
+        elif platform.startswith('macos'):
             platforms_dicts.append({"os": platform, "short": "macos"})
         else:
             raise ValueError(f"Unknown platform {platform}")

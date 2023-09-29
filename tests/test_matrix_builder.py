@@ -1,11 +1,19 @@
 from cpack.matrix_builder import main as matrix_builder_main, convert_from_bytes_str
 
 
-def test_matrix_builder_variant1():
+def test_matrix_builder_variant_specify_os():
     pyver = "3.10,3.11"
     platforms = "windows-2022"
-    variants = "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*,occt=7.7.2=*novtk*;hdf5=1.10.6=*mpi*"
+    variants = "mpi=nompi,mpi=openmpi"
     matrix = matrix_builder_main(pyver, platforms, variants)
+    assert matrix == {
+        "pyver": ["3.10", "3.11"],
+        "platform": [{"os": "windows-2022", "short": "win"}],
+        "variants": [
+            {"key": "mpi", "value": "mpi=nompi", "var_str": "IC0tdmFyaWFudHM9InsnbXBpJzogJ25vbXBpJ30i"},
+            {"key": "mpi", "value": "mpi=openmpi", "var_str": "IC0tdmFyaWFudHM9InsnbXBpJzogJ29wZW5tcGknfSI="},
+        ],
+    }
 
 
 def test_matrix_builder_variant1():
