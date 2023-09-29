@@ -42,6 +42,7 @@ else
     # Additional production build steps
 fi
 
+chmod +x ./configure
 ./configure "${opts[@]}" --prefix="$PREFIX" --with-hdf5="$PREFIX"
 make
 make install

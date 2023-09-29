@@ -11,8 +11,8 @@ package:
 source:
   - fn: {{ name }}_{{ version }}.tar.gz
     url: https://github.com/Krande/med-copy/archive/refs/tags/{{ version }}.tar.gz
-    sha256: {{ sha256 }}
-#    patches:                                        # [unix]
+    patches:                                        # [unix]
+      - patches/med-4.1.1-check-hdf5-parallel.diff  # [unix]
 #       Only relevant for hdf5 == '1.10.9'
 #      - patches/med-4.1.1-check-hdf5-with-tabs.diff
 
