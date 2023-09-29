@@ -9,6 +9,7 @@ dependencies:
   - typer
   - quetz-client
   - python-dotenv
+  - pytest
   - pyyaml
   - ninja
   - doxygen

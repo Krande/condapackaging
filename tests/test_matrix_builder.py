@@ -3,6 +3,13 @@ from cpack.matrix_builder import main as matrix_builder_main, convert_from_bytes
 
 def test_matrix_builder_variant1():
     pyver = "3.10,3.11"
+    platforms = "windows-2022"
+    variants = "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*,occt=7.7.2=*novtk*;hdf5=1.10.6=*mpi*"
+    matrix = matrix_builder_main(pyver, platforms, variants)
+
+
+def test_matrix_builder_variant1():
+    pyver = "3.10,3.11"
     platforms = "windows-latest,ubuntu-latest,macos-latest"
     variants = "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*,occt=7.7.2=*novtk*;hdf5=1.10.6=*mpi*"
     matrix = matrix_builder_main(pyver, platforms, variants)
