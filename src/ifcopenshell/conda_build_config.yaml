@@ -15,5 +15,6 @@ c_compiler:
 cxx_compiler:
  - vs2019                     # [win]
 
-hdf5:
-  - 1.10.6=*nompi*
+# Compile with specific HDF5 so that the linux variant can be used together with Code_Aster
+hdf5:                 # [linux]
+  - 1.10.6=*nompi*    # [linux]
