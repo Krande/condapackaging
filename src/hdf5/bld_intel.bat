@@ -10,46 +10,20 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
-if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
-    echo "Mingw-w64 found"
-    set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
-    set FFLAGS=-fdefault-integer-8 %FFLAGS%
+echo "ONEAPI_ROOT=%ONEAPI_ROOT%"
+:: run the setvars.bat for oneAPI to initialize the necessary env variables
+call "%ONEAPI_ROOT%\setvars.bat"
 
-    set CC=%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe
-    set CXX=%BUILD_PREFIX%\Library\mingw-w64\bin\g++.exe
-    set FC=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
-)
+echo "IFORT_COMPILER23=%IFORT_COMPILER23%"
 
-if "%USE_FLANG%"=="True" (
-    set FC=flang-new.exe
-    set FC90=flang-new.exe
-    set FC77=flang-new.exe
-    set FCFLAGS=%FCFLAGS% -fpp
-)
+set "LONG_PATH=%IFORT_COMPILER23%"
+for %%A in ("!LONG_PATH!") do set "SHORT_PATH=%%~sA"
 
-set FC=empty
-set SHORT_PATH=empty
-set LONG_PATH=empty
-:: Check if ONEAPI_ROOT is set
-if "%USE_INTEL%"=="True" (
-    if not "%ONEAPI_ROOT%"=="" (
-        echo "ONEAPI_ROOT=%ONEAPI_ROOT%"
+echo Long Path:  !LONG_PATH!
+echo Short Path: !SHORT_PATH!
 
-        :: run the setvars.bat for oneAPI to initialize the necessary env variables
-        call "%ONEAPI_ROOT%\setvars.bat"
+set FC=!SHORT_PATH!bin\intel64\ifort.exe
 
-        echo "IFORT_COMPILER23=%IFORT_COMPILER23%"
-
-        set "LONG_PATH=%IFORT_COMPILER23%"
-        for %%A in ("!LONG_PATH!") do set "SHORT_PATH=%%~sA"
-
-        echo Long Path:  !LONG_PATH!
-        echo Short Path: !SHORT_PATH!
-
-        ::set FC=!SHORT_PATH!bin\ifx.exe
-        set FC=!SHORT_PATH!bin\intel64\ifort.exe
-    )
-)
 
 echo CC=%CC%
 echo CXX=%CXX%
@@ -71,11 +45,8 @@ cmake -G "Ninja" ^
       -D HDF5_BUILD_HL_LIB:BOOL=ON ^
       -D BUILD_TESTING:BOOL=ON ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
-      -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=ON ^
-      -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^
+      -D HDF5_BUILD_DOC:BOOL=OFF ^
       -D HDF5_ENABLE_THREADSAFE:BOOL=OFF ^
-      -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
-      -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       -D HDF5_BUILD_FORTRAN=ON ^
       ..

@@ -131,7 +131,7 @@ jobs:
           ${{ inputs.prep_script }}
 
       - uses: awvwgk/setup-fortran@v1
-        if: ${{ inputs.use_sys_fortran == 'True' }}
+        if: ${{ inputs.use_intel_fortran == 'True' }}
         id: setup-fortran
         with:
           compiler: intel-classic
@@ -157,7 +157,7 @@ jobs:
         run: |
           curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.15.sdk.tar.xz | tar -xvJf - -C /Users/runner/work/
 
-      - name: set ENV WORK_DIR
+      - name: set ENV vars
         run: |
           pwd
           if [[ "$RUNNER_OS" == "Windows" ]]; then
@@ -172,6 +172,10 @@ jobs:
             echo "CROOT_DIR=/Users/runner/work/build" >> $GITHUB_ENV
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
             echo "PKG_DIR=linux-64" >> $GITHUB_ENV
+          fi
+          
+          if [[ "${{ inputs.use_intel_fortran }}" == "True" ]]; then
+            echo "USE_INTEL=True" >> $GITHUB_ENV
           fi
 
       - name: Set up extra channel
