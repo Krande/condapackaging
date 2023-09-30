@@ -8,10 +8,10 @@ cxx_compiler:
   - clangxx                     # [osx]
 
 c_compiler_version:             # [not win]
-  - 8                           # [linux]
+  - 9                           # [linux]
   - 15                          # [osx]
 cxx_compiler_version:           # [not win]
-  - 8                           # [linux]
+  - 9                           # [linux]
   - 15                          # [osx]
 
 fortran_compiler: # [not win]

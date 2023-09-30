@@ -17,10 +17,11 @@ export CFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
 # to avoid mismatch errors related to floats and integer types
 major_version=$($FC -dumpversion | awk -F. '{print $1}')
 if [[ $major_version -gt 8 ]]; then
-  export FCFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space -fallow-argument-mismatch ${CFLAGS}"
+  export FCFLAGS="-fallow-argument-mismatch ${FCFLAGS}"
 else
   # -fallow-argument-mismatch is not supported by gfortran <= 8
-  export FCFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
+#  export FCFLAGS=" ${FCFLAGS}"
+  echo "FCFLAGS: $FCFLAGS"
 fi
 
 export LIBPATH="$PREFIX/lib $LIBPATH"

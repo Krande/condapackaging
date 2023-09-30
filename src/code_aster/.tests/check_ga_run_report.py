@@ -3,6 +3,7 @@ import re
 import os
 import pathlib
 import shutil
+from itertools import groupby
 
 import requests
 import tarfile
@@ -18,6 +19,37 @@ class TestPackage:
     ca_version: str
     python_version: str
     results_dir: pathlib.Path
+
+
+@dataclass
+class Package:
+    name: str
+    version: str
+    build: str
+
+
+def parse_packages(text: str) -> dict[str, Package]:
+    lines = text.strip().split('\n')
+    packages = {}
+
+    # Find the line where the package list starts
+    start_line = 0
+    for i, line in enumerate(lines):
+        if '───────────────────────────────────────────────────────────────────────────────' in line:
+            start_line = i + 1
+            break
+
+    # Parse each package line
+    for line in lines[start_line:]:
+        parts = line.split()
+        if len(parts) < 4:
+            continue
+        name = parts[0]
+        version = parts[1]
+        build = parts[2]
+        packages[name] = Package(name, version, build)
+
+    return packages
 
 
 @dataclass
@@ -38,26 +70,38 @@ class GATestChecker:
                 "release_tag": [],
                 "ca_version": [],
                 "python_version": [],
+                "mpi": [],
+                "numpy_version": [],
+                "hdf5_version": [],
                 "num_failed_tests": [],
             }
         )
-        for result in self.get_results(release_tag, python_ver, mpi_ver, overwrite):
-            df = df._append(
-                {
-                    "release_tag": result.rel_tag,
-                    "ca_version": result.ca_version,
-                    "python_version": result.python_version,
-                    "num_failed_tests": result.test_stats.num_failed_tot,
-                },
-                ignore_index=True,
-            )
-            failed = result.test_stats.num_failed_tot
-            print(f'{result.rel_tag} - {result.ca_version} - {result.python_version}: {failed} failed tests')
-        df = df.sort("release_tag")
-        print('done')
+        df["num_failed_tests"] = df["num_failed_tests"].astype(int)
+        for key, results in groupby(
+            self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
+        ):
+            for result in results:
+                run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
+                result: TestPackage
+                df = df._append(
+                    {
+                        "release_tag": result.rel_tag,
+                        "ca_version": result.ca_version,
+                        "python_version": result.python_version,
+                        "mpi": result.test_stats.mpi,
+                        "numpy_version": run_packages["numpy"].version,
+                        "hdf5_version": run_packages["hdf5"].version,
+                        "num_failed_tests": result.test_stats.num_failed_tot,
+                    },
+                    ignore_index=True,
+                )
+                failed = result.test_stats.num_failed_tot
+                print(f"{result.rel_tag} - {result.ca_version} - {result.python_version}: {failed} failed tests")
+
+        df.to_csv(self.temp_dir / "report.csv", index=False)
+        print("done")
 
     def get_results(self, release_tag=None, python_ver=None, mpi_ver=None, overwrite=False):
-        results = []
         for release in self.list_all_releases():
             rel_name = release["name"]
             asset = release["assets"][0]
@@ -88,10 +132,7 @@ class GATestChecker:
                 if python_ver is not None and py_ver != python_ver:
                     continue
                 test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
-                res = TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir)
-                results.append(res)
-
-        return results
+                yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir)
 
     def prep_ctests_for_local_rerunning(self, local_env_path):
         local_env_path = pathlib.Path(local_env_path)
