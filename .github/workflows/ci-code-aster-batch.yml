@@ -1,6 +1,6 @@
 name: ci-code-aster-batch
 
-# bump 0
+# bump 1
 on:
   push:
     paths:
@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Test using gcc 10"
+      description: "Test using gcc 11"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
