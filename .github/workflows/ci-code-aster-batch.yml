@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Test using code_aster official 16.4.8 version"
+      description: "Test using gcc 9"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

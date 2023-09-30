@@ -42,9 +42,7 @@ requirements:
 
   host:
     - python
-    - hdf5
     - yaml
-    - numpy
     - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
@@ -55,9 +53,7 @@ requirements:
 
   run:
     - python
-    - hdf5
     - yaml
-    - numpy
     - cython {{ cython_ver }}
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}

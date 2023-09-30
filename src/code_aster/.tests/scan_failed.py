@@ -39,7 +39,7 @@ def get_current_failed(test_dir: pathlib.Path):
 
 
 @dataclass
-class ErrorLogger:
+class TestStats:
     fail_map: dict[tuple[str], FailedJob]
     num_failed_tot: int
     num_identified_failed: int
@@ -164,7 +164,7 @@ class ErrorLogger:
         self.print_summary()
 
 
-def fail_checker(test_dir, aster_ver, mpi, print=True) -> ErrorLogger:
+def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
     test_dir = pathlib.Path(test_dir).resolve()
     if not test_dir.exists():
         raise ValueError(f"{test_dir} does not exist")
@@ -284,7 +284,7 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> ErrorLogger:
             no_signs_of_failure.append(mess_name)
             # print(f'{failed_mess} did not fail')
 
-    el = ErrorLogger(
+    el = TestStats(
         fail_map=fail_map,
         num_identified_failed=num_identified_failed,
         num_failed_tot=num_failed_tot,

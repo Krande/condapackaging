@@ -30,7 +30,7 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - make                                      # [not win]
-#    - mingw64 13.1                              # [win]
+#    - mingw64 13.1                             # [win]
     - ninja                                     # [win]
     - cmake
     - swig >=4.0.2

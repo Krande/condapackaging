@@ -10,6 +10,7 @@ dependencies:
   - quetz-client
   - python-dotenv
   - pytest
+  - pandas
   - pyyaml
   - ninja
   - doxygen
