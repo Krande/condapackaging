@@ -19,6 +19,16 @@ else
   echo "Debugging Disabled"
 fi
 
+# missing include causes issues with gcc > 12
+major_version=$($FC -dumpversion | awk -F. '{print $1}')
+if [[ $major_version -gt 12 ]]; then
+  echo "adding '#include <cstdint>' to src/System/LibraryInformation.cxx"
+  awk '/#include <cstring>/ { print; print "#include <cstdint>"; next }1' src/System/LibraryInformation.cxx > tmp.cxx && mv tmp.cxx src/System/LibraryInformation.cxx
+else
+  echo "no modification needed"
+fi
+
+
 cmake -S . -B build \
     -Wno-dev \
     -DCMAKE_BUILD_TYPE=$build_type \
