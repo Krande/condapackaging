@@ -13,10 +13,12 @@ echo "CFLAGS: $CFLAGS"
 
 export CFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
 
-# if gfortran version > 8, we need to conditionally add -fallow-argument-mismatch
+# if gfortran version > 9, we need to conditionally add -fallow-argument-mismatch
 # to avoid mismatch errors related to floats and integer types
 major_version=$($FC -dumpversion | awk -F. '{print $1}')
-if [[ $major_version -gt 8 ]]; then
+if [[ $major_version -gt 9 ]]; then
+  echo "adding -fallow-argument-mismatch to FCFLAGS"
+
   export FCFLAGS="-fallow-argument-mismatch ${FCFLAGS}"
 else
   # -fallow-argument-mismatch is not supported by gfortran <= 8

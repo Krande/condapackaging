@@ -51,9 +51,9 @@ build:
     - PKG_DEBUG={{ PKG_DEBUG }}
     - USE_INTEL={{ USE_INTEL }}
     - USE_FLANG={{ USE_FLANG }}
-  script:                                                                           # [win]
+  script:
     - {{ RECIPE_DIR }}/{{ 'bld_intel.bat' if USE_INTEL == 'True' else 'bld.bat' }}  # [win]
-
+    - {{ RECIPE_DIR }}/build_minimal.sh                                             # [unix]
 
 requirements:
   build:
