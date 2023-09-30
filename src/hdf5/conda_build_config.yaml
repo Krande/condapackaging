@@ -19,8 +19,8 @@ fortran_compiler: # [not win]
   - gfortran                    # [aarch64 or ppc64le or armv7l or s390x]
 
 fortran_compiler_version:       # [not win]
-  - '8'                         # [linux]
-  - '12'                        # [osx]
+  - 9                           # [linux]
+  - 12                          # [osx]
 
 mpi:
   - nompi

@@ -57,26 +57,26 @@ build:
 
 requirements:
   build:
-    - gnuconfig  # [unix]
-    - {{ compiler('c') }}        # [not win]
-    - {{ compiler('cxx') }}      # [not win]
-    - {{ compiler('fortran') }}  # [not win]
-    {% if USE_INTEL == 'True' %}
+    - gnuconfig                   # [unix]
+    - {{ compiler('c') }}         # [not win]
+    - {{ compiler('cxx') }}       # [not win]
+    - {{ compiler('fortran') }}   # [not win]
+    {% if USE_INTEL == 'True' %}  # [win]
     - vs2022_win-64=*19.36*       # [win]
     - {{ compiler('c') }}         # [win]
     - {{ compiler('cxx') }}       # [win]
     - intel-fortran-rt            # [win]
-    {% else %}
-    - mingw64 13.1               # [win]
-    {% endif %}
-    - cmake                      # [win]
-    - automake                   # [not win]
-    - autoconf                   # [not win]
-    - libtool                    # [not win]
-    - make                       # [not win]
-    - ninja                      # [win]
-    - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
-    - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
+    {% else %}                    # [win]
+    - mingw64 13.1                # [win]
+    {% endif %}                   # [win]
+    - cmake                       # [win]
+    - automake                    # [not win]
+    - autoconf                    # [not win]
+    - libtool                     # [not win]
+    - make                        # [not win]
+    - ninja                       # [win]
+    - {{ mpi }}                   # [build_platform != target_platform and mpi != 'nompi']
+    - libgfortran-devel_osx-64    # [build_platform != target_platform and build_platform == 'osx-64']
     # Keep both versions of openssl in sync
     - openssl
   host:
