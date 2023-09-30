@@ -51,9 +51,9 @@ build:
     - PKG_DEBUG={{ PKG_DEBUG }}
     - USE_INTEL={{ USE_INTEL }}
     - USE_FLANG={{ USE_FLANG }}
-  script:
+  script: # [win]
     - {{ RECIPE_DIR }}/{{ 'bld_intel.bat' if USE_INTEL == 'True' else 'bld.bat' }}  # [win]
-    - {{ RECIPE_DIR }}/build_minimal.sh                                             # [unix]
+
 
 requirements:
   build:
@@ -75,8 +75,6 @@ requirements:
     - libtool                     # [not win]
     - make                        # [not win]
     - ninja                       # [win]
-    - {{ mpi }}                   # [build_platform != target_platform and mpi != 'nompi']
-    - libgfortran-devel_osx-64    # [build_platform != target_platform and build_platform == 'osx-64']
     # Keep both versions of openssl in sync
     - openssl
   host:
@@ -100,67 +98,34 @@ test:
     # Need zlib to compile test programs
     - zlib
   files:
-    - test
+    - compound_fortran2003.f90
+    - h5_cmprss.c
+    - h5_cmprss.f90
+    - h5tutr_cmprss.cpp
   commands:
-    # Verify UNIX CLI tools.
-    {% if mpi == 'nompi' %}
-    {% set h5_compilers = [
-        "h5c++",
-        "h5cc",
-        "h5fc",
-    ] %}
-    {% else %}
-    # no p on parallel h5c++!
-    {% set h5_compilers = [
-        "h5c++",
-        "h5pcc",
-        "h5pfc",
-    ] %}
-    {% endif %}
-    {% set hdf5_unix_cmds = h5_compilers + [
-        "h5redeploy",
-    ] %}
-    {% if build_platform == target_platform %}
-    {% set hdf5_unix_cmds = hdf5_unix_cmds + [
-        "h5perf_serial",
-    ] %}
-    {% endif %}
-    {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
-    - command -v {{ each_hdf5_unix_cmd }}   # [not win]
-    {% endfor %}
-    # Verify CLI tools.
-    {% set hdf5_cmds = [
-        "gif2h5",
-        "h52gif",
-        "h5copy",
-        "h5debug",
-        "h5diff",
-        "h5dump",
-        "h5import",
-        "h5jam",
-        "h5ls",
-        "h5mkgrp",
-        "h5repack",
-        "h5repart",
-        "h5stat",
-        "h5unjam"
-    ] %}
-    {% for each_hdf5_cmd in hdf5_cmds %}
-    - command -v {{ each_hdf5_cmd }}  # [not win]
-    - where {{ each_hdf5_cmd }}  # [win]
-    {% endfor %}
-    # Verify libraries.
-    {% set hdf5_libs = [
-        "hdf5",
-        "hdf5_cpp",
-        "hdf5_hl",
-        "hdf5_hl_cpp"
-    ] %}
-    {% for each_hdf5_lib in hdf5_libs %}
-    - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}  # [not win]
-#    - if not exist %PREFIX%\\Library\\lib\\lib{{ each_hdf5_lib }}.lib exit 1  # [win] # this is only applicable when using visual studio
-    - if not exist %PREFIX%\\Library\\bin\\lib{{ each_hdf5_lib }}.dll exit 1  # [win]
-    {% endfor %}
+    - command -v h5c++
+    - command -v h5cc
+    - command -v h5fc
+    - command -v h5redeploy
+    - command -v h5perf_serial
+    - command -v gif2h5
+    - command -v h52gif
+    - command -v h5copy
+    - command -v h5debug
+    - command -v h5diff
+    - command -v h5dump
+    - command -v h5import
+    - command -v h5jam
+    - command -v h5ls
+    - command -v h5mkgrp
+    - command -v h5repack
+    - command -v h5repart
+    - command -v h5stat
+    - command -v h5unjam
+    - test -f $PREFIX/lib/libhdf5${SHLIB_EXT}
+    - test -f $PREFIX/lib/libhdf5_cpp${SHLIB_EXT}
+    - test -f $PREFIX/lib/libhdf5_hl${SHLIB_EXT}
+    - test -f $PREFIX/lib/libhdf5_hl_cpp${SHLIB_EXT}
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/

@@ -1,6 +1,10 @@
 #!/bin/bash
 set -ex
 
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+  echo "Conda is cross compiling!"
+fi
+
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     opt+=( "--enable-build-mode=debug" )
 fi
