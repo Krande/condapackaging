@@ -24,6 +24,9 @@ major_version=$($FC -dumpversion | awk -F. '{print $1}')
 if [[ $major_version -gt 12 ]]; then
   echo "adding '#include <cstdint>' to src/System/LibraryInformation.cxx"
   awk '/#include <cstring>/ { print; print "#include <cstdint>"; next }1' src/System/LibraryInformation.cxx > tmp.cxx && mv tmp.cxx src/System/LibraryInformation.cxx
+
+  echo "adding '#include <cstdint>' to mfront/src/BehaviourProfiler.cxx"
+  awk '/#include <iterator>/ { print; print "#include <cstdint>"; next }1' mfront/src/BehaviourProfiler.cxx > tmp.cxx && mv tmp.cxx mfront/src/BehaviourProfiler.cxx
 else
   echo "no modification needed"
 fi
