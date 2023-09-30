@@ -4,13 +4,13 @@ cxx_compiler:                 # [win]
   - vs2022                    # [win]
 
 c_compiler_version:       # [unix]
-  - 12                    # [unix]
+  - 13                    # [unix]
 cxx_compiler_version:     # [unix]
-  - 12                    # [unix]
+  - 13                    # [unix]
 fortran_compiler:         # [unix]
   - gfortran              # [unix]
 fortran_compiler_version: # [unix]
-  - 12                    # [unix]
+  - 13                    # [unix]
 
 blas_impl:
   - openblas
