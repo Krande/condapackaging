@@ -9,8 +9,13 @@ import requests
 import tarfile
 import pandas as pd
 from dataclasses import dataclass
-from scan_failed import fail_checker, TestStats
 
+from cpack.packages import Package
+from cpack.cli_quetz_uploader import QuetzManager
+from scan_failed import fail_checker, TestStats
+from dotenv import load_dotenv
+
+load_dotenv()
 
 @dataclass
 class TestPackage:
@@ -19,13 +24,6 @@ class TestPackage:
     ca_version: str
     python_version: str
     results_dir: pathlib.Path
-
-
-@dataclass
-class Package:
-    name: str
-    version: str
-    build: str
 
 
 def parse_packages(text: str) -> dict[str, Package]:
@@ -65,6 +63,8 @@ class GATestChecker:
 
     def create_report(self, release_tag=None, python_ver=None, mpi_ver=None, overwrite=False):
         # Create a dataframe with the columns; release_tag, ca_version, python_version, num_failed_tests
+        qm = QuetzManager()
+
         df = pd.DataFrame(
             {
                 "release_tag": [],
@@ -73,6 +73,7 @@ class GATestChecker:
                 "mpi": [],
                 "numpy_version": [],
                 "hdf5_version": [],
+                "gcc_version": [],
                 "num_failed_tests": [],
             }
         )
@@ -82,6 +83,17 @@ class GATestChecker:
         ):
             for result in results:
                 run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
+                gcc_ver = None
+                for meta in qm.get_packages_meta_for_channel(result.rel_tag, 'code-aster'):
+                    bld_req = meta["requirements"]["build"]
+                    for req in bld_req:
+                        if not req.startswith("gcc_linux-64"):
+                            continue
+                        gcc_ver = req.split(" ")[1]
+                        break
+                    if gcc_ver is not None:
+                        break
+
                 result: TestPackage
                 df = df._append(
                     {
@@ -91,12 +103,13 @@ class GATestChecker:
                         "mpi": result.test_stats.mpi,
                         "numpy_version": run_packages["numpy"].version,
                         "hdf5_version": run_packages["hdf5"].version,
+                        "gcc_version": gcc_ver,
                         "num_failed_tests": result.test_stats.num_failed_tot,
                     },
                     ignore_index=True,
                 )
                 failed = result.test_stats.num_failed_tot
-                print(f"{result.rel_tag} - {result.ca_version} - {result.python_version}: {failed} failed tests")
+                print(f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests")
 
         df.to_csv(self.temp_dir / "report.csv", index=False)
         print("done")
