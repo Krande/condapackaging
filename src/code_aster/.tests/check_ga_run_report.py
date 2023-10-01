@@ -111,7 +111,7 @@ class GATestChecker:
                 failed = result.test_stats.num_failed_tot
                 print(f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests")
 
-        df.to_csv(self.temp_dir / "report.csv", index=False)
+        df.to_csv("report.csv", index=False)
         print("done")
 
     def get_results(self, release_tag=None, python_ver=None, mpi_ver=None, overwrite=False):
