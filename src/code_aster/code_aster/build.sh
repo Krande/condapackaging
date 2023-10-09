@@ -126,11 +126,11 @@ cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
 # relevant .so files
 # Add activation/deactivation scripts to set/unset required env variables for code-aster
 mkdir -p $PREFIX/etc/conda/activate.d
-cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster.sh
-chmod +x $PREFIX/etc/conda/activate.d/code_aster.sh
+cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster_activate.sh
+chmod +x $PREFIX/etc/conda/activate.d/code_aster_activate.sh
 
 mkdir -p $PREFIX/etc/conda/deactivate.d
-cp $RECIPE_DIR/config/code_aster_deactivate.sh $PREFIX/etc/conda/deactivate.d/code_aster.sh
-chmod +x $PREFIX/etc/conda/deactivate.d/code_aster.sh
+cp $RECIPE_DIR/config/code_aster_deactivate.sh $PREFIX/etc/conda/deactivate.d/code_aster_deactivate.sh
+chmod +x $PREFIX/etc/conda/deactivate.d/code_aster_deactivate.sh
 
 
