@@ -5,8 +5,8 @@ import pathlib
 import tarfile
 from dataclasses import dataclass
 from typing import Iterable
-
 import libarchive
+
 import requests
 import typer
 import zstandard as zstd
@@ -63,7 +63,7 @@ class QuetzManager:
 
         with libarchive.memory_reader(conda_stream.read()) as archive:
             for entry in archive:
-                if not entry.pathname.endswith('.zst') or not entry.pathname.startswith('info'):
+                if not entry.pathname.endswith(".zst") or not entry.pathname.startswith("info"):
                     continue
                 with io.BytesIO() as file_data:
                     for block in entry.get_blocks():
@@ -83,14 +83,14 @@ class QuetzManager:
                         tar_data.seek(0)
 
                         # Read the tar file
-                        with tarfile.open(fileobj=tar_data, mode='r:') as tar:
+                        with tarfile.open(fileobj=tar_data, mode="r:") as tar:
                             for tarinfo in tar:
-                                if not tarinfo.name.endswith('meta.yaml'):
+                                if not tarinfo.name.endswith("meta.yaml"):
                                     continue
                                 meta_yaml_data = yaml.safe_load(tar.extractfile(tarinfo).read())
                                 return meta_yaml_data
 
-    def get_packages_meta_for_channel(self,  channel: str, package_name=None) -> Iterable[dict]:
+    def get_packages_meta_for_channel(self, channel: str, package_name=None) -> Iterable[dict]:
         try:
             for pkg in self.client.yield_packages(channel):
                 if package_name is not None and pkg.name != package_name:
@@ -113,11 +113,13 @@ def create_channel(channel: str, channel_description: str = "", create_public_ch
 
 
 @app.command(name="upload")
-def quetz_manager(package_dir: str, channel: str,
-                  api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
-                  quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")],
-                  force: bool = False,
-                  ):
+def quetz_manager(
+    package_dir: str,
+    channel: str,
+    api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
+    quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")],
+    force: bool = False,
+):
     client = QuetzClient.from_token(quetz_url, api_key)
     qm = QuetzManager(client=client)
     logger.info(f"uploading to channel: {channel}")

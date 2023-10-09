@@ -84,6 +84,7 @@ jobs:
           create-args: >-
             python=3.11
             anaconda-client
+            python-libarchive-c
             typer
             quetz-client
 
