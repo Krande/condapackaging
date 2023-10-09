@@ -85,6 +85,7 @@ jobs:
             python=3.11
             anaconda-client
             python-libarchive-c
+            ruamel.yaml.jinja2
             typer
             quetz-client
 
