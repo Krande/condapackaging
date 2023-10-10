@@ -194,6 +194,9 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
     unclassified_fail_messages = [
         # Uncategorized
         # mpi-related
+        ("<F> <DVP_97>", "Erreur signalée dans la bibliothèque MED", "nom de l'utilitaire : mfiope"),
+        ("<stdout>:cannot remove", "Operation not permitted[1,0]<stdout>", "No such file or directory: 'pick.code_aster.objects'"),
+        ("<stdout>:cannot remove", 'File : "mesh_1.med" has been detected as NOT EXISTING : impossible to read anything !'),
         ("sysmalloc: Assertion `(old_top == initial_top (av)",),
         ("malloc(): invalid size (unsorted)", "=134", "<F>_ABNORMAL_ABORT"),
         ("malloc(): mismatching next->prev_size (unsorted)",),

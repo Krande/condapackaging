@@ -160,6 +160,9 @@ class GATestChecker:
 
 if __name__ == "__main__":
     gatc = GATestChecker()
-    gatc.create_report()
+    # gatc.create_report()
 
-    # gatc.create_report(release_tag="ca-6355937094", python_ver="3.11", mpi_ver="seq")
+    # gatc.create_report(release_tag="ca-6458726549", python_ver="3.11", mpi_ver="mpi")
+    res = list(gatc.get_results(release_tag="ca-6458726549", python_ver="3.11", mpi_ver="mpi"))[0]
+
+
