@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @dataclass
 class TestPackage:
     rel_tag: str
@@ -79,7 +80,7 @@ class GATestChecker:
         )
         df["num_failed_tests"] = df["num_failed_tests"].astype(int)
         for key, results in groupby(
-            self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
+                self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
         ):
             for result in results:
                 run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
@@ -109,7 +110,8 @@ class GATestChecker:
                     ignore_index=True,
                 )
                 failed = result.test_stats.num_failed_tot
-                print(f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests")
+                print(
+                    f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests")
 
         df.to_csv("report.csv", index=False)
         print("done")
@@ -163,6 +165,5 @@ if __name__ == "__main__":
     # gatc.create_report()
 
     # gatc.create_report(release_tag="ca-6458726549", python_ver="3.11", mpi_ver="mpi")
-    res = list(gatc.get_results(release_tag="ca-6458726549", python_ver="3.11", mpi_ver="mpi"))[0]
-
+    res = list(gatc.get_results(release_tag="ca-6362649655", python_ver="3.11", mpi_ver="seq"))[0]
 
