@@ -1,18 +1,11 @@
 # CondaPackaging
 
-A repo for testing conda packaging using various compilers and methods.
+A repo for testing/developing conda packages.
 
-## Goal
+## Goals
+Enable faster iteration cycles for conda package development. 
+
 Improve understanding of the c++/fortran compilation process and linking with python code using conda.
-
-## Highlighted packages subject for testing
-
-* gmsh
-* pythonocc-core
-* occt
-* ifcopenshell
-* calculix
-* code_aster
 
 ## Running locally using Boa/MambaBuild
 
