@@ -1,0 +1,78 @@
+{ % set name = "libmed" % }
+  { % set version = "4.1.1" % }
+  { % set sha256 = "fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0" % }
+
+
+package:
+  name: { { name } }
+  version: { { version } }
+
+source:
+  # url: https://files.salome-platform.org/Salome/medfile/med-{{ version }}.tar.gz # blacklisting conda forge
+  url: https://github.com/Krande/med-copy/archive/refs/tags/{{ version }}.tar.gz
+  sha256: { { sha256 } }
+  patches:
+    # Part of this patch is required to add a few system definitions which
+    # should indicate that they are using the 1.10 API not the 1.6 API
+    # https://github.com/HDFGroup/hdf5/issues/3797
+    - patches/ignore-hdf5-bounds-check-cmake.patch
+    - patches/ignore-hdf5-bounds-check-source.patch
+    - patches/disable-fortran.patch  # [win]
+    - patches/do_not_modify_windows_path.patch
+    - patches/install-in-runtime-and_archive.patch
+    # without this patch, OSX finds the system python since it is a newer version
+    - patches/cmake-modern-python.patch
+    - patches/do-not-make-symlinks-on-windows.patch
+
+build:
+  number: 0
+  # Specific names are set to simplify debugging
+  string: aster_py{{ CONDA_PY }}_mpi_{{ mpi }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [mpi != "nompi"]
+  string: aster_py{{ CONDA_PY }}_nompi_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}          # [mpi == "nompi"]
+  #  skip: true  # [not osx]
+  skip: true  # [py!=311]
+
+requirements:
+  build:
+    - { { compiler('c') } }
+    - { { compiler('cxx') } }
+    - { { compiler('fortran') } }           # [not win]
+    - swig >=4.0.2
+    - cmake
+    - ninja                               # [win]
+    - make                                # [unix]
+    - python                              # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+  host:
+    - python
+    - hdf5
+    - zlib
+  #    - {{ mpi }}                 # [mpi != "nompi"]
+  run:
+    - python
+  #    - {{ mpi }}                 # [mpi != "nompi"]
+
+test:
+  imports:
+    - med
+  commands:
+    - test -f ${PREFIX}/lib/libmed${SHLIB_EXT}                   # [unix]
+    - nm ${PREFIX}/lib/libmedC.so | grep MEDlibraryNumVersion    # [linux]
+
+about:
+  home: https://www.salome-platform.org/user-section/about/med
+  license: LGPL-3.0-only
+  license_family: LGPL
+  license_file: COPYING
+  summary: 'MED : interoperable format for data interchange between mesh based solvers.'
+  description: |
+    The purpose of the MED module is to provide a standard for storing and recovering computer data associated to numerical meshes and fields, and to facilitate the exchange between codes and solvers.
+  doc_url: http://www.salome-platform.org/
+  dev_url: https://git.salome-platform.org/gitweb/?p=modules/med.git;a=summary
+
+extra:
+  recipe-maintainers:
+    - Krande
+    - ldallolio
+    - looooo
+    - ldallolio-irt

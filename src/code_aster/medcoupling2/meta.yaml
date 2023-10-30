@@ -1,0 +1,70 @@
+{% set name = "medcoupling" %}
+{% set version = "9.10.0" %}
+
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  - fn: 'medcoupling_{{ version }}.tar.gz'
+    url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
+    sha256: e727bf8b8bfe848a0e80605e269b8be818bebf9ee098cbb5d6168a920b210c46
+  - fn: 'config_{{ version }}.tar.gz'
+    url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
+    folder: deps/config
+    sha256: 53cbdf2def53e32b2237e948b7dbe8e4051e69e96319a786cd51aba0c915703d
+
+
+build:
+  detect_binary_files_with_prefix: true
+  string: aster_py{{ CONDA_PY }}_mpi_{{ mpi }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}   # [mpi != "nompi"]
+  string: aster_py{{ CONDA_PY }}_nompi_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}           # [mpi == "nompi"]
+  number: 0
+  skip: true  # [osx]
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - make                                      # [not win]
+    - ninja                                     # [win]
+    - cmake
+    - swig >=4.0.2
+
+  host:
+    - python
+    - numpy
+    - boost
+    - libxml2
+    - libmed
+    - petsc                                     # [mpi != 'nompi']
+    - {{ mpi }}                                 # [mpi != 'nompi']
+
+  run:
+    - python
+    - numpy
+    - boost
+    - libxml2
+    - libmed
+    - petsc                                     # [mpi != 'nompi']
+    - {{ mpi }}                                 # [mpi != 'nompi']
+
+test:
+  imports:
+    - medcoupling
+
+about:
+  home: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
+  license: LGPL-2.1-or-later
+  license_family: GPL
+  license_file: COPYING
+  summary: 'The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)'
+  description: |
+    The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)
+  doc_url: https://docs.salome-platform.org/latest/dev/MEDCoupling/developer/index.html
+  dev_url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
+
+extra:
+  recipe-maintainers:
+    - Krande

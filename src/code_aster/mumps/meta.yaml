@@ -40,7 +40,6 @@ requirements:
   host:
     - python
     - numpy
-    - hdf5
     - zlib
     - libblas
     - liblapack
@@ -54,7 +53,6 @@ requirements:
   run:
     - numpy
     - python
-    - hdf5
     - zlib
     - libblas
     - liblapack
