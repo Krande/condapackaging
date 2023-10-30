@@ -1,17 +1,9 @@
-c_compiler:                    # [not win]
-  - gcc                        # [unix]
-c_compiler_version:            # [not win]
-  - 9                          # [unix]
-cxx_compiler:                  # [not win]
-  - gxx                        # [unix]
-cxx_compiler_version:          # [not win]
-  - 9                          # [unix]
-fortran_compiler:               # [not win]
-  - gfortran                   # [linux64 or (osx and x86_64)]
-  - gfortran                   # [aarch64 or ppc64le or armv7l or s390x]
-
-fortran_compiler_version:      # [not win]
-  - 9                          # [unix]
+c_compiler_version:
+  - 12
+cxx_compiler_version:
+  - 12
+fortran_compiler_version:
+  - 12
 
 blas_impl:
   - openblas

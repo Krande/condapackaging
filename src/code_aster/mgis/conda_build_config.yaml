@@ -1,17 +1,9 @@
-c_compiler:
-  - vs2022 # [win]
-  - gcc    # [unix]
 c_compiler_version:
-  - 9    # [unix]
-cxx_compiler:
-  - vs2022 # [win]
-  - gxx    # [unix]
+  - 12
 cxx_compiler_version:
-  - 9     # [unix]
-fortran_compiler:
-  - gfortran # [unix]
+  - 12
 fortran_compiler_version:
-  - 9     # [unix]
+  - 12
 
 pin_run_as_build:
   gcc:
