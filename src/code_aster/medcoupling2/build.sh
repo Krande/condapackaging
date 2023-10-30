@@ -1,8 +1,10 @@
-#!/bin/bash
+set -ex
+
 export CLICOLOR_FORCE=1
 
 mkdir -p build
-cd build
+pushd build
+
 
 if [[ "$mpi" == "nompi" ]]; then
   on_mpi="OFF"

@@ -37,7 +37,7 @@ requirements:
     - numpy
     - boost
     - libxml2
-    - libmed
+    - libmed * *{{ mpi }}*
     - petsc                                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']
 
@@ -46,7 +46,7 @@ requirements:
     - numpy
     - boost
     - libxml2
-    - libmed
+    - libmed * *{{ mpi }}*
     - petsc                                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']
 

@@ -1,9 +1,20 @@
 set -ex
 
+opts=()
+if [[ "$mpi" == "nompi" ]]; then
+  echo "Compiling $mpi"
+else
+  echo "Compiling $mpi"
+  opts+=(-DMEDFILE_USE_MPI=True)
+fi
+
 mkdir -p build
 pushd build
+
 cmake \
   ${CMAKE_ARGS} \
+  "${opts[@]}" \
+  -Wno-dev \
   -D Python_FIND_VIRTUALENV=FIRST \
   -D Python_FIND_STRATEGY=LOCATION \
   -D Python_ROOT_DIR="${PREFIX}" \

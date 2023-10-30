@@ -45,12 +45,13 @@ requirements:
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
   host:
     - python
-    - hdf5
+    - hdf5 * *{{ mpi }}*
     - zlib
-  #    - {{ mpi }}                 # [mpi != "nompi"]
+    - { { mpi } }                 # [mpi != "nompi"]
   run:
     - python
-  #    - {{ mpi }}                 # [mpi != "nompi"]
+    - hdf5 * *{{ mpi }}*
+    - { { mpi } }                 # [mpi != "nompi"]
 
 test:
   imports:
