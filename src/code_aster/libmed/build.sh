@@ -8,9 +8,15 @@ export CLICOLOR_FORCE=1
 #patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-with-tabs.diff
 #patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-parallel.diff
 
-#export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
-#export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
-#export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
+if [[ "${USE_64BIT_IDS}" != "True" ]]
+  echo "Using 32 bit Integer IDs"
+else
+  echo "Using 64 bit Integer IDs"
+  export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
+  export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+fi
+
+export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
 
 if [[ "$mpi" == "nompi" ]]; then
   export F77=${FC}

@@ -21,6 +21,13 @@ else
     echo "Debugging Disabled"
 fi
 
+if [[ "${USE_64BIT_IDS}" != "ON" ]]
+  echo "Using 32 bit Integer IDs"
+  USE_64BIT_IDS="OFF"
+else
+  echo "Using 64 bit Integer IDs"
+fi
+
 cmake .. \
     -DCMAKE_BUILD_TYPE=$build_type \
     -DPYTHON_ROOT_DIR="${PREFIX}" \
@@ -31,6 +38,7 @@ cmake .. \
     -DSALOME_USE_MPI=${on_mpi} \
     -DMEDCOUPLING_BUILD_TESTS=OFF \
     -DMEDCOUPLING_BUILD_DOC=OFF \
+    -DMEDCOUPLING_USE_64BIT_IDS=${USE_64BIT_IDS} \
     -DMEDCOUPLING_USE_MPI=${on_mpi} \
     -DMEDCOUPLING_MEDLOADER_USE_XDR=OFF \
     -DXDR_INCLUDE_DIRS="" \

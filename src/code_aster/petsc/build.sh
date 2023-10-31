@@ -48,7 +48,7 @@ $PYTHON ./configure \
     --with-mpi=1 \
     --with-ssl=0 \
     --with-x=0 \
-    --with-64-bit-indices=0 \
+    --with-64-bit-indices=1 \
     --with-mumps-lib="-L${PREFIX}/lib -lzmumps -ldmumps -lmumps_common -lpord -lesmumps -lptscotch -lptscotcherr -lptscotcherrexit -lscotch -lscotcherr -lscotcherrexit -lparmetis -lmetis" \
     --with-mumps-include="${PREFIX}/include" \
     --with-scalapack-lib="-L$PREFIX/lib -lscalapack" \

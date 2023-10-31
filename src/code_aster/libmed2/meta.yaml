@@ -1,16 +1,16 @@
-{ % set name = "libmed" % }
-  { % set version = "4.1.1" % }
-  { % set sha256 = "fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0" % }
+{% set name = "libmed" %}
+{% set version = "4.1.1" %}
+{% set sha256 = "fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0" %}
 
 
 package:
-  name: { { name } }
-  version: { { version } }
+  name: {{ name }}
+  version: {{ version }}
 
 source:
   # url: https://files.salome-platform.org/Salome/medfile/med-{{ version }}.tar.gz # blacklisting conda forge
   url: https://github.com/Krande/med-copy/archive/refs/tags/{{ version }}.tar.gz
-  sha256: { { sha256 } }
+  sha256: {{ sha256 }}
   patches:
     # Part of this patch is required to add a few system definitions which
     # should indicate that they are using the 1.10 API not the 1.6 API
@@ -34,9 +34,9 @@ build:
 
 requirements:
   build:
-    - { { compiler('c') } }
-    - { { compiler('cxx') } }
-    - { { compiler('fortran') } }           # [not win]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}           # [not win]
     - swig >=4.0.2
     - cmake
     - ninja                               # [win]
@@ -47,11 +47,11 @@ requirements:
     - python
     - hdf5 * *{{ mpi }}*
     - zlib
-    - { { mpi } }                 # [mpi != "nompi"]
+    - {{ mpi }}                 # [mpi != "nompi"]
   run:
     - python
     - hdf5 * *{{ mpi }}*
-    - { { mpi } }                 # [mpi != "nompi"]
+    - {{ mpi }}                 # [mpi != "nompi"]
 
 test:
   imports:

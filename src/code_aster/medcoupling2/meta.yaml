@@ -9,11 +9,11 @@ package:
 source:
   - fn: 'medcoupling_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
-    sha256: e727bf8b8bfe848a0e80605e269b8be818bebf9ee098cbb5d6168a920b210c46
+    sha256: 02087a4e59ffcdab6fc68460ffd86b03a80b5c0faa695b0bfb2142f1d0d3e5ea
   - fn: 'config_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     folder: deps/config
-    sha256: 53cbdf2def53e32b2237e948b7dbe8e4051e69e96319a786cd51aba0c915703d
+    sha256: d58f6749514ce49b00590a96d6dc9090a76a07c13690e2453403643afb40346c
 
 
 build:
@@ -22,6 +22,7 @@ build:
   string: aster_py{{ CONDA_PY }}_nompi_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}           # [mpi == "nompi"]
   number: 0
   skip: true  # [osx]
+  skip: true # [mpi != "nompi"]
 
 requirements:
   build:

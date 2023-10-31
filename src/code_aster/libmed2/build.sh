@@ -1,5 +1,8 @@
 set -ex
 
+export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
+export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+
 opts=()
 if [[ "$mpi" == "nompi" ]]; then
   echo "Compiling $mpi"
