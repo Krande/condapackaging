@@ -8,7 +8,7 @@ export CLICOLOR_FORCE=1
 #patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-with-tabs.diff
 #patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-parallel.diff
 
-if [[ "${USE_64BIT_IDS}" != "True" ]]
+if [[ "${USE_64BIT_IDS}" != "True" ]]; then
   echo "Using 32 bit Integer IDs"
 else
   echo "Using 64 bit Integer IDs"

@@ -1,0 +1,19 @@
+Subject: [PATCH] fort int32
+---
+Index: bibfor/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bibfor/wscript b/bibfor/wscript
+--- a/bibfor/wscript	(revision cf8f72d05f54b5800e07a5caceba32228a80031a)
++++ b/bibfor/wscript	(date 1698788502156)
+@@ -74,7 +74,7 @@
+     self.check_fortran_compiler_options("-fPIC")
+     if "gfortran" in self.env.FC_NAME.lower():
+         if "64" in self.env.DEST_CPU:
+-            flags = ["-fdefault-%s-%i" % (name, 8) for name in ("double", "integer", "real")]
++            flags = ["-fdefault-%s-%i" % (name, 8) for name in ("double", "real")]
+             self.check_fortran_compiler_options(flags)
+         self.check_fortran_compiler_options("-Wimplicit-interface")
+         self.check_fortran_compiler_options("-Wintrinsic-shadow")

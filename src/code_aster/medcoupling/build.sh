@@ -21,7 +21,7 @@ else
     echo "Debugging Disabled"
 fi
 
-if [[ "${USE_64BIT_IDS}" != "ON" ]]
+if [[ "${USE_64BIT_IDS}" != "ON" ]]; then
   echo "Using 32 bit Integer IDs"
   USE_64BIT_IDS="OFF"
 else

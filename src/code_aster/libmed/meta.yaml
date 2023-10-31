@@ -23,7 +23,7 @@ build:
   skip: true  # [py2k or osx]
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
-    - USE_64BIT_IDS={{ environ.get('USE_64BIT_IDS', 'True') }}
+    - USE_64BIT_IDS={{ environ.get('USE_64BIT_IDS', 'False') }}
 
 requirements:
   build:
