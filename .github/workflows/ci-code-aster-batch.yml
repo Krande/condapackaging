@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "test varying gcc versions"
+      description: "Stable 3.11 release"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
@@ -203,6 +203,7 @@ jobs:
       platforms: "ubuntu-latest"
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      description:  ${{ needs.env.outputs.description }}
     secrets: inherit
 
   test_seq:
@@ -217,4 +218,5 @@ jobs:
       platforms: "ubuntu-latest"
       suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      description:  ${{ needs.env.outputs.description }}
     secrets: inherit

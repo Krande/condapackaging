@@ -39,6 +39,11 @@ on:
         type: string
         required: false
         default: False
+      description:
+        description: 'description'
+        type: string
+        required: false
+        default: ""
 env:
   VARIANT_FLAG: "*seq*"
   PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
@@ -55,7 +60,7 @@ jobs:
       conda_user: ${{ inputs.conda_user }}
       use_quetz: ${{ inputs.use_quetz }}
     secrets: inherit
-      
+
   run_ctest:
     needs: build_matrix
     name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
@@ -76,11 +81,11 @@ jobs:
 
       - name: set ENV CONDA_CHANNEL
         run: |
-            if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
-                echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
-            else
-                echo "CONDA_CHANNEL=${{ inputs.conda_user }}/label/${{ inputs.conda_label }}" >> $GITHUB_ENV
-            fi
+          if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
+              echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
+          else
+              echo "CONDA_CHANNEL=${{ inputs.conda_user }}/label/${{ inputs.conda_label }}" >> $GITHUB_ENV
+          fi
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
@@ -104,13 +109,13 @@ jobs:
         if: ${{ inputs.mpi == false }}
         continue-on-error: true
         run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
       - name: run ctest [mpi]
         if: ${{ inputs.mpi == true }}
         continue-on-error: true
         run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=5.0 --only-failed-results -j 2
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
       - name: add mamba data
         run: |
@@ -121,7 +126,7 @@ jobs:
         run: |
           if [[ ${{ inputs.mpi }} == true ]]; then
             echo "MPI variant"
-            add_str="--mpi"
+            add_str=" --mpi"
           else
             echo "SEQ variant"
             add_str=""
@@ -165,7 +170,9 @@ jobs:
         with:
           tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_label }}-${{ inputs.suffix }}
           name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_label }}-${{ inputs.suffix }}]
-          body: Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
+          body: |
+            Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
+            ${{ inputs.description }}
           draft: false
           prerelease: false
           files: ${{ env.PKG_TAR }}
