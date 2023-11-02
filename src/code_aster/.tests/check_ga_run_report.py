@@ -25,16 +25,26 @@ class TestPackage:
     ca_version: str
     python_version: str
     results_dir: pathlib.Path
+    notes: str = ""
+
+
+def extract_release_body_for_notes(body: str) -> str:
+    """Check if the release body contains the string "Notes:"""
+    res = body.split("Notes:")
+    if len(res) < 2:
+        return ""
+
+    return res[1].replace("\n", " ").replace("*", "").strip()
 
 
 def parse_packages(text: str) -> dict[str, Package]:
-    lines = text.strip().split('\n')
+    lines = text.strip().split("\n")
     packages = {}
 
     # Find the line where the package list starts
     start_line = 0
     for i, line in enumerate(lines):
-        if '───────────────────────────────────────────────────────────────────────────────' in line:
+        if "───────────────────────────────────────────────────────────────────────────────" in line:
             start_line = i + 1
             break
 
@@ -80,12 +90,12 @@ class GATestChecker:
         )
         df["num_failed_tests"] = df["num_failed_tests"].astype(int)
         for key, results in groupby(
-                self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
+            self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
         ):
             for result in results:
                 run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
                 gcc_ver = None
-                for meta in qm.get_packages_meta_for_channel(result.rel_tag, 'code-aster'):
+                for meta in qm.get_packages_meta_for_channel(result.rel_tag, "code-aster"):
                     bld_req = meta["requirements"]["build"]
                     for req in bld_req:
                         if not req.startswith("gcc_linux-64"):
@@ -106,12 +116,14 @@ class GATestChecker:
                         "hdf5_version": run_packages["hdf5"].version,
                         "gcc_version": gcc_ver,
                         "num_failed_tests": result.test_stats.num_failed_tot,
+                        "description": result.notes,
                     },
                     ignore_index=True,
                 )
                 failed = result.test_stats.num_failed_tot
                 print(
-                    f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests")
+                    f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests"
+                )
 
         df.to_csv("report.csv", index=False)
         print("done")
@@ -123,6 +135,7 @@ class GATestChecker:
             name = asset["name"]
 
             tag_name = release["tag_name"]
+            body_str = extract_release_body_for_notes(release["body"])
 
             mpi_str = re.search("mpi|seq", rel_name).group(0)
             if mpi_ver is not None and mpi_str != mpi_ver:
@@ -147,7 +160,7 @@ class GATestChecker:
                 if python_ver is not None and py_ver != python_ver:
                     continue
                 test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
-                yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir)
+                yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, body_str)
 
     def prep_ctests_for_local_rerunning(self, local_env_path):
         local_env_path = pathlib.Path(local_env_path)
@@ -162,10 +175,8 @@ class GATestChecker:
 
 if __name__ == "__main__":
     gatc = GATestChecker()
-    # gatc.create_report()
+    gatc.create_report()
 
     # gatc.create_report(release_tag="ca-6458726549", python_ver="3.11", mpi_ver="mpi")
     # res = list(gatc.get_results(release_tag="ca-6362649655", python_ver="3.11", mpi_ver="seq"))[0]
-    # res = list(gatc.get_results(release_tag="ca-6706109178", python_ver="3.11", mpi_ver="mpi"))[0]
-
-
+    # res = list(gatc.get_results(release_tag="ca-6458726549", python_ver="3.11", mpi_ver="mpi"))[0]

@@ -103,15 +103,15 @@ fi
 export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
+# This is planned for reducing reliance on conda activation scripts. But it's not yet working
+mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
+mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
+mv $PREFIX/lib/aster/*.so $SP_DIR/
+#mv $PREFIX/include/aster/* $PREFIX/include
+
 # Generate stubs for pybind11
 $PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
 echo "Stubs generation completed"
-
-# This is planned for reducing reliance on conda activation scripts. But it's not yet working
-#mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
-#mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
-#mv $PREFIX/lib/aster/* $PREFIX/lib
-#mv $PREFIX/include/aster/* $PREFIX/include
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
@@ -119,7 +119,8 @@ cp $PREFIX/bin/run_ctest $PREFIX/bin/_run_ctest_old
 
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
 cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
-#cp $RECIPE_DIR/config/as_run $PREFIX/bin/as_run
+# Update the path to python env root dir in run_aster utils.py
+sed -i.bak 's|RUNASTER_ROOT = os\.environ\.get(|&\n    "RUNASTER_ROOT", osp\.dirname\(osp\.dirname\(osp\.dirname\(osp\.dirname\(osp\.abspath\(__file__\)\)\)\)\)\)|RUNASTER_ROOT = os.environ.get(\n    "RUNASTER_ROOT", osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))))|' $PREFIX/bin/run_aster/utils.py
 
 
 # Alternative, I could move the entire code_aster subdirectory to site-packages granted I am able to relocate all

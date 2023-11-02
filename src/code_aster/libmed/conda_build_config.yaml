@@ -1,9 +1,9 @@
 c_compiler_version:
-  - 12
+  - 8
 cxx_compiler_version:
-  - 12
+  - 8
 fortran_compiler_version:
-  - 12
+  - 8
 
 blas_impl:
   - openblas
