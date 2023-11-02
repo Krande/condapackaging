@@ -1,8 +1,9 @@
-#!/bin/bash
+set -ex
+
 export CLICOLOR_FORCE=1
 
 mkdir -p build
-cd build
+pushd build
 
 if [[ "$mpi" == "nompi" ]]; then
   on_mpi="OFF"
@@ -58,3 +59,7 @@ cmake .. \
 
 make -j 1
 make install
+
+# Generate stubs for pybind11
+python "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
+echo "Stubs generation completed"

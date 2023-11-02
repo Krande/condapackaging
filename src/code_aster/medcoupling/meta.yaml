@@ -1,7 +1,7 @@
-{% set name = "medcoupling" %}
-{% set version = "9.10.0" %}
-{% set libmed_ver = "4.1.1" %}
-{% set petsc_ver = "3.17.1" %}
+{ % set name = "medcoupling" % }
+  { % set version = "9.10.0" % }
+  { % set libmed_ver = "4.1.1" % }
+  { % set petsc_ver = "3.17.1" % }
 
 
 package:
@@ -9,12 +9,13 @@ package:
   version: '{{ version }}'
 
 source:
-
   - fn: 'medcoupling_{{ version }}.tar.gz'
-    url: http://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=fe2e38d301902c626f644907e00e499552bb2fa5;sf=tgz # 9.10
+    url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
+    sha256: 02087a4e59ffcdab6fc68460ffd86b03a80b5c0faa695b0bfb2142f1d0d3e5ea
   - fn: 'config_{{ version }}.tar.gz'
-    url: http://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=25f724f7a6c0000330a40c3851dcd8bc2493e1fa;sf=tgz # 9.10.0
+    url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     folder: deps/config
+    sha256: d58f6749514ce49b00590a96d6dc9090a76a07c13690e2453403643afb40346c
 
 
 build:
@@ -31,7 +32,7 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - make                                      # [not win]
-#    - mingw64 13.1                             # [win]
+    #    - mingw64 13.1                             # [win]
     - ninja                                     # [win]
     - cmake
     - swig >=4.0.2
@@ -46,7 +47,7 @@ requirements:
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
-    - {{ mpi }}                                 # [mpi != 'nompi']
+    - { { mpi } }                                 # [mpi != 'nompi']
 
   run:
     - python
@@ -56,7 +57,7 @@ requirements:
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
-    - {{ mpi }}                                 # [mpi != 'nompi']
+    - { { mpi } }                                 # [mpi != 'nompi']
 
 test:
   imports:

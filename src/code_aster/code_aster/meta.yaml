@@ -23,8 +23,8 @@ source:
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
 #  - git_url: https://gitlab.com/codeaster/src.git
 #    git_depth: 1
-    patches:
-      - patches/fort_int32.patch
+  #    patches:
+  #      - patches/fort_int32.patch
 
 build:
   detect_binary_files_with_prefix: true

@@ -211,8 +211,6 @@ def run(
                 continue
             clas.properties.append(prop)
 
-
-
     parser.finalize()
 
     if module is None:
@@ -228,7 +226,6 @@ def run(
 
 
 def main(module_name):
-
     pyi_dest_dir = pathlib.Path(__import__(module_name).__file__).parent
     # pyi_dest_dir = ".stubs"
 
@@ -285,4 +282,4 @@ def main(module_name):
 
 if __name__ == "__main__":
     main(module_name="libaster")
-    main(module_name="medcoupling")
+    # main(module_name="medcoupling")

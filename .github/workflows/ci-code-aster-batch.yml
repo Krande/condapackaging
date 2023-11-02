@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Stable 3.11 release"
+      description: "Test "
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

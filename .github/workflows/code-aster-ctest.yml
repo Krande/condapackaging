@@ -168,11 +168,13 @@ jobs:
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_label }}-${{ inputs.suffix }}
-          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_label }}-${{ inputs.suffix }}]
+          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_label }}
+          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_label }}
           body: |
             Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
-            ${{ inputs.description }}
+            
+            Notes:
+            * ${{ inputs.description }}
           draft: false
           prerelease: false
           files: ${{ env.PKG_TAR }}
