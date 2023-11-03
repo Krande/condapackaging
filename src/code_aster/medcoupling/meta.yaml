@@ -1,7 +1,7 @@
-{ % set name = "medcoupling" % }
-  { % set version = "9.10.0" % }
-  { % set libmed_ver = "4.1.1" % }
-  { % set petsc_ver = "3.17.1" % }
+{% set name = "medcoupling" %}
+{% set version = "9.10.0" %}
+{% set libmed_ver = "4.1.1" %}
+{% set petsc_ver = "3.17.1" %}
 
 
 package:
@@ -47,7 +47,7 @@ requirements:
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
-    - { { mpi } }                                 # [mpi != 'nompi']
+    - {{ mpi }}                                 # [mpi != 'nompi']
 
   run:
     - python
@@ -57,7 +57,7 @@ requirements:
     - libmed {{ libmed_ver }}=aster_*seq*       # [mpi == "nompi"]
     - libmed {{ libmed_ver }}=aster_*openmpi*   # [mpi != "nompi"]
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
-    - { { mpi } }                                 # [mpi != 'nompi']
+    - {{ mpi }}                                 # [mpi != 'nompi']
 
 test:
   imports:
