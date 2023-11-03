@@ -50,7 +50,9 @@ fi
 
 chmod +x ./configure
 ./configure "${opts[@]}" --prefix="$PREFIX" --with-hdf5="$PREFIX"
-make
+
+
+make -j${CPU_COUNT}
 make install
 
 rm -rf "${PREFIX}/share/doc/med"

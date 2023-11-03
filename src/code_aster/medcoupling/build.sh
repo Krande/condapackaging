@@ -50,7 +50,7 @@ cmake .. \
     -DPARMETIS_ROOT_DIR="${PREFIX}" \
     -DCMAKE_PREFIX_PATH="${PREFIX}"
 
-make -j 1
+make -j$CPU_COUNT
 make install
 
 # Generate stubs for pybind11

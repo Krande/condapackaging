@@ -3,7 +3,8 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - conda-build 3.24
+  - conda-build
+  - conda 23.3.1
 #  - conda-verify # does not work together with .conda files
   - anaconda-client
   - typer
@@ -18,7 +19,7 @@ dependencies:
   - boa
   - mercurial
   - ruamel.yaml.jinja2
-  - pybind11-stubgen 2.1
+  - pybind11-stubgen
   - pip
   - pip:
       - -e src/cpack
