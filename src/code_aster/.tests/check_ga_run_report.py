@@ -79,13 +79,14 @@ class GATestChecker:
         df = pd.DataFrame(
             {
                 "release_tag": [],
-                "ca_version": [],
-                "python_version": [],
+                "code_aster": [],
+                "python": [],
                 "mpi": [],
-                "numpy_version": [],
-                "hdf5_version": [],
-                "gcc_version": [],
+                "numpy": [],
+                "hdf5": [],
+                "gcc": [],
                 "num_failed_tests": [],
+                "description": [],
             }
         )
         df["num_failed_tests"] = df["num_failed_tests"].astype(int)
@@ -109,12 +110,12 @@ class GATestChecker:
                 df = df._append(
                     {
                         "release_tag": result.rel_tag,
-                        "ca_version": result.ca_version,
-                        "python_version": result.python_version,
+                        "code_aster": result.ca_version,
+                        "python": result.python_version,
                         "mpi": result.test_stats.mpi,
-                        "numpy_version": run_packages["numpy"].version,
-                        "hdf5_version": run_packages["hdf5"].version,
-                        "gcc_version": gcc_ver,
+                        "numpy": run_packages["numpy"].version,
+                        "hdf5": run_packages["hdf5"].version,
+                        "gcc": gcc_ver,
                         "num_failed_tests": result.test_stats.num_failed_tot,
                         "description": result.notes,
                     },
