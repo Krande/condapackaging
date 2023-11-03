@@ -99,19 +99,25 @@ else
       ./waf_mpi install
   fi
 fi
+
+# Make sure that any importErrors are printed to console.
+sed -i 's/except ImportError:/except ImportError as e:\n    print(f"ImportError: {e}")/' $PREFIX/lib/aster/code_aster/__init__.py
+
 # Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
 export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
-# This is planned for reducing reliance on conda activation scripts. But it's not yet working
-mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
-mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
-mv $PREFIX/lib/aster/*.so $SP_DIR/
-#mv $PREFIX/include/aster/* $PREFIX/include
-
 # Generate stubs for pybind11
 $PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
 echo "Stubs generation completed"
+
+# This is planned for reducing reliance on conda activation scripts. But it's not yet working
+mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
+mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
+mv $PREFIX/lib/aster/lib*.so $PREFIX/lib/
+mv $PREFIX/lib/aster/*.so $SP_DIR/
+mv $PREFIX/lib/aster/*.pyi $SP_DIR/
+#mv $PREFIX/include/aster/* $PREFIX/include
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
@@ -120,18 +126,18 @@ cp $PREFIX/bin/run_ctest $PREFIX/bin/_run_ctest_old
 cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
 cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
 # Update the path to python env root dir in run_aster utils.py
-sed -i.bak 's|RUNASTER_ROOT = os\.environ\.get(|&\n    "RUNASTER_ROOT", osp\.dirname\(osp\.dirname\(osp\.dirname\(osp\.dirname\(osp\.abspath\(__file__\)\)\)\)\)\)|RUNASTER_ROOT = os.environ.get(\n    "RUNASTER_ROOT", osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))))|' $PREFIX/bin/run_aster/utils.py
+# sed -i 's|RUNASTER_ROOT = os\.environ\.get(\n    "RUNASTER_ROOT", osp\.dirname(osp\.dirname(osp\.dirname(osp\.dirname(osp\.abspath(__file__)))))\)|RUNASTER_ROOT = os.environ.get(\n    "RUNASTER_ROOT", osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__)))))))|' $PREFIX/bin/run_aster/utils.py
 
 
 # Alternative, I could move the entire code_aster subdirectory to site-packages granted I am able to relocate all
 # relevant .so files
 # Add activation/deactivation scripts to set/unset required env variables for code-aster
-mkdir -p $PREFIX/etc/conda/activate.d
-cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster_activate.sh
-chmod +x $PREFIX/etc/conda/activate.d/code_aster_activate.sh
-
-mkdir -p $PREFIX/etc/conda/deactivate.d
-cp $RECIPE_DIR/config/code_aster_deactivate.sh $PREFIX/etc/conda/deactivate.d/code_aster_deactivate.sh
-chmod +x $PREFIX/etc/conda/deactivate.d/code_aster_deactivate.sh
+#mkdir -p $PREFIX/etc/conda/activate.d
+#cp $RECIPE_DIR/config/code_aster_activate.sh $PREFIX/etc/conda/activate.d/code_aster_activate.sh
+#chmod +x $PREFIX/etc/conda/activate.d/code_aster_activate.sh
+#
+#mkdir -p $PREFIX/etc/conda/deactivate.d
+#cp $RECIPE_DIR/config/code_aster_deactivate.sh $PREFIX/etc/conda/deactivate.d/code_aster_deactivate.sh
+#chmod +x $PREFIX/etc/conda/deactivate.d/code_aster_deactivate.sh
 
 
