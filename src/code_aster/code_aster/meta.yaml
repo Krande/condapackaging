@@ -1,12 +1,12 @@
 {% set name = 'code-aster' %}
-  { % set version = '16.4.12' % }
+{% set version = '16.4.12' %}
 
 # Dependencies
 {% set med_ver = '4.1.1=aster_*' %}
 {% set metis_ver = '5.1.0=aster4*' %}
 {% set mfront_ver = '4.1.0=aster_*' %}
 {% set mumps_ver = '5.5.1=aster1*' %}
-  { % set petsc_ver = '3.17.1=aster*' % }
+{% set petsc_ver = '3.17.1=aster*' %}
 {% set scotch_ver = '7.0.1=aster*' %}
 {% set medcoupling_ver = '9.10.0=aster*' %}
 {% set homard_ver = '11.12' %}

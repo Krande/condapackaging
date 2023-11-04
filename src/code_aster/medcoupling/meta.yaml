@@ -1,7 +1,7 @@
 {% set name = "medcoupling" %}
 {% set version = "9.10.0" %}
-  { % set libmed_ver = "4.1.1=aster_*" % }
-  { % set petsc_ver = "3.17.1=aster_*" % }
+{% set libmed_ver = "4.1.1=aster_*" %}
+{% set petsc_ver = "3.17.1=aster_*" %}
 
 
 package:
@@ -42,7 +42,7 @@ requirements:
     - astor
     - pybind11-stubgen
     - libmed {{ libmed_ver }}{{mpi}}*
-    - { { mpi } }                                 # [mpi != 'nompi']
+    - {{ mpi }}                                 # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
 
   run:
@@ -51,7 +51,7 @@ requirements:
     - boost
     - libxml2
     - libmed {{ libmed_ver }}{{mpi}}*
-    - { { mpi } }                                 # [mpi != 'nompi']
+    - {{ mpi }}                                 # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
 
 
