@@ -114,6 +114,7 @@ echo "Stubs generation completed"
 # This is planned for reducing reliance on conda activation scripts. But it's not yet working
 mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
 mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
+# note to self. aster.so is symlinked to libaster.so
 mv $PREFIX/lib/aster/*.so $SP_DIR/
 mv $PREFIX/lib/aster/*.pyi $SP_DIR/
 #mv $PREFIX/include/aster/* $PREFIX/include
