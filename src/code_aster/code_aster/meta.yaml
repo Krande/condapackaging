@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '16.4.11' %}
+  { % set version = '16.4.12' % }
 
 # Dependencies
 {% set med_ver = '4.1.1=aster_*' %}
@@ -29,8 +29,7 @@ source:
 build:
   detect_binary_files_with_prefix: true
   rpaths:
-    - lib/
-    - lib/aster/
+    - lib/aster
     - lib/petsc4py/lib      # [mpi != "nompi"]
   number: 6
   string: py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
@@ -43,7 +42,6 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - sysroot_linux-64 2.17
     - pyyaml
     - waf
 
@@ -61,14 +59,10 @@ requirements:
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
-    - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
-    - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
-    - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
-    - scotch {{ scotch_ver }}openmpi*               # [mpi != "nompi"]
-    - mumps {{ mumps_ver }}seq*                     # [mpi == "nompi"]
-    - mumps {{ mumps_ver }}openmpi*                 # [mpi != "nompi"]
-    - medcoupling {{ medcoupling_ver }}seq*         # [mpi == "nompi"]
-    - medcoupling {{ medcoupling_ver }}openmpi*     # [mpi != "nompi"]
+    - libmed {{ med_ver }}*{{mpi}}*
+    - scotch {{ scotch_ver }}*{{mpi}}*
+    - mumps {{ mumps_ver }}*{{mpi}}*
+    - medcoupling {{ medcoupling_ver }}*{{mpi}}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - petsc {{ petsc_ver }}=aster*                  # [mpi != "nompi"]
     - parmetis                                      # [mpi != "nompi"]
@@ -84,14 +78,10 @@ requirements:
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
-    - libmed {{ med_ver }}seq*                      # [mpi == "nompi"]
-    - libmed {{ med_ver }}openmpi*                  # [mpi != "nompi"]
-    - scotch {{ scotch_ver }}seq*                   # [mpi == "nompi"]
-    - scotch {{ scotch_ver }}openmpi*               # [mpi != "nompi"]
-    - mumps {{ mumps_ver }}seq*                     # [mpi == "nompi"]
-    - mumps {{ mumps_ver }}openmpi*                 # [mpi != "nompi"]
-    - medcoupling {{ medcoupling_ver }}seq*         # [mpi == "nompi"]
-    - medcoupling {{ medcoupling_ver }}openmpi*     # [mpi != "nompi"]
+    - libmed {{ med_ver }}*{{mpi}}*
+    - scotch {{ scotch_ver }}*{{mpi}}*
+    - mumps {{ mumps_ver }}*{{mpi}}*
+    - medcoupling {{ medcoupling_ver }}*{{mpi}}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - petsc {{ petsc_ver }}=aster*                  # [mpi != "nompi"]
     - parmetis                                      # [mpi != "nompi"]
