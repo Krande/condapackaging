@@ -17,7 +17,8 @@
 #export CPLUS_INCLUDE_PATH=$(echo $CPLUS_INCLUDE_PATH | sed "s|${CONDA_PREFIX}/lib/petsc4py/include:||g")
 
 # Unset ASTER environment variables
-unset ASTER_LIBDIR
+#unset ASTER_LIBDIR
 unset ASTER_DATADIR
 unset ASTER_LOCALEDIR
 unset ASTER_ELEMENTSDIR
+unset RUNASTER_ROOT

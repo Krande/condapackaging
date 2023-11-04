@@ -9,7 +9,8 @@
 #export C_INCLUDE_PATH="${CONDA_PREFIX}/include/aster:${CONDA_PREFIX}/lib/petsc4py/include:${C_INCLUDE_PATH}"
 #export CPLUS_INCLUDE_PATH="${CONDA_PREFIX}/include/aster:${CONDA_PREFIX}/lib/petsc4py/include:${CPLUS_INCLUDE_PATH}"
 
-export ASTER_LIBDIR="$CONDA_PREFIX/lib/aster"
-export ASTER_DATADIR="$CONDA_PREFIX/share/aster"
-export ASTER_LOCALEDIR="$CONDA_PREFIX/share/locale/aster"
-export ASTER_ELEMENTSDIR="$CONDA_PREFIX/lib/aster"
+#export ASTER_LIBDIR="${CONDA_PREFIX}/lib/aster"
+export ASTER_DATADIR="${CONDA_PREFIX}/share/aster"
+export ASTER_LOCALEDIR="${CONDA_PREFIX}/share/locale/aster"
+export ASTER_ELEMENTSDIR="${CONDA_PREFIX}/lib/aster"
+export RUNASTER_ROOT=${CONDA_PREFIX}
