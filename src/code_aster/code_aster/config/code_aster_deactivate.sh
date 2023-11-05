@@ -6,7 +6,7 @@
 #
 ## Remove paths from LD_LIBRARY_PATH
 #export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|${CONDA_PREFIX}/lib/aster:||g")
-#export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|${CONDA_PREFIX}/lib/petsc4py/lib:||g")
+export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|${CONDA_PREFIX}/lib/petsc4py/lib:||g")
 
 # Remove paths from C_INCLUDE_PATH
 #export C_INCLUDE_PATH=$(echo $C_INCLUDE_PATH | sed "s|${CONDA_PREFIX}/include/aster:||g")

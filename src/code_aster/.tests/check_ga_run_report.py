@@ -132,36 +132,34 @@ class GATestChecker:
     def get_results(self, release_tag=None, python_ver=None, mpi_ver=None, overwrite=False):
         for release in self.list_all_releases():
             rel_name = release["name"]
-            asset = release["assets"][0]
-            name = asset["name"]
-
             tag_name = release["tag_name"]
             body_str = extract_release_body_for_notes(release["body"])
-
-            mpi_str = re.search("mpi|seq", rel_name).group(0)
-            if mpi_ver is not None and mpi_str != mpi_ver:
-                continue
-            rel_tag = re.search("\[(.*?)\]", rel_name).group(1).replace("-" + mpi_str, "")
-            if release_tag is not None and rel_tag != release_tag:
-                continue
-            ca_version = tag_name.split("-")[2]
-            dest_file = self.temp_dir / "files" / name
-            dest_dir = self.temp_dir / name.replace(".tar.gz", "")
-            if not dest_file.exists() or overwrite is True:
-                r = requests.get(asset["browser_download_url"])
-                dest_file.parent.mkdir(exist_ok=True, parents=True)
-                with open(dest_file, "wb") as f:
-                    f.write(r.content)
-                with tarfile.open(dest_file, "r:gz") as f:
-                    f.extractall(dest_dir)
-
-            for d in os.listdir(dest_dir):
-                py_ver = d.split("-")[-1]
-                res_dir = dest_dir / d
-                if python_ver is not None and py_ver != python_ver:
+            for asset in release["assets"]:
+                name = asset["name"]
+                mpi_str = re.search("mpi|seq", name).group(0)
+                if mpi_ver is not None and mpi_str != mpi_ver:
                     continue
-                test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
-                yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, body_str)
+                rel_tag = re.search("\[(.*?)\]", rel_name).group(1).replace("-" + mpi_str, "")
+                if release_tag is not None and rel_tag != release_tag:
+                    continue
+                ca_version = tag_name.split("-")[2]
+                dest_file = self.temp_dir / "files" / name
+                dest_dir = self.temp_dir / name.replace(".tar.gz", "")
+                if not dest_file.exists() or overwrite is True:
+                    r = requests.get(asset["browser_download_url"])
+                    dest_file.parent.mkdir(exist_ok=True, parents=True)
+                    with open(dest_file, "wb") as f:
+                        f.write(r.content)
+                    with tarfile.open(dest_file, "r:gz") as f:
+                        f.extractall(dest_dir)
+
+                for d in os.listdir(dest_dir):
+                    py_ver = d.split("-")[-1]
+                    res_dir = dest_dir / d
+                    if python_ver is not None and py_ver != python_ver:
+                        continue
+                    test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
+                    yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, body_str)
 
     def prep_ctests_for_local_rerunning(self, local_env_path):
         local_env_path = pathlib.Path(local_env_path)

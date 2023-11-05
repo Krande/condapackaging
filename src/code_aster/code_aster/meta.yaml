@@ -36,6 +36,7 @@ build:
   string: py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  skip: true  # [mpi == "nompi"]
 
 requirements:
   build:
@@ -93,6 +94,7 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
+    - run_ctest -R 'zzzz506h' --resutest=../resutest --only-failed-results -j 1     # [mpi != "nompi"]
 #    - run_ctest -R 'forma01a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only

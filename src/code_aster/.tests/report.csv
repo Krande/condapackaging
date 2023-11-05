@@ -1,4 +1,6 @@
 release_tag,code_aster,python,mpi,numpy,hdf5,gcc,num_failed_tests,description
+ca-6756834234,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,132,Release 16.4.12 and refactor code_aster and run_aster to site packages
+ca-6756834234,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,41,Release 16.4.12 and refactor code_aster and run_aster to site packages
 ca-6733986370,16.4.11,3.10,seq,1.25.2,1.10.6,8.5.0,109,
 ca-6733986370,16.4.11,3.11,seq,1.25.2,1.10.6,8.5.0,18,
 ca-6733986370,16.4.11,3.10,mpi,1.25.2,1.10.6,8.5.0,109,
@@ -57,5 +59,3 @@ ca-6355937094,16.4.8,3.10,mpi,1.25.2,1.10.6,8.5.0,336,Test using code_aster offi
 ca-6355937094,16.4.8,3.11,mpi,1.25.2,1.10.6,8.5.0,255,Test using code_aster official 16.4.8 version
 ca-6251156226,16.4.8,3.10,seq,1.23.5,1.10.6,8.5.0,116,Test using latest code_aster git version with seq fixes
 ca-6251156226,16.4.8,3.11,seq,1.23.5,1.10.6,8.5.0,21,Test using latest code_aster git version with seq fixes
-ca-6251156226,16.4.8,3.10,mpi,1.23.5,1.10.6,8.5.0,333,Test using latest code_aster git version with seq fixes
-ca-6251156226,16.4.8,3.11,mpi,1.23.5,1.10.6,8.5.0,251,Test using latest code_aster git version with seq fixes
