@@ -29,14 +29,13 @@ source:
 build:
   detect_binary_files_with_prefix: true
   rpaths:
-    - lib/aster
     - lib/petsc4py/lib      # [mpi != "nompi"]
   number: 6
   string: py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
   string: py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
-  skip: true  # [mpi == "nompi"]
+  #skip: true  # [mpi == "nompi"]
 
 requirements:
   build:
