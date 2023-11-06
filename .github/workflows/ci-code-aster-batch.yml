@@ -20,10 +20,10 @@ jobs:
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "False"
-      python_versions: "3.10,3.11"
+      python_versions: "3.12"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Fix ASTER_LIBDIR pointing to libAsterMFrOfficial and modify petsc4py compilation"
+      description: "Test py 3.12"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
