@@ -20,10 +20,10 @@ jobs:
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "False"
-      python_versions: "3.12"
+      python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Test py 3.12"
+      description: "fix petsc4py include and lib paths"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

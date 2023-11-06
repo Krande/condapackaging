@@ -75,4 +75,6 @@ make -j ${procs} all
 make -j ${procs} install
 [ $? -eq 0 ] || exit 1
 
-mv ${PREFIX}/lib/petsc4py* ${SP_DIR}
+mv ${PREFIX}/lib/petsc4py/include/* ${PREFIX}/include/
+mv ${PREFIX}/lib/petsc4py/lib/* ${PREFIX}/lib/
+mv ${PREFIX}/lib/petsc4py* ${SP_DIR}/
