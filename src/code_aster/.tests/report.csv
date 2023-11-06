@@ -1,4 +1,8 @@
 release_tag,code_aster,python,mpi,numpy,hdf5,gcc,num_failed_tests,description
+ca-6768307584,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,121,fix petsc4py include and lib paths
+ca-6768307584,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,28,fix petsc4py include and lib paths
+ca-6768307584,16.4.12,3.10,seq,1.25.2,1.10.6,8.5.0,110,fix petsc4py include and lib paths
+ca-6768307584,16.4.12,3.11,seq,1.25.2,1.10.6,8.5.0,28,fix petsc4py include and lib paths
 ca-6761400923,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,123,Release 16.4.12 and refactor code_aster and run_aster to site packages
 ca-6761400923,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,44,Release 16.4.12 and refactor code_aster and run_aster to site packages
 ca-6761400923,16.4.12,3.10,seq,1.25.2,1.10.6,8.5.0,123,Release 16.4.12 and refactor code_aster and run_aster to site packages
@@ -59,5 +63,3 @@ ca-6362649655,16.4.8,3.10,mpi,1.25.2,1.10.6,9.5.0,450,Test using gcc 9
 ca-6362649655,16.4.8,3.11,mpi,1.25.2,1.10.6,9.5.0,368,Test using gcc 9
 ca-6355937094,16.4.8,3.10,seq,1.25.2,1.10.6,8.5.0,115,Test using code_aster official 16.4.8 version
 ca-6355937094,16.4.8,3.11,seq,1.25.2,1.10.6,8.5.0,20,Test using code_aster official 16.4.8 version
-ca-6355937094,16.4.8,3.10,mpi,1.25.2,1.10.6,8.5.0,336,Test using code_aster official 16.4.8 version
-ca-6355937094,16.4.8,3.11,mpi,1.25.2,1.10.6,8.5.0,255,Test using code_aster official 16.4.8 version

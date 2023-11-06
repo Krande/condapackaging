@@ -207,6 +207,7 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         ("malloc.c:4302: _int_malloc: Assertion `(unsigned long) (size) >= (unsigned long) (nb)'",),
         ("free(): invalid next size (fast)", "Fatal Python error: Aborted"),
         ("python3: malloc.c:4105: _int_malloc: Assertion `chunk_main_arena (bck->bk)' failed.",),
+        ("ImportError: cannot import name 'ImportPETSc' from 'petsc4py.lib' (unknown location)",),
         (
             "<F> <FACTOR_55>",
             "PARMETIS ERROR: Poor initial vertex distribution. Processor 0 has no vertices assigned to it!",
