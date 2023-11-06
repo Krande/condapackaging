@@ -1,6 +1,6 @@
 name: ci-code-aster-batch
 
-# bump 1
+# bump 0
 on:
   push:
     paths:
@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "fix petsc4py include and lib paths"
+      description: "Hopefully fixed petsc4py issues"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

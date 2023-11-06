@@ -67,6 +67,7 @@ test:
   commands:
     - test -f $PREFIX/include/petsc.h
     - test -f $PREFIX/lib/libpetsc.so
+    - python -c "from petsc4py.lib import ImportPETSc"
   imports:
     - petsc4py
 
