@@ -1,62 +1,64 @@
 |    | release_tag   | code_aster   |   python | mpi   | numpy   | hdf5   | gcc    |   num_failed_tests | description                                                                                 |
 |---:|:--------------|:-------------|---------:|:------|:--------|:-------|:-------|-------------------:|:--------------------------------------------------------------------------------------------|
-| 25 | ca-6531152547 | 16.4.10      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 17 | Test latest Code_Aster 16.4.10                                                              |
-|  1 | ca-6733986370 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | nan                                                                                         |
-| 21 | ca-6603807345 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | Test latest Code_Aster 16.4.11                                                              |
-| 11 | ca-6694568706 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | removing hdf5 from mumps dep                                                                |
-|  9 | ca-6694568706 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | removing hdf5 from mumps dep                                                                |
-| 29 | ca-6458726549 | 16.4.9       |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 20 | change parmetis source and include aster3 modifications to parmetis for first time          |
-| 53 | ca-6355937094 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 20 | Test using code_aster official 16.4.8 version                                               |
-| 57 | ca-6251156226 | 16.4.8       |     3.11 | seq   | 1.23.5  | 1.10.6 | 8.5.0  |                 21 | Test using latest code_aster git version with seq fixes                                     |
-| 27 | ca-6531152547 | 16.4.10      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 22 | Test latest Code_Aster 16.4.10                                                              |
-| 23 | ca-6603807345 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 23 | Test latest Code_Aster 16.4.11                                                              |
-|  3 | ca-6733986370 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 23 | nan                                                                                         |
-|  7 | ca-6706109178 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
-|  5 | ca-6706109178 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
-| 13 | ca-6691078056 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
-| 15 | ca-6691078056 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
-| 31 | ca-6458726549 | 16.4.9       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 25 | change parmetis source and include aster3 modifications to parmetis for first time          |
-| 20 | ca-6603807345 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | Test latest Code_Aster 16.4.11                                                              |
-|  0 | ca-6733986370 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | nan                                                                                         |
-|  8 | ca-6694568706 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | removing hdf5 from mumps dep                                                                |
-|  4 | ca-6706109178 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
-|  2 | ca-6733986370 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | nan                                                                                         |
-| 12 | ca-6691078056 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
-| 28 | ca-6458726549 | 16.4.9       |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                111 | change parmetis source and include aster3 modifications to parmetis for first time          |
-| 10 | ca-6694568706 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                112 | removing hdf5 from mumps dep                                                                |
-| 24 | ca-6531152547 | 16.4.10      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Test latest Code_Aster 16.4.10                                                              |
-| 26 | ca-6531152547 | 16.4.10      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Test latest Code_Aster 16.4.10                                                              |
-|  6 | ca-6706109178 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
-| 22 | ca-6603807345 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Test latest Code_Aster 16.4.11                                                              |
-| 14 | ca-6691078056 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                115 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
-| 52 | ca-6355937094 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                115 | Test using code_aster official 16.4.8 version                                               |
-| 30 | ca-6458726549 | 16.4.9       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                116 | change parmetis source and include aster3 modifications to parmetis for first time          |
-| 56 | ca-6251156226 | 16.4.8       |     3.1  | seq   | 1.23.5  | 1.10.6 | 8.5.0  |                116 | Test using latest code_aster git version with seq fixes                                     |
-| 49 | ca-6362649655 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                156 | Test using gcc 9                                                                            |
-| 45 | ca-6362864337 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 10.4.0 |                156 | test code aster using gcc 10                                                                |
-| 17 | ca-6603962393 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                163 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
-| 19 | ca-6603962393 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                163 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
-| 16 | ca-6603962393 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                242 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
-| 44 | ca-6362864337 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 10.4.0 |                246 | test code aster using gcc 10                                                                |
-| 48 | ca-6362649655 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                246 | Test using gcc 9                                                                            |
-| 18 | ca-6603962393 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                249 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
-| 59 | ca-6251156226 | 16.4.8       |     3.11 | mpi   | 1.23.5  | 1.10.6 | 8.5.0  |                251 | Test using latest code_aster git version with seq fixes                                     |
-| 55 | ca-6355937094 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                255 | Test using code_aster official 16.4.8 version                                               |
-| 41 | ca-6362875530 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 11.4.0 |                307 | test code aster using gcc 11                                                                |
-| 58 | ca-6251156226 | 16.4.8       |     3.1  | mpi   | 1.23.5  | 1.10.6 | 8.5.0  |                333 | Test using latest code_aster git version with seq fixes                                     |
-| 54 | ca-6355937094 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                336 | Test using code_aster official 16.4.8 version                                               |
-| 33 | ca-6363541339 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 13.2.0 |                350 | fix additional mfront compat with gcc 13                                                    |
-| 37 | ca-6362885221 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 12.3.0 |                352 | test code aster using gcc 12                                                                |
-| 51 | ca-6362649655 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                368 | Test using gcc 9                                                                            |
-| 47 | ca-6362864337 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 10.4.0 |                371 | test code aster using gcc 10                                                                |
-| 40 | ca-6362875530 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 11.4.0 |                396 | test code aster using gcc 11                                                                |
-| 32 | ca-6363541339 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 13.2.0 |                434 | fix additional mfront compat with gcc 13                                                    |
-| 36 | ca-6362885221 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 12.3.0 |                443 | test code aster using gcc 12                                                                |
-| 46 | ca-6362864337 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 10.4.0 |                446 | test code aster using gcc 10                                                                |
-| 50 | ca-6362649655 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                450 | Test using gcc 9                                                                            |
-| 43 | ca-6362875530 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 11.4.0 |                510 | test code aster using gcc 11                                                                |
-| 35 | ca-6363541339 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 13.2.0 |                545 | fix additional mfront compat with gcc 13                                                    |
-| 39 | ca-6362885221 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 12.3.0 |                546 | test code aster using gcc 12                                                                |
-| 42 | ca-6362875530 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 11.4.0 |                591 | test code aster using gcc 11                                                                |
-| 38 | ca-6362885221 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 12.3.0 |                620 | test code aster using gcc 12                                                                |
-| 34 | ca-6363541339 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 13.2.0 |                622 | fix additional mfront compat with gcc 13                                                    |
+| 31 | ca-6531152547 | 16.4.10      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 17 | Test latest Code_Aster 16.4.10                                                              |
+| 27 | ca-6603807345 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | Test latest Code_Aster 16.4.11                                                              |
+| 15 | ca-6694568706 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | removing hdf5 from mumps dep                                                                |
+|  7 | ca-6733986370 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | nan                                                                                         |
+| 17 | ca-6694568706 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 18 | removing hdf5 from mumps dep                                                                |
+| 35 | ca-6458726549 | 16.4.9       |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 20 | change parmetis source and include aster3 modifications to parmetis for first time          |
+| 59 | ca-6355937094 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 20 | Test using code_aster official 16.4.8 version                                               |
+| 33 | ca-6531152547 | 16.4.10      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 22 | Test latest Code_Aster 16.4.10                                                              |
+|  9 | ca-6733986370 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 23 | nan                                                                                         |
+| 29 | ca-6603807345 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 23 | Test latest Code_Aster 16.4.11                                                              |
+| 11 | ca-6706109178 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
+| 21 | ca-6691078056 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
+| 19 | ca-6691078056 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
+| 13 | ca-6706109178 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 24 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
+| 37 | ca-6458726549 | 16.4.9       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 25 | change parmetis source and include aster3 modifications to parmetis for first time          |
+|  3 | ca-6761400923 | 16.4.12      |     3.11 | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                 31 | Release 16.4.12 and refactor code_aster and run_aster to site packages                      |
+|  5 | ca-6756834234 | 16.4.12      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 41 | Release 16.4.12 and refactor code_aster and run_aster to site packages                      |
+|  1 | ca-6761400923 | 16.4.12      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                 44 | Release 16.4.12 and refactor code_aster and run_aster to site packages                      |
+| 26 | ca-6603807345 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | Test latest Code_Aster 16.4.11                                                              |
+| 14 | ca-6694568706 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | removing hdf5 from mumps dep                                                                |
+| 10 | ca-6706109178 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
+|  8 | ca-6733986370 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | nan                                                                                         |
+|  6 | ca-6733986370 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | nan                                                                                         |
+| 18 | ca-6691078056 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                109 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
+| 34 | ca-6458726549 | 16.4.9       |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                111 | change parmetis source and include aster3 modifications to parmetis for first time          |
+| 16 | ca-6694568706 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                112 | removing hdf5 from mumps dep                                                                |
+| 28 | ca-6603807345 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Test latest Code_Aster 16.4.11                                                              |
+| 30 | ca-6531152547 | 16.4.10      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Test latest Code_Aster 16.4.10                                                              |
+| 12 | ca-6706109178 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed |
+| 32 | ca-6531152547 | 16.4.10      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                113 | Test latest Code_Aster 16.4.10                                                              |
+| 20 | ca-6691078056 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                115 | test effect of using gcc 12 on libmed, mgis and medcoupling while the rest are gcc 8        |
+| 58 | ca-6355937094 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                115 | Test using code_aster official 16.4.8 version                                               |
+| 36 | ca-6458726549 | 16.4.9       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                116 | change parmetis source and include aster3 modifications to parmetis for first time          |
+|  0 | ca-6761400923 | 16.4.12      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                123 | Release 16.4.12 and refactor code_aster and run_aster to site packages                      |
+|  2 | ca-6761400923 | 16.4.12      |     3.1  | seq   | 1.25.2  | 1.10.6 | 8.5.0  |                123 | Release 16.4.12 and refactor code_aster and run_aster to site packages                      |
+|  4 | ca-6756834234 | 16.4.12      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                132 | Release 16.4.12 and refactor code_aster and run_aster to site packages                      |
+| 55 | ca-6362649655 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                156 | Test using gcc 9                                                                            |
+| 51 | ca-6362864337 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 10.4.0 |                156 | test code aster using gcc 10                                                                |
+| 25 | ca-6603962393 | 16.4.11      |     3.11 | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                163 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
+| 23 | ca-6603962393 | 16.4.11      |     3.11 | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                163 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
+| 22 | ca-6603962393 | 16.4.11      |     3.1  | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                242 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
+| 54 | ca-6362649655 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 9.5.0  |                246 | Test using gcc 9                                                                            |
+| 50 | ca-6362864337 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 10.4.0 |                246 | test code aster using gcc 10                                                                |
+| 24 | ca-6603962393 | 16.4.11      |     3.1  | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                249 | Test latest Code_Aster 16.4.11 with gcc 9                                                   |
+| 61 | ca-6355937094 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                255 | Test using code_aster official 16.4.8 version                                               |
+| 47 | ca-6362875530 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 11.4.0 |                307 | test code aster using gcc 11                                                                |
+| 60 | ca-6355937094 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 8.5.0  |                336 | Test using code_aster official 16.4.8 version                                               |
+| 39 | ca-6363541339 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 13.2.0 |                350 | fix additional mfront compat with gcc 13                                                    |
+| 43 | ca-6362885221 | 16.4.8       |     3.11 | seq   | 1.25.2  | 1.10.6 | 12.3.0 |                352 | test code aster using gcc 12                                                                |
+| 57 | ca-6362649655 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                368 | Test using gcc 9                                                                            |
+| 53 | ca-6362864337 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 10.4.0 |                371 | test code aster using gcc 10                                                                |
+| 46 | ca-6362875530 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 11.4.0 |                396 | test code aster using gcc 11                                                                |
+| 38 | ca-6363541339 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 13.2.0 |                434 | fix additional mfront compat with gcc 13                                                    |
+| 42 | ca-6362885221 | 16.4.8       |     3.1  | seq   | 1.25.2  | 1.10.6 | 12.3.0 |                443 | test code aster using gcc 12                                                                |
+| 52 | ca-6362864337 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 10.4.0 |                446 | test code aster using gcc 10                                                                |
+| 56 | ca-6362649655 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 9.5.0  |                450 | Test using gcc 9                                                                            |
+| 49 | ca-6362875530 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 11.4.0 |                510 | test code aster using gcc 11                                                                |
+| 41 | ca-6363541339 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 13.2.0 |                545 | fix additional mfront compat with gcc 13                                                    |
+| 45 | ca-6362885221 | 16.4.8       |     3.11 | mpi   | 1.25.2  | 1.10.6 | 12.3.0 |                546 | test code aster using gcc 12                                                                |
+| 48 | ca-6362875530 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 11.4.0 |                591 | test code aster using gcc 11                                                                |
+| 44 | ca-6362885221 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 12.3.0 |                620 | test code aster using gcc 12                                                                |
+| 40 | ca-6363541339 | 16.4.8       |     3.1  | mpi   | 1.25.2  | 1.10.6 | 13.2.0 |                622 | fix additional mfront compat with gcc 13                                                    |

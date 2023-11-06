@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Release 16.4.12 and refactor code_aster and run_aster to site packages"
+      description: "Fix ASTER_LIBDIR pointing to libAsterMFrOfficial and modify petsc4py compilation"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

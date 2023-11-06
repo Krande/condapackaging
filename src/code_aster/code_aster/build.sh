@@ -115,6 +115,7 @@ mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
 mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
 # note to self. aster.so is symlinked to libaster.so
 mv $PREFIX/lib/aster/libb*.so $PREFIX/lib/
+mv $PREFIX/lib/aster/libAsterMFrOfficial.so $PREFIX/lib/
 mv $PREFIX/lib/aster/*.so $SP_DIR/
 mv $PREFIX/lib/aster/*.pyi $SP_DIR/
 #mv $PREFIX/include/aster/* $PREFIX/include
