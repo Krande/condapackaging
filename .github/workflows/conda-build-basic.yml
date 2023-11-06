@@ -218,7 +218,7 @@ jobs:
             python-dotenv
             typer
             quetz-client
-            conda-build=3.25
+            conda-build
 
       - name: Install cpack-actions
         run: |
