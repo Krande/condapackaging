@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '16.4.12' %}
+{% set version = '16.4.11' %}
 
 # Dependencies
 {% set med_ver = '4.1.1=aster_*' %}

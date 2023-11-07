@@ -1,19 +1,17 @@
-import re
-
 import os
 import pathlib
+import re
 import shutil
-from itertools import groupby
-
-import requests
 import tarfile
-import pandas as pd
 from dataclasses import dataclass
 
-from cpack.packages import Package
-from cpack.cli_quetz_uploader import QuetzManager
-from scan_failed import fail_checker, TestStats
+import pandas as pd
+import requests
 from dotenv import load_dotenv
+
+from cpack.cli_quetz_uploader import QuetzManager
+from cpack.packages import Package
+from scan_failed import fail_checker, TestStats
 
 load_dotenv()
 
@@ -152,7 +150,7 @@ class GATestChecker:
                         f.extractall(dest_dir)
 
                 for d in os.listdir(dest_dir):
-                    py_ver = d.split("-")[-1]
+                    py_ver = re.search("(3.[0-9]{1,2})", d).group(1)
                     res_dir = dest_dir / d
                     if python_ver is not None and py_ver != python_ver:
                         continue
