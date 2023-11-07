@@ -23,7 +23,7 @@ jobs:
       python_versions: "3.10,3.11"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Hopefully fixed petsc4py issues"
+      description: "Solve mixing seq and mpi results in release artifacts naming"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

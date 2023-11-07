@@ -138,7 +138,7 @@ jobs:
         run: |
           if [[ ${{ inputs.mpi }} == true ]]; then
             echo "MPI variant"
-            add_str="--mpi"
+            add_str=" --mpi"
           else
             echo "SEQ variant"
             add_str=""
@@ -148,7 +148,7 @@ jobs:
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v3
         with:
-          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
+          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ inputs.suffix }}
           path: ${{ github.workspace }}/ctest
 
   upload_test_results:
@@ -163,7 +163,7 @@ jobs:
 
       - name: Package ctest directories
         run: |
-          tar czf ${{ env.PKG_TAR }} ctest-*
+          tar czf ${{ env.PKG_TAR }} ctest-*-${{ inputs.suffix }}
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1

@@ -90,41 +90,39 @@ class GATestChecker:
             }
         )
         df["num_failed_tests"] = df["num_failed_tests"].astype(int)
-        for key, results in groupby(
-            self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
-        ):
-            for result in results:
-                run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
-                gcc_ver = None
-                for meta in qm.get_packages_meta_for_channel(result.rel_tag, "code-aster"):
-                    bld_req = meta["requirements"]["build"]
-                    for req in bld_req:
-                        if not req.startswith("gcc_linux-64"):
-                            continue
-                        gcc_ver = req.split(" ")[1]
-                        break
-                    if gcc_ver is not None:
-                        break
 
-                result: TestPackage
-                df = df._append(
-                    {
-                        "release_tag": result.rel_tag,
-                        "code_aster": result.ca_version,
-                        "python": result.python_version,
-                        "mpi": result.test_stats.mpi,
-                        "numpy": run_packages["numpy"].version,
-                        "hdf5": run_packages["hdf5"].version,
-                        "gcc": gcc_ver,
-                        "num_failed_tests": result.test_stats.num_failed_tot,
-                        "description": result.notes,
-                    },
-                    ignore_index=True,
-                )
-                failed = result.test_stats.num_failed_tot
-                print(
-                    f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests"
-                )
+        for result in self.get_results(release_tag, python_ver, mpi_ver, overwrite):
+            run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
+            gcc_ver = None
+            for meta in qm.get_packages_meta_for_channel(result.rel_tag, "code-aster"):
+                bld_req = meta["requirements"]["build"]
+                for req in bld_req:
+                    if not req.startswith("gcc_linux-64"):
+                        continue
+                    gcc_ver = req.split(" ")[1]
+                    break
+                if gcc_ver is not None:
+                    break
+
+            result: TestPackage
+            df = df._append(
+                {
+                    "release_tag": result.rel_tag,
+                    "code_aster": result.ca_version,
+                    "python": result.python_version,
+                    "mpi": result.test_stats.mpi,
+                    "numpy": run_packages["numpy"].version,
+                    "hdf5": run_packages["hdf5"].version,
+                    "gcc": gcc_ver,
+                    "num_failed_tests": result.test_stats.num_failed_tot,
+                    "description": result.notes,
+                },
+                ignore_index=True,
+            )
+            failed = result.test_stats.num_failed_tot
+            print(
+                f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests"
+            )
 
         df.to_csv("report.csv", index=False)
         print("done")
