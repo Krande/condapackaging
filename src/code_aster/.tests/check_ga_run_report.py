@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import os
 import pathlib
 import re
@@ -23,6 +25,7 @@ class TestPackage:
     ca_version: str
     python_version: str
     results_dir: pathlib.Path
+    last_update: datetime
     notes: str = ""
 
 
@@ -84,7 +87,8 @@ class GATestChecker:
                 "hdf5": [],
                 "gcc": [],
                 "num_failed_tests": [],
-                "description": [],
+                "date": [],
+                "description": []
             }
         )
         df["num_failed_tests"] = df["num_failed_tests"].astype(int)
@@ -113,7 +117,8 @@ class GATestChecker:
                     "hdf5": run_packages["hdf5"].version,
                     "gcc": gcc_ver,
                     "num_failed_tests": result.test_stats.num_failed_tot,
-                    "description": result.notes,
+                    "date": result.last_update,
+                    "description": result.notes
                 },
                 ignore_index=True,
             )
@@ -132,6 +137,8 @@ class GATestChecker:
             body_str = extract_release_body_for_notes(release["body"])
             for asset in release["assets"]:
                 name = asset["name"]
+                date_string = asset["updated_at"]
+                datetime_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
                 mpi_str = re.search("mpi|seq", name).group(0)
                 if mpi_ver is not None and mpi_str != mpi_ver:
                     continue
@@ -155,7 +162,8 @@ class GATestChecker:
                     if python_ver is not None and py_ver != python_ver:
                         continue
                     test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
-                    yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, body_str)
+                    yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, last_update=datetime_object,
+                                      notes=body_str)
 
     def prep_ctests_for_local_rerunning(self, local_env_path):
         local_env_path = pathlib.Path(local_env_path)
