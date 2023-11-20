@@ -1,6 +1,7 @@
 {% set name = "petsc" %}
 {% set version = "3.17.1" %}
 {% set build = 0 %}
+
 # Dependencies
 {% set metis_ver = "5.1.0" %}
 {% set parmetis_ver = "4.0.3" %}
@@ -23,7 +24,7 @@ source:
 build:
   skip: true  # [win]
   number: {{ build }}
-  string: aster_py{{ CONDA_PY }}_{{mpi}}_h{{ PKG_HASH }}_{{ build }}
+  string: aster_py{{ CONDA_PY }}_mpi_{{mpi}}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage('petsc', max_pin='x.x') }}
   script_env:
@@ -47,8 +48,8 @@ requirements:
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
-    - scotch {{ scotch_ver }}=*openmpi*
-    - mumps {{ mumps_ver }}=*openmpi*
+    - scotch {{ scotch_ver }}=*{{mpi}}*
+    - mumps {{ mumps_ver }}=*{{mpi}}*
     - {{ mpi }}
 
   run:
@@ -58,14 +59,17 @@ requirements:
     - metis {{ metis_ver }}=aster*
     - parmetis {{ parmetis_ver }}
     - scalapack {{ scalapack_ver }}
-    - scotch {{ scotch_ver }}=*openmpi*
-    - mumps {{ mumps_ver }}=*openmpi*
+    - scotch {{ scotch_ver }}=*{{mpi}}*
+    - mumps {{ mumps_ver }}=*{{mpi}}*
     - {{ mpi }}
 
 test:
   commands:
     - test -f $PREFIX/include/petsc.h
     - test -f $PREFIX/lib/libpetsc.so
+    - python -c "from petsc4py.lib import ImportPETSc"
+  imports:
+    - petsc4py
 
 about:
   home: https://www.mcs.anl.gov/petsc/

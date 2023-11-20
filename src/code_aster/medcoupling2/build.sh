@@ -5,6 +5,7 @@ export CLICOLOR_FORCE=1
 mkdir -p build
 pushd build
 
+
 if [[ "$mpi" == "nompi" ]]; then
   on_mpi="OFF"
 else
@@ -25,8 +26,8 @@ fi
 cmake .. \
     -DCMAKE_BUILD_TYPE=$build_type \
     -DPYTHON_ROOT_DIR="${PREFIX}" \
+    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
     -Wno-dev \
-    -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
     -DSALOME_CMAKE_DEBUG=ON \
     -DSALOME_USE_MPI=${on_mpi} \
@@ -41,18 +42,7 @@ cmake .. \
     -DMEDCOUPLING_PARTITIONER_SCOTCH=OFF \
     -DMEDCOUPLING_PARTITIONER_PTSCOTCH=${on_mpi} \
     -DMPI_C_COMPILER:PATH="$(which mpicc)" \
-    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
-    -DHDF5_ROOT_DIR="${PREFIX}" \
-    -DSWIG_ROOT_DIR="${PREFIX}" \
-    -DMEDFILE_ROOT_DIR="${PREFIX}" \
-    -DSCOTCH_ROOT_DIR="${PREFIX}" \
-    -DMETIS_ROOT_DIR="${PREFIX}" \
-    -DPARMETIS_ROOT_DIR="${PREFIX}" \
-    -DCMAKE_PREFIX_PATH="${PREFIX}"
+    ${CMAKE_ARGS}
 
 make -j$CPU_COUNT
 make install
-
-# Generate stubs for pybind11
-python "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
-echo "Stubs generation completed"

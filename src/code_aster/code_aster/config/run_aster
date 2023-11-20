@@ -2,5 +2,6 @@
 
 # Use 'run_aster --help' for detailed description of the options.
 
+export RUNASTER_ROOT=${CONDA_PREFIX}
 python3 -m run_aster.run_aster_main "${@}"
 exit ${?}

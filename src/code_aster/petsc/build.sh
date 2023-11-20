@@ -74,3 +74,10 @@ make -j ${procs} all
 
 make -j ${procs} install
 [ $? -eq 0 ] || exit 1
+
+# I cannot move "petsc4py/lib" because of
+#    from petsc4py.lib import ImportPETSc
+# ModuleNotFoundError: No module named 'petsc4py.lib'
+#mv ${PREFIX}/lib/petsc4py/lib/* ${PREFIX}/lib/
+mv ${PREFIX}/lib/petsc4py/include/* ${PREFIX}/include/
+mv ${PREFIX}/lib/petsc4py* ${SP_DIR}/

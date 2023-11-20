@@ -22,8 +22,8 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster1_py{{ CONDA_PY }}_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
-  string: aster1_py{{ CONDA_PY }}_seq_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
+  string: aster1_py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
+  string: aster1_py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
   number: 2
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
@@ -40,13 +40,11 @@ requirements:
   host:
     - python
     - numpy
-    - hdf5
     - zlib
     - libblas
     - liblapack
     - metis {{ metis_ver }}=aster4*
-    - scotch {{ scotch_ver }}=aster1*seq*       # [mpi == "nompi"]
-    - scotch {{ scotch_ver }}=aster1*openmpi*   # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}=aster1*{{mpi}}*
     - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}             # [mpi != "nompi"]
     - {{ mpi }}                                 # [mpi != "nompi"]
@@ -54,14 +52,12 @@ requirements:
   run:
     - numpy
     - python
-    - hdf5
     - zlib
     - libblas
     - liblapack
     - libgomp
     - metis {{ metis_ver }}=aster4*
-    - scotch {{ scotch_ver }}=aster1*seq*       # [mpi == "nompi"]
-    - scotch {{ scotch_ver }}=aster1*openmpi*   # [mpi != "nompi"]
+    - scotch {{ scotch_ver }}=aster1*{{mpi}}*
     - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}             # [mpi != "nompi"]
     - {{ mpi }}                                 # [mpi != "nompi"]

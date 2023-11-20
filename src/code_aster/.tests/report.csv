@@ -1,4 +1,14 @@
-release_tag,ca_version,python_version,mpi,numpy_version,hdf5_version,gcc_version,num_failed_tests,description
+release_tag,code_aster,python,mpi,numpy,hdf5,gcc,num_failed_tests,description
+ca-6781991695,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,115,Solve mixing seq and mpi results in release artifacts naming
+ca-6781991695,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,25,Solve mixing seq and mpi results in release artifacts naming
+ca-6781991695,16.4.12,3.10,seq,1.25.2,1.10.6,8.5.0,110,Solve mixing seq and mpi results in release artifacts naming
+ca-6781991695,16.4.12,3.11,seq,1.25.2,1.10.6,8.5.0,18,Solve mixing seq and mpi results in release artifacts naming
+ca-6756834234,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,132,Release 16.4.12 and refactor code_aster and run_aster to site packages
+ca-6756834234,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,41,Release 16.4.12 and refactor code_aster and run_aster to site packages
+ca-6733986370,16.4.11,3.10,seq,1.25.2,1.10.6,8.5.0,109,
+ca-6733986370,16.4.11,3.11,seq,1.25.2,1.10.6,8.5.0,18,
+ca-6733986370,16.4.11,3.10,mpi,1.25.2,1.10.6,8.5.0,109,
+ca-6733986370,16.4.11,3.11,mpi,1.25.2,1.10.6,8.5.0,23,
 ca-6706109178,16.4.11,3.10,seq,1.25.2,1.10.6,8.5.0,109,Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed
 ca-6706109178,16.4.11,3.11,seq,1.25.2,1.10.6,8.5.0,24,Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed
 ca-6706109178,16.4.11,3.10,mpi,1.25.2,1.10.6,8.5.0,113,Testing effect of not using 64bit integers in medcoupling and -fdefault-integer-8 in libmed
@@ -51,11 +61,3 @@ ca-6355937094,16.4.8,3.10,seq,1.25.2,1.10.6,8.5.0,115,Test using code_aster offi
 ca-6355937094,16.4.8,3.11,seq,1.25.2,1.10.6,8.5.0,20,Test using code_aster official 16.4.8 version
 ca-6355937094,16.4.8,3.10,mpi,1.25.2,1.10.6,8.5.0,336,Test using code_aster official 16.4.8 version
 ca-6355937094,16.4.8,3.11,mpi,1.25.2,1.10.6,8.5.0,255,Test using code_aster official 16.4.8 version
-ca-6251156226,16.4.8,3.10,seq,1.23.5,1.10.6,8.5.0,116,Test using latest code_aster git version with seq fixes
-ca-6251156226,16.4.8,3.11,seq,1.23.5,1.10.6,8.5.0,21,Test using latest code_aster git version with seq fixes
-ca-6251156226,16.4.8,3.10,mpi,1.23.5,1.10.6,8.5.0,333,Test using latest code_aster git version with seq fixes
-ca-6251156226,16.4.8,3.11,mpi,1.23.5,1.10.6,8.5.0,251,Test using latest code_aster git version with seq fixes
-ca-6251156226,16.4.7,3.10,mpi,1.23.5,1.10.6,8.5.0,334,
-ca-6251156226,16.4.7,3.11,mpi,1.23.5,1.10.6,8.5.0,253,
-dev-6200231394,16.4.6,3.10,mpi,1.23.5,1.10.6,8.5.0,332,
-dev-6200231394,16.4.6,3.11,mpi,1.23.5,1.10.6,8.5.0,254,

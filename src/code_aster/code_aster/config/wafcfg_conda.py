@@ -11,6 +11,7 @@ def configure(self):
         opts.parallel = 1
     conda_prefix = os.getenv('PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
+    site_packages = os.getenv("SP_DIR")
 
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 
@@ -29,12 +30,12 @@ def configure(self):
     else:
         opts.parallel = 1
         opts.enable_petsc = True
-        self.env.append_value('LIBPATH', [
-            conda_prefix + '/lib/petsc4py/lib',
-        ])
-        self.env.append_value('INCLUDES', [
-            conda_prefix + '/lib/petsc4py/include',
-        ])
+        # self.env.append_value('LIBPATH', [
+        #     site_packages + '/petsc4py/lib',
+        # ])
+        # self.env.append_value('INCLUDES', [
+        #     site_packages + '/petsc4py/include',
+        # ])
 
     # to fail if not found
     opts.enable_hdf5 = True

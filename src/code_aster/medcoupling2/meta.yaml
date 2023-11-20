@@ -1,7 +1,5 @@
 {% set name = "medcoupling" %}
 {% set version = "9.10.0" %}
-{% set libmed_ver = "4.1.1=aster_*" %}
-{% set petsc_ver = "3.17.1=aster_*" %}
 
 
 package:
@@ -20,11 +18,11 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster_py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}      # [mpi != "nompi"]
-  string: aster_py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}          # [mpi == "nompi"]
-  number: 3
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  string: aster_py{{ CONDA_PY }}_mpi_{{ mpi }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}   # [mpi != "nompi"]
+  string: aster_py{{ CONDA_PY }}_nompi_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}           # [mpi == "nompi"]
+  number: 0
+  skip: true  # [osx]
+  skip: true # [mpi != "nompi"]
 
 requirements:
   build:
@@ -34,26 +32,24 @@ requirements:
     - ninja                                     # [win]
     - cmake
     - swig >=4.0.2
+
   host:
     - python
     - numpy
     - boost
     - libxml2
-    - astor
-    - pybind11-stubgen
-    - libmed {{ libmed_ver }}{{mpi}}*
+    - libmed * *{{ mpi }}*
+    - petsc                                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']
-    - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
 
   run:
     - python
     - numpy
     - boost
     - libxml2
-    - libmed {{ libmed_ver }}{{mpi}}*
+    - libmed * *{{ mpi }}*
+    - petsc                                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']
-    - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
-
 
 test:
   imports:
@@ -61,12 +57,13 @@ test:
 
 about:
   home: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
-  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  license: LGPL-2.1-or-later
   license_family: GPL
+  license_file: COPYING
   summary: 'The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)'
   description: |
     The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)
-  doc_url: https://docs.salome-platform.org/8/dev/MEDCoupling/index.html
+  doc_url: https://docs.salome-platform.org/latest/dev/MEDCoupling/developer/index.html
   dev_url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
 
 extra:

@@ -8,8 +8,14 @@ export CLICOLOR_FORCE=1
 #patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-with-tabs.diff
 #patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-parallel.diff
 
-export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
-export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+if [[ "${USE_64BIT_IDS}" != "True" ]]; then
+  echo "Using 32 bit Integer IDs"
+else
+  echo "Using 64 bit Integer IDs"
+  export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
+  export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+fi
+
 export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
 
 if [[ "$mpi" == "nompi" ]]; then
@@ -44,7 +50,9 @@ fi
 
 chmod +x ./configure
 ./configure "${opts[@]}" --prefix="$PREFIX" --with-hdf5="$PREFIX"
-make
+
+
+make -j${CPU_COUNT}
 make install
 
 rm -rf "${PREFIX}/share/doc/med"

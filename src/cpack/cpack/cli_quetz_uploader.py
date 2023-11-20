@@ -34,9 +34,6 @@ class QuetzManager:
         except requests.exceptions.HTTPError:
             print(f"Channel {channel_name} already exists")
 
-        for channel in self.client.yield_channels():
-            print(channel)
-
     def upload_package_to_channel(self, package_file: str | pathlib.Path, channel: str, force: bool = False):
         if isinstance(package_file, str):
             package_file = pathlib.Path(package_file).resolve().absolute()

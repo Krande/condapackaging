@@ -1,19 +1,17 @@
-import re
-
 import os
 import pathlib
+import re
 import shutil
-from itertools import groupby
-
-import requests
 import tarfile
-import pandas as pd
 from dataclasses import dataclass
 
-from cpack.packages import Package
-from cpack.cli_quetz_uploader import QuetzManager
-from scan_failed import fail_checker, TestStats
+import pandas as pd
+import requests
 from dotenv import load_dotenv
+
+from cpack.cli_quetz_uploader import QuetzManager
+from cpack.packages import Package
+from scan_failed import fail_checker, TestStats
 
 load_dotenv()
 
@@ -79,51 +77,50 @@ class GATestChecker:
         df = pd.DataFrame(
             {
                 "release_tag": [],
-                "ca_version": [],
-                "python_version": [],
+                "code_aster": [],
+                "python": [],
                 "mpi": [],
-                "numpy_version": [],
-                "hdf5_version": [],
-                "gcc_version": [],
+                "numpy": [],
+                "hdf5": [],
+                "gcc": [],
                 "num_failed_tests": [],
+                "description": [],
             }
         )
         df["num_failed_tests"] = df["num_failed_tests"].astype(int)
-        for key, results in groupby(
-            self.get_results(release_tag, python_ver, mpi_ver, overwrite), key=lambda x: x.rel_tag
-        ):
-            for result in results:
-                run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
-                gcc_ver = None
-                for meta in qm.get_packages_meta_for_channel(result.rel_tag, "code-aster"):
-                    bld_req = meta["requirements"]["build"]
-                    for req in bld_req:
-                        if not req.startswith("gcc_linux-64"):
-                            continue
-                        gcc_ver = req.split(" ")[1]
-                        break
-                    if gcc_ver is not None:
-                        break
 
-                result: TestPackage
-                df = df._append(
-                    {
-                        "release_tag": result.rel_tag,
-                        "ca_version": result.ca_version,
-                        "python_version": result.python_version,
-                        "mpi": result.test_stats.mpi,
-                        "numpy_version": run_packages["numpy"].version,
-                        "hdf5_version": run_packages["hdf5"].version,
-                        "gcc_version": gcc_ver,
-                        "num_failed_tests": result.test_stats.num_failed_tot,
-                        "description": result.notes,
-                    },
-                    ignore_index=True,
-                )
-                failed = result.test_stats.num_failed_tot
-                print(
-                    f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests"
-                )
+        for result in self.get_results(release_tag, python_ver, mpi_ver, overwrite):
+            run_packages = parse_packages((result.results_dir / "mamba.txt").read_text(encoding="utf-8"))
+            gcc_ver = None
+            for meta in qm.get_packages_meta_for_channel(result.rel_tag, "code-aster"):
+                bld_req = meta["requirements"]["build"]
+                for req in bld_req:
+                    if not req.startswith("gcc_linux-64"):
+                        continue
+                    gcc_ver = req.split(" ")[1]
+                    break
+                if gcc_ver is not None:
+                    break
+
+            result: TestPackage
+            df = df._append(
+                {
+                    "release_tag": result.rel_tag,
+                    "code_aster": result.ca_version,
+                    "python": result.python_version,
+                    "mpi": result.test_stats.mpi,
+                    "numpy": run_packages["numpy"].version,
+                    "hdf5": run_packages["hdf5"].version,
+                    "gcc": gcc_ver,
+                    "num_failed_tests": result.test_stats.num_failed_tot,
+                    "description": result.notes,
+                },
+                ignore_index=True,
+            )
+            failed = result.test_stats.num_failed_tot
+            print(
+                f"{result.rel_tag} - {result.ca_version} - {result.python_version} - {result.test_stats.mpi} - {gcc_ver}: {failed} failed tests"
+            )
 
         df.to_csv("report.csv", index=False)
         print("done")
@@ -131,36 +128,34 @@ class GATestChecker:
     def get_results(self, release_tag=None, python_ver=None, mpi_ver=None, overwrite=False):
         for release in self.list_all_releases():
             rel_name = release["name"]
-            asset = release["assets"][0]
-            name = asset["name"]
-
             tag_name = release["tag_name"]
             body_str = extract_release_body_for_notes(release["body"])
-
-            mpi_str = re.search("mpi|seq", rel_name).group(0)
-            if mpi_ver is not None and mpi_str != mpi_ver:
-                continue
-            rel_tag = re.search("\[(.*?)\]", rel_name).group(1).replace("-" + mpi_str, "")
-            if release_tag is not None and rel_tag != release_tag:
-                continue
-            ca_version = tag_name.split("-")[2]
-            dest_file = self.temp_dir / "files" / name
-            dest_dir = self.temp_dir / name.replace(".tar.gz", "")
-            if not dest_file.exists() or overwrite is True:
-                r = requests.get(asset["browser_download_url"])
-                dest_file.parent.mkdir(exist_ok=True, parents=True)
-                with open(dest_file, "wb") as f:
-                    f.write(r.content)
-                with tarfile.open(dest_file, "r:gz") as f:
-                    f.extractall(dest_dir)
-
-            for d in os.listdir(dest_dir):
-                py_ver = d.split("-")[-1]
-                res_dir = dest_dir / d
-                if python_ver is not None and py_ver != python_ver:
+            for asset in release["assets"]:
+                name = asset["name"]
+                mpi_str = re.search("mpi|seq", name).group(0)
+                if mpi_ver is not None and mpi_str != mpi_ver:
                     continue
-                test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
-                yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, body_str)
+                rel_tag = re.search("\[(.*?)\]", rel_name).group(1).replace("-" + mpi_str, "")
+                if release_tag is not None and rel_tag != release_tag:
+                    continue
+                ca_version = tag_name.split("-")[2]
+                dest_file = self.temp_dir / "files" / name
+                dest_dir = self.temp_dir / name.replace(".tar.gz", "")
+                if not dest_file.exists() or overwrite is True:
+                    r = requests.get(asset["browser_download_url"])
+                    dest_file.parent.mkdir(exist_ok=True, parents=True)
+                    with open(dest_file, "wb") as f:
+                        f.write(r.content)
+                    with tarfile.open(dest_file, "r:gz") as f:
+                        f.extractall(dest_dir)
+
+                for d in os.listdir(dest_dir):
+                    py_ver = re.search("(3.[0-9]{1,2})", d).group(1)
+                    res_dir = dest_dir / d
+                    if python_ver is not None and py_ver != python_ver:
+                        continue
+                    test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
+                    yield TestPackage(rel_tag, test_stats, ca_version, py_ver, res_dir, body_str)
 
     def prep_ctests_for_local_rerunning(self, local_env_path):
         local_env_path = pathlib.Path(local_env_path)

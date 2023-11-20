@@ -45,7 +45,7 @@ on:
         required: false
         default: ""
 env:
-  VARIANT_FLAG: "*seq*"
+  VARIANT_FLAG: "*nompi*"
   PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
   CONDA_CHANNEL: ""
 
@@ -138,7 +138,7 @@ jobs:
         run: |
           if [[ ${{ inputs.mpi }} == true ]]; then
             echo "MPI variant"
-            add_str="--mpi"
+            add_str=" --mpi"
           else
             echo "SEQ variant"
             add_str=""
@@ -148,7 +148,7 @@ jobs:
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v3
         with:
-          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
+          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ inputs.suffix }}
           path: ${{ github.workspace }}/ctest
 
   upload_test_results:
@@ -163,16 +163,18 @@ jobs:
 
       - name: Package ctest directories
         run: |
-          tar czf ${{ env.PKG_TAR }} ctest-*
+          tar czf ${{ env.PKG_TAR }} ctest-*-${{ inputs.suffix }}
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_label }}-${{ inputs.suffix }}
-          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_label }}-${{ inputs.suffix }}]
+          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_label }}
+          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_label }}]
           body: |
             Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
-            ${{ inputs.description }}
+            
+            Notes:
+            * ${{ inputs.description }}
           draft: false
           prerelease: false
           files: ${{ env.PKG_TAR }}
