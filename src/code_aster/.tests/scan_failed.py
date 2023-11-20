@@ -195,8 +195,10 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         # Uncategorized
         # mpi-related
         ("<F> <DVP_97>", "Erreur signalée dans la bibliothèque MED", "nom de l'utilitaire : mfiope"),
-        ("<stdout>:cannot remove", "Operation not permitted[1,0]<stdout>", "No such file or directory: 'pick.code_aster.objects'"),
-        ("<stdout>:cannot remove", 'File : "mesh_1.med" has been detected as NOT EXISTING : impossible to read anything !'),
+        ("<stdout>:cannot remove", "Operation not permitted[1,0]<stdout>",
+         "No such file or directory: 'pick.code_aster.objects'"),
+        ("<stdout>:cannot remove",
+         'File : "mesh_1.med" has been detected as NOT EXISTING : impossible to read anything !'),
         ("sysmalloc: Assertion `(old_top == initial_top (av)",),
         ("malloc(): invalid size (unsorted)", "=134", "<F>_ABNORMAL_ABORT"),
         ("malloc(): mismatching next->prev_size (unsorted)",),
@@ -213,10 +215,10 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
             "PARMETIS ERROR: Poor initial vertex distribution. Processor 0 has no vertices assigned to it!",
         ),
         # ("PARTITIONNEUR='METIS'", "=139", "<F>_ABNORMAL_ABORT"),
-        ("malloc(): unaligned tcache chunk detected", ),
+        ("malloc(): unaligned tcache chunk detected",),
         ("corrupted size vs. prev_size", "<F>_ABNORMAL_ABORT", "=134"),
         ("<F> <ALGORITH9_17>", "Le nombre de pas est négatif"),
-        ("double free or corruption (!prev)","<F>_ABNORMAL_ABORT"),
+        ("double free or corruption (!prev)", "<F>_ABNORMAL_ABORT"),
         # non-mpi (likely)
         (
             "<F> <DVP_1>",
@@ -242,6 +244,10 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         ("JeveuxCollection.h", "ABORT - exit code 17", "seems empty"),
         ("Killed", "137"),
         ("NOOK_TEST_RESU",),
+        ("<F> <MED_18>", "Vous essayer de partitionner le maillage alors que le calcul est séquentiel",
+         "Pour enlever cette alarme, utiliser le mot-clé SANS dans PARTITIONNEUR"),
+        ("<F> <FACTOR_48>", "Une option d'accélération non disponible avec cette version de MUMPS a été activée", "Pour continuer malgré tout le calcul, on lui a substitué l'option F"),
+        ("<F> <FACTOR_90>", "Vous avez paramétré le solveur linéaire MUMPS avec le renuméroteur 'PARMETIS'")
     ]
 
     failed_termination_msg = "_ERROR"

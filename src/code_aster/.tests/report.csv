@@ -1,4 +1,16 @@
 release_tag,code_aster,python,mpi,numpy,hdf5,gcc,num_failed_tests,date,description
+ca-6929259947,16.4.14,3.10,mpi,1.25.2,1.10.6,8.5.0,112,2023-11-20 13:23:15,Latest release 16.4.14
+ca-6929259947,16.4.14,3.11,mpi,1.25.2,1.10.6,8.5.0,21,2023-11-20 13:23:15,Latest release 16.4.14
+ca-6929259947,16.4.14,3.10,seq,1.25.2,1.10.6,8.5.0,115,2023-11-20 13:07:02,Latest release 16.4.14
+ca-6929259947,16.4.14,3.11,seq,1.25.2,1.10.6,8.5.0,23,2023-11-20 13:07:02,Latest release 16.4.14
+ca-6929322333,16.4.13,3.10,mpi,1.25.2,1.10.6,8.5.0,113,2023-11-20 13:23:49,Latest release 16.4.13
+ca-6929322333,16.4.13,3.11,mpi,1.25.2,1.10.6,8.5.0,21,2023-11-20 13:23:49,Latest release 16.4.13
+ca-6929322333,16.4.13,3.10,seq,1.25.2,1.10.6,8.5.0,115,2023-11-20 13:10:13,Latest release 16.4.13
+ca-6929322333,16.4.13,3.11,seq,1.25.2,1.10.6,8.5.0,23,2023-11-20 13:10:13,Latest release 16.4.13
+ca-6929228954,16.4.11,3.10,mpi,1.25.2,1.10.6,8.5.0,109,2023-11-20 13:15:03,Re-run version 16.4.11 with refactored Code-Aster to detect regression
+ca-6929228954,16.4.11,3.11,mpi,1.25.2,1.10.6,8.5.0,18,2023-11-20 13:15:03,Re-run version 16.4.11 with refactored Code-Aster to detect regression
+ca-6929228954,16.4.11,3.10,seq,1.25.2,1.10.6,8.5.0,109,2023-11-20 13:02:34,Re-run version 16.4.11 with refactored Code-Aster to detect regression
+ca-6929228954,16.4.11,3.11,seq,1.25.2,1.10.6,8.5.0,18,2023-11-20 13:02:34,Re-run version 16.4.11 with refactored Code-Aster to detect regression
 ca-6781991695,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,115,2023-11-07 11:33:21,Solve mixing seq and mpi results in release artifacts naming
 ca-6781991695,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,25,2023-11-07 11:33:21,Solve mixing seq and mpi results in release artifacts naming
 ca-6781991695,16.4.12,3.10,seq,1.25.2,1.10.6,8.5.0,110,2023-11-07 11:25:32,Solve mixing seq and mpi results in release artifacts naming
@@ -57,9 +69,3 @@ ca-6362864337,16.4.8,3.10,seq,1.25.2,1.10.6,10.4.0,246,2023-09-30 15:44:13,test 
 ca-6362864337,16.4.8,3.11,seq,1.25.2,1.10.6,10.4.0,156,2023-09-30 15:44:13,test code aster using gcc 10
 ca-6362864337,16.4.8,3.10,mpi,1.25.2,1.10.6,10.4.0,446,2023-09-30 16:52:23,test code aster using gcc 10
 ca-6362864337,16.4.8,3.11,mpi,1.25.2,1.10.6,10.4.0,371,2023-09-30 16:52:23,test code aster using gcc 10
-ca-6362649655,16.4.8,3.10,seq,1.25.2,1.10.6,9.5.0,246,2023-09-30 16:07:28,Test using gcc 9
-ca-6362649655,16.4.8,3.11,seq,1.25.2,1.10.6,9.5.0,156,2023-09-30 16:07:28,Test using gcc 9
-ca-6362649655,16.4.8,3.10,mpi,1.25.2,1.10.6,9.5.0,450,2023-09-30 17:08:25,Test using gcc 9
-ca-6362649655,16.4.8,3.11,mpi,1.25.2,1.10.6,9.5.0,368,2023-09-30 17:08:25,Test using gcc 9
-ca-6355937094,16.4.8,3.10,seq,1.25.2,1.10.6,8.5.0,115,2023-09-29 22:14:40,Test using code_aster official 16.4.8 version
-ca-6355937094,16.4.8,3.11,seq,1.25.2,1.10.6,8.5.0,20,2023-09-29 22:14:40,Test using code_aster official 16.4.8 version
