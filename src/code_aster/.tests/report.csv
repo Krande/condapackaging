@@ -5,6 +5,10 @@ ca-6781991695,16.4.12,3.10,seq,1.25.2,1.10.6,8.5.0,110,Solve mixing seq and mpi 
 ca-6781991695,16.4.12,3.11,seq,1.25.2,1.10.6,8.5.0,18,Solve mixing seq and mpi results in release artifacts naming
 ca-6756834234,16.4.12,3.10,mpi,1.25.2,1.10.6,8.5.0,132,Release 16.4.12 and refactor code_aster and run_aster to site packages
 ca-6756834234,16.4.12,3.11,mpi,1.25.2,1.10.6,8.5.0,41,Release 16.4.12 and refactor code_aster and run_aster to site packages
+ca-6784250634,16.4.11,3.10,mpi,1.25.2,1.10.6,8.5.0,111,Re-run version 16.4.11 with refactored Code-Aster to detect regression
+ca-6784250634,16.4.11,3.11,mpi,1.25.2,1.10.6,8.5.0,24,Re-run version 16.4.11 with refactored Code-Aster to detect regression
+ca-6784250634,16.4.11,3.10,seq,1.25.2,1.10.6,8.5.0,109,Re-run version 16.4.11 with refactored Code-Aster to detect regression
+ca-6784250634,16.4.11,3.11,seq,1.25.2,1.10.6,8.5.0,18,Re-run version 16.4.11 with refactored Code-Aster to detect regression
 ca-6733986370,16.4.11,3.10,seq,1.25.2,1.10.6,8.5.0,109,
 ca-6733986370,16.4.11,3.11,seq,1.25.2,1.10.6,8.5.0,18,
 ca-6733986370,16.4.11,3.10,mpi,1.25.2,1.10.6,8.5.0,109,
@@ -59,5 +63,3 @@ ca-6362649655,16.4.8,3.10,mpi,1.25.2,1.10.6,9.5.0,450,Test using gcc 9
 ca-6362649655,16.4.8,3.11,mpi,1.25.2,1.10.6,9.5.0,368,Test using gcc 9
 ca-6355937094,16.4.8,3.10,seq,1.25.2,1.10.6,8.5.0,115,Test using code_aster official 16.4.8 version
 ca-6355937094,16.4.8,3.11,seq,1.25.2,1.10.6,8.5.0,20,Test using code_aster official 16.4.8 version
-ca-6355937094,16.4.8,3.10,mpi,1.25.2,1.10.6,8.5.0,336,Test using code_aster official 16.4.8 version
-ca-6355937094,16.4.8,3.11,mpi,1.25.2,1.10.6,8.5.0,255,Test using code_aster official 16.4.8 version
