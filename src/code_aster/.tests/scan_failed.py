@@ -2,7 +2,7 @@ import argparse
 import logging
 import pathlib
 from dataclasses import dataclass
-
+import xml.etree.ElementTree as ET
 from colorama import Fore
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class FailedJob:
+class FailedJobsSummary:
     num_failed: int
     jobs_failed: list[str]
 
@@ -39,8 +39,32 @@ def get_current_failed(test_dir: pathlib.Path):
 
 
 @dataclass
+class XmlLogStats:
+    name: str
+    tot_num_jobs: int
+    tot_failures: int
+    time: float
+    failure_data: list[str] = None
+
+
+def get_xml_log_stats(xml_file: pathlib.Path) -> XmlLogStats:
+    # Parsing the XML
+    root = ET.fromstring(xml_file.read_text(encoding="utf-8"))
+    name = root.get("name")
+    time = float(root.get("time"))
+    tot_num_jobs = int(root.get("tests"))
+    tot_failures = int(root.get("failures"))
+
+    # Extracting test cases with failures
+    testcases_with_failure = [testcase for testcase in root.findall("testcase") if testcase.find("failure") is not None]
+
+
+    return XmlLogStats(name=name, tot_num_jobs=tot_num_jobs, tot_failures=tot_failures, time=time)
+
+
+@dataclass
 class TestStats:
-    fail_map: dict[tuple[str], FailedJob]
+    fail_map: dict[tuple[str], FailedJobsSummary]
     num_failed_tot: int
     num_identified_failed: int
     unidentified_failures: list[str]
@@ -49,6 +73,7 @@ class TestStats:
     numpy_failures: list[tuple[str]]
     unclassified_fail_messages: list[tuple[str]]
     mpi: bool
+    xml_log_stats: XmlLogStats
 
     def __post_init__(self):
         self._not_failures_num = len(self.no_signs_of_failure)
@@ -58,7 +83,7 @@ class TestStats:
         self._unclassified_n = self._calc_sum_failed(self.unclassified_fail_messages)
 
     def _calc_sum_failed(self, packages: list[tuple[str]]) -> int:
-        return sum([len(self.fail_map.get(nf, FailedJob(0, [])).jobs_failed) for nf in packages])
+        return sum([len(self.fail_map.get(nf, FailedJobsSummary(0, [])).jobs_failed) for nf in packages])
 
     def print_non_failures(self) -> None:
         # Not actual failures
@@ -74,7 +99,7 @@ class TestStats:
         print(Fore.RED + f"\nMissing packages Errors ({res}):")
 
         for mis_pack in self.missing_packages:
-            mis_packs = self.fail_map.get(mis_pack, FailedJob(0, [])).jobs_failed
+            mis_packs = self.fail_map.get(mis_pack, FailedJobsSummary(0, [])).jobs_failed
             if len(mis_packs) == 0:
                 continue
             print(f"\n  errors=({len(mis_packs)}), missing_package(s): {mis_pack[0]}:\n")
@@ -85,7 +110,7 @@ class TestStats:
         res = self._numpy_n
         print(Fore.RED + f"\nNumpy Errors ({res}):\n")
         for error_code in self.numpy_failures:
-            for failure in self.fail_map.get(error_code, FailedJob(0, [])).jobs_failed:
+            for failure in self.fail_map.get(error_code, FailedJobsSummary(0, [])).jobs_failed:
                 print(f"    {failure} due to '{error_code}'")
 
         return res
@@ -98,7 +123,7 @@ class TestStats:
         res = self._unclassified_n
         print(Fore.RED + f"\nUnclassified Errors ({res}):")
         for error_code in self.unclassified_fail_messages:
-            errors = self.fail_map.get(error_code, FailedJob(0, [])).jobs_failed
+            errors = self.fail_map.get(error_code, FailedJobsSummary(0, [])).jobs_failed
             if len(errors) == 0:
                 continue
             print(f"\n  errors=({len(errors)}), error_code(s): {error_code}:\n")
@@ -128,7 +153,7 @@ class TestStats:
             print(f"{key} in multiple categories: {value}")
 
     def print_summary(self):
-        tot_num_jobs = 2182 if not self.mpi else 2256
+        tot_num_jobs = self.xml_log_stats.tot_num_jobs
 
         not_failures_num = self._not_failures_num
         num_identified_failed = self.num_identified_failed
@@ -168,9 +193,12 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
     test_dir = pathlib.Path(test_dir).resolve()
     if not test_dir.exists():
         raise ValueError(f"{test_dir} does not exist")
+
     last_failed = get_last_failed(test_dir, aster_ver)
     if last_failed is None:
         last_failed = get_current_failed(test_dir)
+
+    xml_log_stats = get_xml_log_stats(test_dir / "run_testcases.xml")
 
     missing_packages = [
         ("Le fichier xmgrace n'existe pas",),
@@ -195,10 +223,15 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         # Uncategorized
         # mpi-related
         ("<F> <DVP_97>", "Erreur signalée dans la bibliothèque MED", "nom de l'utilitaire : mfiope"),
-        ("<stdout>:cannot remove", "Operation not permitted[1,0]<stdout>",
-         "No such file or directory: 'pick.code_aster.objects'"),
-        ("<stdout>:cannot remove",
-         'File : "mesh_1.med" has been detected as NOT EXISTING : impossible to read anything !'),
+        (
+            "<stdout>:cannot remove",
+            "Operation not permitted[1,0]<stdout>",
+            "No such file or directory: 'pick.code_aster.objects'",
+        ),
+        (
+            "<stdout>:cannot remove",
+            'File : "mesh_1.med" has been detected as NOT EXISTING : impossible to read anything !',
+        ),
         ("sysmalloc: Assertion `(old_top == initial_top (av)",),
         ("malloc(): invalid size (unsorted)", "=134", "<F>_ABNORMAL_ABORT"),
         ("malloc(): mismatching next->prev_size (unsorted)",),
@@ -244,10 +277,17 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         ("JeveuxCollection.h", "ABORT - exit code 17", "seems empty"),
         ("Killed", "137"),
         ("NOOK_TEST_RESU",),
-        ("<F> <MED_18>", "Vous essayer de partitionner le maillage alors que le calcul est séquentiel",
-         "Pour enlever cette alarme, utiliser le mot-clé SANS dans PARTITIONNEUR"),
-        ("<F> <FACTOR_48>", "Une option d'accélération non disponible avec cette version de MUMPS a été activée", "Pour continuer malgré tout le calcul, on lui a substitué l'option F"),
-        ("<F> <FACTOR_90>", "Vous avez paramétré le solveur linéaire MUMPS avec le renuméroteur 'PARMETIS'")
+        (
+            "<F> <MED_18>",
+            "Vous essayer de partitionner le maillage alors que le calcul est séquentiel",
+            "Pour enlever cette alarme, utiliser le mot-clé SANS dans PARTITIONNEUR",
+        ),
+        (
+            "<F> <FACTOR_48>",
+            "Une option d'accélération non disponible avec cette version de MUMPS a été activée",
+            "Pour continuer malgré tout le calcul, on lui a substitué l'option F",
+        ),
+        ("<F> <FACTOR_90>", "Vous avez paramétré le solveur linéaire MUMPS avec le renuméroteur 'PARMETIS'"),
     ]
 
     failed_termination_msg = "_ERROR"
@@ -259,7 +299,7 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
     num_failed_tot = 0
     no_signs_of_failure = []
     unidentified_failures = []
-    fail_map: dict[tuple[str], FailedJob] = {}
+    fail_map: dict[tuple[str], FailedJobsSummary] = {}
 
     for failed_mess in last_failed:
         if not failed_mess.exists():
@@ -279,7 +319,7 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
             if all([msg in data for msg in fail_msg]):
                 is_identified = True
                 if fail_msg not in fail_map:
-                    fail_map[fail_msg] = FailedJob(1, [mess_name])
+                    fail_map[fail_msg] = FailedJobsSummary(1, [mess_name])
                 else:
                     fail_map[fail_msg].num_failed += 1
                     fail_map[fail_msg].jobs_failed.append(mess_name)
@@ -294,6 +334,11 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
             no_signs_of_failure.append(mess_name)
             # print(f'{failed_mess} did not fail')
 
+    if num_failed_tot != xml_log_stats.tot_failures:
+        logger.warning(
+            f"Number of failed tests {num_failed_tot} does not match number of failed tests in xml log {xml_log_stats.tot_failures}"
+        )
+
     el = TestStats(
         fail_map=fail_map,
         num_identified_failed=num_identified_failed,
@@ -304,6 +349,7 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         no_signs_of_failure=no_signs_of_failure,
         numpy_failures=numpy_failures,
         mpi=mpi,
+        xml_log_stats=xml_log_stats,
     )
 
     if print:
