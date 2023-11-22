@@ -1,6 +1,5 @@
 name: ci-test-matrix-builder
 
-# bump 1
 on:
   push:
     paths:

@@ -1,12 +1,12 @@
 name: ci-h5py
 
-# bump 1
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-h5py.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 jobs:
   build:

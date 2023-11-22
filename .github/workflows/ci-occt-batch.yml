@@ -1,12 +1,7 @@
 name: ci-occt-batch
 
-# bump 1
 on:
-  push:
-    paths:
-      - .github/workflows/ci-occt-batch.yml
-#    branches:
-#      - donotrun
+  workflow_dispatch:
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow

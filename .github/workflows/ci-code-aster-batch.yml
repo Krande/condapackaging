@@ -2,11 +2,12 @@ name: ci-code-aster-batch
 
 # bump 0
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-code-aster-batch.yml
-#    branches:
-#      - donotrun
+    branches:
+      - donotrun
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow

@@ -1,12 +1,12 @@
 name: ci-homard
 
-# bump 0
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-homard.yml
     branches:
-    - donotrun
+      - donotrun
 
 jobs:
   build:

@@ -1,12 +1,12 @@
 name: ci-gmsh
 
-# bump 1
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-gmsh.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   build:

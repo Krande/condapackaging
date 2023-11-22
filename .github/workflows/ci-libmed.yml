@@ -1,12 +1,12 @@
 name: ci-libmed
 
-# Bump 1
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-libmed.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   build:

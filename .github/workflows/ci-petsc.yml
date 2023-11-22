@@ -1,12 +1,7 @@
 name: ci-petsc
 
-# bump 1
 on:
-  push:
-    paths:
-      - .github/workflows/ci-petsc.yml
-    branches:
-    - donotrun
+  workflow_dispatch:
 
 jobs:
   build:

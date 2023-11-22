@@ -1,12 +1,7 @@
 name: ci-mingw64
 
-# Bump 1
 on:
-  push:
-    paths:
-      - .github/workflows/ci-mingw64.yml
-    branches:
-    - donotrun
+  workflow_dispatch:
 
 jobs:
   build:

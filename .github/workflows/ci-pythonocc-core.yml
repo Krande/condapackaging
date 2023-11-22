@@ -1,13 +1,8 @@
 name: ci-pythonocc-core
 
-# bump 0
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/ci-pythonocc-core.yml
-#    branches:
-#    - donotrun
+
 
 jobs:
   build:

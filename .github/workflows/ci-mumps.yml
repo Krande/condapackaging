@@ -1,12 +1,7 @@
 name: ci-mumps
 
-# bump 1
 on:
-  push:
-    paths:
-      - .github/workflows/ci-mumps.yml
-    branches:
-    - donotrun
+  workflow_dispatch:
 
 jobs:
   build:

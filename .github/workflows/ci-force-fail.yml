@@ -1,6 +1,7 @@
 name: ci-force-fail
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - do_not_run

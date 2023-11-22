@@ -1,13 +1,7 @@
 name: ci-pygfx
 
-# bump 1
 on:
-  push:
-    paths:
-      - src/**
-      - .github/workflows/ci-pygfx.yml
-    branches:
-      - donotrun
+  workflow_dispatch:
 
 jobs:
   build_wgpu:

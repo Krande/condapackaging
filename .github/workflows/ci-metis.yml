@@ -1,7 +1,7 @@
 name: ci-metis
 
-# bump 0
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-metis.yml

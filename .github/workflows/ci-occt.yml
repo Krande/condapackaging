@@ -1,12 +1,8 @@
 name: ci-occt
 
-# bump 1
 on:
-  push:
-    paths:
-      - .github/workflows/ci-occt-core.yml
-    branches:
-      - donotrun
+  workflow_dispatch:
+
 
 jobs:
   build:
