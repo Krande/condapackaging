@@ -36,7 +36,8 @@ requirements:
   host:
     - python
     - occt {{ version }} *{{ variant }}*
-    - numpy 1.25
+    - numpy 1.25      # [py311]
+    - numpy >=1.26    # [py312]
 
   run:
     - python
