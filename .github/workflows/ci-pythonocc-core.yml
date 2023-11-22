@@ -2,6 +2,7 @@ name: ci-pythonocc-core
 
 # bump 0
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/ci-pythonocc-core.yml
@@ -13,10 +14,10 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: pythonocc-core
-      conda_label: "dev2"
+      conda_label: "dev"
       conda_user: krande
       debug_build: 'False'
-      python_versions: "3.10,3.11"
-      variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
+      python_versions: "3.10,3.11,3.12"
+      variants: "variant=novtk,variant=all"
       use_quetz: "False"
     secrets: inherit

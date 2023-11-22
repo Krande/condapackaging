@@ -1,6 +1,6 @@
-occt:
-  - 7.7.2=novtk*
-  - 7.7.2=all*
+variant:
+  - novtk
+  - all
 
 hdf5:
   - 1.10.6
