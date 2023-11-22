@@ -19,11 +19,13 @@ source:
 build:
   number: {{ build }}
   string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
-  binary_relocation: false [osx]
 
 
 requirements:
   build:
+    - python                                 # [build_platform != target_platform]
+    - numpy                                  # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ compiler('cxx') }}
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
     - {{ cdt('libxi-devel') }}           # [linux]
@@ -34,13 +36,13 @@ requirements:
   host:
     - python
     - occt {{ version }} *{{ variant }}*
-    - numpy >=1.22
+    - numpy 1.25
 
   run:
     - python
-    - six
     - occt {{ version }} *{{ variant }}*
-    - numpy >=1.22
+    - six
+    - {{ pin_compatible("numpy") }}
     - svgwrite
 
   run_constrained:

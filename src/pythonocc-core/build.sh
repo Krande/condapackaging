@@ -1,25 +1,19 @@
 #!/bin/bash
-# make an in source build do to some problems with install
 
+mkdir build
+cd build
 
 # Configure step
-cmake -G Ninja \
-  -DPYTHONOCC_BUILD_TYPE=Release \
-  -DCMAKE_PREFIX_PATH=$PREFIX \
-  -DCMAKE_LIBRARY_PATH:FILEPATH="$PREFIX/lib" \
-  -DCMAKE_INSTALL_PREFIX=$PREFIX \
-  -DCMAKE_SYSTEM_PREFIX_PATH=$PREFIX \
-  ${CMAKE_PLATFORM_FLAGS[@]} \
-  -DPYTHONOCC_MESHDS_NUMPY=ON \
-  -DPython3_FIND_STRATEGY=LOCATION \
-  -DPython3_FIND_FRAMEWORK=NEVER \
-  -DSWIG_HIDE_WARNINGS=ON \
-  -Wno-dev \
-  -DPYTHONOCC_VERSION=$OCCT_VERSION \
-  .
-
-# Build step
-ninja
+cmake ${CMAKE_ARGS} -G Ninja \
+  -D CMAKE_INSTALL_PREFIX=$PREFIX \
+  -D PYTHONOCC_BUILD_TYPE=Release \
+  -D Python3_FIND_STRATEGY=LOCATION \
+  -D Python3_FIND_FRAMEWORK=NEVER \
+  -D SWIG_HIDE_WARNINGS=ON \
+  -D PYTHONOCC_INSTALL_DIRECTORY:FILEPATH=$SP_DIR/OCC \
+  -D PYTHONOCC_MESHDS_NUMPY:BOOL=ON \
+  -D PYTHON3_NUMPY_INCLUDE_DIRS:FILEPATH=${PREFIX}/include \
+  ..
 
 # Install step
 ninja install
