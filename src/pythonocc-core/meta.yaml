@@ -11,20 +11,16 @@ package:
 {% set build = build + 100 %}   # [variant == "novtk"]
 {% set build = build + 200 %}   # [variant == "all"]
 
-
-#source:
-#  git_url: https://github.com/tpaviot/pythonocc-core.git
-#  git_rev: 943bf30dbabcac36d3bf4a04d6bbee93fd1597ec
-#  git_depth: 1
-
 source:
   url: https://github.com/tpaviot/pythonocc-core/archive/{{ version }}.tar.gz
   sha256: 0f6473be2800a64222ef86a3de70e3beaa2320a3839ebde1b4f6e845a369c0d9
+
 
 build:
   number: {{ build }}
   string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
   binary_relocation: false [osx]
+
 
 requirements:
   build:
@@ -55,15 +51,10 @@ test:
     - OCC.Core.BRepPrimAPI
     - OCC.Core.MeshDS
     - OCC.Core.Tesselator
-  files:
+  source_files:
     - test/
-
   requires:
     - pyqt >=5
-    - mypy
-    - svgwrite
-    - wxpython >=4
-    - pyside2 >=5
 
 about:
   home: https://github.com/tpaviot/pythonocc-core
