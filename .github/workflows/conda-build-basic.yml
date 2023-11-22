@@ -212,12 +212,13 @@ jobs:
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
-            python=${{ matrix.pyver }}
+            python=3.11
             anaconda-client
             boa
             python-dotenv
             typer
             quetz-client
+            conda-build
 
       - name: Install cpack-actions
         run: |
