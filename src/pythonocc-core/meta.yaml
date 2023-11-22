@@ -36,6 +36,7 @@ requirements:
   host:
     - python
     - occt {{ version }} *{{ variant }}*
+    - numpy
 
   run:
     - python
