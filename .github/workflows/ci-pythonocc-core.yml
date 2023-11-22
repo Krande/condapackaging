@@ -12,7 +12,7 @@ jobs:
       conda_label: "dev"
       conda_user: krande
       debug_build: 'False'
-      python_versions: "3.10,3.11,3.12"
+      python_versions: "3.11,3.12"
       variants: "variant=novtk,variant=all"
       use_quetz: "False"
     secrets: inherit
