@@ -40,7 +40,7 @@ requirements:
     - boost
     - libxml2
     - astor
-    - pybind11-stubgen
+    - pybind11-stubgen 2.3.7
     - libmed {{ libmed_ver }}{{mpi}}*
     - {{ mpi }}                                 # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
