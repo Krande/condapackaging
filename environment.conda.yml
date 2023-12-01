@@ -17,6 +17,7 @@ dependencies:
   - ninja
   - doxygen
   - boa
+  - jinja2
   - mercurial
   - ruamel.yaml.jinja2
   - pybind11-stubgen

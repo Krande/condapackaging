@@ -1,0 +1,19 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Add any common CSS/JS here -->
+</head>
+<body>
+    <nav>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/data_tables/table1.html">Table 1</a>
+        <a href="/data_tables/table2.html">Table 2</a>
+        <!-- Add more links as needed -->
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
