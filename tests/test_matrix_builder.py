@@ -1,4 +1,4 @@
-from cpack.matrix_builder import main as matrix_builder_main, convert_from_bytes_str
+from cpack.matrix_builder import create_actions_matrix as matrix_builder_main, convert_from_bytes_str
 
 
 def test_matrix_builder_variant_specify_os():

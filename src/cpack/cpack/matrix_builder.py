@@ -3,7 +3,7 @@ import base64
 from cpack.variant_str_builder import main as variant_str_builder_main
 
 
-def main(python_versions, platforms, variants_in):
+def create_actions_matrix(python_versions, platforms, variants_in):
     python_versions = python_versions.split(',') if python_versions else []
     platforms = platforms.split(',') if platforms else []
 
