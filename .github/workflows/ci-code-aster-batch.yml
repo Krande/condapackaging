@@ -1,6 +1,6 @@
 name: ci-code-aster-batch
 
-# bump 0
+# bump 1
 on:
   workflow_dispatch:
   push:
