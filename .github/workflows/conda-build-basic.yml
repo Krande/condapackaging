@@ -260,4 +260,4 @@ jobs:
         run: |
           cpack-anaconda ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} ${{ inputs.conda_user }}
         env:
-          ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+          CONDA_API_TOKEN: ${{ secrets.CONDA_API_TOKEN }}
