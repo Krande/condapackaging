@@ -1,23 +1,24 @@
-import os
-
-import pathlib
-
 import argparse
+import os
+import pathlib
+from typing import Annotated
+
 import typer
-from dotenv import load_dotenv
 from binstar_client.commands.upload import Uploader
+from dotenv import load_dotenv
 
 app = typer.Typer()
 load_dotenv()
 
 
-def main(artifacts_dir, label, user) -> None:
+@app.command(name="upload")
+def main(artifacts_dir: str, label: str, user: str, token: Annotated[str, typer.Argument(envvar="CONDA_API_TOKEN")]):
     """Entrypoint of the :code:`upload` command."""
     if isinstance(artifacts_dir, str):
         artifacts_dir = pathlib.Path(artifacts_dir).resolve().absolute()
 
     arguments = argparse.Namespace(
-        token=os.getenv("ANACONDA_TOKEN"),
+        token=token,
         user=user,
         label=label,
         labels=[label],
@@ -41,19 +42,15 @@ def main(artifacts_dir, label, user) -> None:
     try:
         filename: str
         for filename in artifacts_dir.rglob("*.tar.bz2"):
+            print(f"Uploading {filename}")
             uploader.upload(str(filename))
         for filename in artifacts_dir.rglob("*.conda"):
+            print(f"Uploading {filename}")
             uploader.upload(str(filename))
     finally:
         uploader.print_uploads()
         uploader.cleanup()
 
 
-@app.command(name="upload")
-def upload(artifacts_dir: str, label: str, user: str):
-    main(artifacts_dir, label, user)
-
-
 if __name__ == "__main__":
     app()
-

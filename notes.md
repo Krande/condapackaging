@@ -40,3 +40,7 @@ The solution seems to be to add a `.gitattributes` file with the  `*.patch binar
 ## Other
 
 * http://www.johnlees.me/blog/2018/10/15/creating-a-conda-package-with-compilation-and-dependencies/
+
+## Create a conda package from a pip package
+
+install grayskull and do `grayskull pypi <pypi-package-name>`

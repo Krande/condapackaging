@@ -1,0 +1,44 @@
+{% set name = "pytexit" %}
+{% set version = "0.4.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 710084f4c3e01e64e3dc8f936782dd6f6d221d0c6fcc7eba1998916cf6522f7c
+
+build:
+  number: 0
+  # Install using build
+  script: python -m build . --no-isolation --wheel --sdist
+
+requirements:
+  host:
+    - python
+    - build
+    - setuptools >=42
+    - wheel
+    - pip
+  run:
+    - python
+    - six
+
+test:
+  imports:
+    - pytexit
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/erwanp/pytexit
+  summary: Convert a Python expression to a LaTeX formula
+  license: CeCILL-2.1
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - Krande
