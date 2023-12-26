@@ -16,15 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # This is where the conda user and label should be set
-      code_aster_version: 16.5.0
+      code_aster_version: 17.0.1
       conda_label: ca-${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "False"
-      python_versions: "3.11,3.12"
+      python_versions: "3.10,3.11,3.12"
       platforms: "ubuntu-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Latest release 16.5.0"
+      description: "Latest release 17.0.1"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 
@@ -200,7 +200,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: true
-      python_versions: "3.10,3.11"
+      python_versions: "3.10,3.11,3.12"
       platforms: "ubuntu-latest"
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
@@ -215,7 +215,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: false
-      python_versions: "3.10,3.11"
+      python_versions: "3.10,3.11,3.12"
       platforms: "ubuntu-latest"
       suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
