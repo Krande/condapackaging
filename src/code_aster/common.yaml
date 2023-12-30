@@ -25,20 +25,19 @@ zip_keys:
   - numpy
   - python
 
-openmpi:    # [mpi == "openmpi"]
-  - 4.1.6   # [mpi == "openmpi"]
+openmpi:
+  - 4.1.6
 
 hdf5:
   - 1.14.2
 
 pin_run_as_build:
-  openmpi: x.x    # [mpi == "openmpi"]
   hdf5: x.x
+  openmpi:
+    max_pin: x.x.x
   gcc:
     max_pin: x.x
   gxx:
     max_pin: x.x
   gfortran:
-    max_pin: x.x
-  numpy:
     max_pin: x.x

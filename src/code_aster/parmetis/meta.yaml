@@ -8,11 +8,8 @@ package:
   version: {{ version }}
 
 source:
-#  fn: parmetis-{{ version }}.tar.gz
   url: https://github.com/Krande/parmetis-aster-copy/archive/refs/tags/{{ version }}.tar.gz
   sha256: {{ sha256 }}
-##  - hg_url: http://hg.code.sf.net/p/prereq/parmetis
-#    hg_tag: '{{ version }}_{{ aster_variant }}'
 
 build:
   skip: true  # [win]
@@ -29,11 +26,9 @@ requirements:
     - make
 
   host:
-    - numpy
     - {{ mpi }}
 
   run:
-    - numpy
     - {{ mpi }}
 
 test:
@@ -41,8 +36,6 @@ test:
     - test -f "${PREFIX}/include/parmetis.h"
     - test -f "${PREFIX}/lib/libparmetis.dylib"  # [osx]
     - test -f "${PREFIX}/lib/libparmetis.so"  # [linux]
-  requires:
-    - ucx
 
 about:
   home: http://glaros.dtc.umn.edu/gkhome/metis/parmetis/overview
