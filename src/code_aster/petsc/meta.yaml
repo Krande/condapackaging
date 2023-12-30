@@ -8,7 +8,6 @@
 {% set scalapack_ver = "2.1.0" %}
 {% set scotch_ver = "7.0.1" %}
 {% set mumps_ver = "5.5.1" %}
-{% set hdf5_ver = "1.10.6" %}
 {% set cython_ver = "0.29.36" %}
 
 package:
