@@ -94,6 +94,7 @@ env:
   CLICOLOR_FORCE: "1"
   VARIANT_STR: ""
   CONDA_CHANNEL: ""
+  EXTRA_BUILD_ARGS: ""
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
@@ -151,6 +152,26 @@ jobs:
           with open(env_file, "a") as my_file:
             my_file.write(f"VARIANT_STR={decoded_str}\n")
           EOF
+
+      - name: Evaluate Extra Build Args
+        env:
+          EXTRA_ARGS: ${{ inputs.extra_build_args }}
+          WORKSPACE: ${{ github.workspace}}
+        shell: python
+        run: |
+          import os
+          
+          def set_env(name, value):
+              with open(os.environ['GITHUB_ENV'], 'a') as fh:
+                  print(f'{name}={value}', file=fh)
+          
+          workspace_dir = os.getenv("WORKSPACE")
+          extra_args = os.getenv("EXTRA_ARGS")
+          
+          # Substitute __root__ with github workspace
+          if extra_args != "":
+            extra_args_str = extra_args.replace('__root__', workspace_dir)
+            set_env('EXTRA_BUILD_ARGS', extra_args_str)
 
       - name: Download and extract MacOSX SDK
         if: ${{ runner.os == 'macOS' }}
@@ -241,7 +262,7 @@ jobs:
 
       - name: build local packages
         run: |
-          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ inputs.extra_build_args }}
+          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
 
         working-directory: ${{ env.CONDA_DIR }}
         env:
