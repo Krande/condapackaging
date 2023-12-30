@@ -1,0 +1,20 @@
+c_compiler:
+  - vs2022   # [win]
+  - gcc      # [unix]
+cxx_compiler:
+  - vs2022   # [win]
+  - gxx      # [unix]
+fortran_compiler:
+  - gfortran # [unix]
+
+numpy:
+  - 1.25
+  - 1.26
+
+python:
+  - 3.11
+  - 3.12
+
+zip_keys:
+  - numpy
+  - python

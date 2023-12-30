@@ -27,6 +27,7 @@ jobs:
       description: "Test using hdf5 1.14"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
+      extra_build_args: " -m ./src/code_aster/common.yaml"
 
     steps:
       - name: dummy step
