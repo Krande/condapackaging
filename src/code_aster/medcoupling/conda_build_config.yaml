@@ -1,3 +1,12 @@
+c_compiler:
+  - vs2022   # [win]
+  - gcc      # [unix]
+cxx_compiler:
+  - vs2022   # [win]
+  - gxx      # [unix]
+fortran_compiler:
+  - gfortran # [unix]
+
 blas_impl:
   - openblas
 
