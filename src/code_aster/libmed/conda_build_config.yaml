@@ -26,7 +26,7 @@ pin_run_as_build:
   openmpi: x.x               # [mpi != "nompi"]
 
 mpi:
-  - openmpi                  # [unix]
+  - openmpi=4.1.6                  # [unix]
   - nompi
 
 hdf5:

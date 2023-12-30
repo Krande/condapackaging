@@ -8,7 +8,7 @@ fortran_compiler:
   - gfortran # [unix]
 
 mpi:
-  - openmpi
+  - openmpi=4.1.6
 
 pin_run_as_build:
   openmpi: x.x

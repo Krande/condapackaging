@@ -19,5 +19,5 @@ hdf5:
   - 1.14.2=nompi*
 
 mpi:
-  - openmpi               # [not win]
+  - openmpi=4.1.6               # [not win]
   - nompi
