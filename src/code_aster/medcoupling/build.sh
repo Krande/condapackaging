@@ -3,7 +3,7 @@ set -ex
 export CLICOLOR_FORCE=1
 
 mkdir -p build
-pushd build
+cd build
 
 if [[ "$mpi" == "nompi" ]]; then
   on_mpi="OFF"
@@ -11,24 +11,17 @@ else
   on_mpi="ON"
 fi
 
-if [[ "${PKG_DEBUG}" == "True" ]]; then
-    echo "Debugging Enabled"
-    export CFLAGS="-g -O0 ${CFLAGS}"
-    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
-    export FCFLAGS="-g -O0 ${FCFLAGS}"
-    build_type="Debug"
-else
-    build_type="Release"
-    echo "Debugging Disabled"
-fi
+# remove the share cmake files
+find ${PREFIX}/share/cmake -type d -name "medfile-*" -exec rm -rf {} +
 
 cmake .. \
-    -DCMAKE_BUILD_TYPE=$build_type \
+    -DCMAKE_BUILD_TYPE="Release" \
     -DPYTHON_ROOT_DIR="${PREFIX}" \
+    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
     -Wno-dev \
-    -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
     -DSALOME_CMAKE_DEBUG=ON \
+    -DMED_INT_IS_LONG=ON \
     -DSALOME_USE_MPI=${on_mpi} \
     -DMEDCOUPLING_BUILD_TESTS=OFF \
     -DMEDCOUPLING_BUILD_DOC=OFF \
@@ -41,14 +34,7 @@ cmake .. \
     -DMEDCOUPLING_PARTITIONER_SCOTCH=OFF \
     -DMEDCOUPLING_PARTITIONER_PTSCOTCH=${on_mpi} \
     -DMPI_C_COMPILER:PATH="$(which mpicc)" \
-    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
-    -DHDF5_ROOT_DIR="${PREFIX}" \
-    -DSWIG_ROOT_DIR="${PREFIX}" \
-    -DMEDFILE_ROOT_DIR="${PREFIX}" \
-    -DSCOTCH_ROOT_DIR="${PREFIX}" \
-    -DMETIS_ROOT_DIR="${PREFIX}" \
-    -DPARMETIS_ROOT_DIR="${PREFIX}" \
-    -DCMAKE_PREFIX_PATH="${PREFIX}"
+    ${CMAKE_ARGS}
 
 make -j$CPU_COUNT
 make install

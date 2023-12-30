@@ -20,11 +20,11 @@ jobs:
       conda_label: ca-${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
-      debug_build: "False"
-      python_versions: "3.10,3.11,3.12"
-      platforms: "ubuntu-latest"
+      debug_build: "True"
+      python_versions: "3.11,3.12"
+      platforms: "ubuntu-latest,windows-latest"
       mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Latest release 17.0.1"
+      description: "Test using hdf5 1.14"
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
 

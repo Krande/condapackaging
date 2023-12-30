@@ -1,3 +1,0 @@
-mpi:
-  - openmpi               # [not win]
-  - nompi
