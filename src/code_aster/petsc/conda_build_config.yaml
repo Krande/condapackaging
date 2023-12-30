@@ -1,19 +1,5 @@
-c_compiler:
-  - vs2022   # [win]
-  - gcc      # [unix]
-cxx_compiler:
-  - vs2022   # [win]
-  - gxx      # [unix]
-fortran_compiler:
-  - gfortran # [unix]
-
 mpi:
   - openmpi
-
-blas_impl:
-  - openblas
-  - mkl          # [x86 or x86_64]
-  - blis         # [x86 or x86_64]
 
 pin_run_as_build:
   hypre:
@@ -24,15 +10,3 @@ pin_run_as_build:
     max_pin: x.x
   scalapack:
     max_pin: x.x
-
-numpy:
-  - 1.25
-  - 1.26
-
-python:
-  - 3.11
-  - 3.12
-
-zip_keys:
-  - numpy
-  - python

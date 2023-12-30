@@ -1,11 +1,17 @@
+python_impl:
+  - cpython
+
 c_compiler:
   - vs2022   # [win]
-  - gcc      # [unix]
+  - gcc      # [linux]
 cxx_compiler:
   - vs2022   # [win]
-  - gxx      # [unix]
+  - gxx      # [linux]
 fortran_compiler:
-  - gfortran # [unix]
+  - gfortran # [linux]
+
+blas_impl:
+  - openblas
 
 numpy:
   - 1.25
@@ -18,3 +24,21 @@ python:
 zip_keys:
   - numpy
   - python
+
+openmpi:    # [mpi == "openmpi"]
+  - 4.1.6   # [mpi == "openmpi"]
+
+hdf5:
+  - 1.14.2
+
+pin_run_as_build:
+  openmpi: x.x    # [mpi == "openmpi"]
+  hdf5: x.x
+  gcc:
+    max_pin: x.x
+  gxx:
+    max_pin: x.x
+  gfortran:
+    max_pin: x.x
+  numpy:
+    max_pin: x.x
