@@ -5,9 +5,12 @@ export CLICOLOR_FORCE=1
 # This adds a printout of the error when trying to import the code_aster module. Useful when debugging
 #cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
 
+# remove the share cmake files
+find ${PREFIX}/share/cmake -type d -name "medfile-*" -exec rm -rf {} +
+
 python "${RECIPE_DIR}/config/update_version.py"
 
-export CONFIG_PARAMETERS_addmem=3000
+export CONFIG_PARAMETERS_addmem=2000
 export TFELHOME=$PREFIX
 
 export LIBPATH_METIS="$PREFIX/lib"
@@ -49,6 +52,7 @@ if [[ "$mpi" == "nompi" ]]; then
     --use-config=wafcfg_conda \
     --use-config-dir="$RECIPE_DIR"/config \
     --prefix="${PREFIX}" \
+    --med-libs="medC" \
     --libdir="${PREFIX}/lib" \
     --install-tests \
     --disable-mpi \
@@ -56,10 +60,6 @@ if [[ "$mpi" == "nompi" ]]; then
     configure
 
   if [[ "${PKG_DEBUG}" == "True" ]]; then
-      echo "Debugging Enabled"
-      export CFLAGS="-g -O0 ${CFLAGS}"
-      export CXXFLAGS="-g -O0 ${CXXFLAGS}"
-      export FCFLAGS="-g -O0 ${FCFLAGS}"
       ./waf_std install_debug
   else
       echo "Debugging Disabled"
@@ -82,6 +82,7 @@ else
     --use-config=wafcfg_conda \
     --use-config-dir="$RECIPE_DIR"/config \
     --prefix="${PREFIX}" \
+    --med-libs="medC" \
     --enable-mpi \
     --libdir="${PREFIX}/lib" \
     --install-tests \
@@ -89,16 +90,13 @@ else
 
 
   if [[ "${PKG_DEBUG}" == "True" ]]; then
-      echo "Debugging Enabled"
-      export CFLAGS="-g -O0 ${CFLAGS}"
-      export CXXFLAGS="-g -O0 ${CXXFLAGS}"
-      export FCFLAGS="-g -O0 ${FCFLAGS}"
       ./waf_mpi install_debug
   else
-      echo "Debugging Disabled"
       ./waf_mpi install
   fi
 fi
+
+echo "Compilation complete"
 
 # Make sure that any importErrors are printed to console.
 sed -i 's/except ImportError:/except ImportError as e:\n    print(f"ImportError: {e}")/' $PREFIX/lib/aster/code_aster/__init__.py
@@ -107,8 +105,8 @@ sed -i 's/except ImportError:/except ImportError as e:\n    print(f"ImportError:
 export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 # Generate stubs for pybind11
-$PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
-echo "Stubs generation completed"
+#$PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
+#echo "Stubs generation completed"
 
 # This is for reducing reliance on conda activation scripts. But it's not yet working
 mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
