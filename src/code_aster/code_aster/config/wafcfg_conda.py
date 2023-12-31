@@ -11,7 +11,9 @@ def configure(self):
         opts.parallel = 1
     conda_prefix = os.getenv('PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
-    site_packages = os.getenv("SP_DIR")
+
+    #self.env.append_unique("FCLINKFLAGS", ["-lmedfwrap"])
+    #self.env.append_unique("CCLINKFLAGS", ["-lmedC"])
 
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 

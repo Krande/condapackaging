@@ -6,7 +6,7 @@ export CLICOLOR_FORCE=1
 #cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
 
 # remove the share cmake files
-find ${PREFIX}/share/cmake -type d -name "medfile-*" -exec rm -rf {} +
+#find ${PREFIX}/share/cmake -type d -name "medfile-*" -exec rm -rf {} +
 
 python "${RECIPE_DIR}/config/update_version.py"
 
@@ -34,8 +34,8 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
 export PYPATH_MEDCOUPLING=$SP_DIR
 
 # Tried with cleaner flags (but did nothing to reduce compilation errors for MPI)
-#export CFLAGS="-fPIC"
-#export CXXFLAGS="-fPIC -std=c++17 -Wno-attributes"
+export LDFLAGS="-lmedC $LDFLAGS"
+export FLDFLAGS="-lmedfwrap $FLDFLAGS"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
