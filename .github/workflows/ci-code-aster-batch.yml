@@ -77,7 +77,9 @@ jobs:
         run: |
           import os
           
-          conda_label = os.getenv('CONDA_LABEL', "ca-${{ github.run_id }}")
+          conda_label = os.getenv('CONDA_LABEL', None)
+          if not conda_label:
+              conda_label = "ca-${{ github.run_id }}"
           
           print(f"{conda_label=}")
           
