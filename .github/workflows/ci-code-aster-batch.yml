@@ -19,6 +19,11 @@ on:
         required: true
         type: string
         default: ""
+      conda_label:
+        description: 'Conda Channel for dependencies'
+        required: true
+        type: string
+        default: ""
       mpi_variants:
         description: 'mpi variants'
         required: true
@@ -40,7 +45,7 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       code_aster_version: 17.0.1
-      conda_label: ca-${{ steps.env.outputs.unique_suffix }}
+      conda_label: ${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: ${{ inputs.debug_build }}
@@ -55,19 +60,21 @@ jobs:
     steps:
       - name: dummy step
         id: env
+        shell: python
+        env:
+          CONDA_LABEL: ${{ inputs.conda_label }}
         run: |
-          python3 << EOF
           import os
-          import datetime
-
-          #suffix = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-          suffix = ${{ github.run_id }} # with this, it should never come into conflict with other builds
-
+          
+          conda_label = os.getenv('CONDA_LABEL')
+          if conda_label == "":
+            suffix = "ca-${{ github.run_id }}" # with this, it should never come into conflict with other builds
+          else:
+            suffix = conda_label 
+          
           env_file = os.environ.get("GITHUB_OUTPUT", None)
           with open(env_file, "a") as my_file:
               my_file.write(f"unique_suffix={suffix}\n")
-          
-          EOF
 
   build_batch_1:
     needs: env
