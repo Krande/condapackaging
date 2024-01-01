@@ -14,10 +14,12 @@ blas_impl:
   - openblas
 
 numpy:
+  - 1.24
   - 1.25
   - 1.26
 
 python:
+  - 3.10
   - 3.11
   - 3.12
 

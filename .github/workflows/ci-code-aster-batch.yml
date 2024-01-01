@@ -3,12 +3,35 @@ name: ci-code-aster-batch
 # bump 1
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/ci-code-aster-batch.yml
-    branches:
-      - donotrun
-
+    inputs:
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "ubuntu-latest"
+      description:
+        description: 'Release Description'
+        required: true
+        type: string
+        default: ""
+      mpi_variants:
+        description: 'mpi variants'
+        required: true
+        type: string
+        default: "mpi=openmpi,mpi=nompi"
+      debug_build:
+        type: choice
+        required: true
+        description: Debug build or not
+        options:
+          - "True"
+          - "False"
+        default: "True"
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
 jobs:
@@ -20,11 +43,11 @@ jobs:
       conda_label: ca-${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
-      debug_build: "True"
-      python_versions: "3.11,3.12"
-      platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Test using hdf5 1.14"
+      debug_build: ${{ inputs.debug_build }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      mpi_variants: ${{ inputs.mpi_variants }}
+      description: ${{ inputs.description }}
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
       extra_build_args: " -m __root__/src/code_aster/common.yaml"
@@ -201,8 +224,8 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: true
-      python_versions: "3.10,3.11,3.12"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       description:  ${{ needs.env.outputs.description }}
@@ -216,8 +239,8 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: false
-      python_versions: "3.10,3.11,3.12"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
       suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       description:  ${{ needs.env.outputs.description }}
