@@ -24,6 +24,7 @@ jobs:
       platforms: "ubuntu-latest"
       variants: "mpi=openmpi,mpi=nompi"
       use_quetz: "True"
+      extra_build_args: " -m __root__/src/code_aster/common.yaml"
 
     steps:
       - name: dummy step
@@ -43,6 +44,7 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
+      extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit
     
