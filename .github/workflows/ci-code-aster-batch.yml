@@ -21,7 +21,7 @@ on:
         default: ""
       conda_label:
         description: 'Conda Channel for dependencies'
-        required: true
+        required: false
         type: string
         default: ""
       mpi_variants:
@@ -66,7 +66,7 @@ jobs:
         run: |
           import os
           
-          conda_label = os.getenv('CONDA_LABEL')
+          conda_label = os.getenv('CONDA_LABEL', "")
           if conda_label == "":
             suffix = "ca-${{ github.run_id }}" # with this, it should never come into conflict with other builds
           else:
