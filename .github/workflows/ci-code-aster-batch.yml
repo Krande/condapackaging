@@ -54,19 +54,20 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      # This is where the conda user and label should be set
-      code_aster_version: ${{ inputs.code_aster_version }}
-      conda_label: ${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
+      use_quetz: "True"
+      # This is where the conda user and label should be set
+      code_aster_version: ${{ inputs.code_aster_version }}
+      conda_label: ${{ inputs.conda_label }}
       debug_build: ${{ inputs.debug_build }}
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
       mpi_variants: ${{ inputs.mpi_variants }}
       description: ${{ inputs.description }}
+      extra_build_args: ${{ inputs.extra_build_args }}
+      # Calculated
       unique_suffix: ${{ steps.env.outputs.unique_suffix }}
-      use_quetz: "True"
-      extra_build_args: ${{ steps.env.outputs.extra_build_args }}
 
     steps:
       - name: dummy step
