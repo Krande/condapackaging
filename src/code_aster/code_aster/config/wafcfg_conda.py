@@ -12,8 +12,9 @@ def configure(self):
     conda_prefix = os.getenv('PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
 
-    #self.env.append_unique("FCLINKFLAGS", ["-lmedfwrap"])
-    #self.env.append_unique("CCLINKFLAGS", ["-lmedC"])
+    self.env.append_unique("FCLINKFLAGS", ["-lmedfwrap"])
+    self.env.append_unique("CCLINKFLAGS", ["-lmedC"])
+    self.env.append_unique("CXXLINKFLAGS", ["-lmedC"])
 
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 

@@ -15,12 +15,12 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: 16.4.8
-      conda_label: ca-6251156226
+      code_aster_version: 17.0.1
+      conda_label: ca-7371325000
       conda_user: krandedev
       pkg_dir: src/code_aster
       debug_build: "True"
-      python_versions: "3.10,3.11"
+      python_versions: "3.11,3.12"
       platforms: "ubuntu-latest"
       variants: "mpi=openmpi,mpi=nompi"
       use_quetz: "True"
@@ -30,6 +30,7 @@ jobs:
         id: env
         run: |
           echo "done"
+
   build_code_aster:
     needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml

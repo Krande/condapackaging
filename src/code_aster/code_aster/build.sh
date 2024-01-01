@@ -34,8 +34,8 @@ export INCLUDES_MEDCOUPLING="$PREFIX/include"
 export PYPATH_MEDCOUPLING=$SP_DIR
 
 # Tried with cleaner flags (but did nothing to reduce compilation errors for MPI)
-export LDFLAGS="-lmedC $LDFLAGS"
-export FLDFLAGS="-lmedfwrap $FLDFLAGS"
+#export LDFLAGS="-lmedC $LDFLAGS"
+#export FLDFLAGS="-lmedfwrap $FLDFLAGS"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
