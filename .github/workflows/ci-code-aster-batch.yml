@@ -13,7 +13,7 @@ on:
         description: 'Which builds'
         required: true
         type: string
-        default: "libmed,medcoupling,code_aster"
+        default: "all,!scotch,!metis,!homard,!libmed,!mfront,!mgis"
       conda_label:
         description: 'Conda Channel for dependencies'
         required: false

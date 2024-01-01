@@ -137,7 +137,8 @@ jobs:
           
           job_list = build_selection.split()
           print(f'{build_selection=}')
-          if 'all' in job_list:
+          print(f'{job_list=}')
+          if "all" in job_list:
               if len(job_list) == 1:
                   print('job_list is 1')
                   set_output("should_run", "true")
@@ -150,6 +151,7 @@ jobs:
               
               set_output("should_run", "true")
               exit(0)
+              
           print('all at the bottom')
           if job_name in job_list:
               set_output("should_run", "true")
