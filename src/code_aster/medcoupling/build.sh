@@ -8,6 +8,14 @@ cd build
 USE_MPI=ON
 if [[ "$mpi" == "nompi" ]]; then
   USE_MPI=OFF
+else
+  echo "Compiling for MPI=$mpi"
+  export OPAL_PREFIX=$PREFIX
+  export CC=mpicc
+  export CXX=mpicxx
+  export FC=mpif90
+  export F77=mpif77
+  export F90=mpif90
 fi
 
 BUILD_TYPE="Release"
