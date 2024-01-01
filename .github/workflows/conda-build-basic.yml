@@ -129,10 +129,10 @@ jobs:
           job_name = os.getenv('JOB_NAME', None)
           build_selection = os.getenv('BUILD_SELECTION', None)
           
-          if not build_selection:
+          if not build_selection or build_selection == 'all':
               set_output("should_run", "true")
               exit(0)
-          
+              
           job_list = build_selection.split()
           if job_name in job_list:
               set_output("should_run", "true")
