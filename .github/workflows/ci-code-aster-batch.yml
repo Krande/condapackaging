@@ -23,7 +23,6 @@ on:
         description: 'Conda Channel for dependencies'
         required: false
         type: string
-        default: ""
       mpi_variants:
         description: 'mpi variants'
         required: true
@@ -79,6 +78,7 @@ jobs:
           import os
           
           conda_label = os.getenv('CONDA_LABEL', "ca-${{ github.run_id }}")
+          
           print(f"{conda_label=}")
           
           env_file = os.environ.get("GITHUB_OUTPUT", None)
