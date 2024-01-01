@@ -4,11 +4,21 @@ name: ci-code-aster-batch
 on:
   workflow_dispatch:
     inputs:
+      description:
+        description: 'Release Description'
+        required: true
+        type: string
+        default: ""
       build_selection:
         description: 'Which builds'
         required: true
         type: string
-        default: ""
+        default: "libmed,medcoupling,code_aster"
+      conda_label:
+        description: 'Conda Channel for dependencies'
+        required: false
+        type: string
+        default: "develop"
       python_versions:
         description: 'Python Versions'
         required: true
@@ -19,15 +29,11 @@ on:
         required: true
         type: string
         default: "ubuntu-latest"
-      description:
-        description: 'Release Description'
+      code_aster_version:
+        description: 'Code Aster version'
         required: true
         type: string
-        default: ""
-      conda_label:
-        description: 'Conda Channel for dependencies'
-        required: false
-        type: string
+        default: "17.0.1"
       mpi_variants:
         description: 'mpi variants'
         required: true
@@ -46,11 +52,7 @@ on:
         required: true
         type: string
         default: " -m __root__/src/code_aster/common.yaml"
-      code_aster_version:
-        description: 'Code Aster version'
-        required: true
-        type: string
-        default: "17.0.1"
+
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -251,6 +253,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: code_aster
     secrets: inherit
 
   test_mpi:
