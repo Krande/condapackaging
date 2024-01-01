@@ -135,7 +135,7 @@ jobs:
               set_output("should_run", "true")
               exit(0)
           
-          job_list = build_selection.split()
+          job_list = build_selection.split(',')
           print(f'{build_selection=}')
           print(f'{job_list=}')
           if "all" in job_list:
