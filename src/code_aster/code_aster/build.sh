@@ -46,6 +46,9 @@ else
     echo "Debugging Disabled"
 fi
 
+export FCFLAGS="-fdefault-integer-8 -fallow-argument-mismatch ${FCFLAGS}"
+export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+
 if [[ "$mpi" == "nompi" ]]; then
   # Install for standard sequential
   ./waf_std \

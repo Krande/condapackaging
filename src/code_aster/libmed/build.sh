@@ -1,11 +1,12 @@
 set -ex
 
 export CLICOLOR_FORCE=1
-
+USE_MPI=OFF
 if [[ "$mpi" == "nompi" ]]; then
   export F77=${FC}
   echo "Compiling for Sequential MPI=$mpi"
 else
+  USE_MPI=ON
   echo "Compiling for MPI=$mpi"
   export OPAL_PREFIX=$PREFIX
   export CC=mpicc
@@ -31,6 +32,7 @@ cmake -Wno-dev \
   -D Python_EXECUTABLE="${PYTHON}" \
   -D PYTHON_EXECUTABLE="${PYTHON}" \
   -D HDF5_ROOT_DIR=${PREFIX} \
+  -D MPI_ROOT=${PREFIX} \
   -D MEDFILE_INSTALL_DOC=OFF \
   -D MEDFILE_BUILD_TESTS=OFF \
   -D MEDFILE_BUILD_PYTHON=ON \
@@ -38,6 +40,7 @@ cmake -Wno-dev \
   -D MEDFILE_BUILD_STATIC_LIBS=OFF \
   -D MEDFILE_USE_UNICODE=OFF \
   -D MED_MEDINT_TYPE=long \
+  -D MEDFILE_USE_MPI=${USE_MPI} \
   ..
 
 make -j${CPU_COUNT}

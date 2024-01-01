@@ -46,7 +46,7 @@ requirements:
 
   host:
     - python
-    - hdf5
+    - hdf5 * *{{ mpi }}*
     - astor
     - pybind11-stubgen
     - zlib
@@ -54,7 +54,7 @@ requirements:
 
   run:
     - python
-    - hdf5
+    - hdf5 * *{{ mpi }}*
     - zlib
     - {{ mpi }}                 # [mpi != "nompi"]
 
