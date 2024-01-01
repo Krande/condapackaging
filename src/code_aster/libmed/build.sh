@@ -16,6 +16,18 @@ else
   export F90=mpif90
 fi
 
+BUILD_TYPE="Release"
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+    echo "Debugging Enabled"
+    BUILD_TYPE="Debug"
+    export CFLAGS="-g -O0 ${CFLAGS}"
+    export CXXFLAGS="-g -O0 ${CXXFLAGS}"
+    export FCFLAGS="-g -O0 ${FCFLAGS}"
+else
+    echo "Debugging Disabled"
+fi
+
+
 export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
 export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
 
@@ -26,6 +38,7 @@ pushd build
 # and new style (Python) variables
 cmake -Wno-dev \
   ${CMAKE_ARGS} \
+  -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
   -D Python_FIND_VIRTUALENV=FIRST \
   -D Python_FIND_STRATEGY=LOCATION \
   -D Python_ROOT_DIR="${PREFIX}" \
