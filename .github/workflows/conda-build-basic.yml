@@ -129,23 +129,28 @@ jobs:
           job_name = os.getenv('JOB_NAME', None)
           build_selection = os.getenv('BUILD_SELECTION', None)
           
+          print(f'{job_name=}')
+          
           if not build_selection:
               set_output("should_run", "true")
               exit(0)
           
           job_list = build_selection.split()
           print(f'{build_selection=}')
-          if 'all' in build_selection:
-              if len(build_selection) == 1:
+          if 'all' in job_list:
+              if len(job_list) == 1:
+                  print('job_list is 1')
                   set_output("should_run", "true")
                   exit(0)
               
               if f'!{job_name}' in job_list:
+                  print(f'Job {job_name} is skipped')
                   set_output("should_run", "false")
                   exit(0)
+              
               set_output("should_run", "true")
               exit(0)
-              
+          print('all at the bottom')
           if job_name in job_list:
               set_output("should_run", "true")
           else:
