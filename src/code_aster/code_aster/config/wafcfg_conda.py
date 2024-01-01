@@ -9,6 +9,7 @@ def configure(self):
     if os.getenv('ENABLE_MPI', "0") == "1":
         mpi_variant = True
         opts.parallel = 1
+
     conda_prefix = os.getenv('PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
 
@@ -33,12 +34,6 @@ def configure(self):
     else:
         opts.parallel = 1
         opts.enable_petsc = True
-        # self.env.append_value('LIBPATH', [
-        #     site_packages + '/petsc4py/lib',
-        # ])
-        # self.env.append_value('INCLUDES', [
-        #     site_packages + '/petsc4py/include',
-        # ])
 
     # to fail if not found
     opts.enable_hdf5 = True
