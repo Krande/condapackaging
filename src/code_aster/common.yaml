@@ -2,13 +2,13 @@ python_impl:
   - cpython
 
 c_compiler:
-  - vs2022   # [win]
-  - gcc      # [linux]
+  - vs2022        # [win]
+  - gcc           # [linux]
 cxx_compiler:
-  - vs2022   # [win]
-  - gxx      # [linux]
+  - vs2022        # [win]
+  - gxx           # [linux]
 fortran_compiler:
-  - gfortran # [linux]
+  - gfortran      # [linux]
 
 blas_impl:
   - openblas
@@ -31,7 +31,7 @@ openmpi:
   - 4.1.6
 
 hdf5:
-  - 1.10.6
+  - 1.14.3
 
 pin_run_as_build:
   hdf5: x.x

@@ -18,6 +18,8 @@ source:
     url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     folder: deps/config
     sha256: d58f6749514ce49b00590a96d6dc9090a76a07c13690e2453403643afb40346c
+    patches:
+      - patches/fix_get_property_hdf5.patch
 
 
 build:
