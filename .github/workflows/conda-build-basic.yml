@@ -110,7 +110,7 @@ jobs:
   should_run:
     runs-on: ubuntu-latest
     outputs:
-      should_run: ${{ steps.evaluate_job.outputs.build_log_summary }}
+      should_run: ${{ steps.evaluate_job.outputs.should_run }}
     steps:
       - name: Evaluate job
         id: evaluate_job
