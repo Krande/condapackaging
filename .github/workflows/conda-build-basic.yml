@@ -85,6 +85,16 @@ on:
         type: string
         required: false
         default: ""
+      build_selection:
+        description: 'A comma separated list of jobs'
+        type: string
+        required: false
+        default: ""
+      job_name:
+        description: 'Name of job'
+        type: string
+        required: false
+        default: ""
 env:
   PKG_DEBUG: ${{ inputs.debug_build }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
@@ -97,8 +107,43 @@ env:
   EXTRA_BUILD_ARGS: ""
 
 jobs:
+  should_run:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.evaluate_job.outputs.build_log_summary }}
+    steps:
+      - name: Evaluate job
+        id: evaluate_job
+        shell: python
+        env:
+          BUILD_SELECTION: ${{ inputs.build_selection }}
+          JOB_NAME: ${{ inputs.job_name }}
+        run: |
+          import os
+          
+          
+          def set_output(name, value):
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+                print(f'{name}={value}', file=fh)
+          
+          job_name = os.getenv('JOB_NAME', None)
+          build_selection = os.getenv('BUILD_SELECTION', None)
+          
+          if not build_selection:
+              set_output("should_run", "true")
+              exit(0)
+          
+          job_list = build_selection.split()
+          if job_name in job_list:
+              set_output("should_run", "true")
+          else:
+              set_output("should_run", "false")
+              
+
   # run a preceding job to get the matrix only if matrix_str is None
   build_prep:
+    needs: should_run
+    if: ${{ needs.should_run.outputs.should_run == 'true' }}
     uses: ./.github/workflows/conda-build-prep.yml
     with:
       python_versions: ${{ inputs.python_versions }}

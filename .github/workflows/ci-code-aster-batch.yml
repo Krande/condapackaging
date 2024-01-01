@@ -4,6 +4,11 @@ name: ci-code-aster-batch
 on:
   workflow_dispatch:
     inputs:
+      build_selection:
+        description: 'Which builds'
+        required: true
+        type: string
+        default: ""
       python_versions:
         description: 'Python Versions'
         required: true
@@ -106,6 +111,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: ${{ matrix.package.name }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -121,6 +128,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: parmetis
     secrets: inherit
 
   build_batch_mumps:
@@ -137,6 +146,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: mumps
     secrets: inherit
 
   build_batch_libmed:
@@ -153,6 +164,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: libmed
     secrets: inherit
 
   build_batch_petsc:
@@ -168,6 +181,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: petsc
     secrets: inherit
 
   build_batch_medcoupling:
@@ -184,6 +199,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: medcoupling
     secrets: inherit
 
   build_batch_mfront:
@@ -199,6 +216,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: mfront
     secrets: inherit
 
   build_batch_mgis:
@@ -214,6 +233,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: mgis
     secrets: inherit
 
   build_batch_code_aster:
