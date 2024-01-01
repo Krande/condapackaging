@@ -32,6 +32,10 @@ build:
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 #  skip: true  # [mpi == "nompi"]
+  rpaths:
+    - lib/
+    - lib/aster/
+    - lib/petsc4py/lib      # [mpi != "nompi"]
 
 requirements:
   build:
