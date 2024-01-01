@@ -78,15 +78,12 @@ jobs:
         run: |
           import os
           
-          conda_label = os.getenv('CONDA_LABEL', "")
-          if conda_label == "":
-            suffix = "ca-${{ github.run_id }}" # with this, it should never come into conflict with other builds
-          else:
-            suffix = conda_label 
+          conda_label = os.getenv('CONDA_LABEL', "ca-${{ github.run_id }}")
+          print(f"{conda_label=}")
           
           env_file = os.environ.get("GITHUB_OUTPUT", None)
           with open(env_file, "a") as my_file:
-              my_file.write(f"unique_suffix={suffix}\n")
+              my_file.write(f"unique_suffix={conda_label}\n")
 
   build_batch_1:
     needs: env
