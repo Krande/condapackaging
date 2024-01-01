@@ -3,11 +3,45 @@ name: ci-code-aster
 # bump 1
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/ci-code-aster.yml
-    branches:
-    - donotrun
+    inputs:
+      conda_label:
+        description: 'Conda Channel for dependencies'
+        required: true
+        type: string
+        default: "ca-7371325000"
+      code_aster_version:
+        description: 'Code Aster Version'
+        required: true
+        type: string
+        default: "17.0.1"
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "ubuntu-latest"
+      description:
+        description: 'Release Description'
+        required: true
+        type: string
+        default: ""
+      mpi_variants:
+        description: 'mpi variants'
+        required: true
+        type: string
+        default: "mpi=openmpi,mpi=nompi"
+      debug_build:
+        type: choice
+        required: true
+        description: Debug build or not
+        options:
+          - "True"
+          - "False"
+        default: "True"
 
 jobs:
   env:
@@ -15,14 +49,14 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: 17.0.1
-      conda_label: ca-7371325000
+      code_aster_version: ${{ inputs.code_aster_version }}
+      conda_label: ${{ inputs.conda_label }}
       conda_user: krandedev
       pkg_dir: src/code_aster
-      debug_build: "True"
-      python_versions: "3.11,3.12"
-      platforms: "ubuntu-latest"
-      variants: "mpi=openmpi,mpi=nompi"
+      debug_build: ${{ inputs.debug_build }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.mpi_variants }}
       use_quetz: "True"
       extra_build_args: " -m __root__/src/code_aster/common.yaml"
 
