@@ -133,19 +133,19 @@ jobs:
               set_output("should_run", "true")
               exit(0)
           
+          job_list = build_selection.split()
+          print(f'{build_selection=}')
           if 'all' in build_selection:
-              if build_selection == 'all':
+              if len(build_selection) == 1:
                   set_output("should_run", "true")
                   exit(0)
               
-              job_list = build_selection.split()
               if f'!{job_name}' in job_list:
                   set_output("should_run", "false")
                   exit(0)
               set_output("should_run", "true")
               exit(0)
               
-          job_list = build_selection.split()
           if job_name in job_list:
               set_output("should_run", "true")
           else:
