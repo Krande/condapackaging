@@ -11,6 +11,7 @@ authors = [
 dependencies = [
     "typer",
     "quetz-client",
+    "toposort"
 ]
 
 description = "cpack - a small packaging utility for conda python packages"

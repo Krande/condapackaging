@@ -1,0 +1,35 @@
+{
+  "scotch": [],
+  "metis": [],
+  "homard": [],
+  "parmetis": [],
+  "libmed": [],
+  "mfront": [],
+  "mumps": [
+    "scotch",
+    "metis",
+    "homard"
+  ],
+  "petsc": [
+    "mumps",
+    "parmetis"
+  ],
+  "medcoupling": [
+    "libmed",
+    "petsc"
+  ],
+  "mgis": [
+    "mfront"
+  ],
+  "code_aster": [
+    "mumps",
+    "mgis",
+    "medcoupling"
+  ],
+  "test_mpi": [
+    "code_aster"
+  ],
+  "test_seq": [
+    "code_aster"
+  ]
+}
