@@ -95,6 +95,11 @@ on:
         type: string
         required: false
         default: ""
+      env_vars:
+        description: 'A comma separated list of env vars'
+        type: string
+        required: false
+        default: ""
 env:
   PKG_DEBUG: ${{ inputs.debug_build }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
@@ -204,6 +209,8 @@ jobs:
 
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
+        env:
+          ENV_VARS_INPUT: ${{ inputs.env_vars }}
         run: |
           python3 <<EOF
           import base64
@@ -215,6 +222,17 @@ jobs:
           
           with open(env_file, "a") as my_file:
             my_file.write(f"VARIANT_STR={decoded_str}\n")
+          
+          input_env_vars = os.environ.get("ENV_VARS_INPUT", None)
+          if input_env_vars:
+            input_env_vars = input_env_vars.split(",")
+            for env_var in input_env_vars:
+              env_var = env_var.strip()
+              if env_var:
+                env_var_name, env_var_value = env_var.split("=")
+                env_var_value = env_var_value.replace("__root__", os.environ["GITHUB_WORKSPACE"])
+                with open(env_file, "a") as my_file:
+                  my_file.write(f"{env_var_name}={env_var_value}\n")
           EOF
 
       - name: Evaluate Extra Build Args

@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '17.0.1' %}
+{% set version = {{ environ.get('CODE_ASTER_VERSION', '17.0.2') }}  %}
 
 # Dependencies
 {% set med_ver = '4.1.1=aster_*' %}
