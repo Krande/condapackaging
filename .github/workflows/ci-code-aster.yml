@@ -80,6 +80,7 @@ jobs:
       variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      env_vars: "CODE_ASTER_VERSION=${{ needs.env.outputs.code_aster_version }}"
     secrets: inherit
     
   test_mpi:
