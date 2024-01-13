@@ -267,6 +267,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       job_name: code_aster
+      env_vars: "CODE_ASTER_VERSION=${{ needs.env.outputs.code_aster_version }}"
     secrets: inherit
 
   test_mpi:
