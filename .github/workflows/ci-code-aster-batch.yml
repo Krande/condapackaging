@@ -18,7 +18,6 @@ on:
         description: 'Conda Channel for dependencies'
         required: false
         type: string
-        default: "develop"
       python_versions:
         description: 'Python Versions'
         required: true
