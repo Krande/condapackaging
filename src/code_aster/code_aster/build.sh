@@ -102,13 +102,30 @@ fi
 echo "Compilation complete"
 
 # Make sure that any importErrors are printed to console.
-sed -i 's/except ImportError:/except ImportError as e:\n    print(f"ImportError: {e}")/' $PREFIX/lib/aster/code_aster/__init__.py
+sed -i 's/except ImportError:/except ImportError as e:\n    print(f"ImportError: {e}")/' "${PREFIX}/lib/aster/code_aster/__init__.py"
+sed -i "s/import os:import os\n\n/os.environ['ASTER_ELEMENTSDIR'] = os.getenv('CONDA_PREFIX') + '/lib/aster'" "${PREFIX}/lib/aster/code_aster/__init__.py"
 
 # Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
 export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
-cp -R ${SRC_DIR}/code_aster ${SP_DIR}
+
+# This is for reducing reliance on conda activation scripts.
+mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
+mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
+
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+  cp ${SRC_DIR}/build/std/debug/code_aster/*.py ${SP_DIR}/code_aster/Utilities
+else
+  cp ${SRC_DIR}/build/std/release/code_aster/*.py ${SP_DIR}/code_aster/Utilities
+fi
+
+# note to self. aster.so is symlinked to libaster.so
+mv $PREFIX/lib/aster/libb*.so $PREFIX/lib/
+mv $PREFIX/lib/aster/libAsterMFrOfficial.so $PREFIX/lib/
+mv $PREFIX/lib/aster/med_aster.so $SP_DIR/
+mv $PREFIX/lib/aster/*.so $SP_DIR/
+mv $PREFIX/lib/aster/*.pyi $SP_DIR/
 
 # Generate stubs for pybind11
 $PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py

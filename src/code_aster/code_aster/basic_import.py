@@ -1,6 +1,5 @@
 import code_aster
+from code_aster.Commands import *
+DEBUT()
 
-code_aster.init()
-
-# This prevents the error message upon exiting
-code_aster.close()
+FIN()
