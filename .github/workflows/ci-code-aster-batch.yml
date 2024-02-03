@@ -32,7 +32,7 @@ on:
         description: 'Code Aster version'
         required: true
         type: string
-        default: "17.0.1"
+        default: "17.0.5"
       mpi_variants:
         description: 'mpi variants'
         required: true
