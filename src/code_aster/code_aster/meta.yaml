@@ -86,6 +86,7 @@ requirements:
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
     - parmetis                                      # [mpi != "nompi"]
+    - libxcrypt
   ignore_run_exports:
     - libcblas
 
