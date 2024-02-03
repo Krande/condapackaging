@@ -72,7 +72,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.build_matrix.outputs.final_matrix) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: evaluate if seq or mpi
         run: |
           if [[ ${{ inputs.mpi }} == true ]]; then
@@ -156,7 +156,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download all ctest artifacts
         uses: actions/download-artifact@v3

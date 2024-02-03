@@ -20,7 +20,7 @@ jobs:
       - name: ${{github.event.workflow_run.id }}
         run: echo run identifier ${{ github.event.workflow_run.id }}
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Use python 3.11
         uses: actions/setup-python@v5
         with:
