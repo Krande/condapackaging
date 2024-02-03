@@ -111,17 +111,17 @@ mv "${PREFIX}/lib/aster/code_aster" "${SP_DIR}/code_aster"
 mv "${PREFIX}/lib/aster/run_aster" "${SP_DIR}/run_aster"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
-  cp "${SRC_DIR}/build/std/debug/code_aster/*.py" "${SP_DIR}/code_aster/Utilities"
+  mv ${SRC_DIR}/build/std/debug/code_aster/*.py "${SP_DIR}/code_aster/Utilities"
 else
-  cp "${SRC_DIR}/build/std/release/code_aster/*.py" "${SP_DIR}/code_aster/Utilities"
+  mv ${SRC_DIR}/build/std/release/code_aster/*.py "${SP_DIR}/code_aster/Utilities"
 fi
 
 # note to self. aster.so is symlinked to libaster.so
-mv "${PREFIX}/lib/aster/libb*.so" "${PREFIX}/lib/"
+mv ${PREFIX}/lib/aster/libb*.so "${PREFIX}/lib/"
 mv "${PREFIX}/lib/aster/libAsterMFrOfficial.so" "${PREFIX}/lib/"
 mv "${PREFIX}/lib/aster/med_aster.so" "${SP_DIR}/"
-mv "${PREFIX}/lib/aster/*.so" "${SP_DIR}/"
-mv "${PREFIX}/lib/aster/*.pyi" "${SP_DIR}/"
+mv ${PREFIX}/lib/aster/*.so "${SP_DIR}/"
+mv ${PREFIX}/lib/aster/*.pyi "${SP_DIR}/"
 
 # Generate stubs for pybind11
 ${PREFIX}/bin/python  "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
