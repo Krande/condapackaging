@@ -11,27 +11,27 @@ export CLICOLOR_FORCE=1
 python "${RECIPE_DIR}/config/update_version.py"
 
 export CONFIG_PARAMETERS_addmem=2000
-export TFELHOME=$PREFIX
+export TFELHOME=${PREFIX}
 
-export LIBPATH_METIS="$PREFIX/lib"
-export INCLUDES_METIS="$PREFIX/include"
+export LIBPATH_METIS="${PREFIX}/lib"
+export INCLUDES_METIS="${PREFIX}/include"
 
-export LIBPATH_PETSC="$PREFIX/lib"
-export INCLUDES_PETSC="$PREFIX/include"
+export LIBPATH_PETSC="${PREFIX}/lib"
+export INCLUDES_PETSC="${PREFIX}/include"
 
-export INCLUDES_BOOST=$PREFIX/include
-export LIBPATH_BOOST=$PREFIX/lib
+export INCLUDES_BOOST=${PREFIX}/include
+export LIBPATH_BOOST=${PREFIX}/lib
 export LIB_BOOST="libboost_python$CONDA_PY"
 
-export INCLUDES_MUMPS="$PREFIX/include"
-export LIBPATH_MUMPS="$PREFIX/lib"
+export INCLUDES_MUMPS="${PREFIX}/include"
+export LIBPATH_MUMPS="${PREFIX}/lib"
 
-export INCLUDES_MED="$PREFIX/include"
-export LIBPATH_MED="$PREFIX/lib"
+export INCLUDES_MED="${PREFIX}/include"
+export LIBPATH_MED="${PREFIX}/lib"
 
-export LIBPATH_MEDCOUPLING="$PREFIX/lib"
-export INCLUDES_MEDCOUPLING="$PREFIX/include"
-export PYPATH_MEDCOUPLING=$SP_DIR
+export LIBPATH_MEDCOUPLING="${PREFIX}/lib"
+export INCLUDES_MEDCOUPLING="${PREFIX}/include"
+export PYPATH_MEDCOUPLING=${SP_DIR}
 
 # Tried with cleaner flags (but did nothing to reduce compilation errors for MPI)
 #export LDFLAGS="-lmedC $LDFLAGS"
@@ -69,7 +69,7 @@ if [[ "$mpi" == "nompi" ]]; then
       ./waf_std install
   fi
 else
-  export PYTHONPATH="$PYTHONPATH:$PREFIX/lib"
+  export PYTHONPATH="$PYTHONPATH:${PREFIX}/lib"
 
   export ENABLE_MPI=1
   export CONFIG_PARAMETERS_addmem=4096
@@ -79,7 +79,7 @@ else
   export FC=mpif90
   export F77=mpif77
   export F90=mpif90
-  export OPAL_PREFIX=$PREFIX
+  export OPAL_PREFIX=${PREFIX}
 
   ./waf_mpi configure \
     --use-config=wafcfg_conda \
@@ -101,40 +101,36 @@ fi
 
 echo "Compilation complete"
 
-# Make sure that any importErrors are printed to console.
-sed -i 's/except ImportError:/except ImportError as e:\n    print(f"ImportError: {e}")/' "${PREFIX}/lib/aster/code_aster/__init__.py"
-sed -i "s/import os:import os\n\n/os.environ['ASTER_ELEMENTSDIR'] = os.getenv('CONDA_PREFIX') + '/lib/aster'" "${PREFIX}/lib/aster/code_aster/__init__.py"
-
 # Change the PYTHONPATH just for pybind11_stubgen to find the necessary module
-export PYTHONPATH="$PREFIX/lib/aster:$SRC_DIR/stubgen"
+export PYTHONPATH="${PREFIX}/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
 
 # This is for reducing reliance on conda activation scripts.
-mv $PREFIX/lib/aster/code_aster $SP_DIR/code_aster
-mv $PREFIX/lib/aster/run_aster $SP_DIR/run_aster
+mv "${PREFIX}/lib/aster/code_aster" "${SP_DIR}/code_aster"
+mv "${PREFIX}/lib/aster/run_aster" "${SP_DIR}/run_aster"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
-  cp ${SRC_DIR}/build/std/debug/code_aster/*.py ${SP_DIR}/code_aster/Utilities
+  cp "${SRC_DIR}/build/std/debug/code_aster/*.py" "${SP_DIR}/code_aster/Utilities"
 else
-  cp ${SRC_DIR}/build/std/release/code_aster/*.py ${SP_DIR}/code_aster/Utilities
+  cp "${SRC_DIR}/build/std/release/code_aster/*.py" "${SP_DIR}/code_aster/Utilities"
 fi
 
 # note to self. aster.so is symlinked to libaster.so
-mv $PREFIX/lib/aster/libb*.so $PREFIX/lib/
-mv $PREFIX/lib/aster/libAsterMFrOfficial.so $PREFIX/lib/
-mv $PREFIX/lib/aster/med_aster.so $SP_DIR/
-mv $PREFIX/lib/aster/*.so $SP_DIR/
-mv $PREFIX/lib/aster/*.pyi $SP_DIR/
+mv "${PREFIX}/lib/aster/libb*.so" "${PREFIX}/lib/"
+mv "${PREFIX}/lib/aster/libAsterMFrOfficial.so" "${PREFIX}/lib/"
+mv "${PREFIX}/lib/aster/med_aster.so" "${SP_DIR}/"
+mv "${PREFIX}/lib/aster/*.so" "${SP_DIR}/"
+mv "${PREFIX}/lib/aster/*.pyi" "${SP_DIR}/"
 
 # Generate stubs for pybind11
-$PREFIX/bin/python  ${RECIPE_DIR}/stubs/custom_stubs_gen.py
+${PREFIX}/bin/python  "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
 echo "Stubs generation completed"
 
 # copy modified shell scripts and create backups of the ones we don't want.
-cp $PREFIX/bin/run_aster $PREFIX/bin/_run_aster_old
-cp $PREFIX/bin/run_ctest $PREFIX/bin/_run_ctest_old
+cp "${PREFIX}/bin/run_aster" "${PREFIX}/bin/_run_aster_old"
+cp "${PREFIX}/bin/run_ctest" "${PREFIX}/bin/_run_ctest_old"
 
-cp $RECIPE_DIR/config/run_aster $PREFIX/bin/run_aster
-cp $RECIPE_DIR/config/run_ctest $PREFIX/bin/run_ctest
+cp "${RECIPE_DIR}/config/run_aster" "${PREFIX}/bin/run_aster"
+cp "${RECIPE_DIR}/config/run_ctest" "${PREFIX}/bin/run_ctest"
 # Update the path to python env root dir in run_aster utils.py
