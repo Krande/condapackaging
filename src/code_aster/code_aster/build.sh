@@ -111,9 +111,9 @@ mv "${PREFIX}/lib/aster/code_aster" "${SP_DIR}/code_aster"
 mv "${PREFIX}/lib/aster/run_aster" "${SP_DIR}/run_aster"
 
 if [[ "${PKG_DEBUG}" == "True" ]]; then
-  mv ${SRC_DIR}/build/std/debug/code_aster/*.py "${SP_DIR}/code_aster/Utilities"
+  mv ${SRC_DIR}/build/std/debug/code_aster/*.py "${SP_DIR}/code_aster/Utilities/"
 else
-  mv ${SRC_DIR}/build/std/release/code_aster/*.py "${SP_DIR}/code_aster/Utilities"
+  mv ${SRC_DIR}/build/std/release/code_aster/*.py "${SP_DIR}/code_aster/Utilities/"
 fi
 
 # note to self. aster.so is symlinked to libaster.so
