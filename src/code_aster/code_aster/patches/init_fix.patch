@@ -15,7 +15,7 @@ diff --git a/code_aster/__init__.py b/code_aster/__init__.py
 +# To eliminate need for activation scripts during conda runtime
 +_CONDA_PREFIX = os.getenv('CONDA_PREFIX', None)
 +_CONDA_BUILD = os.getenv('CONDA_BUILD', False)
-+if _CONDA_PREFIX is not None and _CONDA_BUILD is False:
++if _CONDA_PREFIX is not None and _CONDA_BUILD != "1":
 +    os.environ['ASTER_ELEMENTSDIR'] = os.getenv('CONDA_PREFIX') + '/lib/aster'
 +
 +

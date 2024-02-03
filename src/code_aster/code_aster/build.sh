@@ -105,21 +105,24 @@ echo "Compilation complete"
 export PYTHONPATH="${PREFIX}/lib/aster:$SRC_DIR/stubgen"
 export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 
-
 # This is for reducing reliance on conda activation scripts.
 mv "${PREFIX}/lib/aster/code_aster" "${SP_DIR}/code_aster"
 mv "${PREFIX}/lib/aster/run_aster" "${SP_DIR}/run_aster"
 
-if [[ "${PKG_DEBUG}" == "True" ]]; then
-  mv ${SRC_DIR}/build/std/debug/code_aster/*.py "${SP_DIR}/code_aster/Utilities/"
-  mv "${PREFIX}/lib/aster/libAsterMFrOfficialDebug.so" "${PREFIX}/lib/"
-else
-  mv ${SRC_DIR}/build/std/release/code_aster/*.py "${SP_DIR}/code_aster/Utilities/"
-  mv "${PREFIX}/lib/aster/libAsterMFrOfficial.so" "${PREFIX}/lib/"
+mpi_type=std
+build_type=release
+if [[ "$mpi" != "nompi" ]]; then
+  mpi_type=mpi
 fi
 
+if [[ "${PKG_DEBUG}" == "True" ]]; then
+  build_type=debug
+fi
+
+mv ${SRC_DIR}/build/${mpi_type}/${build_type}/code_aster/*.py "${SP_DIR}/code_aster/Utilities/"
 # note to self. aster.so is symlinked to libaster.so
 mv ${PREFIX}/lib/aster/libb*.so "${PREFIX}/lib/"
+mv ${PREFIX}/lib/aster/libAsterMFrOff*.so "${PREFIX}/lib/"
 
 mv "${PREFIX}/lib/aster/med_aster.so" "${SP_DIR}/"
 mv ${PREFIX}/lib/aster/*.so "${SP_DIR}/"
