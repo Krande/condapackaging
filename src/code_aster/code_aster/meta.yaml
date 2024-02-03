@@ -23,7 +23,6 @@ source:
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
     patches:
       - patches/skip_numpy_distutils_check.patch
-      - patches/init_fix.patch
 
 build:
   detect_binary_files_with_prefix: true

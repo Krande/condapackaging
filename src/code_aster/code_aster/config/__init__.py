@@ -1,6 +1,6 @@
 # coding=utf-8
 # --------------------------------------------------------------------
-# Copyright (C) 1991 - 2023 - EDF R&D - www.code-aster.org
+# Copyright (C) 1991 - 2024 - EDF R&D - www.code-aster.org
 # This file is part of code_aster.
 #
 # code_aster is free software: you can redistribute it and/or modify
@@ -17,29 +17,39 @@
 # along with code_aster.  If not, see <http://www.gnu.org/licenses/>.
 # --------------------------------------------------------------------
 
-# person_in_charge: mathieu.courtois at edf.fr
-
 """
 This is the main entry point for the users.
 
-The :py:func:`~code_aster.Commands.debut.init` function initializes the
-memory manager. It must be called before any :py:mod:`code_aster.Objects`
-creation. It can be simply called from this toplevel module with:
+:py:mod:`code_aster.Commands` is the high level user interface.
+It provides the *Commands*.
+
+:py:mod:`code_aster.CA` is a lower level interface that gives access the
+*DataStructure* objects (and also *Commands* for convenience).
+
+Standard users should use the high level interface:
 
 .. code-block:: python
 
     >>> import code_aster
-    >>> code_aster.init()
+    >>> from code_aster.Commands import *
+    >>> DEBUT()
+    >>> mesh = LIRE_MAILLAGE(...)
 
-The same job is done by :py:class:`~code_aster.Commands.debut.DEBUT`.
+Note::
+    The first two lines that import :py:mod:`code_aster` and all commands from
+    :py:mod:`code_aster.Commands` are automatically inserted in the user commands
+    file by `run_aster`.
 
-For convenience the objects are direcly available here:
+The lower level user interface is used as:
 
 .. code-block:: python
 
     >>> import code_aster
-    >>> mymesh = code_aster.Mesh()
+    >>> from code_aster import CA
+    >>> mesh = CA.Mesh()
+    >>> mesh.readMedFile(...)
 
+See :py:mod:`code_aster.rc` object to adjust the initialization parameters.
 
 Here is the diagram of the package organization:
 
@@ -52,36 +62,34 @@ Here is the diagram of the package organization:
 #   diagr_import --pkg --grp -g doc/img/diagr_code_aster.png \
 #       code_aster/**/*.py
 
-# discourage import *
-__all__ = []
+import os
+
+# To eliminate need for activation scripts during conda runtime
+_CONDA_PREFIX = os.getenv('CONDA_PREFIX', None)
+_CONDA_BUILD = os.getenv('COMPILING_CONDA', None)
+if _CONDA_PREFIX is not None and _CONDA_BUILD != "True":
+    os.environ['ASTER_ELEMENTSDIR'] = os.getenv('CONDA_PREFIX') + '/lib/aster'
 
 try:
-    # import libaster to call initAsterModules
+    # embedded modules must be imported before libaster
+    # because there are set up by initAsterModules
     import aster
     import aster_core
     import aster_fonctions
     import med_aster
-
-    # libaster must be imported after embedded submodules
     import libaster
 
-    from .Algorithms import ConstitutiveLaw, IntegrationAlgorithm, StrainType, TangentMatrixType
-    from .Commands.debut import init
-    from .Commands.fin import FIN as close
-    from .Objects import *
-    from .ObjectsExt import DataStructure
-    from .Supervis import (
-        AsterError,
-        ContactError,
-        ConvergenceError,
-        IntegrationError,
-        SolverError,
-        TimeLimitError,
-        saveObjects,
-    )
-    from .Utilities import TestCase, MPI
+    # setup, do not keep references here...
+    del aster, aster_core, aster_fonctions, med_aster, libaster
 
-
+    # ... except for rc and package info
+    from .Utilities.rc import rc
+    from .Utilities.version import __version__
 except ImportError as e:
-    print(f'Module import failed due to {e}')
-    pass
+    print(f"ImportErrors: '{e}'")
+    # AsterStudy only uses code_aster/Cata without the extensions modules (.so).
+    # So, the exception is only raised during the building process.
+    if os.environ.get("WAFLOCK"):
+        raise
+
+del os

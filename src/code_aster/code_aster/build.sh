@@ -126,7 +126,7 @@ mv ${PREFIX}/lib/aster/libAsterMFrOff*.so "${PREFIX}/lib/"
 
 mv "${PREFIX}/lib/aster/med_aster.so" "${SP_DIR}/"
 mv ${PREFIX}/lib/aster/*.so "${SP_DIR}/"
-#mv ${PREFIX}/lib/aster/*.pyi "${SP_DIR}/"
+cp "${RECIPE_DIR}/config/__init__.py" "${SP_DIR}/code_aster/__init__.py"
 
 # Generate stubs for pybind11
 ${PREFIX}/bin/python  "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
