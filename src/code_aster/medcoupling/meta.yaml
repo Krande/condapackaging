@@ -24,7 +24,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster_py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}      # [mpi != "nompi"]
+  string: aster_py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}    # [mpi != "nompi"]
   string: aster_py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}          # [mpi == "nompi"]
   number: 3
   script_env:
@@ -44,6 +44,7 @@ requirements:
     - boost
     - libxml2
     - astor
+    - zlib
     - pybind11-stubgen 2.3.7
     - libmed {{ libmed_ver }}{{mpi}}*
     - {{ mpi }}                                 # [mpi != 'nompi']
@@ -51,10 +52,9 @@ requirements:
 
   run:
     - python
-    - numpy
     - boost
     - libxml2
-    - libmed {{ libmed_ver }}{{mpi}}*
+    - {{ pin_compatible('numpy') }}
     - {{ mpi }}                                 # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
 

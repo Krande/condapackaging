@@ -71,7 +71,7 @@ requirements:
     - python
     - numpy
     - pyyaml
-    - hdf5
+    - pin_compatible('hdf5', min_pin='x.x.x')
     - openblas
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
