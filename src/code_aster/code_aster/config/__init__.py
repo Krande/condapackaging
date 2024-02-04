@@ -68,7 +68,10 @@ import os
 _CONDA_PREFIX = os.getenv('CONDA_PREFIX', None)
 _CONDA_BUILD = os.getenv('COMPILING_CONDA', None)
 if _CONDA_PREFIX is not None and _CONDA_BUILD != "True":
-    os.environ['ASTER_ELEMENTSDIR'] = os.getenv('CONDA_PREFIX') + '/lib/aster'
+    os.environ['RUNASTER_ROOT'] = _CONDA_PREFIX
+    os.environ['ASTER_LIBDIR'] = _CONDA_PREFIX + "/lib"
+    os.environ['ASTER_ELEMENTSDIR'] = _CONDA_PREFIX + '/lib/aster'
+    os.environ['ASTER_DATADIR'] = _CONDA_PREFIX + "/share/aster"
 
 try:
     # embedded modules must be imported before libaster

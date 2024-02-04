@@ -70,17 +70,15 @@ requirements:
   run:
     - python
     - pyyaml
-    - {{ pin_compatible('hdf5', min_pin='x.x.x') }}
-    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('libmed', min_pin='x.x.x') }}
+    - {{ pin_compatible('numpy', max_pin='x.x') }}
     - openblas
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
-    - libmed {{ med_ver }}{{mpi}}*
     - scotch {{ scotch_ver }}{{mpi}}*
     - mumps {{ mumps_ver }}{{mpi}}*
-    - medcoupling {{ medcoupling_ver }}{{mpi}}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
