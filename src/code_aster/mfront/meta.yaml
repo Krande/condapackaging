@@ -33,7 +33,7 @@ requirements:
   run:
     - python
     - zlib
-    - numpy
+    - {{ pin_compatible('numpy') }}
     - boost
 
 test:

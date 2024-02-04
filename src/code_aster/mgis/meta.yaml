@@ -34,7 +34,7 @@ requirements:
 
   run:
     - python
-    - numpy
+    - {{ pin_compatible('numpy') }}
     - boost
     - mfront {{ mfront_ver }} =aster_*
 

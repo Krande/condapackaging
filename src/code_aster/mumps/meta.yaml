@@ -49,7 +49,7 @@ requirements:
     - {{ mpi }}                                 # [mpi != "nompi"]
 
   run:
-    - numpy
+    - {{ pin_compatible('numpy') }}
     - python
     - zlib
     - libblas
