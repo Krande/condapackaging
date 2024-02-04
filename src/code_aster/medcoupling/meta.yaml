@@ -57,6 +57,7 @@ requirements:
     - boost
     - libxml2
     - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('libmed') }}
     - {{ mpi }}                                 # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
 
