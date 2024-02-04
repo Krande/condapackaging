@@ -34,7 +34,8 @@ hdf5:
   - 1.10.6
 
 pin_run_as_build:
-  hdf5: x.x
+  hdf5: x.x.x
+  numpy: x.x
   openmpi:
     max_pin: x.x.x
   gcc:
