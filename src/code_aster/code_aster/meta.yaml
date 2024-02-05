@@ -74,6 +74,7 @@ requirements:
     - openblas
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
+    - libmed {{ med_ver }}{{mpi}}*
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
     - scotch {{ scotch_ver }}{{mpi}}*
