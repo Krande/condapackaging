@@ -48,6 +48,9 @@ pin_run_as_build:
   hdf5: x.x.x
   numpy: x.x
   libmed: x.x
+  python:
+    min_pin: x.x
+    max_pin: x.x
   openmpi:
     max_pin: x.x.x
   gcc:
