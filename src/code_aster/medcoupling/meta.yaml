@@ -43,7 +43,7 @@ requirements:
   host:
     - python
     - numpy
-    - boost
+    - libboost-devel
     - libxml2
     - astor
     - zlib
@@ -54,7 +54,6 @@ requirements:
 
   run:
     - python
-    - boost
     - libxml2
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('libmed') }}

@@ -41,6 +41,9 @@ openmpi:
 hdf5:
   - 1.10.6
 
+libboost_devel:
+  - '1.82'
+
 pin_run_as_build:
   hdf5: x.x.x
   numpy: x.x

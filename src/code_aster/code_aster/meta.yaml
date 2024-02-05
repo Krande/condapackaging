@@ -52,7 +52,7 @@ requirements:
     - pyyaml
     - astor
     - numpy
-    - boost
+    - libboost-devel
     - openblas
     - homard {{ homard_ver }}
     - metis {{ metis_ver }}

@@ -28,13 +28,12 @@ requirements:
     - python
     - zlib
     - numpy
-    - boost
+    - libboost-devel
 
   run:
     - python
     - zlib
     - {{ pin_compatible('numpy') }}
-    - boost
 
 test:
   commands:

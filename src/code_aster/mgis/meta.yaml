@@ -29,13 +29,12 @@ requirements:
   host:
     - python
     - numpy
-    - boost
+    - libboost-devel
     - mfront {{ mfront_ver }} =aster_*
 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - boost
     - mfront {{ mfront_ver }} =aster_*
 
 #
