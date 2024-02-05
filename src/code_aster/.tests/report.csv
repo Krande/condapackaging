@@ -1,4 +1,12 @@
 release_tag,code_aster,python,mpi,numpy,hdf5,gcc,num_failed_tests,date,description
+ca-7779958061,17.0.5,3.10,mpi,1.24.4,1.10.6,13.2.0,197,2024-02-05 08:19:20,Test again
+ca-7779958061,17.0.5,3.11,mpi,1.25.2,1.10.6,13.2.0,105,2024-02-05 08:19:20,Test again
+ca-7779958061,17.0.5,3.11,seq,1.25.2,1.10.6,13.2.0,108,2024-02-05 08:00:16,Test again
+ca-7779958061,17.0.5,3.10,seq,1.24.4,1.10.6,13.2.0,199,2024-02-05 08:00:16,Test again
+ca-7774547013,17.0.5,3.10,mpi,1.24.4,1.10.6,13.2.0,194,2024-02-04 16:55:17,Update global pins
+ca-7774547013,17.0.5,3.11,mpi,1.25.2,1.10.6,13.2.0,2260,2024-02-04 16:55:17,Update global pins
+ca-7774547013,17.0.5,3.11,seq,1.25.2,1.10.6,13.2.0,108,2024-02-04 16:45:15,Update global pins
+ca-7774547013,17.0.5,3.10,seq,1.24.4,1.10.6,13.2.0,199,2024-02-04 16:45:15,Update global pins
 ca-7773430134,17.0.5,3.10,mpi,1.26.3,1.10.5,13.2.0,1626,2024-02-04 13:22:07,fix pin compatible
 ca-7773430134,17.0.5,3.11,mpi,1.26.3,1.10.5,13.2.0,1558,2024-02-04 13:22:07,fix pin compatible
 ca-7773430134,17.0.5,3.11,seq,1.26.3,1.10.5,13.2.0,1503,2024-02-04 13:01:18,fix pin compatible
@@ -75,7 +83,3 @@ ca-6531152547,16.4.10,3.10,mpi,1.25.2,1.10.6,8.5.0,113,2023-10-16 11:57:34,Test 
 ca-6531152547,16.4.10,3.11,mpi,1.25.2,1.10.6,8.5.0,22,2023-10-16 11:57:34,Test latest Code_Aster 16.4.10
 ca-6458726549,16.4.9,3.10,seq,1.25.2,1.10.6,8.5.0,111,2023-10-09 18:32:04,change parmetis source and include aster3 modifications to parmetis for first time
 ca-6458726549,16.4.9,3.11,seq,1.25.2,1.10.6,8.5.0,20,2023-10-09 18:32:04,change parmetis source and include aster3 modifications to parmetis for first time
-ca-6458726549,16.4.9,3.10,mpi,1.25.2,1.10.6,8.5.0,116,2023-10-09 18:33:45,change parmetis source and include aster3 modifications to parmetis for first time
-ca-6458726549,16.4.9,3.11,mpi,1.25.2,1.10.6,8.5.0,25,2023-10-09 18:33:45,change parmetis source and include aster3 modifications to parmetis for first time
-ca-6363541339,16.4.8,3.10,seq,1.25.2,1.10.6,13.2.0,434,2023-09-30 18:03:16,fix additional mfront compat with gcc 13
-ca-6363541339,16.4.8,3.11,seq,1.25.2,1.10.6,13.2.0,350,2023-09-30 18:03:16,fix additional mfront compat with gcc 13
