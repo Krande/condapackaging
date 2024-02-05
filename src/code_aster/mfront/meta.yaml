@@ -28,7 +28,7 @@ requirements:
     - python
     - zlib
     - numpy
-    - libboost-devel
+    - libboost-python-devel
 
   run:
     - python
