@@ -16,11 +16,11 @@ jobs:
       conda_label: "hdf5"
       conda_user: krande
       debug_build: 'False'
-      python_versions: "3.11"
-      platforms: "windows-2019"
+      python_versions: "3.12"
+      platforms: "ubuntu-latest"
       variants: "mpi=nompi,mpi=openmpi"
       description: "Compilations of hdf5"
-      use_intel_fortran: "True"
+      use_intel_fortran: "False"
       use_quetz: "True"
 #      prep_script: "chmod +x /home/runner/work/condapackaging/condapackaging/src/hdf5/mpiexec.sh"
     secrets: inherit
