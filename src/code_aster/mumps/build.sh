@@ -11,6 +11,8 @@ echo "CC: $CC"
 echo "CXX: $CXX"
 echo "CFLAGS: $CFLAGS"
 
+#export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
+#export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
 export CFLAGS="-DUSE_SCHEDAFFINITY -Dtry_null_space ${CFLAGS}"
 
 # if gfortran version > 9, we need to conditionally add -fallow-argument-mismatch
@@ -21,8 +23,6 @@ if [[ $major_version -gt 9 ]]; then
 
   export FCFLAGS="-fallow-argument-mismatch ${FCFLAGS}"
 else
-  # -fallow-argument-mismatch is not supported by gfortran <= 8
-#  export FCFLAGS=" ${FCFLAGS}"
   echo "FCFLAGS: $FCFLAGS"
 fi
 

@@ -9,9 +9,13 @@ def configure(self):
     if os.getenv('ENABLE_MPI', "0") == "1":
         mpi_variant = True
         opts.parallel = 1
+
     conda_prefix = os.getenv('PREFIX')
     recipe_dir = os.getenv('RECIPE_DIR')
-    site_packages = os.getenv("SP_DIR")
+
+    self.env.append_unique("FCLINKFLAGS", ["-lmedfwrap"])
+    self.env.append_unique("CCLINKFLAGS", ["-lmedC"])
+    self.env.append_unique("CXXLINKFLAGS", ["-lmedC"])
 
     self.env.WAFBUILD_ENV = [recipe_dir + '/config/dummy.env', conda_prefix]
 
@@ -30,12 +34,6 @@ def configure(self):
     else:
         opts.parallel = 1
         opts.enable_petsc = True
-        # self.env.append_value('LIBPATH', [
-        #     site_packages + '/petsc4py/lib',
-        # ])
-        # self.env.append_value('INCLUDES', [
-        #     site_packages + '/petsc4py/include',
-        # ])
 
     # to fail if not found
     opts.enable_hdf5 = True

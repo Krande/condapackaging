@@ -1,27 +1,12 @@
-#!/bin/bash
+set -ex
+
 export CLICOLOR_FORCE=1
-
-#mkdir -p "$SRC_DIR/deps/config"
-#tar -xzvf "$SRC_DIR/deps/archives/med-4.1.1.tar.gz" -C . --strip-components=1
-
-# Patches are only relevant if you try to use HDF5 v1.10.9
-#patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-with-tabs.diff
-#patch -p1 < ${RECIPE_DIR}/patches/med-4.1.1-check-hdf5-parallel.diff
-
-if [[ "${USE_64BIT_IDS}" != "True" ]]; then
-  echo "Using 32 bit Integer IDs"
-else
-  echo "Using 64 bit Integer IDs"
-  export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
-  export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
-fi
-
-export CXXFLAGS="-std=gnu++98 ${CXXFLAGS}"
-
+USE_MPI=OFF
 if [[ "$mpi" == "nompi" ]]; then
   export F77=${FC}
   echo "Compiling for Sequential MPI=$mpi"
 else
+  USE_MPI=ON
   echo "Compiling for MPI=$mpi"
   export OPAL_PREFIX=$PREFIX
   export CC=mpicc
@@ -31,28 +16,47 @@ else
   export F90=mpif90
 fi
 
-opts=("--with-swig=yes" )
-
+BUILD_TYPE="Release"
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
-    # Set compiler flags for debugging, for instance
+    BUILD_TYPE="Debug"
     export CFLAGS="-g -O0 ${CFLAGS}"
     export CXXFLAGS="-g -O0 ${CXXFLAGS}"
     export FCFLAGS="-g -O0 ${FCFLAGS}"
-    opts+=( "--enable-mesgerr" )
-    # Additional debug build steps
 else
     echo "Debugging Disabled"
-    # Set compiler flags for production
-    opts+=( "--disable-mesgerr" )
-    # Additional production build steps
 fi
 
-chmod +x ./configure
-./configure "${opts[@]}" --prefix="$PREFIX" --with-hdf5="$PREFIX"
 
+export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
+export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+
+mkdir -p build
+pushd build
+
+# we specify both old style (all capital PYTHON)
+# and new style (Python) variables
+cmake -Wno-dev \
+  ${CMAKE_ARGS} \
+  -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+  -D Python_FIND_VIRTUALENV=FIRST \
+  -D Python_FIND_STRATEGY=LOCATION \
+  -D Python_ROOT_DIR="${PREFIX}" \
+  -D Python_EXECUTABLE="${PYTHON}" \
+  -D PYTHON_EXECUTABLE="${PYTHON}" \
+  -D HDF5_ROOT_DIR=${PREFIX} \
+  -D MPI_ROOT=${PREFIX} \
+  -D MEDFILE_INSTALL_DOC=OFF \
+  -D MEDFILE_BUILD_TESTS=OFF \
+  -D MEDFILE_BUILD_PYTHON=ON \
+  -D MEDFILE_BUILD_SHARED_LIBS=ON \
+  -D MEDFILE_BUILD_STATIC_LIBS=OFF \
+  -D MEDFILE_USE_UNICODE=OFF \
+  -D MED_MEDINT_TYPE=long \
+  -D MEDFILE_USE_MPI=${USE_MPI} \
+  ..
 
 make -j${CPU_COUNT}
 make install
 
-rm -rf "${PREFIX}/share/doc/med"
+popd

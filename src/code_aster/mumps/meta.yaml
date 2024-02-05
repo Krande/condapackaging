@@ -34,7 +34,6 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
     - waf
-    - sysroot_linux-64 2.17
     - make
 
   host:
@@ -50,7 +49,7 @@ requirements:
     - {{ mpi }}                                 # [mpi != "nompi"]
 
   run:
-    - numpy
+    - {{ pin_compatible('numpy') }}
     - python
     - zlib
     - libblas

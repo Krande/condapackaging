@@ -3,11 +3,55 @@ name: ci-code-aster-batch
 # bump 1
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/ci-code-aster-batch.yml
-    branches:
-      - donotrun
+    inputs:
+      description:
+        description: 'Release Description'
+        required: true
+        type: string
+        default: ""
+      build_selection:
+        description: 'Which builds'
+        required: true
+        type: string
+        default: "all"
+      conda_label:
+        description: 'Conda Channel for dependencies'
+        required: false
+        type: string
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.10,3.11"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "ubuntu-latest"
+      code_aster_version:
+        description: 'Code Aster version'
+        required: true
+        type: string
+        default: "17.0.5"
+      mpi_variants:
+        description: 'mpi variants'
+        required: true
+        type: string
+        default: "mpi=openmpi,mpi=nompi"
+      debug_build:
+        type: choice
+        required: true
+        description: Debug build or not
+        options:
+          - "True"
+          - "False"
+        default: "True"
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: " -m __root__/src/code_aster/common.yaml"
+
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -15,35 +59,49 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      # This is where the conda user and label should be set
-      code_aster_version: 17.0.1
-      conda_label: ca-${{ steps.env.outputs.unique_suffix }}
       conda_user: krandedev
       pkg_dir: src/code_aster
-      debug_build: "False"
-      python_versions: "3.10,3.11,3.12"
-      platforms: "ubuntu-latest"
-      mpi_variants: "mpi=openmpi,mpi=nompi"
-      description: "Latest release 17.0.1"
-      unique_suffix: ${{ steps.env.outputs.unique_suffix }}
       use_quetz: "True"
+      # This is where the conda user and label should be set
+      code_aster_version: ${{ inputs.code_aster_version }}
+      conda_label: ${{ steps.env.outputs.unique_suffix }}
+      debug_build: ${{ inputs.debug_build }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      mpi_variants: ${{ inputs.mpi_variants }}
+      description: ${{ inputs.description }}
+      extra_build_args: ${{ inputs.extra_build_args }}
 
     steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install toposort==1.10
+          pip install ./src/cpack
+
       - name: dummy step
         id: env
+        shell: python
+        env:
+          CONDA_LABEL: ${{ inputs.conda_label }}
         run: |
-          python3 << EOF
           import os
-          import datetime
-
-          #suffix = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-          suffix = ${{ github.run_id }} # with this, it should never come into conflict with other builds
-
+          
+          conda_label = os.getenv('CONDA_LABEL', None)
+          if not conda_label:
+              conda_label = "ca-${{ github.run_id }}"
+          
+          print(f"{conda_label=}")
+          
           env_file = os.environ.get("GITHUB_OUTPUT", None)
           with open(env_file, "a") as my_file:
-              my_file.write(f"unique_suffix={suffix}\n")
-          
-          EOF
+              my_file.write(f"unique_suffix={conda_label}\n")
 
   build_batch_1:
     needs: env
@@ -66,6 +124,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: ${{ matrix.package.name }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -81,6 +141,8 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: parmetis
     secrets: inherit
 
   build_batch_mumps:
@@ -97,6 +159,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: mumps
     secrets: inherit
 
   build_batch_libmed:
@@ -113,6 +177,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: libmed
     secrets: inherit
 
   build_batch_petsc:
@@ -128,6 +194,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: petsc
     secrets: inherit
 
   build_batch_medcoupling:
@@ -144,6 +212,8 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: medcoupling
     secrets: inherit
 
   build_batch_mfront:
@@ -159,6 +229,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: mfront
     secrets: inherit
 
   build_batch_mgis:
@@ -174,6 +246,8 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: mgis
     secrets: inherit
 
   build_batch_code_aster:
@@ -190,6 +264,9 @@ jobs:
       variants: ${{ needs.env.outputs.mpi_variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
+      build_selection: ${{ inputs.build_selection }}
+      job_name: code_aster
+      env_vars: "CODE_ASTER_VERSION=${{ needs.env.outputs.code_aster_version }}"
     secrets: inherit
 
   test_mpi:
@@ -200,8 +277,8 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: true
-      python_versions: "3.10,3.11,3.12"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       description:  ${{ needs.env.outputs.description }}
@@ -215,8 +292,8 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: false
-      python_versions: "3.10,3.11,3.12"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
       suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       description:  ${{ needs.env.outputs.description }}

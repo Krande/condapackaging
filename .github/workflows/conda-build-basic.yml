@@ -85,6 +85,21 @@ on:
         type: string
         required: false
         default: ""
+      build_selection:
+        description: 'A comma separated list of jobs'
+        type: string
+        required: false
+        default: ""
+      job_name:
+        description: 'Name of job'
+        type: string
+        required: false
+        default: ""
+      env_vars:
+        description: 'A comma separated list of env vars'
+        type: string
+        required: false
+        default: ""
 env:
   PKG_DEBUG: ${{ inputs.debug_build }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
@@ -94,10 +109,65 @@ env:
   CLICOLOR_FORCE: "1"
   VARIANT_STR: ""
   CONDA_CHANNEL: ""
+  EXTRA_BUILD_ARGS: ""
 
 jobs:
+  should_run:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.evaluate_job.outputs.should_run }}
+    steps:
+      - name: Evaluate job
+        id: evaluate_job
+        shell: python
+        env:
+          BUILD_SELECTION: ${{ inputs.build_selection }}
+          JOB_NAME: ${{ inputs.job_name }}
+        run: |
+          import os
+          
+          
+          def set_output(name, value):
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+                print(f'{name}={value}', file=fh)
+          
+          job_name = os.getenv('JOB_NAME', None)
+          build_selection = os.getenv('BUILD_SELECTION', None)
+          
+          print(f'{job_name=}')
+          
+          if not build_selection:
+              set_output("should_run", "true")
+              exit(0)
+          
+          job_list = build_selection.split(',')
+          print(f'{build_selection=}')
+          print(f'{job_list=}')
+          if "all" in job_list:
+              if len(job_list) == 1:
+                  print('job_list is 1')
+                  set_output("should_run", "true")
+                  exit(0)
+              
+              if f'!{job_name}' in job_list:
+                  print(f'Job {job_name} is skipped')
+                  set_output("should_run", "false")
+                  exit(0)
+              
+              set_output("should_run", "true")
+              exit(0)
+              
+          print('all at the bottom')
+          if job_name in job_list:
+              set_output("should_run", "true")
+          else:
+              set_output("should_run", "false")
+              
+
   # run a preceding job to get the matrix only if matrix_str is None
   build_prep:
+    needs: should_run
+    if: ${{ needs.should_run.outputs.should_run == 'true' }}
     uses: ./.github/workflows/conda-build-prep.yml
     with:
       python_versions: ${{ inputs.python_versions }}
@@ -122,7 +192,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.build_prep.outputs.final_matrix) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: pre script
         if: ${{ inputs.prep_script }}
@@ -139,6 +209,8 @@ jobs:
 
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
+        env:
+          ENV_VARS_INPUT: ${{ inputs.env_vars }}
         run: |
           python3 <<EOF
           import base64
@@ -150,7 +222,38 @@ jobs:
           
           with open(env_file, "a") as my_file:
             my_file.write(f"VARIANT_STR={decoded_str}\n")
+          
+          input_env_vars = os.environ.get("ENV_VARS_INPUT", None)
+          if input_env_vars:
+            input_env_vars = input_env_vars.split(",")
+            for env_var in input_env_vars:
+              env_var = env_var.strip()
+              if env_var:
+                env_var_name, env_var_value = env_var.split("=")
+                env_var_value = env_var_value.replace("__root__", os.environ["GITHUB_WORKSPACE"])
+                with open(env_file, "a") as my_file:
+                  my_file.write(f"{env_var_name}={env_var_value}\n")
           EOF
+
+      - name: Evaluate Extra Build Args
+        env:
+          EXTRA_ARGS: ${{ inputs.extra_build_args }}
+          WORKSPACE: ${{ github.workspace}}
+        shell: python
+        run: |
+          import os
+          
+          def set_env(name, value):
+              with open(os.environ['GITHUB_ENV'], 'a') as fh:
+                  print(f'{name}={value}', file=fh)
+          
+          workspace_dir = os.getenv("WORKSPACE")
+          extra_args = os.getenv("EXTRA_ARGS")
+          
+          # Substitute __root__ with github workspace
+          if extra_args != "":
+            extra_args_str = extra_args.replace('__root__', workspace_dir)
+            set_env('EXTRA_BUILD_ARGS', extra_args_str)
 
       - name: Download and extract MacOSX SDK
         if: ${{ runner.os == 'macOS' }}
@@ -241,7 +344,7 @@ jobs:
 
       - name: build local packages
         run: |
-          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ inputs.extra_build_args }}
+          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
 
         working-directory: ${{ env.CONDA_DIR }}
         env:

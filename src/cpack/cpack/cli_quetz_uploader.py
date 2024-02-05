@@ -11,7 +11,8 @@ import requests
 import typer
 import zstandard as zstd
 from quetz_client import QuetzClient
-from ruamel import yaml
+from ruamel.yaml import YAML
+yaml = YAML(typ='rt')
 from typing_extensions import Annotated
 
 logger = logging.getLogger(__name__)
@@ -84,7 +85,7 @@ class QuetzManager:
                             for tarinfo in tar:
                                 if not tarinfo.name.endswith("meta.yaml"):
                                     continue
-                                meta_yaml_data = yaml.safe_load(tar.extractfile(tarinfo).read())
+                                meta_yaml_data = yaml.load(tar.extractfile(tarinfo).read())
                                 return meta_yaml_data
 
     def get_packages_meta_for_channel(self, channel: str, package_name=None) -> Iterable[dict]:

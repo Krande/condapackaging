@@ -139,7 +139,10 @@ class GATestChecker:
                 name = asset["name"]
                 date_string = asset["updated_at"]
                 datetime_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-                mpi_str = re.search("mpi|seq", name).group(0)
+                mpi_re = re.search("mpi|seq", name)
+                if mpi_re is None:
+                    continue
+                mpi_str = mpi_re.group(0)
                 if mpi_ver is not None and mpi_str != mpi_ver:
                     continue
                 rel_tag = re.search("\[(.*?)\]", rel_name).group(1).replace("-" + mpi_str, "")

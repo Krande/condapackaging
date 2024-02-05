@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '17.0.1' %}
+{% set version = environ.get('CODE_ASTER_VERSION', '17.0.5') %}
 
 # Dependencies
 {% set med_ver = '4.1.1=aster_*' %}
@@ -21,19 +21,21 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.tar.gz'
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
-#  - git_url: https://gitlab.com/codeaster/src.git
-#    git_depth: 1
-  #    patches:
-  #      - patches/fort_int32.patch
+    patches:
+      - patches/skip_numpy_distutils_check.patch
 
 build:
   detect_binary_files_with_prefix: true
   number: 6
-  string: py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
-  string: py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
+  string: py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [mpi != "nompi"]
+  string: py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}        # [mpi == "nompi"]
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 #  skip: true  # [mpi == "nompi"]
+  rpaths:
+    - lib/
+    - lib/aster/
+    - lib/petsc4py/lib      # [mpi != "nompi"]
 
 requirements:
   build:
@@ -67,22 +69,21 @@ requirements:
 
   run:
     - python
-    - numpy
     - pyyaml
-    - hdf5
+    - {{ pin_compatible('numpy', max_pin='x.x') }}
     - openblas
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
+    - libmed {{ med_ver }}{{mpi}}*
     - mgis {{ mgis_ver }}
     - homard {{ homard_ver }}
-    - libmed {{ med_ver }}{{mpi}}*
     - scotch {{ scotch_ver }}{{mpi}}*
     - mumps {{ mumps_ver }}{{mpi}}*
-    - medcoupling {{ medcoupling_ver }}{{mpi}}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
     - parmetis                                      # [mpi != "nompi"]
+    - libxcrypt
   ignore_run_exports:
     - libcblas
 

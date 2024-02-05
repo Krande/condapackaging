@@ -12,19 +12,25 @@ source:
   - fn: 'medcoupling_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     sha256: 02087a4e59ffcdab6fc68460ffd86b03a80b5c0faa695b0bfb2142f1d0d3e5ea
+    patches:
+      - patches/swig_big_file_compile_flag.patch
   - fn: 'config_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     folder: deps/config
     sha256: d58f6749514ce49b00590a96d6dc9090a76a07c13690e2453403643afb40346c
+    patches:
+      - patches/fix_get_property_hdf5.patch
 
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster_py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}      # [mpi != "nompi"]
+  string: aster_py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}    # [mpi != "nompi"]
   string: aster_py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}          # [mpi == "nompi"]
   number: 3
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  run_exports:
+    - {{ pin_subpackage(name, 'x.x') }}
 
 requirements:
   build:
@@ -40,6 +46,7 @@ requirements:
     - boost
     - libxml2
     - astor
+    - zlib
     - pybind11-stubgen 2.3.7
     - libmed {{ libmed_ver }}{{mpi}}*
     - {{ mpi }}                                 # [mpi != 'nompi']
@@ -47,10 +54,10 @@ requirements:
 
   run:
     - python
-    - numpy
     - boost
     - libxml2
-    - libmed {{ libmed_ver }}{{mpi}}*
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('libmed') }}
     - {{ mpi }}                                 # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                     # [mpi != 'nompi']
 

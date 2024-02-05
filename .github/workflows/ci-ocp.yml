@@ -23,7 +23,7 @@ jobs:
           { name: macOS, distver: macos-latest }
         ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
         with:

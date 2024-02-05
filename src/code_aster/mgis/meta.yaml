@@ -22,7 +22,6 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - sysroot_linux-64 2.17
     - cmake >=3.26.4
     - make
     - autoconf
@@ -35,7 +34,7 @@ requirements:
 
   run:
     - python
-    - numpy
+    - {{ pin_compatible('numpy') }}
     - boost
     - mfront {{ mfront_ver }} =aster_*
 

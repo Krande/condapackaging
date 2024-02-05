@@ -1,0 +1,33 @@
+Subject: [PATCH] fix failing mpi check
+---
+Index: config/cmake/FindSalomeHDF5.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/config/cmake/FindSalomeHDF5.cmake b/config/cmake/FindSalomeHDF5.cmake
+--- a/config/cmake/FindSalomeHDF5.cmake	(revision de99109266e8e2afd2fd08cf52a28723702a040e)
++++ b/config/cmake/FindSalomeHDF5.cmake	(date 1704132051800)
+@@ -90,14 +90,14 @@
+     SET(_suffix "-shared")
+     SET(HDF5_LIBRARIES "${_target_prefix}hdf5${_suffix}")
+   ENDIF()
+-  GET_PROPERTY(_lib_lst SOURCE ${HDF5_LIBRARIES} PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES_NOCONFIG)
+-  FOREACH(s ${_lib_lst})
+-    STRING(FIND "${s}" "mpi." _res)   # should cover WIN(?) and LINUX
+-    IF(_res GREATER -1)
+-      GET_FILENAME_COMPONENT(_tmp "${s}" PATH)     # go up to levels
+-      GET_FILENAME_COMPONENT(MPI_ROOT_DIR_EXP "${_tmp}" PATH)
+-      BREAK()
+-    ENDIF()
++  FOREACH(lib_path ${HDF5_LIBRARIES})
++      # Check if lib_path contains an MPI library
++      STRING(FIND "${lib_path}" "mpi" mpi_index)
++      IF(mpi_index GREATER -1)
++          GET_FILENAME_COMPONENT(_tmp "${lib_path}" PATH)     # go up to levels
++          GET_FILENAME_COMPONENT(MPI_ROOT_DIR_EXP "${_tmp}" PATH)
++          BREAK()
++      ENDIF()
+   ENDFOREACH()
+   IF(NOT SalomeHDF5_FIND_QUIETLY)
+     MESSAGE(STATUS "HDF5 was compiled with MPI: ${MPI_ROOT_DIR_EXP}")

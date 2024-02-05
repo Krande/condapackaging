@@ -1,0 +1,47 @@
+python_impl:
+  - cpython
+
+c_compiler:
+  - vs2022        # [win]
+  - gcc           # [linux]
+cxx_compiler:
+  - vs2022        # [win]
+  - gxx           # [linux]
+fortran_compiler:
+  - gfortran      # [linux]
+
+blas_impl:
+  - openblas
+
+numpy:
+  - 1.24
+  - 1.25
+  - 1.26
+
+python:
+  - 3.10
+  - 3.11
+  - 3.12
+
+zip_keys:
+  - numpy
+  - python
+
+openmpi:
+  - 4.1.6
+
+hdf5:
+  - 1.10.6
+
+pin_run_as_build:
+  hdf5: x.x.x
+  numpy: x.x
+  libmed: x.x
+  openmpi:
+    max_pin: x.x.x
+  gcc:
+    max_pin: x.x
+  gxx:
+    max_pin: x.x
+  gfortran:
+    max_pin: x.x

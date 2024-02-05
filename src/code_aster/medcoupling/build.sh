@@ -3,52 +3,57 @@ set -ex
 export CLICOLOR_FORCE=1
 
 mkdir -p build
-pushd build
+cd build
 
+USE_MPI=ON
 if [[ "$mpi" == "nompi" ]]; then
-  on_mpi="OFF"
+  USE_MPI=OFF
 else
-  on_mpi="ON"
+  echo "Compiling for MPI=$mpi"
+  export OPAL_PREFIX=$PREFIX
+  export CC=mpicc
+  export CXX=mpicxx
+  export FC=mpif90
+  export F77=mpif77
+  export F90=mpif90
 fi
 
+BUILD_TYPE="Release"
 if [[ "${PKG_DEBUG}" == "True" ]]; then
     echo "Debugging Enabled"
+    BUILD_TYPE="Debug"
     export CFLAGS="-g -O0 ${CFLAGS}"
     export CXXFLAGS="-g -O0 ${CXXFLAGS}"
     export FCFLAGS="-g -O0 ${FCFLAGS}"
-    build_type="Debug"
 else
-    build_type="Release"
     echo "Debugging Disabled"
 fi
 
+
+# remove the share cmake files
+find ${PREFIX}/share/cmake -type d -name "medfile-*" -exec rm -rf {} +
+
 cmake .. \
-    -DCMAKE_BUILD_TYPE=$build_type \
+    -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
     -DPYTHON_ROOT_DIR="${PREFIX}" \
+    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
     -Wno-dev \
-    -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     -DCONFIGURATION_ROOT_DIR="${SRC_DIR}/deps/config" \
     -DSALOME_CMAKE_DEBUG=ON \
-    -DSALOME_USE_MPI=${on_mpi} \
+    -DMED_INT_IS_LONG=ON \
+    -DSALOME_USE_MPI=${USE_MPI} \
     -DMEDCOUPLING_BUILD_TESTS=OFF \
     -DMEDCOUPLING_BUILD_DOC=OFF \
     -DMEDCOUPLING_USE_64BIT_IDS=ON \
-    -DMEDCOUPLING_USE_MPI=${on_mpi} \
+    -DMEDCOUPLING_USE_MPI=${USE_MPI} \
     -DMEDCOUPLING_MEDLOADER_USE_XDR=OFF \
     -DXDR_INCLUDE_DIRS="" \
     -DMEDCOUPLING_PARTITIONER_PARMETIS=OFF \
     -DMEDCOUPLING_PARTITIONER_METIS=OFF \
     -DMEDCOUPLING_PARTITIONER_SCOTCH=OFF \
-    -DMEDCOUPLING_PARTITIONER_PTSCOTCH=${on_mpi} \
+    -DMEDCOUPLING_PARTITIONER_PTSCOTCH=${USE_MPI} \
     -DMPI_C_COMPILER:PATH="$(which mpicc)" \
-    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
-    -DHDF5_ROOT_DIR="${PREFIX}" \
-    -DSWIG_ROOT_DIR="${PREFIX}" \
-    -DMEDFILE_ROOT_DIR="${PREFIX}" \
-    -DSCOTCH_ROOT_DIR="${PREFIX}" \
-    -DMETIS_ROOT_DIR="${PREFIX}" \
-    -DPARMETIS_ROOT_DIR="${PREFIX}" \
-    -DCMAKE_PREFIX_PATH="${PREFIX}"
+    ${CMAKE_ARGS}
 
 make -j$CPU_COUNT
 make install

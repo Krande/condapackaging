@@ -1,0 +1,21 @@
+Subject: [PATCH] skip deprecated numpy distutils check
+---
+Index: waftools/python_cfg.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/waftools/python_cfg.py b/waftools/python_cfg.py
+--- a/waftools/python_cfg.py	(revision ff10996e8a13e0fd648498e651be94869dfaeacb)
++++ b/waftools/python_cfg.py	(date 1704021639256)
+@@ -69,8 +69,8 @@
+     self.start_msg("Checking for numpy include")
+     # retrieve includes dir from numpy module
+     numpy_includes = self.get_python_variables(
+-        ['"\\n".join(misc_util.get_numpy_include_dirs())'],
+-        ["from numpy.distutils import misc_util"],
++        ['get_include()'],
++        ["from numpy import get_include"],
+     )
+     if self.is_defined("ASTER_PLATFORM_MINGW"):
+         incs = [PureWindowsPath(i) for i in numpy_includes]

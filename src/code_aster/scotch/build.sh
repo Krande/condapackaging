@@ -18,6 +18,9 @@ fi
 
 cd src
 
+export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
+export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+
 if [ "${mpi}" == "nompi" ]; then
   echo "Compiling non-mpi -> mpi=$mpi"
 
@@ -27,6 +30,11 @@ if [ "${mpi}" == "nompi" ]; then
   make scotch
 else
   echo "Compiling mpi=$mpi"
+  export CC=mpicc
+  export CXX=mpicxx
+  export FC=mpifort
+  export F77=mpif77
+  export F90=mpif90
 
   sed -e "s|CFLAGS\s*=|CFLAGS = ${CFLAGS} -Wl,--no-as-needed -DINTSIZE64|g" \
     -e "s|CCD\s*=.*$|CCD = mpicc|g" ${mkinc} > Makefile.inc
