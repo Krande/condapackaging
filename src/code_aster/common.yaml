@@ -44,7 +44,10 @@ hdf5:
 boost:
   - '1.82'
 
-libboost_devel:
+libboost-python-devel:
+  - '1.82'
+
+libboost:
   - '1.82'
 
 pin_run_as_build:
@@ -52,7 +55,8 @@ pin_run_as_build:
   numpy: x.x
   libmed: x.x
   boost: x.x
-  libboost_devel: x.x
+  libboost-python-devel: x.x
+  libboost: x.x
   python:
     min_pin: x.x
     max_pin: x.x
