@@ -28,11 +28,6 @@ on:
         required: true
         type: string
         default: "ubuntu-latest"
-      code_aster_version:
-        description: 'Code Aster version'
-        required: true
-        type: string
-        default: "17.0.5"
       mpi_variants:
         description: 'mpi variants'
         required: true
@@ -63,7 +58,7 @@ jobs:
       pkg_dir: src/code_aster
       use_quetz: "True"
       # This is where the conda user and label should be set
-      code_aster_version: ${{ inputs.code_aster_version }}
+      code_aster_version: ${{ steps.env.outputs.code_aster_version }}
       conda_label: ${{ steps.env.outputs.unique_suffix }}
       debug_build: ${{ inputs.debug_build }}
       python_versions: ${{ inputs.python_versions }}
@@ -74,6 +69,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -83,7 +79,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install toposort==1.10
-          pip install ./src/cpack
+          pip install ./src/cpack          
 
       - name: dummy step
         id: env
@@ -92,16 +88,31 @@ jobs:
           CONDA_LABEL: ${{ inputs.conda_label }}
         run: |
           import os
+          import re
           
+          
+          def set_output(name, value):
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+                  print(f'{name}={value}', file=fh)
+          
+          # Get Code Aster Version
+          with open('src/code_aster/code_aster/meta.yaml', 'r') as file:
+            text = file.read()
+          version_pattern = r"{%\s*set\s+version\s*=\s*['\"](.+?)['\"]\s*%}"
+          match = re.search(version_pattern, text)
+          if match:
+            result = match.group(1)
+            set_output('code_aster_version', result)
+          else:
+            raise ValueError('Unable to find version number')
+          
+          # Auto generate Conda label if not manually set
           conda_label = os.getenv('CONDA_LABEL', None)
           if not conda_label:
-              conda_label = "ca-${{ github.run_id }}"
+            conda_label = "ca-${{ github.run_id }}"
           
           print(f"{conda_label=}")
-          
-          env_file = os.environ.get("GITHUB_OUTPUT", None)
-          with open(env_file, "a") as my_file:
-              my_file.write(f"unique_suffix={conda_label}\n")
+          set_output('unique_suffix', conda_label)
 
   build_batch_1:
     needs: env
@@ -129,7 +140,7 @@ jobs:
     secrets: inherit
 
   build_mpi_parmetis:
-    needs: [env]
+    needs: [ env ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: parmetis
@@ -266,7 +277,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       job_name: code_aster
-      env_vars: "CODE_ASTER_VERSION=${{ needs.env.outputs.code_aster_version }}"
     secrets: inherit
 
   test_mpi:
@@ -281,7 +291,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
-      description:  ${{ needs.env.outputs.description }}
+      description: ${{ needs.env.outputs.description }}
     secrets: inherit
 
   test_seq:
@@ -296,5 +306,5 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
-      description:  ${{ needs.env.outputs.description }}
+      description: ${{ needs.env.outputs.description }}
     secrets: inherit
