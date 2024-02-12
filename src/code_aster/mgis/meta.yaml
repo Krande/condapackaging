@@ -29,7 +29,7 @@ requirements:
   host:
     - python
     - numpy
-    - libboost-devel
+    - boost
     - mfront {{ mfront_ver }} =aster_*
 
   run:
