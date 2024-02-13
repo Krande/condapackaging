@@ -46,8 +46,20 @@ else
     echo "Debugging Disabled"
 fi
 
-export FCFLAGS="-fdefault-integer-8 -fallow-argument-mismatch ${FCFLAGS}"
+export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
 export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+
+# if gfortran version > 9, we need to conditionally add -fallow-argument-mismatch
+# to avoid mismatch errors related to floats and integer types
+major_version=$($FC -dumpversion | awk -F. '{print $1}')
+if [[ $major_version -gt 9 ]]; then
+  echo "adding -fallow-argument-mismatch to FCFLAGS"
+
+  export FCFLAGS="-fallow-argument-mismatch ${FCFLAGS}"
+else
+  echo "FCFLAGS: $FCFLAGS"
+fi
+
 
 if [[ "$mpi" == "nompi" ]]; then
   # Install for standard sequential
