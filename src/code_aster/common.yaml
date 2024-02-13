@@ -50,12 +50,16 @@ libboost_python_devel:
 libboost:
   - '1.82'
 
+libboost_devel:
+  - '1.82'
+
 pin_run_as_build:
   hdf5: x.x.x
   numpy: x.x
   libmed: x.x
   boost: x.x
   libboost_python_devel: x.x
+  libboost_devel: x.x
   libboost: x.x
   python:
     min_pin: x.x
