@@ -82,10 +82,9 @@ if [[ "$mpi" == "nompi" ]]; then
   fi
 else
   export PYTHONPATH="$PYTHONPATH:${PREFIX}/lib"
-
-  export ENABLE_MPI=1
   export CONFIG_PARAMETERS_addmem=4096
 
+  export ENABLE_MPI=1
   export CC=mpicc
   export CXX=mpicxx
   export FC=mpif90

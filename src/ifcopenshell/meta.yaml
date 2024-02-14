@@ -58,6 +58,7 @@ requirements:
 
   run:
     - python
+    - {{ pin_compatible('numpy') }}
     - {{ mpi }}       # [mpi != 'nompi']
 
 test:
