@@ -87,7 +87,7 @@ def main():
     # sort the tabla by col "num_failed_tests"
     df = df.sort_values(by=["num_failed_tests", "date"], ascending=[True, False])
     print(df)
-    df.to_markdown("report.md")
+    df.to_markdown("report.md", index=False)
     make_interactive_report(df)
 
 

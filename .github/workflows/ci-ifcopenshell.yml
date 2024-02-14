@@ -2,6 +2,12 @@ name: ci-ifcopenshell
 
 on:
   workflow_dispatch:
+    inputs:
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: " -m __root__/src/code_aster/common.yaml"
   push:
     paths:
       - .github/workflows/ci-ifcopenshell.yml
@@ -21,4 +27,5 @@ jobs:
       variants: "occt=7.7.2=*novtk*;mpi=nompi,occt=7.7.2=*novtk*;mpi=openmpi"
       description: "Compilations of ifcopenshell"
       use_quetz: "False"
+      extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
