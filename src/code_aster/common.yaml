@@ -22,9 +22,9 @@ blas_impl:
   - openblas
 
 numpy:
+  - 1.22
+  - 1.23
   - 1.24
-  - 1.25
-  - 1.26
 
 python:
   - 3.10
@@ -53,6 +53,9 @@ libboost:
 libboost_devel:
   - '1.82'
 
+libxml2:
+  - '2.12.5'
+
 pin_run_as_build:
   hdf5: x.x.x
   numpy: x.x
@@ -61,6 +64,7 @@ pin_run_as_build:
   libboost_python_devel: x.x
   libboost_devel: x.x
   libboost: x.x
+  libxml2: x.x
   python:
     min_pin: x.x
     max_pin: x.x
