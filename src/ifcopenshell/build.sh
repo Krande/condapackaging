@@ -11,11 +11,9 @@ if [[ "$mpi" == "nompi" ]]; then
   echo "nompi"
 else
   export ENABLE_MPI=1
-  export CC=mpicc
-  export CXX=mpicxx
-  export FC=mpif90
-  export F77=mpif77
-  export F90=mpif90
+  export CC=$PREFIX/bin/mpicc
+  export CXX=$PREFIX/bin/mpic++
+  export FC=$PREFIX/bin/mpifort
 fi
 
 
