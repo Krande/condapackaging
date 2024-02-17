@@ -8,6 +8,16 @@ on:
         required: true
         type: string
         default: " -m __root__/src/code_aster/common.yaml"
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "ubuntu-latest"
   push:
     paths:
       - .github/workflows/ci-ifcopenshell.yml
@@ -22,8 +32,8 @@ jobs:
       conda_label: "main"
       conda_user: krande
       debug_build: 'False'
-      python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest"
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
       variants: "occt=7.7.2=*novtk*;mpi=nompi,occt=7.7.2=*novtk*;mpi=openmpi"
       description: "Compilations of ifcopenshell"
       use_quetz: "False"
