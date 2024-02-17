@@ -12,7 +12,12 @@ on:
         description: 'Platforms'
         required: true
         type: string
-        default: "ubuntu-latest,windows-latest,macos-latest"
+        default: "ubuntu-latest"
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: ""
 
 jobs:
   build:
@@ -26,5 +31,6 @@ jobs:
       platforms: ${{ inputs.platforms }}
       variants: "mpi=nompi,mpi=openmpi"
       description: "Compilations of netcdf4"
-      use_quetz: "True"
+      use_quetz: "False"
+      extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
