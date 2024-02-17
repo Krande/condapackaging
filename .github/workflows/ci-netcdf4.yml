@@ -2,16 +2,17 @@ name: ci-netcdf4
 
 on:
   workflow_dispatch:
-    python_versions:
-      description: 'Python Versions'
-      required: true
-      type: string
-      default: "3.11,3.12"
-    platforms:
-      description: 'Platforms'
-      required: true
-      type: string
-      default: "ubuntu-latest,windows-latest,macos-latest"
+    inputs:
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "ubuntu-latest,windows-latest,macos-latest"
 
 jobs:
   build:
