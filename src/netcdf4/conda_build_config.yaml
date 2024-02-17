@@ -3,6 +3,10 @@ mpi:
   - mpich
   - openmpi
 
+pin_run_as_build:
+  hdf5: x.x
+  libnetcdf: x.2
+
 hdf5:
   - 1.10.6
 

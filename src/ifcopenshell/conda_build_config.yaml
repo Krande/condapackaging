@@ -3,6 +3,7 @@ occt:
   - 7.7.2=all*
 
 pin_run_as_build:
+  hdf5: x.x
   occt: x.x.x
   cgal-cpp: x.x.x
 

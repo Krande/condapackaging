@@ -49,17 +49,18 @@ requirements:
     - libxml2
     - hdf5 {{ hdf5 }} *{{ mpi }}*
     - mpfr
-    - {{ mpi }}     # [mpi != 'nompi']
-    - mpi4py        # [mpi != 'nompi']
-    - gmp  # [unix]
-    - mpir  # [win]
+    - {{ mpi }}                           # [mpi != 'nompi']
+    - mpi4py                              # [mpi != 'nompi']
+    - gmp                                 # [unix]
+    - mpir                                # [win]
     - nlohmann_json
     - zlib
 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - {{ mpi }}       # [mpi != 'nompi']
+    - hdf5 {{ hdf5 }} *{{ mpi }}*
+    - {{ mpi }}                           # [mpi != 'nompi']
 
 test:
   imports:
