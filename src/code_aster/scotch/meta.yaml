@@ -27,7 +27,7 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - "{{ compiler('fortran') }}" # [not win]
     - make
 
   host:

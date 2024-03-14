@@ -21,21 +21,23 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - "{{ compiler('fortran') }}" # [not win]
     - cmake >=3.26.4
     - make
-    - autoconf
+    - autoconf # [not win]
 
   host:
     - python
     - numpy
     - boost
-    - mfront {{ mfront_ver }} =aster_*
+    - mfront {{ mfront_ver }} =aster_* # [not win]
+    - mfront # [win]
 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - mfront {{ mfront_ver }} =aster_*
+    - mfront {{ mfront_ver }} =aster_* # [not win]
+    - mfront # [win]
 
 #
 #test:
