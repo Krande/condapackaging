@@ -1,10 +1,7 @@
 @echo off
 echo Build MFRONT/TFEL
 
-if not exist build mkdir build
-cd build
-
-cmake .. -G "Ninja" ^
+cmake -B build . -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -Denable-fortran=OFF ^
     -Denable-python-bindings=ON ^
@@ -22,7 +19,7 @@ cmake .. -G "Ninja" ^
     -DUSE_EXTERNAL_COMPILER_FLAGS=ON
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine
-ninja install
+cmake --build build --target install
 
 IF ERRORLEVEL 1 (
   type configure.log

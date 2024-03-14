@@ -55,7 +55,8 @@ requirements:
     - libboost-devel
     - openblas
     - homard {{ homard_ver }}
-    - metis {{ metis_ver }}
+    - metis {{ metis_ver }} # [not win]
+    - metis 5.1.0 # [win]
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - libmed {{ med_ver }}{{mpi}}*
