@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 from cpack.cli_quetz_uploader import QuetzManager
 from cpack.packages import Package
-from scan_failed import fail_checker, TestStats
+from analysis.scan_failed import fail_checker, TestStats
 
 load_dotenv()
 

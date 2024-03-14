@@ -2,18 +2,35 @@ name: ci-netcdf4
 
 on:
   workflow_dispatch:
+    inputs:
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "ubuntu-latest"
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: ""
 
 jobs:
   build:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: netcdf4
-      conda_label: "dev"
+      conda_label: "main"
       conda_user: krande
       debug_build: 'False'
-      python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest,windows-latest,macos-latest"
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
       variants: "mpi=nompi,mpi=openmpi"
       description: "Compilations of netcdf4"
-      use_quetz: "True"
+      use_quetz: "False"
+      extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit

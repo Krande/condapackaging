@@ -1,5 +1,5 @@
 {% set version = "1.6.4" %}
-{% set build = 3 %}
+{% set build = 4 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -36,6 +36,8 @@ build:
     - ncinfo = netCDF4.utils:ncinfo
     - nc4tonc3 = netCDF4.utils:nc4tonc3
     - nc3tonc4 = netCDF4.utils:nc3tonc4
+  run_exports:
+    - {{ pin_subpackage('netcdf4', 'x.x') }}
 
 requirements:
   build:
@@ -55,8 +57,8 @@ requirements:
     - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*
     - libnetcdf
     - libnetcdf * {{ mpi_prefix }}_*
-    - {{ mpi }}  # [mpi != 'nompi']
-    - mpi4py  # [mpi != 'nompi']
+    - {{ mpi }}                             # [mpi != 'nompi']
+    - mpi4py                                # [mpi != 'nompi']
     - zlib
   run:
     - python
@@ -66,13 +68,11 @@ requirements:
     - cftime
     # the 'nompi' build should work with both non-MPI and MPI variants of the
     # following libs
-    - hdf5  # [mpi == 'nompi']
-    - libnetcdf  # [mpi == 'nompi']
-    - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*  # [mpi != 'nompi']
-    - libnetcdf * {{ mpi_prefix }}_*  # [mpi != 'nompi']
-    - {{ mpi }}  # [mpi != 'nompi']
-    - mpi4py  # [mpi != 'nompi']
-    - openssh  # [mpi == 'openmpi']
+    - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*
+    - libnetcdf * {{ mpi_prefix }}_*
+    - {{ mpi }}                             # [mpi != 'nompi']
+    - mpi4py                                # [mpi != 'nompi']
+    - openssh                               # [mpi == 'openmpi']
 
 test:
   files:

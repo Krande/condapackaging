@@ -7,8 +7,18 @@ if [ `uname` == Darwin ]; then
   export LDFLAGS="$LDFLAGS -Wl,-twolevel_namespace"
 fi
 
+if [[ "$mpi" == "nompi" ]]; then
+  echo "nompi"
+else
+  export ENABLE_MPI=1
+  export CC=$PREFIX/bin/mpicc
+  export CXX=$PREFIX/bin/mpic++
+  export FC=$PREFIX/bin/mpifort
+fi
+
+
 # Overwrite the CMakeLists.txt file with the one from the config folder (which has a fix for finding hdf5 and zlibs)
-cp $RECIPE_DIR/config/CMakeLists.txt "${SRC_DIR}/cmake/CMakeLists.txt"
+#cp $RECIPE_DIR/config/CMakeLists.txt "${SRC_DIR}/cmake/CMakeLists.txt"
 
 cmake -G Ninja \
  -Wno-dev \
