@@ -1,7 +1,7 @@
 @echo off
 echo Build MFRONT/TFEL
 
-cmake -B build . -G "Ninja" ^
+cmake -B build . -G "Ninja" -Wno-dev ^
     -DCMAKE_BUILD_TYPE=Release ^
     -Denable-fortran=OFF ^
     -Denable-python-bindings=ON ^
