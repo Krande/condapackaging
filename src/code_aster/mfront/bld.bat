@@ -2,6 +2,11 @@
 echo Build MFRONT/TFEL
 
 cmake -B build . -G "Ninja" -Wno-dev ^
+    %CMAKE_ARGS% ^
+    -DCMAKE_CXX_COMPILER=clang-cl ^
+    -DCMAKE_C_COMPILER=clang-cl ^
+    -DCMAKE_LINKER=lld-link ^
+    -DCMAKE_NM=llvm-nm ^
     -DCMAKE_BUILD_TYPE=Release ^
     -Denable-fortran=OFF ^
     -Denable-python-bindings=ON ^

@@ -1,6 +1,6 @@
 {% set name = "mfront" %}
 {% set version = "4.1.0" %}
-
+# clang inspiration from https://github.com/conda-forge/warpx-feedstock/blob/main/recipe/bld.bat
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -21,6 +21,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}   # [not win]
+    - ninja         # [win]
+    - clang         # [win]
+    - lld           # [win]
     - cmake
     - make
 
