@@ -1,5 +1,5 @@
 {% set name = "mfront" %}
-{% set version = "4.1.0" %}
+{% set version = "4.2.0" %}
 # clang inspiration from https://github.com/conda-forge/warpx-feedstock/blob/main/recipe/bld.bat
 package:
   name: {{ name|lower }}
@@ -8,6 +8,8 @@ package:
 source:
   fn: {{ name }}_{{ version }}.tar.gz
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
+  patches:
+    - patches/fix_v4_2_0_clang_win.patch
 
 build:
   number: 4
