@@ -8,14 +8,15 @@ cmake -B build . -G "Ninja" -Wno-dev ^
     -DCMAKE_LINKER=lld-link ^
     -DCMAKE_NM=llvm-nm ^
     -DCMAKE_BUILD_TYPE=Release ^
+    -Dlocal-castem-header=ON ^
     -Denable-fortran=OFF ^
-    -Denable-python-bindings=ON ^
     -Denable-cyrano=ON ^
     -Denable-aster=ON ^
     -Ddisable-website=ON ^
+    -Denable-python=ON ^
+    -Denable-python-bindings=ON ^
     -Denable-portable-build=ON ^
     -DPython_ADDITIONAL_VERSIONS=%CONDA_PY% ^
-    -Denable-python=ON ^
     -DPYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
     -DPYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
     -DPYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^

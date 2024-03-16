@@ -9,8 +9,8 @@ source:
   fn: {{ name }}_{{ version }}.tar.gz
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
   patches:
-    - patches/fix_v4_2_0_clang_win.patch
-    - patches/override_site_package_dir_for_windows.patch
+    - patches/fix_v4_2_0_clang_win.patch  # [win]
+    - patches/override_site_package_dir_for_windows.patch  # [win]
 
 build:
   number: 4
@@ -44,8 +44,8 @@ requirements:
 test:
   commands:
     - tfel-config --version
-#    - tfel-doc --version
-#    - tfel-check --version
+    - tfel-doc --version
+    - tfel-check --version
     - mtest --version
     - mfront --list-stress-criteria
     - mfront-doc --version
