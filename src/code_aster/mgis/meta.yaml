@@ -1,5 +1,5 @@
 {% set name = "mgis" %}
-{% set version = "2.1" %}
+{% set version = "2.2" %}
 {% set mfront_ver = "4.1.0" %}
 
 package:
@@ -9,7 +9,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.tar.gz'
     url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
-    sha256: f5b556aab130da0c423f395fe4c35d6bf509dd8fc958242f2e37ea788464aea9
+#    sha256: f5b556aab130da0c423f395fe4c35d6bf509dd8fc958242f2e37ea788464aea9
 
 build:
   number: 2
@@ -23,7 +23,10 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}" # [not win]
     - cmake >=3.26.4
-    - make
+    - ninja                       # [win]
+    - clang                       # [win]
+    - lld                         # [win]
+    - make                        # [not win]
     - autoconf # [not win]
 
   host:

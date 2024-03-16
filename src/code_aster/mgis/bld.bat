@@ -21,9 +21,12 @@ if "%PKG_DEBUG%"=="True" (
   echo Debugging Disabled
 )
 
-cmake .. ^
-    -G "NMake Makefiles" ^
+cmake -B build . -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=%build_type% ^
+    -DCMAKE_CXX_COMPILER=clang-cl ^
+    -DCMAKE_C_COMPILER=clang-cl ^
+    -DCMAKE_LINKER=lld-link ^
+    -DCMAKE_NM=llvm-nm ^
     -Denable-c-bindings=OFF ^
     -Denable-fortran-bindings=OFF ^
     -Denable-python-bindings=ON ^
@@ -40,7 +43,9 @@ cmake .. ^
     -DUSE_EXTERNAL_COMPILER_FLAGS=ON ^
     -DCMAKE_INSTALL_PREFIX:PATH="%PREFIX%"
 
-nmake
-nmake install
-
+cmake --build build --target install
+IF ERRORLEVEL 1 (
+  type configure.log
+  exit /b 1
+)
 endlocal
