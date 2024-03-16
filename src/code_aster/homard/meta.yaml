@@ -11,7 +11,6 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} setup_homard.py -en --prefix=${PREFIX}/bin -vmax
 
 requirements:
   host:
@@ -22,7 +21,7 @@ requirements:
 
 test:
   commands:
-    - test -f $PREFIX/bin/ASTER_HOMARD/homard
+    - test -f $PREFIX/bin/ASTER_HOMARD/homard # [not win]
 
 about:
   home: https://code-aster.org/V2/outils/homard/en/intro.html
