@@ -20,13 +20,13 @@ if "%PKG_DEBUG%"=="True" (
   set build_type=Release
   echo Debugging Disabled
 )
+rem -DCMAKE_CXX_COMPILER=clang-cl ^
+rem -DCMAKE_C_COMPILER=clang-cl ^
+rem -DCMAKE_LINKER=lld-link ^
+rem -DCMAKE_NM=llvm-nm ^
 
 cmake -B build . -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=%build_type% ^
-    -DCMAKE_CXX_COMPILER=clang-cl ^
-    -DCMAKE_C_COMPILER=clang-cl ^
-    -DCMAKE_LINKER=lld-link ^
-    -DCMAKE_NM=llvm-nm ^
     -Denable-c-bindings=OFF ^
     -Denable-fortran-bindings=OFF ^
     -Denable-python-bindings=ON ^

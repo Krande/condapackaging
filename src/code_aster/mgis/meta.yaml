@@ -24,8 +24,8 @@ requirements:
     - "{{ compiler('fortran') }}" # [not win]
     - cmake >=3.26.4
     - ninja                       # [win]
-    - clang                       # [win]
-    - lld                         # [win]
+    #- clang                       # [win]
+    #- lld                         # [win]
     - make                        # [not win]
     - autoconf # [not win]
 
