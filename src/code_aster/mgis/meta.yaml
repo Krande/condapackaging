@@ -1,6 +1,6 @@
 {% set name = "mgis" %}
 {% set version = "2.2" %}
-{% set mfront_ver = "4.1.0" %}
+
 
 package:
   name: '{{ name|lower }}'
@@ -9,7 +9,6 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.tar.gz'
     url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
-#    sha256: f5b556aab130da0c423f395fe4c35d6bf509dd8fc958242f2e37ea788464aea9
 
 build:
   number: 2
@@ -33,14 +32,14 @@ requirements:
     - python
     - numpy
     - boost
-    - mfront {{ mfront_ver }} =aster_* # [not win]
-    - mfront # [win]
+    - mfront 4.1.0=aster_*  # [not win]
+    - mfront 4.2.0          # [win]
 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - mfront {{ mfront_ver }} =aster_* # [not win]
-    - mfront # [win]
+    - mfront 4.1.0 =aster_*           # [not win]
+    - mfront 4.2.0                    # [win]
 
 #
 #test:
