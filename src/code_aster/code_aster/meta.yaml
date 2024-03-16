@@ -1,25 +1,27 @@
 {% set name = 'code-aster' %}
-{% set version = '17.0.6' %}
+{% set version = '17.0.10' %}
 
 # Dependencies
-{% set med_ver = '4.1.1*' %}            # [win]
-{% set metis_ver = '5.1.0*' %}          # [win]
-{% set mumps_ver = '5.6.2*' %}          # [win]
-{% set petsc_ver = '3.17.1*' %}         # [win]
-{% set scotch_ver = '7.0.4*' %}         # [win]
-{% set mfront_ver = '4.2.0' %}          # [win]
-{% set medcoupling_ver = '9.10.0' %}    # [win]
+{% set med_ver = '4.1.1*' %}                  # [win]
+{% set metis_ver = '5.1.0*' %}                # [win]
+{% set mumps_ver = '5.6.2*' %}                # [win]
+{% set petsc_ver = '3.17.1*' %}               # [win]
+{% set scotch_ver = '7.0.4*' %}               # [win]
+{% set mfront_ver = '4.2.0' %}                # [win]
+{% set medcoupling_ver = '9.10.0' %}          # [win]
+{% set mgis_ver = '2.2' %}                    # [win]
 
-{% set med_ver = '4.1.1=aster_*' %}     # [not win]
-{% set metis_ver = '5.1.0=aster4*' %}   # [not win]
-{% set mumps_ver = '5.5.1=aster1*' %}   # [not win]
-{% set petsc_ver = '3.17.1=aster*' %}   # [not win]
-{% set scotch_ver = '7.0.1=aster*' %}   # [not win]
-{% set mfront_ver = '4.1.0=aster_*' %}  # [not win]
-{% set medcoupling_ver = '9.10.0=aster*' %} # [not win]
+
+#{% set med_ver = '4.1.1=aster_*' %}           # [not win]
+#{% set metis_ver = '5.1.0=aster4*' %}         # [not win]
+#{% set mumps_ver = '5.5.1=aster1*' %}         # [not win]
+#{% set petsc_ver = '3.17.1=aster*' %}         # [not win]
+#{% set scotch_ver = '7.0.1=aster*' %}         # [not win]
+#{% set mfront_ver = '4.1.0=aster_*' %}        # [not win]
+#{% set medcoupling_ver = '9.10.0=aster*' %}   # [not win]
+#{% set mgis_ver = '2.1' %}                    # [not win]
 
 {% set homard_ver = '11.12' %}
-{% set mgis_ver = '2.1' %}
 {% set mpi4py_ver = "3.1.3" %}
 
 
@@ -63,17 +65,17 @@ requirements:
     - numpy
     - libboost-devel
     - openblas
-    - homard {{ homard_ver }} # [not win]
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
-    - libmed {{ med_ver }}{{mpi}}* # [not win]
-    - libmed {{ med_ver }}          # [win]
-    - scotch {{ scotch_ver }}{{mpi}}* # [not win]
-    - scotch {{ scotch_ver }}          # [win]
-    - mumps {{ mumps_ver }}{{mpi}}* # [not win]
-    - medcoupling {{ medcoupling_ver }}{{mpi}}*     # [not win]
+    - libmed {{ med_ver }}                          # [win]
+    - scotch {{ scotch_ver }}                       # [win]
     - medcoupling {{ medcoupling_ver }}             # [win]
+    - libmed {{ med_ver }}{{mpi}}*                  # [not win]
+    - scotch {{ scotch_ver }}{{mpi}}*               # [not win]
+    - mumps {{ mumps_ver }}{{mpi}}*                 # [not win]
+    - medcoupling {{ medcoupling_ver }}{{mpi}}*     # [not win]
+    - homard {{ homard_ver }}                       # [not win]
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
@@ -86,13 +88,13 @@ requirements:
     - openblas
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
-    - libmed {{ med_ver }}{{mpi}}* # [not win]
-    - libmed {{ med_ver }}          # [win]
-    - scotch {{ scotch_ver }}{{mpi}}* # [not win]
-    - scotch {{ scotch_ver }}          # [win]
     - mgis {{ mgis_ver }}
-    - homard {{ homard_ver }} # [not win]
-    - mumps {{ mumps_ver }}{{mpi}}* # [not win]
+    - libmed {{ med_ver }}                          # [win]
+    - scotch {{ scotch_ver }}                       # [win]
+    - libmed {{ med_ver }}{{mpi}}*                  # [not win]
+    - scotch {{ scotch_ver }}{{mpi}}*               # [not win]
+    - mumps {{ mumps_ver }}{{mpi}}*                 # [not win]
+    - homard {{ homard_ver }}                       # [not win]
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
@@ -112,10 +114,12 @@ test:
 #    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
   requires:
-    - libmed {{ med_ver }}{{mpi}}*
-    - scotch {{ scotch_ver }}{{mpi}}*
-    - mumps {{ mumps_ver }}{{mpi}}*
-    - medcoupling {{ medcoupling_ver }}{{mpi}}*
+    - libmed {{ med_ver }}                          # [win]
+    - scotch {{ scotch_ver }}                       # [win]
+    - medcoupling {{ medcoupling_ver }}             # [win]
+    - libmed {{ med_ver }}{{mpi}}*                  # [not win]
+    - scotch {{ scotch_ver }}{{mpi}}*               # [not win]
+    - medcoupling {{ medcoupling_ver }}{{mpi}}*     # [not win]
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
     - parmetis                                      # [mpi != "nompi"]
   files:
