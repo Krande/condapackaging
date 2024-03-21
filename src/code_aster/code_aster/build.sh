@@ -75,7 +75,7 @@ if [[ "$mpi" == "nompi" ]]; then
     configure
 
   if [[ "${PKG_DEBUG}" == "True" ]]; then
-      ./waf_std install_debug
+      ./waf_std install_debug -v
   else
       echo "Debugging Disabled"
       ./waf_std install
