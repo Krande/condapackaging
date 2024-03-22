@@ -46,7 +46,6 @@ jobs:
               f.write(r'CONDA_ROOT=C:\Users\runneradmin\micromamba\n')
 
       - name: Run compilation
-        shell: cmd
+        shell: cmd /C call {0}
         run: |
-          micromamba activate $MAMBA_ROOT_PREFIX/envs/codeaster-deps
           call conda_build.bat
