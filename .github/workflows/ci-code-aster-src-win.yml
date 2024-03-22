@@ -48,5 +48,5 @@ jobs:
       - name: Run compilation
         shell: cmd
         run: |
-          C:\Users\runneradmin\micromamba activate codeaster-deps
+          micromamba activate $MAMBA_ROOT_PREFIX/envs/codeaster-deps
           call conda_build.bat
