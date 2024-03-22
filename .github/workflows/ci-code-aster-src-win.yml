@@ -46,5 +46,6 @@ jobs:
               f.write(r'CONDA_ROOT=C:\Users\runneradmin\micromamba\n')
 
       - name: Run compilation
+        shell: cmd
         run: |
           call conda_build.bat
