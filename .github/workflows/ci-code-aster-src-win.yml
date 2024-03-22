@@ -36,14 +36,14 @@ jobs:
           printenv
 
       - name: Create a temp .env file with VS_PATH
+        shell: python
         run: |
-          INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
-          VS_VARS_PATH=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build
-          CONDA_ROOT=C:\Work\mambaforge
+          import os
           
-          echo "VS_PATH=${{ steps.setup-fortran.outputs.path }}" > .env
-          echo "VS_VERSION=${{ steps.setup-fortran.outputs.version }}" >> .env
-          echo "VS_ARCH=${{ steps.setup-fortran.outputs.architecture }}" >> .env
+          with open('.env', 'w') as f:
+              f.write(r'INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env\n')
+              f.write(r'VS_VARS_PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\n')
+              f.write(r'CONDA_ROOT=C:\Users\runneradmin\micromamba\n')
 
       - name: Run compilation
         run: |
