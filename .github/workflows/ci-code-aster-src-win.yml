@@ -1,0 +1,50 @@
+name: ci-code-aster-src-win
+
+# bump 1
+on:
+  workflow_dispatch:
+
+jobs:
+  env:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout code-aster/src
+        run: |
+          git clone -b win-support https://gitlab.com/krande/src.git .
+
+      - uses: awvwgk/setup-fortran@main # https://github.com/awvwgk/setup-fortran
+        id: setup-fortran
+        with:
+          compiler: intel
+          version: '2024.0'
+
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: conda/environment.yml
+          cache-environment: true
+          condarc: |
+            channel_priority: strict
+            channels:
+              - conda-forge
+
+      - name: print all env vars
+        run: |
+          where python
+          printenv
+
+      - name: Create a temp .env file with VS_PATH
+        run: |
+          INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
+          VS_VARS_PATH=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build
+          CONDA_ROOT=C:\Work\mambaforge
+          
+          echo "VS_PATH=${{ steps.setup-fortran.outputs.path }}" > .env
+          echo "VS_VERSION=${{ steps.setup-fortran.outputs.version }}" >> .env
+          echo "VS_ARCH=${{ steps.setup-fortran.outputs.architecture }}" >> .env
+
+      - name: Run compilation
+        run: |
+          call conda_build.bat
