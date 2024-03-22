@@ -48,4 +48,7 @@ jobs:
       - name: Run compilation
         shell: cmd /C call {0}
         run: |
+          dir
+          where python
+          micromamba activate codeaster-deps
           call conda_build.bat
