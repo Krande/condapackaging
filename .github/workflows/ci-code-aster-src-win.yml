@@ -48,4 +48,5 @@ jobs:
       - name: Run compilation
         shell: cmd
         run: |
+          C:\Users\runneradmin\micromamba activate codeaster-deps
           call conda_build.bat
