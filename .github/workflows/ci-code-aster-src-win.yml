@@ -131,16 +131,8 @@ jobs:
             --maths-libs=auto ^
             --without-hg
 
-          REM if USE_LOG is set, then log the output to a file
-          if %USE_LOG%==1 (
-              REM set a datetime variable down to the minute
-              @call conda_datetime.bat
-              waf build_debug -v > build_debug_%datetimeString%.log 2>&1
-              waf install_debug -v > install_debug_%datetimeString%.log 2>&1
-          ) else (
-              waf build_debug -v
-              waf install_debug -v
-          )
+          waf build_debug -v
+          waf install_debug -v      
 
       - name: print log file
         run: |
