@@ -9,7 +9,6 @@ env:
   INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
   VS_VARS_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build
   CONDA_ROOT: C:\Users\runneradmin\micromamba
-  LIBRARY_PREFIX: C:\Users\runneradmin\micromamba\envs\codeaster-deps\Library
 
 jobs:
   build:
@@ -66,7 +65,10 @@ jobs:
           where python
           where cl
           where ifx
-
+          
+          set PREFIX=%CONDA_PREFIX%
+          set LIBRARY_PREFIX=%CONDA_PREFIX%/Library
+          
           SET PARENT_DIR=%~dp0
           SET PARENT_DIR=%PARENT_DIR:\=/%
 
