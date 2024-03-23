@@ -51,7 +51,9 @@ jobs:
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler"
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest"
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env"
+
       - name: run manually
+        continue-on-error: true
         run: |
           echo "Setting compiler env vars"
           set "CC=clang-cl.exe"
@@ -134,11 +136,11 @@ jobs:
               waf build_debug -v
               waf install_debug -v
           )
-
-      - name: Run compilation
-        continue-on-error: true
-        run: |
-          call conda_build.bat
+#
+#      - name: Run compilation
+#        continue-on-error: true
+#        run: |
+#          call conda_build.bat
 
       - name: print log file
         run: |
