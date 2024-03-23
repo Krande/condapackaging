@@ -25,6 +25,8 @@ jobs:
         with:
           environment-file: conda/environment.yml
           cache-environment: true
+          init-shell: >-
+            cmd
           condarc: |
             channel_priority: strict
             channels:
