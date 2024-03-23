@@ -3,6 +3,7 @@ name: ci-code-aster-src-win
 # bump 1
 on:
   workflow_dispatch:
+  push:
 
 env:
   INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
@@ -20,7 +21,7 @@ jobs:
         run: |
           git clone -b win-support https://gitlab.com/krande/src.git .
 
-      - uses: awvwgk/setup-fortran@main # https://github.com/awvwgk/setup-fortran
+      - uses: awvwgk/setup-fortran@v1 # https://github.com/awvwgk/setup-fortran
         id: setup-fortran
         with:
           compiler: intel
