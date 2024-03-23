@@ -136,6 +136,5 @@ jobs:
 
       - name: print log file
         run: |
-          type config.log
-          type D:\\a\\condapackaging\\condapackaging\\build\\waf-print-msvc-2.bat
+          type D:\a\condapackaging\condapackaging\build\debug\asterbibc.log
         working-directory: build
