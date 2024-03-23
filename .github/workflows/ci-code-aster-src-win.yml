@@ -103,7 +103,7 @@ jobs:
 
           set FCFLAGS=%FCFLAGS% -fpp /MD /names:lowercase
 
-          set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib pthread.lib /DEBUG
+          set LDFLAGS=%LDFLAGS% /DEBUG
 
           set INCLUDES_BIBC=%PREF_ROOT%/include
 
