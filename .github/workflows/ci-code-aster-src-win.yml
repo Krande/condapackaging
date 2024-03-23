@@ -4,6 +4,11 @@ name: ci-code-aster-src-win
 on:
   workflow_dispatch:
 
+env:
+  INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
+  VS_VARS_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build
+  CONDA_ROOT: C:\Users\runneradmin\micromamba
+
 jobs:
   env:
     runs-on: windows-latest
