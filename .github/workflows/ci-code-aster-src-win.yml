@@ -26,7 +26,8 @@ jobs:
           environment-file: conda/environment.yml
           cache-environment: true
           init-shell: >-
-            cmd
+            cmd.exe
+            bash
           condarc: |
             channel_priority: strict
             channels:
