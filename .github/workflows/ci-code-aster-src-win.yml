@@ -43,20 +43,12 @@ jobs:
           where python
           printenv
 
-      - name: Create a temp .env file with VS_PATH
-        shell: python
-        run: |
-          import os
-          
-          with open('.env', 'w') as f:
-              f.write(r'INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env\n')
-              f.write(r'VS_VARS_PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\n')
-              f.write(r'CONDA_ROOT=C:\Users\runneradmin\micromamba\n')
-
       - name: print some stuff
         run: |
           dir
           where python
+          cd C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
+          dir
 
       - name: Run compilation
         run: |
