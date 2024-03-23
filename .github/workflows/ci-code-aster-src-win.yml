@@ -52,5 +52,11 @@ jobs:
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env"
 
       - name: Run compilation
+        continue-on-error: true
         run: |
           call conda_build.bat
+
+      - name: print log file
+        run: |
+          type config.log
+        working-directory: build
