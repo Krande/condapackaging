@@ -10,7 +10,7 @@ env:
   CONDA_ROOT: C:\Users\runneradmin\micromamba
 
 jobs:
-  env:
+  build:
     runs-on: windows-latest
     defaults:
       run:
