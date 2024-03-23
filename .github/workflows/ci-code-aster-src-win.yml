@@ -46,6 +46,7 @@ jobs:
 
       - name: print some stuff
         run: |
+          dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
           dir "C:\Program Files (x86)\Intel\oneAPI"
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler"
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest"
