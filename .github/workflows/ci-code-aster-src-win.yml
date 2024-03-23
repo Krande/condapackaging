@@ -9,6 +9,7 @@ env:
   INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
   VS_VARS_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build
   CONDA_ROOT: C:\Users\runneradmin\micromamba
+  LIBRARY_PREFIX: C:\Users\runneradmin\micromamba\envs\codeaster-deps\Library
 
 jobs:
   build:
@@ -55,6 +56,8 @@ jobs:
       - name: run manually
         continue-on-error: true
         run: |
+          set CLICOLOR_FORCE=1
+          
           echo "Setting compiler env vars"
           set "CC=clang-cl.exe"
           set "CXX=clang-cl.exe"
@@ -136,11 +139,6 @@ jobs:
               waf build_debug -v
               waf install_debug -v
           )
-#
-#      - name: Run compilation
-#        continue-on-error: true
-#        run: |
-#          call conda_build.bat
 
       - name: print log file
         run: |
