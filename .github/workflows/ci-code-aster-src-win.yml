@@ -4,6 +4,8 @@ name: ci-code-aster-src-win
 on:
   workflow_dispatch:
   push:
+    paths:
+      - '.github/workflows/ci-code-aster-src-win.yml'
 
 env:
   INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
@@ -124,10 +126,6 @@ jobs:
             --prefix=%LIBRARY_PREFIX% ^
             --disable-mpi ^
             --install-tests ^
-            --disable-petsc ^
-            --disable-metis ^
-            --disable-scotch ^
-            --disable-mumps ^
             --maths-libs=auto ^
             --without-hg
 
