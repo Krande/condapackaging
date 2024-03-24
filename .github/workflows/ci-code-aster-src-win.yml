@@ -132,7 +132,23 @@ jobs:
           waf build_debug -v
           waf install_debug -v      
 
-      - name: print log file
+      - name: print bibfor log file
+        continue-on-error: true
         run: |
+          REM try except
+          type D:\a\condapackaging\condapackaging\build\debug\asterbibfor.log
+        working-directory: build
+
+      - name: print bibc log file
+        continue-on-error: true
+        run: |
+          REM try except
           type D:\a\condapackaging\condapackaging\build\debug\asterbibc.log
+        working-directory: build
+
+      - name: print bibcxx log file
+        continue-on-error: true
+        run: |
+          REM try except
+          type D:\a\condapackaging\condapackaging\build\debug\asterbibcxx.log
         working-directory: build
