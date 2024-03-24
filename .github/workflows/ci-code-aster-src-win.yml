@@ -115,6 +115,7 @@ jobs:
           set INCLUDES_BIBC=%PREF_ROOT%/include
 
           set DEFINES=H5_BUILT_AS_DYNAMIC_LIB
+          set FORCE_BIBFOR_SEQUENCE=1
 
           REM Clean the build directory
           waf distclean
