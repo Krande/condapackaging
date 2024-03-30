@@ -153,3 +153,11 @@ jobs:
           REM try except
           type D:\a\condapackaging\condapackaging\build\debug\asterbibcxx.log
         working-directory: build
+      
+      - name: print config log file
+        continue-on-error: true
+        run: |
+          REM try except
+          type D:\a\condapackaging\condapackaging\build\config.log
+        working-directory: build
+        
