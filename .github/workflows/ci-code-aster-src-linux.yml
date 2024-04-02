@@ -25,7 +25,7 @@ jobs:
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
-          environment-file: conda/environment.yml
+          environment-file: conda/environment.linux.yml
           cache-environment: true
           init-shell: >-
             bash
