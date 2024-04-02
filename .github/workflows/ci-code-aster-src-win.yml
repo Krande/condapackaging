@@ -110,7 +110,7 @@ jobs:
 
           set FCFLAGS=%FCFLAGS% -fpp /MD /names:lowercase
 
-          set LDFLAGS=%LDFLAGS% /DEBUG
+          set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /DEBUG pthread.lib
 
           set INCLUDES_BIBC=%PREF_ROOT%/include
 
@@ -130,8 +130,7 @@ jobs:
             --maths-libs=auto ^
             --without-hg
 
-          waf build_debug -v
-          waf install_debug -v      
+          waf install_debug -v
 
       - name: print bibfor log file
         continue-on-error: true
