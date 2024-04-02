@@ -1,0 +1,45 @@
+name: ci-code-aster-src-linux
+
+# bump 1
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/ci-code-aster-src-linux.yml'
+
+env:
+  INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
+  VS_VARS_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build
+  CONDA_ROOT: C:\Users\runneradmin\micromamba
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout code-aster/src
+        run: |
+          git clone -b win-support https://gitlab.com/krande/src.git .
+
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-file: conda/environment.yml
+          cache-environment: true
+          init-shell: >-
+            bash
+          condarc: |
+            channel_priority: strict
+            channels:
+              - conda-forge
+
+      - name: run manually
+        continue-on-error: true
+        run: |
+          chmod +x conda_build.sh
+          ./conda_build.sh
+
+      - name: Test Code Aster
+        run: |
+          run_ctest --resutest=temp/ctest -L submit -L sequential -LE need_data --timefactor=5.0 --only-failed-results -j 2
