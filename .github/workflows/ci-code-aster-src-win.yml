@@ -73,7 +73,10 @@ jobs:
           
           SET PARENT_DIR=%~dp0
           SET PARENT_DIR=%PARENT_DIR:\=/%
-
+          
+          SET OUTPUT_DIR=%PARENT_DIR%/build/std
+          SET OUTPUT_DIR=%OUTPUT_DIR:\=/%
+          
           set ASTER_PLATFORM_MSVC=1
           set ASTER_PLATFORM_WINDOWS=1
 
@@ -93,7 +96,7 @@ jobs:
           set INCLUDES_METIS=%LIB_PATH_ROOT%/include
 
           set LIBPATH_MUMPS=%LIB_PATH_ROOT%/lib
-          set INCLUDES_MUMPS=%LIB_PATH_ROOT%/include
+          set "INCLUDES_MUMPS=%LIB_PATH_ROOT%/include %LIB_PATH_ROOT%/include/mumps_seq"
 
           set LIBPATH_SCOTCH=%LIB_PATH_ROOT%/lib
           set INCLUDES_SCOTCH=%LIB_PATH_ROOT%/include
@@ -107,25 +110,33 @@ jobs:
 
           REM /MD link with MSVCRT.lib. /FS allow for multithreaded c compiler calls to vc140.pdb (for cl.exe only)
           set CFLAGS=%CFLAGS% /FS /MD
-
-          set FCFLAGS=%FCFLAGS% -fpp /MD
-
-          set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /DEBUG pthread.lib
-
-          set INCLUDES_BIBC=%PREF_ROOT%/include
+          
+          set CXXFLAGS=%CXXFLAGS% /MD
+          set FCFLAGS=%FCFLAGS% /fpp /MD
+          set FCFLAGS=%FCFLAGS% /names:lowercase /assume:underscore /assume:nobscc
+          
+          set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib pthread.lib libomp.lib
+          
+          @REM set CCLINKFLAGS=%CCLINKFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib
+          
+          set INCLUDES_BIBC=%PREF_ROOT%/include %PARENT_DIR%/bibfor/include %INCLUDES_BIBC%
 
           set DEFINES=H5_BUILT_AS_DYNAMIC_LIB
-          REM set FORCE_BIBFOR_SEQUENCE=1
 
           REM Clean the build directory
           waf distclean
 
           REM Install for standard sequential
           waf configure ^
+            --safe ^
+            --check-fortran-compiler=ifort ^
             --use-config-dir=%PARENT_DIR%/config/ ^
             --med-libs=medC ^
             --prefix=%LIBRARY_PREFIX% ^
+            --out=%OUTPUT_DIR% ^
+            --embed-aster ^
             --disable-mpi ^
+            --disable-mumps ^
             --install-tests ^
             --maths-libs=auto ^
             --without-hg
