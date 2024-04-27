@@ -52,7 +52,7 @@ jobs:
               - ${{ secrets.QUETZ_URL }}/get/code-aster-dev
               - conda-forge
           create-args: >-
-            - python 3.11
+            - python=3.11
             - vswhere
             - libblas=*=*mkl
             - mfront=4.2.0
@@ -65,9 +65,9 @@ jobs:
             - waf
             - pyyaml
             - python-dotenv
-            - clang 18.1.3
-            - clangxx 18.1.3
-            - lld 18.1.3
+            - clang=18.1.3
+            - clangxx=18.1.3
+            - lld=18.1.3
 
       - name: print all env vars
         run: |
