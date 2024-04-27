@@ -41,7 +41,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           #environment-file: conda/environment.win.yml
-          cache-environment: true
+          #cache-environment: true
           init-shell: >-
             cmd.exe
             bash
@@ -83,7 +83,7 @@ jobs:
 
       - name: run conda_build.bat
         continue-on-error: true
-        if: ${{ inputs.manual == 'true'}}
+        if: ${{ inputs.manual == 'true' || inputs.manual == '' }}
         run: |
           conda_build.bat
 
