@@ -42,6 +42,7 @@ jobs:
         with:
           #environment-file: conda/environment.win.yml
           #cache-environment: true
+          environment-name: codeaster-deps
           init-shell: >-
             cmd.exe
             bash
