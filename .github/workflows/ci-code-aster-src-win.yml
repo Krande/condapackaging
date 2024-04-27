@@ -3,6 +3,14 @@ name: ci-code-aster-src-win
 # bump 1
 on:
   workflow_dispatch:
+    inputs:
+      manual:
+        description: 'Run workflow manually'
+        default: 'true'
+        required: false
+        options:
+          - 'true'
+          - 'false'
   push:
     paths:
       - '.github/workflows/ci-code-aster-src-win.yml'
@@ -11,6 +19,7 @@ env:
   INTEL_VARS_PATH: C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
   VS_VARS_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build
   CONDA_ROOT: C:\Users\runneradmin\micromamba
+  PYTHON_ENV_NAME: codeaster-deps
 
 jobs:
   build:
@@ -39,6 +48,7 @@ jobs:
           condarc: |
             channel_priority: strict
             channels:
+              - ${{ secrets.QUETZ_URL }}/get/code-aster-dev
               - conda-forge
 
       - name: print all env vars
@@ -54,8 +64,15 @@ jobs:
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest"
           dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env"
 
+      - name: run conda_build.bat
+        continue-on-error: true
+        if: ${{ inputs.manual == 'true'}}
+        run: |
+          conda_build.bat
+
       - name: run manually
         continue-on-error: true
+        if: ${{ inputs.manual == 'false'}}
         run: |
           set CLICOLOR_FORCE=1
           
