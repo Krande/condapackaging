@@ -68,7 +68,6 @@ jobs:
             - clang=18.1.3
             - clangxx=18.1.3
             - lld=18.1.3
-
       - name: print all env vars
         run: |
           where python
@@ -198,7 +197,7 @@ jobs:
           REM try except
           type D:\a\condapackaging\condapackaging\build\debug\asterbibcxx.log
         working-directory: build
-      
+
       - name: print config log file
         continue-on-error: true
         run: |
