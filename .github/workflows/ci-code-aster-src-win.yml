@@ -74,13 +74,21 @@ jobs:
           where python
           printenv
 
-      - name: print some stuff
+      - name: write to .env file
+        shell: python
         run: |
-          dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
-          dir "C:\Program Files (x86)\Intel\oneAPI"
-          dir "C:\Program Files (x86)\Intel\oneAPI\compiler"
-          dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest"
-          dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env"
+          import os
+          
+          conda_prefix = os.environ.get('CONDA_PREFIX')
+          intel_vars_path = os.environ.get('INTEL_VARS_PATH')
+          vs_vars_path = os.environ.get('VS_VARS_PATH')
+          python_env_name = os.environ.get('PYTHON_ENV_NAME')
+          
+          with open('.env', 'w') as f:
+            f.write(f'CONDA_PREFIX={conda_prefix}\n')
+            f.write(f'INTEL_VARS_PATH={intel_vars_path}\n')
+            f.write(f'VS_VARS_PATH={vs_vars_path}\n')
+            f.write(f'PYTHON_ENV_NAME={python_env_name}\n')
 
       - name: run conda_build.bat
         continue-on-error: true
