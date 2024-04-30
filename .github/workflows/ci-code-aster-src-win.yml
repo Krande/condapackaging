@@ -89,13 +89,14 @@ jobs:
 
       - name: run conda_build.bat
         continue-on-error: true
-        if: ${{ inputs.manual == 'true' || inputs.manual == '' }}
+        # if not input.manual then run conda_build.bat
+        if: ${{ !inputs.manual }}
         run: |
           call conda_build.bat
 
       - name: run manually
         continue-on-error: true
-        if: ${{ inputs.manual == 'false' }}
+        if: ${{ inputs.manual }}
         run: |
           set CLICOLOR_FORCE=1
           
