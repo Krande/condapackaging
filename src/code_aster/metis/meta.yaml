@@ -12,7 +12,7 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: '{{ aster_variant }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  string: '{{ aster_variant }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   number: 2
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
@@ -23,12 +23,6 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}" # [not win]
     - make
-
-  host:
-    - python
-
-  run:
-    - python
 
 test:
   commands:
