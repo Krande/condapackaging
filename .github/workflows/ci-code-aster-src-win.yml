@@ -59,12 +59,12 @@ jobs:
             medcoupling=9.12.0
             scotch=7.0.4
             metis=5.1.0
-            waf
+            waf=2.0.27
             pyyaml
             python-dotenv
-            clang=18.1.3
-            clangxx=18.1.3
-            lld=18.1.3
+            clang=18.1.5
+            clangxx=18.1.5
+            lld=18.1.5
 
       - name: print all env vars
         run: |
