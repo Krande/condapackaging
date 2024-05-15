@@ -17,6 +17,7 @@ env:
   VS_VARS_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build
   CONDA_ROOT: C:\Users\runneradmin\micromamba
   PYTHON_ENV_NAME: codeaster-deps
+  BUILD_LOCATION: D:\a\condapackaging\condapackaging\build\std
 
 jobs:
   build:
@@ -190,27 +191,27 @@ jobs:
         continue-on-error: true
         run: |
           REM try except
-          type D:\a\condapackaging\condapackaging\build\debug\asterbibfor.log
+          type ${{ env.BUILD_LOCATION }}\debug\asterbibfor.log
         working-directory: build
 
       - name: print bibc log file
         continue-on-error: true
         run: |
           REM try except
-          type D:\a\condapackaging\condapackaging\build\debug\asterbibc.log
+          type ${{ env.BUILD_LOCATION }}\debug\asterbibc.log
         working-directory: build
 
       - name: print bibcxx log file
         continue-on-error: true
         run: |
           REM try except
-          type D:\a\condapackaging\condapackaging\build\debug\asterbibcxx.log
+          type ${{ env.BUILD_LOCATION }}\debug\asterbibcxx.log
         working-directory: build
 
       - name: print config log file
         continue-on-error: true
         run: |
           REM try except
-          type D:\a\condapackaging\condapackaging\build\config.log
+          type ${{ env.BUILD_LOCATION }}\config.log
         working-directory: build
-        
+
