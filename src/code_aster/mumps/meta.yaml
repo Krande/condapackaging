@@ -1,20 +1,20 @@
 {% set name = "mumps" %}
-{% set version = "5.5.1" %}
+{% set version = "5.6.2" %}
 # Dependencies
 {% set metis_ver = "5.1.0" %}
 {% set parmetis_ver = "4.0.3" %}
 {% set scalapack_ver = "2.1.0" %}
 {% set scotch_ver = "7.0.4" %}
-
+{% set prereq_file = "codeaster-prerequisites-20240327-oss" %}
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
-    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
-    sha256: c03c9662358867ad4753d56b5f87b1687a63b31baeb7127cf179b913edb7e239
+  - fn: "{{ prereq_file }}.tar.gz"
+    url: https://github.com/Krande/condapackaging/releases/download/{{ prereq_file }}/{{ prereq_file }}.tar.gz
+    sha256: d3a94ba2c01c1f5866ece9f940581c3801a632c2245169d2a90112ebcdb6c67e
     folder: deps/
 #  - hg_url: http://hg.code.sf.net/p/prereq/mumps
 #    hg_tag: '{{ version }}'
@@ -52,31 +52,22 @@ requirements:
 
   run:
     - {{ pin_compatible('numpy') }}
-    - python
-    - zlib
-    - libblas
-    - liblapack
-    - libgomp
-    - metis {{ metis_ver }}=aster4*
-    - scotch {{ scotch_ver }}
-    - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
-    - scalapack {{ scalapack_ver }}             # [mpi != "nompi"]
     - {{ mpi }}                                 # [mpi != "nompi"]
 
 
 test:
   commands:
     # Check for existence of mumps libraries
-    - test -f $PREFIX/lib/libcmumps.a
-    - test -f $PREFIX/lib/libdmumps.a
-    - test -f $PREFIX/lib/libmumps_common.a
-    - test -f $PREFIX/lib/libmpiseq.a           # [mpi == "nompi"]
-    - test -f $PREFIX/lib/libpord.a
-    - test -f $PREFIX/lib/libsmumps.a
-    - test -f $PREFIX/lib/libzmumps.a
+    - test -f $PREFIX/lib/libcmumps.so
+    - test -f $PREFIX/lib/libdmumps.so
+    - test -f $PREFIX/lib/libmumps_common.so
+    - test -f $PREFIX/lib/libmpiseq.so           # [mpi == "nompi"]
+    - test -f $PREFIX/lib/libpord.so
+    - test -f $PREFIX/lib/libsmumps.so
+    - test -f $PREFIX/lib/libzmumps.so
 
 about:
-  home: http://mumps.enseeiht.fr/
+  home: https://mumps-solver.org/index.php
   license: CeCILL-C free/libre
   summary: 'MUMPS is a library which provides a powerful sparse direct parallel solver'
   description: |
