@@ -50,7 +50,7 @@ else
 fi
 
 libscal="-lscalapack"
-libmath="-lcblas"
+libmath="-lopenblas"
 libomp="-lgomp"
 flagomp="-fopenmp"
 

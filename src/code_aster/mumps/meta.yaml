@@ -44,6 +44,7 @@ requirements:
     - zlib
     - libblas
     - liblapack
+    - openblas
     - metis {{ metis_ver }}=aster4*
     - scotch {{ scotch_ver }}
     - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
