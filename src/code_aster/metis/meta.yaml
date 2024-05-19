@@ -1,19 +1,22 @@
 {% set name = "metis" %}
 {% set version = "5.1.0" %}
 {% set aster_variant = "aster4" %}
+{% set prereq_file = "codeaster-prerequisites-20240327-oss" %}
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  - hg_url: http://hg.code.sf.net/p/prereq/metis
-    hg_tag: '{{ version }}_{{ aster_variant }}'
+  - fn: "{{ prereq_file }}.tar.gz"
+    url: https://github.com/Krande/condapackaging/releases/download/{{ prereq_file }}/{{ prereq_file }}.tar.gz
+    sha256: d3a94ba2c01c1f5866ece9f940581c3801a632c2245169d2a90112ebcdb6c67e
+    folder: deps/
 
 build:
   detect_binary_files_with_prefix: true
   string: '{{ aster_variant }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
-  number: 2
+  number: 3
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 
@@ -27,7 +30,7 @@ requirements:
 test:
   commands:
     # Check for existence of files and directories
-    - test -f $PREFIX/lib/libmetis.a
+    - test -f $PREFIX/lib/libmetis.so
     - test -f $PREFIX/include/metis.h
 
 about:
