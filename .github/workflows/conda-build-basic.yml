@@ -204,8 +204,8 @@ jobs:
         if: ${{ inputs.use_intel_fortran == 'True' }}
         id: setup-fortran
         with:
-          compiler: intel-classic
-          version: '2023.2'
+          compiler: intel
+          version: '2024.1'
 
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
