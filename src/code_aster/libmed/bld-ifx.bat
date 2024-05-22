@@ -2,8 +2,12 @@
 
 mkdir build
 cd build
-
-set "INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env"
+if not defined ONEAPI_ROOT (
+  echo "ONEAPI_ROOT is not defined"
+  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
+)
+set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+echo "compiler=%ONEAPI_ROOT%\compiler"
 @call "%INTEL_VARS_PATH%\vars.bat" -arch intel64 vs2022
 
 :: This updates the symbols to lowercase and adds an underscore
