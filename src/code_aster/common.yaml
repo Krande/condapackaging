@@ -1,6 +1,9 @@
 python_impl:
   - cpython
 
+c_stdlib:         # [win]
+- vs              # [win]
+
 c_compiler:
   - vs2022        # [win]
   - gcc           # [linux]
@@ -19,7 +22,8 @@ fortran_compiler_version:
 
 
 blas_impl:
-  - openblas
+  - openblas # [not win]
+  - mkl      # [win]
 
 numpy:
   - 1.22
@@ -39,19 +43,19 @@ openmpi:
   - 4.1.6
 
 hdf5:
-  - 1.14.3
+  - 1.14.4.2
 
 boost:
-  - '1.82'
+  - '1.84'
 
 libboost_python_devel:
-  - '1.82'
+  - '1.84'
 
 libboost:
-  - '1.82'
+  - '1.84'
 
 libboost_devel:
-  - '1.82'
+  - '1.84'
 
 libxml2:
   - '2.12.5'

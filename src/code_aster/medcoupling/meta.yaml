@@ -35,8 +35,6 @@ requirements:
     - python
     - numpy
     - libboost-devel
-    - zlib
-    - hdf5
     - libxml2
     - libmed
     - petsc                                     # [mpi != 'nompi']
