@@ -46,7 +46,14 @@ on:
         required: true
         type: string
         default: " -m '__root__/src/code_aster/common.yaml'"
-
+      use_intel_fortran:
+        description: 'Install intel fortran'
+        type: choice
+        required: false
+        options:
+          - "True"
+          - "False"
+        default: "True"
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -137,6 +144,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       job_name: ${{ matrix.package.name }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -153,6 +161,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: parmetis
     secrets: inherit
 
@@ -171,6 +180,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: mumps
     secrets: inherit
 
@@ -189,6 +199,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: libmed
     secrets: inherit
 
@@ -206,6 +217,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: petsc
     secrets: inherit
 
@@ -224,6 +236,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: medcoupling
     secrets: inherit
 
@@ -241,6 +254,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: mfront
     secrets: inherit
 
@@ -258,6 +272,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: mgis
     secrets: inherit
 
@@ -276,6 +291,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
+      use_intel_fortran: ${{ inputs.use_intel_fortran }}
       job_name: code_aster
     secrets: inherit
 
