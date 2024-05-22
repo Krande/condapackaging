@@ -1,0 +1,23 @@
+Subject: [PATCH] fix flang fortran
+---
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	(revision d5f79a3623f117870d5bbcb2e96f3d11f0224d67)
++++ b/CMakeLists.txt	(date 1713434342058)
+@@ -83,7 +83,11 @@
+   IF(NOT MINGW)
+     # Needed to avoid a seg fault at runtime!
+     # The variable is not very well documented but seems to exist
+-    SET(CMAKE_Fortran_FLAGS  "/iface:mixed_str_len_arg ${CMAKE_Fortran_FLAGS}")
++    if (CMAKE_Fortran_COMPILER MATCHES "flang")
++      message(STATUS "Using flang-new compiler")
++    else ()
++      SET(CMAKE_Fortran_FLAGS  "/iface:mixed_str_len_arg ${CMAKE_Fortran_FLAGS}")
++    endif ()
+     ADD_DEFINITIONS(-DPPRO_NT) # For windows medfile function nammes
+   ENDIF()
+ 
