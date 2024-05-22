@@ -1,4 +1,4 @@
-@ECHO ON
+@ECHO OFF
 
 mkdir build
 cd build
@@ -8,6 +8,8 @@ if not defined ONEAPI_ROOT (
 )
 set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
 echo "compiler=%ONEAPI_ROOT%\compiler"
+:: print list of files at the location
+dir %ONEAPI_ROOT%\compiler
 @call "%INTEL_VARS_PATH%\vars.bat" -arch intel64 vs2022
 
 :: This updates the symbols to lowercase and adds an underscore
