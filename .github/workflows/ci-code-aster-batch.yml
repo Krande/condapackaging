@@ -22,17 +22,17 @@ on:
         description: 'Python Versions'
         required: true
         type: string
-        default: "3.10,3.11"
+        default: "3.11"
       platforms:
         description: 'Platforms'
         required: true
         type: string
-        default: "ubuntu-latest"
+        default: "windows-latest"
       mpi_variants:
         description: 'mpi variants'
         required: true
         type: string
-        default: "mpi=openmpi,mpi=nompi"
+        default: "mpi=nompi"
       debug_build:
         type: choice
         required: true
