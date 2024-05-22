@@ -1,17 +1,14 @@
 {% set name = "metis" %}
-{% set version = "5.1.0" %}
+{% set version = "5.1.0.4" %}
 {% set aster_variant = "aster4" %}
-{% set prereq_file = "codeaster-prerequisites-20240327-oss" %}
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  - fn: "{{ prereq_file }}.tar.gz"
-    url: https://github.com/Krande/condapackaging/releases/download/{{ prereq_file }}/{{ prereq_file }}.tar.gz
-    sha256: d3a94ba2c01c1f5866ece9f940581c3801a632c2245169d2a90112ebcdb6c67e
-    folder: deps/
+  - fn: 'METIS_scivision_{{ version }}.tar.gz'
+    url: https://github.com/scivision/METIS/archive/refs/tags/v{{ version }}.tar.gz
 
 build:
   detect_binary_files_with_prefix: true
@@ -24,17 +21,16 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}" # [not win]
-    - make
+    - ninja
 
 test:
   commands:
     # Check for existence of files and directories
-    - test -f $PREFIX/lib/libmetis.so
-    - test -f $PREFIX/include/metis.h
+    - test -f $PREFIX/lib/libmetis.so # [linux]
+    - test -f $PREFIX/include/metis.h # [linux]
 
 about:
-  home: http://glaros.dtc.umn.edu/gkhome/views/metis/index.html
+  home: https://github.com/KarypisLab/METIS
   license: Apache-2.0
   license_family: Apache
   summary: 'METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering'
