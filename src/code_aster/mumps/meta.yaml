@@ -79,13 +79,13 @@ requirements:
 test:
   commands:
     # Check for existence of mumps libraries
-    - test -f $PREFIX/lib/libcmumps.so
-    - test -f $PREFIX/lib/libdmumps.so
-    - test -f $PREFIX/lib/libmumps_common.so
-    - test -f $PREFIX/lib/libmpiseq.so           # [mpi == "nompi"]
-    - test -f $PREFIX/lib/libpord.so
-    - test -f $PREFIX/lib/libsmumps.so
-    - test -f $PREFIX/lib/libzmumps.so
+    - test -f $PREFIX/lib/libcmumps.so            # [linux]
+    - test -f $PREFIX/lib/libdmumps.so            # [linux]
+    - test -f $PREFIX/lib/libmumps_common.so      # [linux]
+    - test -f $PREFIX/lib/libmpiseq.so            # [linux and mpi == "nompi"]
+    - test -f $PREFIX/lib/libpord.so              # [linux]
+    - test -f $PREFIX/lib/libsmumps.so            # [linux]
+    - test -f $PREFIX/lib/libzmumps.so            # [linux]
 
 about:
   home: https://mumps-solver.org/index.php
