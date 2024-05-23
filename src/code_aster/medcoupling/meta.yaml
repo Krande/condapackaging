@@ -1,4 +1,22 @@
 {% set version = "9.12.0" %}
+{% set build = 2 %}
+
+{% if mpi == 'nompi' %}
+# prioritize nompi variant via build number
+{% set build = build + 100 %}
+{% endif %}
+# add build string so packages can depend on
+# mpi or nompi variants explicitly:
+# `pkg * mpi_mpich_*` for mpich
+# `pkg * mpi_*` for any mpi
+# `pkg * nompi_*` for no mpi
+
+{% if mpi != 'nompi' %}
+{% set mpi_prefix = "mpi_" + mpi %}
+{% else %}
+{% set mpi_prefix = "nompi" %}
+{% endif %}
+
 
 package:
   name: medcoupling
@@ -17,9 +35,8 @@ source:
 build:
   skip: true  # [osx]
   detect_binary_files_with_prefix: true
-  # string: py{{ CONDA_PY }}_mpi_{{ mpi }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}   # [mpi != "nompi"]
-  # string: py{{ CONDA_PY }}_nompi_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}           # [mpi == "nompi"]
-  number: 1
+  string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
+  number: "{{ build }}"
 
 requirements:
   build:

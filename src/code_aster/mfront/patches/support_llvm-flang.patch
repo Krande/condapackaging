@@ -1,0 +1,21 @@
+Subject: [PATCH] support llvm-flang
+---
+Index: cmake/modules/gnu-fortran-compiler.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cmake/modules/gnu-fortran-compiler.cmake b/cmake/modules/gnu-fortran-compiler.cmake
+--- a/cmake/modules/gnu-fortran-compiler.cmake	(revision 25002f8861bcce1f83966e8c7557d3e6c0a141aa)
++++ b/cmake/modules/gnu-fortran-compiler.cmake	(date 1712921017926)
+@@ -1,7 +1,8 @@
+ get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+ if("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "GNU")
+   set(GNU_FORTRAN_COMPILER ON)
+-elseif("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "")
++elseif("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "LLVMFlang")
++  set(LLVM_FORTRAN_COMPILER ON)
+ else("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "GNU")  
+   message(FATAL_ERROR "unsupported fortran compiler ${Fortran_COMPILER_NAME}")
+ endif("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "GNU")
+\ No newline at end of file

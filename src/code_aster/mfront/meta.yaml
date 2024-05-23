@@ -1,6 +1,9 @@
 {% set name = "mfront" %}
 {% set version = "4.2.0" %}
-# clang inspiration from https://github.com/conda-forge/warpx-feedstock/blob/main/recipe/bld.bat
+{% set sha256 = "cf8a309c4d19a8e36232f8540ff28aa0d6285645f8dfb1ac57dd481ba3453e02" %}
+
+{% set build = 3 %}
+
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -8,54 +11,56 @@ package:
 source:
   fn: {{ name }}_{{ version }}.tar.gz
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
+  sha256: {{ sha256 }}
   patches:
     - patches/fix_v4_2_0_clang_win.patch  # [win]
     - patches/override_site_package_dir_for_windows.patch  # [win]
+    - patches/support_llvm-flang.patch  # [win]
 
 build:
-  number: 4
-  string: 'aster_py{{ CONDA_PY }}np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  number: {{ build }}
+  skip: true  # [py2k or osx or (python_impl == 'pypy')]
+  skip: true  # [win and py<39]
   detect_binary_files_with_prefix: true
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  string: "py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}"
+  run_exports:
+    - {{ pin_subpackage('mfront', max_pin='x.x.x') }}
 
 requirements:
   build:
+    - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}   # [not win]
-    - ninja                       # [win]
-    - clang                       # [win]
-    - lld                         # [win]
     - cmake
-    - make
-
+    - lld                         # [win]
+    - make                        # [not win]
+    - ninja                       # [win]
+    - libgomp                     # [linux]
+    - llvm-openmp                 # [osx]
   host:
-    - python
-    - zlib
-    - numpy
     - libboost-python-devel
-
+    - python
+    - zlib  # [linux]
   run:
     - python
-    - zlib
-    - {{ pin_compatible('numpy') }}
+    - libstdcxx-ng  # [linux]
+    - libgcc-ng  # [linux]
 
 test:
   commands:
     - tfel-config --version
-    - tfel-doc --version
-    - tfel-check --version
+    - tfel-doc --version  # [linux]
+    - tfel-check --version  # [linux]
     - mtest --version
     - mfront --list-stress-criteria
     - mfront-doc --version
     - mfront-query --version
     - mfm --version
-    - test -f $PREFIX/lib/libTFELConfig.so          # [not win]
-    - test -f $PREFIX/lib/libTFELUnicodeSupport.so  # [not win]
-    - test -f $PREFIX/lib/libTFELGlossary.so        # [not win]
-    - test -f $PREFIX/lib/libTFELException.so       # [not win]
-    - test -f $PREFIX/lib/libTFELUtilities.so       # [not win]
+    - test -f $PREFIX/lib/libTFELConfig.so  # [linux]
+    - test -f $PREFIX/lib/libTFELUnicodeSupport.so  # [linux]
+    - test -f $PREFIX/lib/libTFELGlossary.so  # [linux]
+    - test -f $PREFIX/lib/libTFELException.so  # [linux]
+    - test -f $PREFIX/lib/libTFELUtilities.so  # [linux]
 
   imports:
     - tfel
@@ -63,15 +68,20 @@ test:
     - tfel.material
 
 about:
-  home: https://github.com/thelfer/tfel
+  home: http://tfel.sourceforge.net
   license: GPL-3.0-only
   license_family: GPL
   license_file: LICENCE-GNU-GPL
-  summary: 'MFront, a code generation tool dedicated to material knowledge'
+  summary: MFront, a code generation tool dedicated to material knowledge
   description: |
     MFront is a code generator which translates a set of closely related domain specific languages into plain C++ on top of the TFEL library. Those languages cover three kinds of material knowledge:
     material properties (for instance the Young modulus, the thermal conductivity, etc.)
     mechanical behaviours. Numerical performances of generated mechanical behaviours were given a particular attention. Various benchmarks show that MFront implementations are competitive with native implementations available in the Cast3M, Code-Aster, Abaqus Standard and Cyrano3 solvers.
     simple point-wise models, such as material swelling used in fuel performance codes.
-  doc_url: https://thelfer.github.io/tfel/web/index.html
-  dev_url: https://github.com/thelfer/tfel
+  doc_url: http://tfel.sourceforge.net/documentations.html
+  dev_url: http://tfel.sourceforge.net/devel.html
+
+extra:
+  recipe-maintainers:
+    - Krande
+    - ldallolio

@@ -54,7 +54,7 @@ build:
   {% else %}
   {% set mpi_prefix = "nompi" %}
   {% endif %}
-  string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
+  string: "{{ mpi_prefix }}_py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }} {{ mpi_prefix }}_*
 

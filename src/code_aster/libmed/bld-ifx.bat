@@ -1,21 +1,24 @@
-@ECHO OFF
+@echo OFF
 
 mkdir build
 cd build
+
 if not defined ONEAPI_ROOT (
   echo "ONEAPI_ROOT is not defined"
   set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
 )
 set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
-echo "compiler=%ONEAPI_ROOT%\compiler"
-:: print list of files at the location
-dir %ONEAPI_ROOT%\compiler
-:: @call "%INTEL_VARS_PATH%\vars.bat" -arch intel64 vs2022
+
+if "%FC%" == "ifx" (
+  echo "Already using Intel LLVM Fortran compiler"
+) else (
+  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+  set FC=ifx
+)
 
 :: This updates the symbols to lowercase and adds an underscore
 xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
-set FC=ifx
 set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
 
 cmake -G "Ninja" ^
