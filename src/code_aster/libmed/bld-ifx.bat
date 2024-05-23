@@ -10,7 +10,7 @@ set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
 echo "compiler=%ONEAPI_ROOT%\compiler"
 :: print list of files at the location
 dir %ONEAPI_ROOT%\compiler
-@call "%INTEL_VARS_PATH%\vars.bat" -arch intel64 vs2022
+:: @call "%INTEL_VARS_PATH%\vars.bat" -arch intel64 vs2022
 
 :: This updates the symbols to lowercase and adds an underscore
 xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
