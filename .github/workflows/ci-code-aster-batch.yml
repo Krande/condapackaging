@@ -186,7 +186,7 @@ jobs:
     secrets: inherit
 
   build_batch_libmed:
-    needs: env
+    needs: [env, build_batch_1]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed

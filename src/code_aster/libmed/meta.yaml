@@ -71,8 +71,8 @@ requirements:
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
   host:
     - python
-    - hdf5 * {{ mpi_prefix }}_*  # [mpi != "nompi"]
-    - hdf5 * nompi_*  # [mpi == "nompi"]
+    - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*  # [mpi != "nompi"]
+    - hdf5 {{ hdf5 }} nompi_*  # [mpi == "nompi"]
     - zlib
     - {{ mpi }}  # [mpi != "nompi"]
   run:

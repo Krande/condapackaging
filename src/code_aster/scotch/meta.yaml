@@ -1,7 +1,5 @@
 {% set name = "scotch" %}
 {% set version = "7.0.4" %}
-{% set major = version.split('.')[0] %}
-{% set minor = version.split('.')[1] %}
 
 {% set build = 2 %}
 
