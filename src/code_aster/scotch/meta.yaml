@@ -3,6 +3,16 @@
 {% set major = version.split('.')[0] %}
 {% set minor = version.split('.')[1] %}
 
+{% set build = 2 %}
+
+# recipe-lint fails if mpi is undefined
+{% set mpi = mpi or 'nompi' %}
+{% if mpi == "nompi" %}
+# prioritize nompi via build number
+{% set build = build + 100 %}
+{% endif %}
+
+
 package:
   name: {{ name }}-pkgs
   version: {{ version }}
@@ -29,13 +39,14 @@ source:
     - patches/0015-win-fix-unistd-time-include.patch
 
 build:
-  number: 2
+  number: {{ build }}
 
 outputs:
   - name: libscotch
     build:
       script: ${RECIPE_DIR}/build-scotch.sh  # [unix]
       script: "%RECIPE_DIR%\\bld-scotch.bat"  # [win]
+      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
         - {{ pin_subpackage('libscotch', max_pin='x.x.x') }}
       ignore_run_exports:
@@ -90,6 +101,7 @@ outputs:
 
   - name: libptscotch
     build:
+      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
       script:
         - cmake --install ./build --component=libptscotch
       run_exports:
@@ -136,6 +148,7 @@ outputs:
   - name: scotch
     build:
       script: cmake --install ./build --component=scotch
+      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
         - {{ pin_subpackage('scotch', max_pin='x.x.x') }}
       ignore_run_exports:
@@ -158,6 +171,7 @@ outputs:
   - name: ptscotch
     build:
       script: cmake --install ./build --component=ptscotch
+      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
         - {{ pin_subpackage('ptscotch', max_pin='x.x.x') }}
     requirements:

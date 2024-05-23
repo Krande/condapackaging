@@ -21,6 +21,8 @@ xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
 set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
 
+set CFLAGS=%CFLAGS%
+
 cmake -G "Ninja" ^
   %CMAKE_ARGS% ^
   -D Python_FIND_STRATEGY:STRING=LOCATION ^
@@ -33,7 +35,7 @@ cmake -G "Ninja" ^
   -D MEDFILE_BUILD_SHARED_LIBS=ON ^
   -D MEDFILE_BUILD_STATIC_LIBS=OFF ^
   -D MEDFILE_USE_UNICODE=OFF ^
-  -D MED_MEDINT_TYPE=long ^
+  -D MED_MEDINT_TYPE="long long" ^
   -Wno-dev ^
   ..
 

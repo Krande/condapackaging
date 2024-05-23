@@ -3,9 +3,6 @@
 mkdir build
 cd build
 
-set CC=clang-cl
-set CXX=clang-cl
-
 cmake -G "Ninja" .. ^
     -Wno-dev ^
     -D CMAKE_BUILD_TYPE="Release" ^
@@ -18,6 +15,7 @@ cmake -G "Ninja" .. ^
     -D MEDCOUPLING_BUILD_STATIC=OFF ^
     -D MEDCOUPLING_BUILD_TESTS=OFF ^
     -D MEDCOUPLING_BUILD_DOC=OFF ^
+    -D MED_INT_IS_LONG=ON ^
     -D MEDCOUPLING_USE_64BIT_IDS=ON ^
     -D MEDCOUPLING_USE_MPI=OFF ^
     -D MEDCOUPLING_MEDLOADER_USE_XDR=OFF ^
