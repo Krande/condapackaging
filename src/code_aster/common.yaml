@@ -26,10 +26,12 @@ cxx_compiler_version:
 fortran_compiler_version:
   - 12            # [linux]
 
-
-blas_impl:
-  - openblas # [not win]
-  - mkl      # [win]
+libblas:
+- 3.9 *netlib     # [not win]
+- 3.9 *mkl        # [win]
+liblapack:
+- 3.9 *netlib     # [not win]
+- 3.9 *mkl        # [win]
 
 numpy:
   - 1.22
