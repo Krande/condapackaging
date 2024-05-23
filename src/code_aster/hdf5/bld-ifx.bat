@@ -3,10 +3,21 @@ cd build
 
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
-set "INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env"
-@call "%INTEL_VARS_PATH%\vars.bat" -arch intel64 vs2022
+
+if not defined ONEAPI_ROOT (
+  echo "ONEAPI_ROOT is not defined"
+  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
+)
+set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+
+if "%FC%" == "ifx" (
+  echo "Already using Intel LLVM Fortran compiler"
+) else (
+  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+  set FC=ifx
+)
+
 set FFLAGS=%FCFLAGS% /fpp /MD
-set FC=ifx
 
 :: Configure step.
 cmake -G "Ninja" ^
