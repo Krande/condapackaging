@@ -14,8 +14,10 @@ c_compiler:
 cxx_compiler:
   - vs2022        # [win]
   - gxx           # [linux]
+
 fortran_compiler:
   - gfortran      # [linux]
+  - flang         # [win]
 
 c_compiler_version:
   - 12            # [linux]

@@ -13,7 +13,7 @@ on:
         description: 'Which builds'
         required: true
         type: string
-        default: "all,!scotch,!homard,!parmetis"
+        default: "all,!homard,!parmetis"
       conda_label:
         description: 'Conda Channel for dependencies'
         required: false
@@ -131,6 +131,7 @@ jobs:
           { name: scotch, boa: false },
           { name: metis, boa: false },
           { name: homard, boa: false },
+          { name: hdf5, boa: false }
         ]
     with:
       package_name: ${{ matrix.package.name }}

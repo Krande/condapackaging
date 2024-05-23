@@ -43,6 +43,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
+    - clang  # [win]
     - make                                      # [not win]
     - ninja                                     # [win]
     - cmake

@@ -3,6 +3,9 @@
 mkdir build
 cd build
 
+set CC=clang-cl
+set CXX=clang-cl
+
 cmake -G "Ninja" .. ^
     -Wno-dev ^
     -D CMAKE_BUILD_TYPE="Release" ^

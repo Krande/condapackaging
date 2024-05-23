@@ -1,3 +1,13 @@
 mpi:
   - openmpi               # [not win]
   - nompi
+
+c_compiler:
+  - clang         # [win]
+cxx_compiler:
+  - clang        # [win]
+
+c_compiler_version:
+  - 18            # [win]
+cxx_compiler_version:
+  - 18            # [win]

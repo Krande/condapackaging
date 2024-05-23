@@ -1,65 +1,202 @@
 {% set name = "scotch" %}
-{% set version = "7.0.1" %}
-
-
+{% set version = "7.0.4" %}
+{% set major = version.split('.')[0] %}
+{% set minor = version.split('.')[1] %}
 
 package:
-  name: '{{ name|lower }}'
-  version: '{{ version }}'
+  name: {{ name }}-pkgs
+  version: {{ version }}
 
 source:
-  - fn: "codeaster-prerequisites-20221225-oss.tar.gz"
-    url: https://www.code-aster.org/FICHIERS/prerequisites/codeaster-prerequisites-20221225-oss.tar.gz
-    folder: deps/
-#  - hg_url: http://hg.code.sf.net/p/prereq/scotch
-#    hg_tag: '{{ version }}'
-
+  fn: {{ name }}-v{{ version }}.tar.gz
+  url: https://gitlab.inria.fr/scotch/scotch/-/archive/v{{ version }}/scotch-v{{ version }}.tar.gz
+  sha256: 8ef4719d6a3356e9c4ca7fefd7e2ac40deb69779a5c116f44da75d13b3d2c2c3
+  patches:
+    - patches/0001-Remove-unconditional-testing.patch
+    - patches/0002-add-COMPONENT-labels-for-easier-split-installation.patch
+    - patches/0003-put-metis-headers-in-include-scotch.patch
+    - patches/0004-fix-language-requirement.patch
+    - patches/0005-use-external-dummysizes.patch
+    - patches/0006-fix-ptesmumps.h.patch
+    - patches/0007-fix-empty-union.patch
+    - patches/0008-win-fix-ssize_t.patch
+    - patches/0009-win-fix-context.c.patch  # [win]
+    - patches/0010-win-fix-flex.patch
+    - patches/0011-win-do-not-link-m.patch
+    - patches/0012-win-fix-threads.patch
+    - patches/0013-win-fix-graph-match-scan.patch
+    - patches/0014-win-disable-fortran-test.patch
+    - patches/0015-win-fix-unistd-time-include.patch
 
 build:
-  detect_binary_files_with_prefix: true
-  string: aster1_py{{ CONDA_PY }}_mpi_{{mpi}}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [mpi != "nompi"]
-  string: aster1_py{{ CONDA_PY }}_nompi_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}     # [mpi == "nompi"]
   number: 2
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
 
-requirements:
-  build:
-    - "{{ compiler('c') }}"
-    - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}" # [not win]
-    - make
+outputs:
+  - name: libscotch
+    build:
+      script: ${RECIPE_DIR}/build-scotch.sh  # [unix]
+      script: "%RECIPE_DIR%\\bld-scotch.bat"  # [win]
+      run_exports:
+        - {{ pin_subpackage('libscotch', max_pin='x.x.x') }}
+      ignore_run_exports:
+        - {{ mpi }}
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('fortran') }}
+        - cmake
+        - make
+        - ninja         # [win]
+        - {{ mpi }}     # [build_platform != target_platform]
+        - bison <3.8    # [unix]
+        - flex          # [unix]
+        - winflexbison  # [win]
+      host:
+        - zlib
+        - bzip2
+        - xz
+        - {{ mpi }}
+        - pthreads-win32  # [win]
+      run:
+        - zlib
+        - pthreads-win32  # [win]
 
-  host:
-    - python
-    - zlib
-    - bison
-    - {{ mpi }}       # [mpi != "nompi"]
+    test:
+      requires:
+        - {{ compiler('c') }}
+      commands:
+        {% for lib in [
+          'scotch',
+          'scotcherr',
+          'scotcherrexit',
+          'esmumps',
+        ]
+        %}
+        - test -f "${PREFIX}/lib/lib{{ lib }}${SHLIB_EXT}"                             # [unix]
+        - if exist %PREFIX%\\Library\\lib\\{{ lib }}.lib (exit 0) else (exit 1)        # [win]
+        {% endfor %}
+        - test -f "${PREFIX}/include/scotch.h"                                         # [unix]
+        - if exist %PREFIX%\\Library\\include\\scotch.h (exit 0) else (exit 1)         # [win]
+        - test -f "${PREFIX}/include/scotchf.h"                                        # [unix]
+        - if exist %PREFIX%\\Library\\include\\scotchf.h (exit 0) else (exit 1)        # [win]
+        - test -f "${PREFIX}/include/esmumps.h"                                        # [unix]
+        - if exist %PREFIX%\\Library\\include\\esmumps.h (exit 0) else (exit 1)        # [win]
+        - test ! -f "${PREFIX}/include/metis.h"                                        # [unix]
+        - if exist %PREFIX%\\Library\\include\\metis.h (exit 1) else (exit 0)          # [win]
+        - test -f "${PREFIX}/include/scotch/metis.h"                                   # [unix]
+        - if exist %PREFIX%\\Library\\include\\scotch\\metis.h (exit 0) else (exit 1)  # [win]
+        - test ! -f "${PREFIX}/bin/gord"                                               # [unix]
+        - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 1) else (exit 0)             # [win]
 
-  run:
-    - python
-    - zlib
-    - bison
-    - {{ mpi }}       # [mpi != "nompi"]
+  - name: libptscotch
+    build:
+      script:
+        - cmake --install ./build --component=libptscotch
+      run_exports:
+        - {{ pin_subpackage('libptscotch', max_pin='x.x.x') }}
+    requirements:
+      build:
+        - cmake
+        - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
+      host:
+        - {{ mpi }}
+      run:
+        - {{ pin_subpackage("scotch", exact=True) }}
+    test:
+      requires:
+        - cmake
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+      commands:
+        {% for lib in [
+          'ptscotch',
+          'ptscotcherr',
+          'ptscotcherrexit',
+          'ptesmumps'
+        ]
+        %}
+        - test -f "${PREFIX}/lib/lib{{ lib }}${SHLIB_EXT}"                                 # [unix]
+        - if exist %PREFIX%\\Library\\lib\\{{ lib }}.lib (exit 0) else (exit 1)            # [win]
+        {% endfor %}
+        - test -f "${PREFIX}/include/ptscotch.h"                                           # [unix]
+        - if exist %PREFIX%\\Library\\include\\ptscotch.h (exit 0) else (exit 1)           # [win]
+        - test -f "${PREFIX}/include/ptscotchf.h"                                          # [unix]
+        - if exist %PREFIX%\\Library\\include\\ptscotchf.h (exit 0) else (exit 1)          # [win]
+        - test -f "${PREFIX}/include/ptesmumps.h"                                          # [unix]
+        - if exist %PREFIX%\\Library\\include\\ptesmumps.h (exit 0) else (exit 1)          # [win]
+        - test -f "${PREFIX}/include/scotch/parmetis.h"                                    # [unix]
+        - if exist %PREFIX%\\Library\\include\\scotch\\parmetis.h (exit 0) else (exit 1)   # [win]
+        - test ! -f "${PREFIX}/include/parmetis.h"                                         # [unix]
+        - if exist %PREFIX%\\Library\\include\\parmetis.h (exit 1) else (exit 0)           # [win]
+        - test ! -f "${PREFIX}/bin/dgord"                                                  # [unix]
+        - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 1) else (exit 0)                # [win]
+    about:
+      summary: 'PT-SCOTCH: (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
 
-test:
-  commands:
-    # Check for libscotch.a library
-    - test -f $PREFIX/lib/libscotch.a
-    # Check for scotch.h header
-    - test -f $PREFIX/include/scotch.h
-    - test -f $PREFIX/lib/libptscotch.a       # [mpi != "nompi"]
-    - test -f $PREFIX/include/ptscotch.h      # [mpi != "nompi"]
+  - name: scotch
+    build:
+      script: cmake --install ./build --component=scotch
+      run_exports:
+        - {{ pin_subpackage('scotch', max_pin='x.x.x') }}
+      ignore_run_exports:
+        - {{ mpi }}
+    requirements:
+      build:
+        - cmake
+      host:
+        # This is needed to get the correct package hash
+        - {{ mpi }}
+      run:
+        - {{ pin_subpackage('libscotch', exact=True) }}
+    test:
+      commands:
+        - test -f "${PREFIX}/bin/gord"                                       # [unix]
+        - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 0) else (exit 1)   # [win]
+        - test ! -f "${PREFIX}/bin/dgord"                                    # [unix]
+        - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 1) else (exit 0)  # [win]
+
+  - name: ptscotch
+    build:
+      script: cmake --install ./build --component=ptscotch
+      run_exports:
+        - {{ pin_subpackage('ptscotch', max_pin='x.x.x') }}
+    requirements:
+      build:
+        - cmake
+      host:
+        # This is needed to get the correct package hash
+        - {{ mpi }}
+      run:
+        - {{ pin_subpackage('libptscotch', exact=True) }}
+        - {{ pin_subpackage('scotch', exact=True) }}
+    test:
+      commands:
+        - test -f "${PREFIX}/bin/gord"                                       # [unix]
+        - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 0) else (exit 1)   # [win]
+        - test -f "${PREFIX}/bin/dgord"                                      # [unix]
+        - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 0) else (exit 1)  # [win]
+    about:
+      summary: 'PT-SCOTCH: (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
 
 about:
   home: https://www.labri.fr/perso/pelegrin/scotch/
-  license: CeCILL-C free/libre
-  license_family: OTHER
-  summary: 'Scotch : Package for graph and mesh/hypergraph partitioning, graph clustering, and sparse matrix ordering.'
+  license: CECILL-C
+  license_file: doc/CeCILL-C_V1-en.txt
+  summary: 'SCOTCH: Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
   description: |
-    Package for graph and mesh/hypergraph partitioning, graph clustering, and sparse matrix ordering.
+    Software package and libraries for sequential and parallel
+    graph partitioning, static mapping and clustering, sequential
+    mesh and hypergraph partitioning, and sequential and parallel
+    sparse matrix block ordering.
+  doc_url: http://gforge.inria.fr/docman/?group_id=248&dirid=326
   dev_url: https://gitlab.inria.fr/scotch/scotch
 
 extra:
   recipe-maintainers:
-    - Krande
+    - basnijholt
+    - dalcinl
+    - minrk
+    - davidbrochart
+    - SylvainCorlay
+    - Tobias-Fischer
+    - matthiasdiener
