@@ -45,7 +45,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('fortran') }}
         - cmake
-        - make
+        - make          # [unix]
         - ninja         # [win]
         - {{ mpi }}     # [build_platform != target_platform]
         - bison <3.8    # [unix]
@@ -55,7 +55,7 @@ outputs:
         - zlib
         - bzip2
         - xz
-        - {{ mpi }}
+        - {{ mpi }}                                 # [mpi != "nompi"]
         - pthreads-win32  # [win]
       run:
         - zlib
@@ -99,7 +99,7 @@ outputs:
         - cmake
         - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
       host:
-        - {{ mpi }}
+        - {{ mpi }}                                 # [mpi != "nompi"]
       run:
         - {{ pin_subpackage("scotch", exact=True) }}
     test:
@@ -145,7 +145,7 @@ outputs:
         - cmake
       host:
         # This is needed to get the correct package hash
-        - {{ mpi }}
+        - {{ mpi }}                                 # [mpi != "nompi"]
       run:
         - {{ pin_subpackage('libscotch', exact=True) }}
     test:
@@ -165,7 +165,7 @@ outputs:
         - cmake
       host:
         # This is needed to get the correct package hash
-        - {{ mpi }}
+        - {{ mpi }}                                 # [mpi != "nompi"]
       run:
         - {{ pin_subpackage('libptscotch', exact=True) }}
         - {{ pin_subpackage('scotch', exact=True) }}

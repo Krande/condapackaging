@@ -5,6 +5,8 @@ set CC=cl.exe
 set CXX=cl.exe
 set FC=flang-new
 
+set CFLAGS=%CFLAGS% /nologo -DINTSIZE=64
+
 cmake ^
   -G "Ninja" ^
   -D CMAKE_BUILD_TYPE=Release ^
