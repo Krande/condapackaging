@@ -6,11 +6,13 @@ set CLICOLOR_FORCE=1
 rem Set TFELHOME to the PREFIX environment variable
 set TFELHOME=%PREFIX%
 
+set FC=flang-new
+
 cmake -B build . -G "Ninja" ^
     %CMAKE_ARGS% ^
     -DCMAKE_BUILD_TYPE=%build_type% ^
-    -Denable-c-bindings=OFF ^
-    -Denable-fortran-bindings=OFF ^
+    -Denable-c-bindings=ON ^
+    -Denable-fortran-bindings=ON ^
     -Denable-python-bindings=ON ^
     -Denable-portable-build=ON ^
     -Denable-julia-bindings=OFF ^

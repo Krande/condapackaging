@@ -24,7 +24,7 @@ build:
   detect_binary_files_with_prefix: true
   string: "py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
-    - {{ pin_subpackage('mfront', max_pin='x.x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }}
 
 requirements:
   build:
