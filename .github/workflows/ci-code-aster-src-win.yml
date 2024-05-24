@@ -10,7 +10,7 @@ on:
         type: boolean
       channel:
         description: 'Conda channel'
-        default: 'get/ca-9226267007'
+        default: 'ca-9226267007'
         type: string
   push:
     paths:
