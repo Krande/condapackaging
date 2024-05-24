@@ -92,6 +92,7 @@ waf configure ^
   --use-config-dir=%PARENT_DIR%/config/ ^
   --med-libs="med medC medfwrap medimport" ^
   --prefix=%LIB_PATH_ROOT% ^
+  --embed-mumps ^
   --out=%OUTPUT_DIR% ^
   --disable-mpi ^
   --maths-libs=auto ^
