@@ -1,5 +1,7 @@
 @echo off
 
+setlocal enabledelayedexpansion
+
 echo "Setting compiler env vars"
 set "CC=clang-cl.exe"
 set "CXX=clang-cl.exe"
@@ -104,3 +106,5 @@ if errorlevel 1 exit 1
 waf install_debug -v
 
 if errorlevel 1 exit 1
+
+endlocal
