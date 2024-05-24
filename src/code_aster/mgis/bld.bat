@@ -5,7 +5,6 @@ set CLICOLOR_FORCE=1
 
 rem Set TFELHOME to the PREFIX environment variable
 set TFELHOME=%PREFIX%
-
 set FC=flang-new
 
 cmake -B build . -G "Ninja" ^

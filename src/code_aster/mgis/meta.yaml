@@ -22,11 +22,10 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}" # [not win]
+    - "{{ compiler('fortran') }}"
     - cmake >=3.26.4
     - ninja                       # [win]
-    #- clang                       # [win]
-    #- lld                         # [win]
+    - clang                       # [win]
     - make                        # [not win]
     - autoconf # [not win]
 
