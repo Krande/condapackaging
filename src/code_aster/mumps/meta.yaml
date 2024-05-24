@@ -53,7 +53,7 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - "{{ compiler('fortran') }}" # [not win]
     - waf    # [not win]
     - make   # [not win]
     - cmake  # [win]
@@ -77,6 +77,8 @@ requirements:
 
 
 test:
+  files:
+    - test_files_exists.bat
   commands:
     # Check for existence of mumps libraries
     - test -f $PREFIX/lib/libcmumps.so            # [linux]
@@ -86,6 +88,10 @@ test:
     - test -f $PREFIX/lib/libpord.so              # [linux]
     - test -f $PREFIX/lib/libsmumps.so            # [linux]
     - test -f $PREFIX/lib/libzmumps.so            # [linux]
+    # same for windows not using test
+    - test_files_exists.bat                       # [win]
+    # Check for existence of mumps headers
+    - test -f %LIBRARY_PREFIX%/include/cmumps_c.h # [win]
 
 about:
   home: https://mumps-solver.org/index.php

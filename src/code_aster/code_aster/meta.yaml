@@ -1,5 +1,6 @@
 {% set name = 'code-aster' %}
 {% set version = '17.0.17' %}
+{% set win_build = '1' %}
 
 # Dependencies
 {% set med_ver = '4.1.1*' %}                  # [win]
@@ -11,16 +12,6 @@
 {% set medcoupling_ver = '9.12.0' %}          # [win]
 {% set mgis_ver = '2.2' %}                    # [win]
 
-
-#{% set med_ver = '4.1.1=aster_*' %}           # [not win]
-#{% set metis_ver = '5.1.0=aster4*' %}         # [not win]
-#{% set mumps_ver = '5.5.1=aster1*' %}         # [not win]
-#{% set petsc_ver = '3.17.1=aster*' %}         # [not win]
-#{% set scotch_ver = '7.0.1=aster*' %}         # [not win]
-#{% set mfront_ver = '4.1.0=aster_*' %}        # [not win]
-#{% set medcoupling_ver = '9.10.0=aster*' %}   # [not win]
-#{% set mgis_ver = '2.1' %}                    # [not win]
-
 {% set homard_ver = '11.12' %}
 {% set mpi4py_ver = "3.1.3" %}
 
@@ -30,11 +21,12 @@ package:
   version: '{{ version }}'
 
 source:
-  - fn: '{{ name }}_{{ version }}.tar.gz'
-    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz
-    patches:
-      - patches/skip_numpy_distutils_check.patch
-      - patches/add_msvc_compat.patch  # [win]
+  - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'                                                             # [win]
+    url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz   # [win]
+  - fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
+    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
+    patches:                                                                                                              # [not win]
+      - patches/skip_numpy_distutils_check.patch                                                                          # [not win]
 
 build:
   detect_binary_files_with_prefix: true
@@ -57,11 +49,12 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}" # [not win]
     - pyyaml
-    - waf
+    - waf 2.0.27
 
   host:
     - python
     - pyyaml
+    - m2-patch  # [win]
     - numpy
     - libboost-devel
     - openblas                                      # [not win]

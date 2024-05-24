@@ -35,6 +35,10 @@ cmake -G "Ninja" ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
       -D parallel:BOOL=OFF ^
+      -D BUILD_SINGLE:BOOL=ON ^
+      -D BUILD_DOUBLE:BOOL=ON ^
+      -D BUILD_COMPLEX:BOOL=ON ^
+      -D BUILD_COMPLEX16:BOOL=ON ^
       ..
 
 if errorlevel 1 exit 1
