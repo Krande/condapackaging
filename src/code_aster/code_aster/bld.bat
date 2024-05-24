@@ -1,5 +1,6 @@
 @echo off
-setlocal
+:: delayed expansion is needed for the if statement
+setlocal EnableDelayedExpansion
 
 echo "Setting compiler env vars"
 set "CC=clang-cl.exe"
@@ -26,35 +27,30 @@ where "%FC%"
 set ASTER_PLATFORM_MSVC=1
 set ASTER_PLATFORM_WINDOWS=1
 
-
 set MKLROOT=%LIBRARY_PREFIX%
-SET MKLROOT=%MKLROOT:\=/%
 
-SET LIB_PATH_ROOT=%LIBRARY_PREFIX:\=/%
-SET PREF_ROOT=%PREFIX:\=/%
+set LIBPATH_HDF5=%LIBRARY_PREFIX%/lib
+set INCLUDES_HDF5=%LIBRARY_PREFIX%/include
 
-set LIBPATH_HDF5=%LIB_PATH_ROOT%/lib
-set INCLUDES_HDF5=%LIB_PATH_ROOT%/include
+set LIBPATH_MED=%LIBRARY_PREFIX%/lib
+set INCLUDES_MED=%LIBRARY_PREFIX%/include
 
-set LIBPATH_MED=%LIB_PATH_ROOT%/lib
-set INCLUDES_MED=%LIB_PATH_ROOT%/include
+set LIBPATH_METIS=%LIBRARY_PREFIX%/lib
+set INCLUDES_METIS=%LIBRARY_PREFIX%/include
 
-set LIBPATH_METIS=%LIB_PATH_ROOT%/lib
-set INCLUDES_METIS=%LIB_PATH_ROOT%/include
+set LIBPATH_MUMPS=%LIBRARY_PREFIX%/lib
+set "INCLUDES_MUMPS=%LIBRARY_PREFIX%/include"
 
-set LIBPATH_MUMPS=%LIB_PATH_ROOT%/lib
-set "INCLUDES_MUMPS=%LIB_PATH_ROOT%/include %LIB_PATH_ROOT%/include/mumps_seq"
+set LIBPATH_SCOTCH=%LIBRARY_PREFIX%/lib
+set INCLUDES_SCOTCH=%LIBRARY_PREFIX%/include
 
-set LIBPATH_SCOTCH=%LIB_PATH_ROOT%/lib
-set INCLUDES_SCOTCH=%LIB_PATH_ROOT%/include
+set TFELHOME=%LIBRARY_PREFIX%
 
-set TFELHOME=%LIB_PATH_ROOT%
-
-set LIBPATH_MGIS=%LIB_PATH_ROOT%/bin
-set INCLUDES_MGIS=%LIB_PATH_ROOT%/include
+set LIBPATH_MGIS=%LIBRARY_PREFIX%/bin
+set INCLUDES_MGIS=%LIBRARY_PREFIX%/include
 
 REM Compiler flags
-set LIBPATH=%PREF_ROOT%/libs %LIBPATH%
+@REM set LIBPATH=%%LIBRARY_PREFIX%%/libs %LIBPATH%
 
 REM /MD link with MSVCRT.lib. /FS allow for c compiler calls to vc140.pdb on multiple threads (for cl.exe only)
 
@@ -63,10 +59,8 @@ set CXXFLAGS=%CXXFLAGS% /MD
 set FCFLAGS=%FCFLAGS% /fpp /MD
 set FCFLAGS=%FCFLAGS% /names:lowercase /assume:underscore /assume:nobscc
 
-if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
-
 :: Add lib paths
-set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
+set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_PREFIX%/lib /LIBPATH:%LIBRARY_PREFIX%/bin /LIBPATH:%%LIBRARY_PREFIX%%/libs
 
 :: Add Math libs
 set LDFLAGS=%LDFLAGS% mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
@@ -83,7 +77,7 @@ set LDFLAGS=%LDFLAGS% pthread.lib
 :: Add libmed libs
 set LDFLAGS=%LDFLAGS% med.lib medC.lib medfwrap.lib medimport.lib
 
-set INCLUDES_BIBC=%PREF_ROOT%/include %PARENT_DIR%/bibfor/include %INCLUDES_BIBC%
+set INCLUDES_BIBC=%%LIBRARY_PREFIX%%/include %SRC_DIR%/bibfor/include %INCLUDES_BIBC%
 
 set DEFINES=H5_BUILT_AS_DYNAMIC_LIB PYBIND11_NO_ASSERT_GIL_HELD_INCREF_DECREF
 
@@ -93,11 +87,10 @@ set BUILD=std
 
 REM Install for standard sequential
 waf configure ^
-  --safe ^
   --check-fortran-compiler=ifort ^
-  --use-config-dir=%PARENT_DIR%/config/ ^
+  --use-config-dir=%SRC_DIR%config/ ^
   --med-libs="med medC medfwrap medimport" ^
-  --prefix=%LIB_PATH_ROOT% ^
+  --prefix=%LIBRARY_PREFIX% ^
   --out=%OUTPUT_DIR% ^
   --disable-mpi ^
   --maths-libs=auto ^

@@ -1,6 +1,23 @@
 {% set name = 'code-aster' %}
 {% set version = '17.0.17' %}
 {% set win_build = '1' %}
+{% set build = 0 %}
+
+{% if mpi == 'nompi' %}
+# prioritize nompi variant via build number
+{% set build = build + 100 %}
+{% endif %}
+# add build string so packages can depend on
+# mpi or nompi variants explicitly:
+# `pkg * mpi_mpich_*` for mpich
+# `pkg * mpi_*` for any mpi
+# `pkg * nompi_*` for no mpi
+
+{% if mpi != 'nompi' %}
+{% set mpi_prefix = "mpi_" + mpi %}
+{% else %}
+{% set mpi_prefix = "nompi" %}
+{% endif %}
 
 # Dependencies
 {% set med_ver = '4.1.1*' %}                  # [win]
@@ -30,18 +47,12 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  number: 6
-  string: py{{ CONDA_PY }}_mpi_{{mpi}}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [mpi != "nompi"]
-  string: py{{ CONDA_PY }}_nompi_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}        # [mpi == "nompi"]
+  number: {{ build }}
+  string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ build }}"
   script_env:
     - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
-#  skip: true  # [mpi == "nompi"]
-  rpaths:
-    - lib/
-    - lib/aster/
-    - lib/petsc4py/lib      # [mpi != "nompi"]
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} {{ mpi }}_*
+    - {{ pin_subpackage(name, 'x.x') }}
 
 requirements:
   build:
@@ -64,11 +75,6 @@ requirements:
     - libmed {{ med_ver }}                          # [win]
     - scotch {{ scotch_ver }}                       # [win]
     - medcoupling {{ medcoupling_ver }}             # [win]
-    - libmed {{ med_ver }}{{mpi}}*                  # [not win]
-    - scotch {{ scotch_ver }}{{mpi}}*               # [not win]
-    - mumps {{ mumps_ver }}{{mpi}}*                 # [not win]
-    - medcoupling {{ medcoupling_ver }}{{mpi}}*     # [not win]
-    - homard {{ homard_ver }}                       # [not win]
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
@@ -76,7 +82,6 @@ requirements:
 
   run:
     - python
-    - pyyaml
     - {{ pin_compatible('numpy', max_pin='x.x') }}
     - {{ mpi }}                                     # [mpi != "nompi"]
     - libxcrypt                                     # [not win]

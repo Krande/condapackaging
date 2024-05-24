@@ -39,7 +39,7 @@ build:
   string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
   number: "{{ build }}"
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} {{ mpi_prefix }}_*
+    - {{ pin_subpackage(name, 'x.x') }}
 
 requirements:
   build:
