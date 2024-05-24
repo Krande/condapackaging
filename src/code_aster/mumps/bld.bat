@@ -35,6 +35,7 @@ cmake -G "Ninja" ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
       -D parallel:BOOL=OFF ^
+      -D BUILD_SHARED_LIBS:BOOL=ON ^
       -D BUILD_SINGLE:BOOL=ON ^
       -D BUILD_DOUBLE:BOOL=ON ^
       -D BUILD_COMPLEX:BOOL=ON ^
