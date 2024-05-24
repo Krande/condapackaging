@@ -8,6 +8,10 @@ on:
         description: 'Run workflow manually'
         default: true
         type: boolean
+      channel:
+        description: 'Conda channel'
+        default: 'code-aster-dev'
+        type: string
   push:
     paths:
       - '.github/workflows/ci-code-aster-src-win.yml'
@@ -47,7 +51,7 @@ jobs:
           condarc: |
             channel_priority: strict
             channels:
-              - ${{ secrets.QUETZ_URL }}/get/code-aster-dev
+              - ${{ secrets.QUETZ_URL }}/get/${{ inputs.channel }}
               - conda-forge
           create-args: >-
             python=3.11
