@@ -22,7 +22,7 @@
 # Dependencies
 {% set med_ver = '4.1.1*' %}                  # [win]
 {% set metis_ver = '5.1.0*' %}                # [win]
-{% set mumps_ver = '5.6.2*' %}                # [win]
+{% set mumps_ver = '5.6.2' %}                 # [win]
 {% set petsc_ver = '3.17.1*' %}               # [win]
 {% set scotch_ver = '7.0.4*' %}               # [win]
 {% set mfront_ver = '4.2.0' %}                # [win]
@@ -65,12 +65,13 @@ requirements:
   host:
     - python
     - pyyaml
-    - m2-patch  # [win]
     - numpy
     - libboost-devel
-    - mkl-devel  # [win]
+    - m2-patch                                      # [win]
+    - mkl-devel                                     # [win]
     - openblas                                      # [not win]
     - metis {{ metis_ver }}
+    - mumps {{ mumps_ver }}
     - mfront {{ mfront_ver }}
     - mgis {{ mgis_ver }}
     - libmed {{ med_ver }}                          # [win]
