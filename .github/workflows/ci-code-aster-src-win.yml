@@ -6,11 +6,11 @@ on:
     inputs:
       manual:
         description: 'Run workflow manually'
-        default: true
+        default: false
         type: boolean
       channel:
         description: 'Conda channel'
-        default: 'code-aster-dev'
+        default: 'get/ca-9226267007'
         type: string
   push:
     paths:
