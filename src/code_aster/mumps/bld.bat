@@ -31,7 +31,7 @@ cmake -G "Ninja" ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=MKL ^
       -D intsize64:BOOL=ON ^
-      -D gemmt:BOOL=OFF ^
+      -D gemmt:BOOL=ON ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
       -D parallel:BOOL=OFF ^
