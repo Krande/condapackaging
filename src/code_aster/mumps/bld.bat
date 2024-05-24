@@ -19,6 +19,8 @@ if "%FC%" == "ifx" (
   set FC=ifx
 )
 
+:: Needed for the pthread library when linking with scotch
+set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
@@ -33,8 +35,6 @@ cmake -G "Ninja" ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
       -D parallel:BOOL=OFF ^
-      -D THREADS_PTHREADS_INCLUDE_DIR="%LIBRARY_INC%" ^
-      -D THREADS_PTHREADS_WIN32_LIBRARY:FILEPATH="%LIBRARY_LIB%\pthread.lib" ^
       ..
 
 if errorlevel 1 exit 1
