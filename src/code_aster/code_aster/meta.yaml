@@ -68,6 +68,7 @@ requirements:
     - m2-patch  # [win]
     - numpy
     - libboost-devel
+    - mkl-devel  # [win]
     - openblas                                      # [not win]
     - metis {{ metis_ver }}
     - mfront {{ mfront_ver }}
