@@ -1,8 +1,5 @@
 @echo off
 
-setlocal EnableDelayedExpansion
-
-
 mkdir build
 cd build
 
@@ -35,7 +32,7 @@ cmake -G "Ninja" ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
       -D parallel:BOOL=OFF ^
-      -D BUILD_SHARED_LIBS:BOOL=ON ^
+      -D BUILD_SHARED_LIBS:BOOL=OFF ^
       -D BUILD_SINGLE:BOOL=ON ^
       -D BUILD_DOUBLE:BOOL=ON ^
       -D BUILD_COMPLEX:BOOL=ON ^
@@ -45,4 +42,4 @@ cmake -G "Ninja" ^
 if errorlevel 1 exit 1
 cmake --build . --config Release --target install
 
-endlocal
+if errorlevel 1 exit 1
