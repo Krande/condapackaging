@@ -20,8 +20,6 @@ if "%FC%" == "ifx" (
 )
 
 SET OUTPUT_DIR=%SRC_DIR%/build/std
-SET OUTPUT_DIR=%OUTPUT_DIR:\=/%
-
 echo "OUTPUT_DIR: %OUTPUT_DIR%"
 
 set FC=ifx.exe
@@ -106,10 +104,16 @@ waf configure ^
   --install-tests ^
   --without-hg
 
-if errorlevel 1 exit 1
+if errorlevel 1 (
+  type %SRC_DIR%/build/std/config.log
+  exit /b 1
+)
 
 waf install_debug -v
 
-if errorlevel 1 exit 1
+if errorlevel 1 (
+  type %SRC_DIR%/build/std/config.log
+  exit /b 1
+)
 
 endlocal
