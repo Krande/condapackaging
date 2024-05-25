@@ -56,7 +56,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: codeaster-deps
-          init-shell: cmd
+          init-shell: cmd.exe
           condarc: |
             channel_priority: strict
             channels:
