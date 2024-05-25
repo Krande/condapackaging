@@ -26,9 +26,6 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd /C call {0}
     steps:
       - name: Checkout code-aster/src
         run: |
@@ -71,30 +68,17 @@ jobs:
 
       - name: print all env vars
         run: |
+          micromamba activate codeaster-deps
           where python
           printenv
-
-      - name: write to .env file
-        shell: python
-        run: |
-          import os
-          
-          conda_prefix = os.environ.get('CONDA_PREFIX')
-          intel_vars_path = os.environ.get('INTEL_VARS_PATH')
-          vs_vars_path = os.environ.get('VS_VARS_PATH')
-          python_env_name = os.environ.get('PYTHON_ENV_NAME')
-          
-          with open('.env', 'w') as f:
-            f.write(f'CONDA_PREFIX={conda_prefix}\n')
-            f.write(f'INTEL_VARS_PATH={intel_vars_path}\n')
-            f.write(f'VS_VARS_PATH={vs_vars_path}\n')
-            f.write(f'PYTHON_ENV_NAME={python_env_name}\n')
 
       - name: run conda_build.bat
         continue-on-error: true
         # if not input.manual then run conda_build.bat
         if: ${{ !inputs.manual }}
+        shell: cmd
         run: |
+          micromamba activate codeaster-deps
           call conda_build.bat
 
       - name: run manually
