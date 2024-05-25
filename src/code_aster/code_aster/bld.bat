@@ -1,6 +1,6 @@
 @echo off
 
-setlocal enabledelayedexpansion
+setlocal
 
 echo "Setting compiler env vars"
 set "CC=clang-cl.exe"
@@ -19,7 +19,7 @@ if "%FC%" == "ifx" (
   set FC=ifx.exe
 )
 
-
+set FC=ifx.exe
 set ASTER_PLATFORM_MSVC=1
 set ASTER_PLATFORM_WINDOWS=1
 
