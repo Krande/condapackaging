@@ -85,7 +85,6 @@ jobs:
 
       - name: print all env vars
         run: |
-          micromamba activate codeaster-deps
           where python
           printenv
 
@@ -94,7 +93,7 @@ jobs:
         # if not input.manual then run conda_build.bat
         if: ${{ !inputs.manual }}
         run: |
-          conda_build.bat
+          conda_manual_build.bat
 
       - name: run manually
         continue-on-error: true
@@ -157,22 +156,25 @@ jobs:
           set CXXFLAGS=%CXXFLAGS% /MD
           set FCFLAGS=%FCFLAGS% /fpp /MD
           set FCFLAGS=%FCFLAGS% /names:lowercase /assume:underscore /assume:nobscc
+                    
+          set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
           
-          set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs ^
-              pthread.lib libomp.lib medfwrap.lib hdf5.lib metis.lib ^
-              MFrontGenericInterface.lib scotch.lib scotcherr.lib ^
-              mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib /FORCE:MULTIPLE
+          set LDFLAGS=%LDFLAGS% mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
           
-          @REM set CCLINKFLAGS=%CCLINKFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib
+          set LDFLAGS=%LDFLAGS% pthread.lib
+          
+          @REM set LDFLAGS=%LDFLAGS% hdf5.lib hdf5_hl.lib
+          
+          set LDFLAGS=%LDFLAGS% mpiseq.lib scotch.lib scotcherr.lib metis.lib pord.lib esmumps.lib
+          
+          set LDFLAGS=%LDFLAGS% med.lib medC.lib medfwrap.lib medimport.lib
           
           set INCLUDES_BIBC=%PREF_ROOT%/include %PARENT_DIR%/bibfor/include %INCLUDES_BIBC%
+          
+          set DEFINES=H5_BUILT_AS_DYNAMIC_LIB PYBIND11_NO_ASSERT_GIL_HELD_INCREF_DECREF
 
-          set DEFINES=H5_BUILT_AS_DYNAMIC_LIB
-
-          REM Clean the build directory
           waf distclean
 
-          REM Install for standard sequential
           waf configure ^
             --safe ^
             --check-fortran-compiler=ifort ^
