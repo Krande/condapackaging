@@ -24,6 +24,7 @@ env:
   CHANNEL: ${{ github.event.inputs.channel }}
   DEFAULT_CHANNEL: ca-9226267007
   PYTHONUNBUFFERED: 1
+  DONOT_ACTIVATE_CONDA_ENV: 1
 
 
 jobs:
