@@ -19,6 +19,9 @@ if "%FC%" == "ifx" (
   set FC=ifx.exe
 )
 
+SET OUTPUT_DIR=%SRC_DIR%/build/std
+SET OUTPUT_DIR=%OUTPUT_DIR:\=/%
+
 set FC=ifx.exe
 set ASTER_PLATFORM_MSVC=1
 set ASTER_PLATFORM_WINDOWS=1
