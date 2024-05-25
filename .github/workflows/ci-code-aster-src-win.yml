@@ -23,6 +23,8 @@ env:
   BUILD_LOCATION: D:\a\condapackaging\condapackaging\build\std
   CHANNEL: ${{ github.event.inputs.channel }}
   DEFAULT_CHANNEL: ca-9226267007
+  PYTHONUNBUFFERED: 1
+
 
 jobs:
   build:
@@ -91,10 +93,8 @@ jobs:
         continue-on-error: true
         # if not input.manual then run conda_build.bat
         if: ${{ !inputs.manual }}
-        shell: cmd
         run: |
-          micromamba activate codeaster-deps
-          call conda_build.bat
+          conda_build.bat
 
       - name: run manually
         continue-on-error: true
