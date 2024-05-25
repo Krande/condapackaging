@@ -109,7 +109,11 @@ if errorlevel 1 (
   exit /b 1
 )
 
-waf install_debug -v
+waf install_debug -v && (
+  echo "success"
+) || (
+  type %SRC_DIR%\build\std\config.log
+)
 
 if errorlevel 1 (
   type %SRC_DIR%\build\std\config.log
