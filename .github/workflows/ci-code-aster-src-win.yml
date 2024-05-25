@@ -10,7 +10,6 @@ on:
         type: boolean
       channel:
         description: 'Conda channel'
-        default: 'ca-9226267007'
         type: string
   push:
     paths:
@@ -23,10 +22,14 @@ env:
   PYTHON_ENV_NAME: codeaster-deps
   BUILD_LOCATION: D:\a\condapackaging\condapackaging\build\std
   CHANNEL: ${{ github.event.inputs.channel }}
+  DEFAULT_CHANNEL: ca-9226267007
 
 jobs:
   build:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd /C call {0}
     steps:
       - name: Checkout code-aster/src
         run: |
@@ -48,11 +51,12 @@ jobs:
                   print(f"{name}={value}", file=fh)
           
           if os.getenv('CHANNEL', "") == "":
-            set_env('CHANNEL', 'ca-9226267007')
+            set_env('CHANNEL', '${{ env.DEFAULT_CHANNEL }}')
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: codeaster-deps
+          init-shell: cmd
           condarc: |
             channel_priority: strict
             channels:
