@@ -22,6 +22,7 @@ env:
   CONDA_ROOT: C:\Users\runneradmin\micromamba
   PYTHON_ENV_NAME: codeaster-deps
   BUILD_LOCATION: D:\a\condapackaging\condapackaging\build\std
+  CHANNEL: ${{ github.event.inputs.channel }}
 
 jobs:
   build:
@@ -37,15 +38,25 @@ jobs:
           compiler: intel
           version: '2024.1'
 
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+      - name: if not env.CHANNEL then set env.CHANNEL
+        shell: python
+        run: |
+          import os
+          
+          def set_env(name, value):
+              with open(os.environ["GITHUB_ENV"], "a") as fh:
+                  print(f"{name}={value}", file=fh)
+          
+          if os.getenv('CHANNEL', "") == "":
+            set_env('CHANNEL', 'ca-9226267007')
+
+      - uses: mamba-org/setup-micromamba@v1.9 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: codeaster-deps
-          init-shell: >-
-            cmd.exe
           condarc: |
             channel_priority: strict
             channels:
-              - ${{ secrets.QUETZ_URL }}/get/${{ inputs.channel }}
+              - ${{ secrets.QUETZ_URL }}/get/${{ env.CHANNEL }}
               - conda-forge
           create-args: >-
             python=3.11
