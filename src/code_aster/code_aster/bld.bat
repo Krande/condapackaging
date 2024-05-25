@@ -105,14 +105,14 @@ waf configure ^
   --without-hg
 
 if errorlevel 1 (
-  type %SRC_DIR%/build/std/config.log
+  type %SRC_DIR%\build\std\config.log
   exit /b 1
 )
 
 waf install_debug -v
 
 if errorlevel 1 (
-  type %SRC_DIR%/build/std/config.log
+  type %SRC_DIR%\build\std\config.log
   exit /b 1
 )
 
