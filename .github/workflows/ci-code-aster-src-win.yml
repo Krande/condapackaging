@@ -50,7 +50,7 @@ jobs:
           if os.getenv('CHANNEL', "") == "":
             set_env('CHANNEL', 'ca-9226267007')
 
-      - uses: mamba-org/setup-micromamba@v1.9 # https://github.com/mamba-org/setup-micromamba
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: codeaster-deps
           condarc: |
