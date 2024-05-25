@@ -22,6 +22,8 @@ if "%FC%" == "ifx" (
 SET OUTPUT_DIR=%SRC_DIR%/build/std
 SET OUTPUT_DIR=%OUTPUT_DIR:\=/%
 
+echo "OUTPUT_DIR: %OUTPUT_DIR%"
+
 set FC=ifx.exe
 set ASTER_PLATFORM_MSVC=1
 set ASTER_PLATFORM_WINDOWS=1
@@ -82,7 +84,7 @@ set LDFLAGS=%LDFLAGS% pthread.lib
 :: Add libmed libs
 set LDFLAGS=%LDFLAGS% med.lib medC.lib medfwrap.lib medimport.lib
 
-set INCLUDES_BIBC=%PREF_ROOT%/include %PARENT_DIR%/bibfor/include %INCLUDES_BIBC%
+set INCLUDES_BIBC=%PREF_ROOT%/include %SRC_DIR%/bibfor/include %INCLUDES_BIBC%
 
 set DEFINES=H5_BUILT_AS_DYNAMIC_LIB PYBIND11_NO_ASSERT_GIL_HELD_INCREF_DECREF
 
@@ -94,11 +96,11 @@ REM Install for standard sequential
 waf configure ^
   --safe ^
   --check-fortran-compiler=ifort ^
-  --use-config-dir=%PARENT_DIR%/config/ ^
+  --use-config-dir=%SRC_DIR%/config/ ^
   --med-libs="med medC medfwrap medimport" ^
   --prefix=%LIB_PATH_ROOT% ^
   --embed-mumps ^
-  --out=%OUTPUT_DIR% ^
+  --out=%SRC_DIR%/build/std ^
   --disable-mpi ^
   --maths-libs=auto ^
   --install-tests ^
