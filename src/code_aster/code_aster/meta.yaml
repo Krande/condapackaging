@@ -61,6 +61,7 @@ requirements:
     - "{{ compiler('fortran') }}" # [not win]
     - pyyaml
     - waf 2.0.27
+    - clang  # [win] 
 
   host:
     - python
