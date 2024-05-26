@@ -90,6 +90,8 @@ python conda\update_version.py
 
 set BUILD=std
 
+python %RECIPE_DIR%\set_env_var.py %SRC_DIR%
+
 REM Install for standard sequential
 waf configure ^
   --safe ^
@@ -104,20 +106,10 @@ waf configure ^
   --install-tests ^
   --without-hg
 
-if errorlevel 1 (
-  type %SRC_DIR%\build\std\config.log
-  exit /b 1
-)
+if errorlevel 1 exit 1
 
-waf install_debug -v && (
-  echo "success"
-) || (
-  type %SRC_DIR%\build\std\config.log
-)
+waf install_debug -v
 
-if errorlevel 1 (
-  type %SRC_DIR%\build\std\config.log
-  exit /b 1
-)
+if errorlevel 1 exit 1
 
 endlocal

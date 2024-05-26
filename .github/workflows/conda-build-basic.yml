@@ -110,6 +110,7 @@ env:
   VARIANT_STR: ""
   CONDA_CHANNEL: ""
   EXTRA_BUILD_ARGS: ""
+  CONDA_BUILD_DIR: ""
 
 jobs:
   should_run:
@@ -345,10 +346,14 @@ jobs:
       - name: build local packages
         run: |
           conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
-
         working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
+
+      - name: print config log
+        continue-on-error: true
+        run: |
+          type ${{ env.CONDA_BUILD_DIR }}/build/std/config.log
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
