@@ -1,4 +1,5 @@
 import os
+import pathlib
 import argparse
 
 
@@ -11,4 +12,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("build_dir", type=str)
     args = parser.parse_args()
-    set_env('CONDA_BUILD_DIR', args.build_dir)
+    build_dir = pathlib.Path(args.build_dir).resolve().absolute()
+    set_env('CONDA_BUILD_DIR', build_dir.as_posix())
