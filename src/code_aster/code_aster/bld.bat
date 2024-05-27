@@ -19,6 +19,8 @@ if "%FC%" == "ifx" (
   set FC=ifx.exe
 )
 
+echo "PATH: %PATH%"
+
 SET OUTPUT_DIR=%SRC_DIR%/build/std
 echo "OUTPUT_DIR: %OUTPUT_DIR%"
 
