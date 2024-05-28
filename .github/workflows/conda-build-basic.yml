@@ -302,6 +302,9 @@ jobs:
         with:
           environment-name: build-env
           cache-environment: true
+          init-shell: >-
+            bash
+            cmd.exe
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5
