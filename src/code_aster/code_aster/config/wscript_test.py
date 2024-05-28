@@ -226,6 +226,7 @@ def configure(self):
     if platform.system() == "Windows" and os.getenv('WAFDIR') is None:
         print("Loading 'ifort' and 'msvc' toolchains")
         self.load("ifort", tooldir="config")
+        self.load("msvc", tooldir="config")
 
     opts = self.options
     self.setenv("default")
