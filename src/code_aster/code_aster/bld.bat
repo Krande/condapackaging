@@ -92,8 +92,13 @@ python conda\update_version.py
 set BUILD=std
 
 echo "Original PATH: %PATH%"
-for /f "tokens=*" %%i in ('python %RECIPE_DIR%\config\path_cleaner.py') do set "clean_path=%%i"
-set "PATH=%clean_path%"
+python %RECIPE_DIR%\config\path_cleaner.py
+if exist cleaned_path.txt (
+    set /p clean_path=<cleaned_path.txt
+    del cleaned_path.txt
+    set "PATH=%clean_path%"
+)
+
 echo "Updated PATH: %PATH%"
 
 @REM call %RECIPE_DIR%\config\test.bat

@@ -1,11 +1,21 @@
 import os
 
+
 def set_output(name, value):
     if "GITHUB_OUTPUT" not in os.environ:
         return
 
     with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
         print(f"{name}={value}", file=fh)
+
+
+def set_env(name, value):
+    if "GITHUB_ENV" not in os.environ:
+        return
+
+    with open(os.environ["GITHUB_ENV"], "a") as fh:
+        print(f"{name}={value}", file=fh)
+
 
 def main():
     """
@@ -64,7 +74,9 @@ def main():
 
     print(f"Reduced PATH from {len(old_paths)} to {len(new_path)}")
     new_path_str = os.pathsep.join(new_path)
-    set_output("clean_path", new_path_str)
+    # set_env("TMP_PATH_VAR", new_path_str)
+    with open("cleaned_path.txt", "w") as file:
+        file.write(new_path_str)
 
 
 if __name__ == '__main__':
