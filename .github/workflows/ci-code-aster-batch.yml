@@ -13,9 +13,10 @@ on:
         description: 'Which builds'
         required: true
         type: string
-        default: "all,!homard,!parmetis"
+        default: "code_aster"
       conda_label:
         description: 'Conda Channel for dependencies'
+        default: 'code-aster-dev'
         required: false
         type: string
       python_versions:

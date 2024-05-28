@@ -99,21 +99,9 @@ all_ifort_platforms = [('intel64', 'amd64'), ('em64t', 'amd64'), ('ia32', 'x86')
 
 @conf
 def gather_ifort_versions(conf, versions):
-    ifort_batch_file = pathlib.Path(os.getenv("INTEL_VARS_PATH")+'\\vars.bat')
-    if ifort_batch_file.exists():
-        # Logs.info(f"Ifort env var batch found at {ifort_batch_file=}")
-        arch = 'amd64'
-        version = '192.49896'
-        target = 'intel64'
-        targets = dict(intel64=target_compiler(conf, 'intel', arch, version, target, ifort_batch_file.as_posix()))
-        major = version[0:2]
-        versions['intel ' + major] = targets
-        return
-
     version_pattern = re.compile(r'^...?.?\....?.?')
     try:
-        all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE,
-                                            'SOFTWARE\\Wow6432node\\Intel\\Compilers\\Fortran')
+        all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Wow6432node\\Intel\\Compilers\\Fortran')
     except OSError:
         try:
             all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Intel\\Compilers\\Fortran')
@@ -129,16 +117,15 @@ def gather_ifort_versions(conf, versions):
         if not version_pattern.match(version):
             continue
         targets = {}
-
-        for target, arch in all_ifort_platforms:
-            if target == 'intel64':
-                targetDir = 'EM64T_NATIVE'
+        for target,arch in all_ifort_platforms:
+            if target=='intel64':
+                targetDir='EM64T_NATIVE'
             else:
-                targetDir = target
+                targetDir=target
             try:
-                Utils.winreg.OpenKey(all_versions, version + '\\' + targetDir)
-                icl_version = Utils.winreg.OpenKey(all_versions, version)
-                path, type = Utils.winreg.QueryValueEx(icl_version, 'ProductDir')
+                Utils.winreg.OpenKey(all_versions,version+'\\'+targetDir)
+                icl_version=Utils.winreg.OpenKey(all_versions,version)
+                path,type=Utils.winreg.QueryValueEx(icl_version,'ProductDir')
             except OSError:
                 pass
             else:
@@ -148,16 +135,16 @@ def gather_ifort_versions(conf, versions):
                 else:
                     batch_file = os.path.join(path, 'env', 'vars.bat')
                     if os.path.isfile(batch_file):
-                        Logs.info(f"{conf=}, {arch=}, {version=}, {target=}, {batch_file=}")
-                        targets[target] = target_compiler(conf, 'intel', arch, version, target, batch_file)
-        for target, arch in all_ifort_platforms:
+                        targets[target] = target_compiler(conf, 'oneapi', arch, version, target, batch_file)
+
+        for target,arch in all_ifort_platforms:
             try:
-                icl_version = Utils.winreg.OpenKey(all_versions, version + '\\' + target)
-                path, type = Utils.winreg.QueryValueEx(icl_version, 'ProductDir')
+                icl_version = Utils.winreg.OpenKey(all_versions, version+'\\'+target)
+                path,type = Utils.winreg.QueryValueEx(icl_version,'ProductDir')
             except OSError:
                 continue
             else:
-                batch_file = os.path.join(path, 'bin', 'ifortvars.bat')
+                batch_file=os.path.join(path,'bin','ifortvars.bat')
                 if os.path.isfile(batch_file):
                     targets[target] = target_compiler(conf, 'intel', arch, version, target, batch_file)
         major = version[0:2]

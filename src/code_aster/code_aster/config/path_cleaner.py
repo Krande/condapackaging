@@ -15,7 +15,7 @@ def main():
         "Roslyn",
         "llvm",
         "WindowsApps",
-        ".dotnet",
+        "dotnet",
         ".cargo",
         "Amazon",
         "php",
@@ -38,7 +38,8 @@ def main():
         "sbt",
         "pulumi",
         "Windows Performance Toolkit",
-        "ImageMagick"
+        "ImageMagick",
+        "DiagnosticsHub"
     ]
     new_path = set()
     old_paths = os.getenv("PATH").split(os.pathsep)
