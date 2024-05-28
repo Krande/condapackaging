@@ -1,8 +1,9 @@
 @echo off
 
+setlocal enabledelayedexpansion
+
 echo "Setting compiler env vars"
-set "CC=clang-cl.exe"
-set "CXX=clang-cl.exe"
+
 
 if not defined ONEAPI_ROOT (
   echo "ONEAPI_ROOT is not defined"
@@ -14,8 +15,11 @@ if "%FC%" == "ifx" (
   echo "Already using Intel LLVM Fortran compiler"
 ) else (
   call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
-  set FC=ifx.exe
 )
+
+set FC=ifx.exe
+set CC=clang-cl.exe
+set CXX=clang-cl.exe
 
 echo "PATH: %PATH%"
 python %RECIPE_DIR%\config\path_cleaner.py
@@ -24,7 +28,6 @@ echo "PATH: %PATH%"
 SET OUTPUT_DIR=%SRC_DIR%/build/std
 echo "OUTPUT_DIR: %OUTPUT_DIR%"
 
-set FC=ifx.exe
 set ASTER_PLATFORM_MSVC=1
 set ASTER_PLATFORM_WINDOWS=1
 
@@ -115,3 +118,5 @@ if errorlevel 1 exit 1
 waf install_debug -v
 
 if errorlevel 1 exit 1
+
+endlocal
