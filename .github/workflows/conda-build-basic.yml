@@ -243,17 +243,18 @@ jobs:
         shell: python
         run: |
           import os
+          import pathlib
           
           def set_env(name, value):
               with open(os.environ['GITHUB_ENV'], 'a') as fh:
                   print(f'{name}={value}', file=fh)
           
-          workspace_dir = os.getenv("WORKSPACE")
+          workspace_dir = pathlib.Path(os.getenv("WORKSPACE"))
           extra_args = os.getenv("EXTRA_ARGS")
           
           # Substitute __root__ with github workspace
           if extra_args != "":
-            extra_args_str = extra_args.replace('__root__', workspace_dir)
+            extra_args_str = extra_args.replace('__root__', workspace_dir.as_posix())
             set_env('EXTRA_BUILD_ARGS', extra_args_str)
 
       - name: Download and extract MacOSX SDK
