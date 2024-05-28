@@ -354,7 +354,6 @@ jobs:
 
       - name: build local packages Linux
         if: ${{ runner.os == 'Linux' }}
-        shell: cmd /C call {0}
         run: |
           conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
