@@ -95,6 +95,9 @@ python conda\update_version.py
 
 set BUILD=std
 
+call %RECIPE_DIR%\config\test.bat
+%RECIPE_DIR%\config\test.bat
+
 python %RECIPE_DIR%\set_env_var.py %SRC_DIR%
 xcopy %RECIPE_DIR%\config\wscript_test.py %SRC_DIR%\wscript /Y
 xcopy %RECIPE_DIR%\config\ifort_test.py %SRC_DIR%\config\ifort.py /Y

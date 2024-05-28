@@ -68,7 +68,6 @@ requirements:
     - pyyaml
     - numpy
     - libboost-devel
-    - m2-patch                                      # [win]
     - mkl-devel                                     # [win]
     - openblas                                      # [not win]
     - metis {{ metis_ver }}

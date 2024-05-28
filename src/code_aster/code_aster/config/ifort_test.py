@@ -100,6 +100,7 @@ all_ifort_platforms = [('intel64', 'amd64'), ('em64t', 'amd64'), ('ia32', 'x86')
 @conf
 def gather_ifort_versions(conf, versions):
     ifort_batch_file = pathlib.Path(os.getenv("INTEL_VARS_PATH")+'\\vars.bat')
+    Logs.info(f"{ifort_batch_file=}")
     if ifort_batch_file.exists():
         Logs.info(f"conf: {conf=}, {versions=}")
         Logs.info(f"Ifort env var batch found at {ifort_batch_file=}")
@@ -203,7 +204,9 @@ echo PATH=%%PATH%%
 echo INCLUDE=%%INCLUDE%%
 echo LIB=%%LIB%%;%%LIBPATH%%
 """ % (vcvars, target))
+    Logs.info('Running ifort: get_ifort_version: %r %r %r -> %s', compiler, version, target, batfile.abspath())
     sout = conf.cmd_and_log(['cmd.exe', '/E:on', '/V:on', '/C', batfile.abspath()])
+    Logs.info("sout: %s", sout)
     batfile.delete()
     lines = sout.splitlines()
     if not lines[0]:
