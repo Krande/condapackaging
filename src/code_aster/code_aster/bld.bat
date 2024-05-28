@@ -1,7 +1,5 @@
 @echo off
 
-setlocal
-
 echo "Setting compiler env vars"
 set "CC=clang-cl.exe"
 set "CXX=clang-cl.exe"
@@ -108,12 +106,11 @@ waf configure ^
   --disable-mpi ^
   --maths-libs=auto ^
   --install-tests ^
+  -vvv ^
   --without-hg
 
 if errorlevel 1 exit 1
 
-waf install_debug -v
+waf install_debug -vvv
 
 if errorlevel 1 exit 1
-
-endlocal
