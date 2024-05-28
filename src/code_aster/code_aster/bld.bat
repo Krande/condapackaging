@@ -20,6 +20,8 @@ if "%FC%" == "ifx" (
 )
 
 echo "PATH: %PATH%"
+python %RECIPE_DIR%\config\path_cleaner.py
+echo "PATH: %PATH%"
 
 SET OUTPUT_DIR=%SRC_DIR%/build/std
 echo "OUTPUT_DIR: %OUTPUT_DIR%"
