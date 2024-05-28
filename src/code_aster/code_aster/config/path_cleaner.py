@@ -1,5 +1,11 @@
 import os
 
+def set_output(name, value):
+    if "GITHUB_OUTPUT" not in os.environ:
+        return
+
+    with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+        print(f"{name}={value}", file=fh)
 
 def main():
     """
@@ -58,7 +64,7 @@ def main():
 
     print(f"Reduced PATH from {len(old_paths)} to {len(new_path)}")
     new_path_str = os.pathsep.join(new_path)
-    print(f"::set-output name=clean_path::{new_path_str}")
+    set_output("clean_path", new_path_str)
 
 
 if __name__ == '__main__':

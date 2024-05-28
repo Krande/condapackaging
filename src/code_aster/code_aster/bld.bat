@@ -96,8 +96,8 @@ for /f "tokens=*" %%i in ('python %RECIPE_DIR%\config\path_cleaner.py') do set "
 set "PATH=%clean_path%"
 echo "Updated PATH: %PATH%"
 
-call %RECIPE_DIR%\config\test.bat
-%RECIPE_DIR%\config\test.bat
+@REM call %RECIPE_DIR%\config\test.bat
+@REM %RECIPE_DIR%\config\test.bat
 
 python %RECIPE_DIR%\config\set_env_var.py %SRC_DIR%
 xcopy %RECIPE_DIR%\config\wscript_test.py %SRC_DIR%\wscript /Y
