@@ -343,7 +343,18 @@ jobs:
           mkdir -p ${{ env.ARTIFACTS_DIR }}
           mkdir -p ${{ env.CROOT_DIR }}
 
-      - name: build local packages
+      - name: build local packages Windows
+        if: ${{ runner.os == 'Windows' }}
+        shell: cmd /C call {0}
+        run: |
+          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
+        working-directory: ${{ env.CONDA_DIR }}
+        env:
+          QUETZ_URL: ${{ secrets.QUETZ_URL }}
+
+      - name: build local packages Linux
+        if: ${{ runner.os == 'Linux' }}
+        shell: cmd /C call {0}
         run: |
           conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
