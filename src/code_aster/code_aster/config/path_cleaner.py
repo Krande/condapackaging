@@ -57,7 +57,8 @@ def main():
             new_path.add(path)
 
     print(f"Reduced PATH from {len(old_paths)} to {len(new_path)}")
-    os.environ["PATH"] = os.pathsep.join(new_path)
+    new_path_str = os.pathsep.join(new_path)
+    print(f"::set-output name=clean_path::{new_path_str}")
 
 
 if __name__ == '__main__':

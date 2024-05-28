@@ -21,10 +21,6 @@ set FC=ifx.exe
 set CC=clang-cl.exe
 set CXX=clang-cl.exe
 
-echo "PATH: %PATH%"
-python %RECIPE_DIR%\config\path_cleaner.py
-echo "PATH: %PATH%"
-
 SET OUTPUT_DIR=%SRC_DIR%/build/std
 echo "OUTPUT_DIR: %OUTPUT_DIR%"
 
@@ -95,10 +91,15 @@ python conda\update_version.py
 
 set BUILD=std
 
+echo "Original PATH: %PATH%"
+for /f "tokens=*" %%i in ('python %RECIPE_DIR%\config\path_cleaner.py') do set "clean_path=%%i"
+set "PATH=%clean_path%"
+echo "Updated PATH: %PATH%"
+
 call %RECIPE_DIR%\config\test.bat
 %RECIPE_DIR%\config\test.bat
 
-python %RECIPE_DIR%\set_env_var.py %SRC_DIR%
+python %RECIPE_DIR%\config\set_env_var.py %SRC_DIR%
 xcopy %RECIPE_DIR%\config\wscript_test.py %SRC_DIR%\wscript /Y
 xcopy %RECIPE_DIR%\config\ifort_test.py %SRC_DIR%\config\ifort.py /Y
 
