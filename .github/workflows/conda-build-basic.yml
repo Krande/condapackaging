@@ -348,7 +348,7 @@ jobs:
 
       - name: build local packages Windows
         if: ${{ runner.os == 'Windows' }}
-        shell: cmd /C call {0}
+        shell: cmd /E:on /C call {0}
         run: |
           conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
