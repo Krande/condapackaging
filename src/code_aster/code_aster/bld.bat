@@ -105,9 +105,10 @@ set BUILD=std
 @REM %RECIPE_DIR%\config\test.bat
 
 python %RECIPE_DIR%\config\set_env_var.py %SRC_DIR%
-xcopy %RECIPE_DIR%\config\wscript_test.py %SRC_DIR%\wscript /Y
-xcopy %RECIPE_DIR%\config\ifort_test.py %SRC_DIR%\config\ifort.py /Y
-xcopy %RECIPE_DIR%\config\msvc_test.py %SRC_DIR%\config\msvc.py /Y
+
+xcopy "%RECIPE_DIR%\config\wscript_test.py" "%SRC_DIR%\wscript" /Y
+xcopy "%RECIPE_DIR%\config\ifort_test.py" "%SRC_DIR%\config\ifort.py" /Y
+xcopy "%RECIPE_DIR%\config\msvc_test.py" "%SRC_DIR%\config\msvc.py"
 
 REM Install for standard sequential
 waf configure ^
