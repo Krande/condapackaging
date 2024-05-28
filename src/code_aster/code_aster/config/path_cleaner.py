@@ -4,7 +4,7 @@ import os
 def main():
     """
     This is a script to clean the PATH environment variable for Github Actions on windows.
-    This was because of a
+    This was because of an issue running WAF build on the windows-latest runner.
     """
     filter_paths_containing = [
         "fsharp",
