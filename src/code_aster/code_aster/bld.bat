@@ -93,6 +93,8 @@ python conda\update_version.py
 set BUILD=std
 
 python %RECIPE_DIR%\set_env_var.py %SRC_DIR%
+xcopy %RECIPE_DIR%\config\wscript_test.py %SRC_DIR%\wscript /Y
+xcopy %RECIPE_DIR%\config\ifort_test.py %SRC_DIR%\config\ifort.py /Y
 
 REM Install for standard sequential
 waf configure ^
@@ -106,11 +108,10 @@ waf configure ^
   --disable-mpi ^
   --maths-libs=auto ^
   --install-tests ^
-  -vvv ^
   --without-hg
 
 if errorlevel 1 exit 1
 
-waf install_debug -vvv
+waf install_debug -v
 
 if errorlevel 1 exit 1
