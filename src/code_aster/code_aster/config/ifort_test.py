@@ -197,12 +197,21 @@ def get_ifort_version_win32(conf, compiler, version, target, vcvars):
         conf.msvc_cnt = 1
     batfile = conf.bldnode.make_node('waf-print-msvc-%d.bat' % conf.msvc_cnt)
     batfile.write("""@echo off
-set INCLUDE=
-set LIB=
-call "%s" %s
+setlocal enabledelayedexpansion
+:: if SETVARS_CALL is defined, then the script is being called from another script
+:: and we should not set the environment variables
+if not defined SETVARS_COMPLETED (
+    set INCLUDE=
+    set LIB=
+    call "%s" %s
+) else (
+    echo Environment variables already set
+)
+
 echo PATH=%%PATH%%
 echo INCLUDE=%%INCLUDE%%
 echo LIB=%%LIB%%;%%LIBPATH%%
+endlocal
 """ % (vcvars, target))
     Logs.info('Running ifort: get_ifort_version: %r %r %r -> %s', compiler, version, target, batfile.abspath())
     sout = conf.cmd_and_log(['cmd.exe', '/E:on', '/V:on', '/C', batfile.abspath()])
