@@ -3,7 +3,19 @@ set BISON_PKGDATADIR=%BUILD_PREFIX%\Library\share\winflexbison\data\
 :: MSVC is preferred.
 set CC=cl.exe
 set CXX=cl.exe
-set FC=flang-new
+
+if not defined ONEAPI_ROOT (
+  echo "ONEAPI_ROOT is not defined"
+  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
+)
+set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+
+if "%FC%" == "ifx" (
+  echo "Already using Intel LLVM Fortran compiler"
+) else (
+  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+  set FC=ifx
+)
 
 set CFLAGS=%CFLAGS% /nologo -DINTSIZE=64
 
