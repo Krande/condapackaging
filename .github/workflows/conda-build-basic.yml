@@ -377,17 +377,6 @@ jobs:
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
 
-      - name: print config log
-        if: always()
-        continue-on-error: true
-        run: |
-          dir "${{ env.CONDA_BUILD_DIR }}"
-          dir "${{ env.CONDA_BUILD_DIR }}/build"
-          dir "${{ env.CONDA_BUILD_DIR }}/build/std"
-          powershell -Command "Get-Content '${{ env.CONDA_BUILD_DIR }}/build/std/config.log' -ErrorAction Stop"
-          powershell -Command "Get-Content '${{ env.CONDA_BUILD_DIR }}/build/std/waf-print-msvc-1.bat' -ErrorAction Stop"
-
-
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
         run: |
