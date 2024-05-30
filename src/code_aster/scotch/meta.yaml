@@ -57,11 +57,12 @@ outputs:
     requirements:
       build:
         - {{ compiler('c') }}
+        - {{ stdlib("c") }}
         - {{ compiler('fortran') }}  # [not win]
         - cmake
         - make          # [unix]
         - ninja         # [win]
-        - {{ mpi }}     # [build_platform != target_platform]
+        - {{ mpi }}     # [build_platform != target_platform and mpi != 'nompi']
         - bison <3.8    # [unix]
         - flex          # [unix]
         - winflexbison  # [win]
@@ -69,7 +70,7 @@ outputs:
         - zlib
         - bzip2
         - xz
-        - {{ mpi }}                                 # [mpi != "nompi"]
+        - {{ mpi }}       # [mpi != 'nompi']
         - pthreads-win32  # [win]
       run:
         - zlib
@@ -102,52 +103,6 @@ outputs:
         - test ! -f "${PREFIX}/bin/gord"                                               # [unix]
         - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 1) else (exit 0)             # [win]
 
-  - name: libptscotch
-    build:
-      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
-      script:
-        - cmake --install ./build --component=libptscotch
-      run_exports:
-        - {{ pin_subpackage('libptscotch', max_pin='x.x.x') }}
-    requirements:
-      build:
-        - cmake
-        - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
-      host:
-        - {{ mpi }}                                 # [mpi != "nompi"]
-      run:
-        - {{ pin_subpackage("scotch", exact=True) }}
-    test:
-      requires:
-        - cmake
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-      commands:
-        {% for lib in [
-          'ptscotch',
-          'ptscotcherr',
-          'ptscotcherrexit',
-          'ptesmumps'
-        ]
-        %}
-        - test -f "${PREFIX}/lib/lib{{ lib }}${SHLIB_EXT}"                                 # [unix]
-        - if exist %PREFIX%\\Library\\lib\\{{ lib }}.lib (exit 0) else (exit 1)            # [win]
-        {% endfor %}
-        - test -f "${PREFIX}/include/ptscotch.h"                                           # [unix]
-        - if exist %PREFIX%\\Library\\include\\ptscotch.h (exit 0) else (exit 1)           # [win]
-        - test -f "${PREFIX}/include/ptscotchf.h"                                          # [unix]
-        - if exist %PREFIX%\\Library\\include\\ptscotchf.h (exit 0) else (exit 1)          # [win]
-        - test -f "${PREFIX}/include/ptesmumps.h"                                          # [unix]
-        - if exist %PREFIX%\\Library\\include\\ptesmumps.h (exit 0) else (exit 1)          # [win]
-        - test -f "${PREFIX}/include/scotch/parmetis.h"                                    # [unix]
-        - if exist %PREFIX%\\Library\\include\\scotch\\parmetis.h (exit 0) else (exit 1)   # [win]
-        - test ! -f "${PREFIX}/include/parmetis.h"                                         # [unix]
-        - if exist %PREFIX%\\Library\\include\\parmetis.h (exit 1) else (exit 0)           # [win]
-        - test ! -f "${PREFIX}/bin/dgord"                                                  # [unix]
-        - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 1) else (exit 0)                # [win]
-    about:
-      summary: 'PT-SCOTCH: (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
-
   - name: scotch
     build:
       script: cmake --install ./build --component=scotch
@@ -161,7 +116,7 @@ outputs:
         - cmake
       host:
         # This is needed to get the correct package hash
-        - {{ mpi }}                                 # [mpi != "nompi"]
+        - {{ mpi }}       # [mpi != 'nompi']
       run:
         - {{ pin_subpackage('libscotch', exact=True) }}
     test:
@@ -170,30 +125,6 @@ outputs:
         - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 0) else (exit 1)   # [win]
         - test ! -f "${PREFIX}/bin/dgord"                                    # [unix]
         - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 1) else (exit 0)  # [win]
-
-  - name: ptscotch
-    build:
-      script: cmake --install ./build --component=ptscotch
-      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
-      run_exports:
-        - {{ pin_subpackage('ptscotch', max_pin='x.x.x') }}
-    requirements:
-      build:
-        - cmake
-      host:
-        # This is needed to get the correct package hash
-        - {{ mpi }}                                 # [mpi != "nompi"]
-      run:
-        - {{ pin_subpackage('libptscotch', exact=True) }}
-        - {{ pin_subpackage('scotch', exact=True) }}
-    test:
-      commands:
-        - test -f "${PREFIX}/bin/gord"                                       # [unix]
-        - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 0) else (exit 1)   # [win]
-        - test -f "${PREFIX}/bin/dgord"                                      # [unix]
-        - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 0) else (exit 1)  # [win]
-    about:
-      summary: 'PT-SCOTCH: (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
 
 about:
   home: https://www.labri.fr/perso/pelegrin/scotch/

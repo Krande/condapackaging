@@ -77,8 +77,8 @@ set LDFLAGS=%LDFLAGS% pthread.lib
 :: Add hdf5 libs
 @REM set LDFLAGS=%LDFLAGS% hdf5.lib hdf5_hl.lib
 
-:: Add mumps libs
-@REM set LDFLAGS=%LDFLAGS% dmumps_seq.lib zmumps_seq.lib smumps_seq.lib cmumps_seq.lib mumps_common_seq.lib pord.lib
+:: Add metis libs
+set LDFLAGS=%LDFLAGS% metis.lib
 
 :: Add libmed libs
 set LDFLAGS=%LDFLAGS% med.lib medC.lib medfwrap.lib medimport.lib
@@ -106,11 +106,6 @@ set BUILD=std
 
 python %RECIPE_DIR%\config\set_env_var.py %SRC_DIR%
 
-:: Copy the files
-@REM copy "%RECIPE_DIR%\config\wscript_test.py" "%SRC_DIR%\wscript" /Y
-@REM copy "%RECIPE_DIR%\config\ifort_test.py" "%SRC_DIR%\config\ifort.py" /Y
-@REM copy "%RECIPE_DIR%\config\msvc_test.py" "%SRC_DIR%\config\msvc.py" /Y
-
 REM Install for standard sequential
 waf configure ^
   --safe ^
@@ -118,7 +113,6 @@ waf configure ^
   --use-config-dir=%SRC_DIR%/config/ ^
   --med-libs="med medC medfwrap medimport" ^
   --prefix=%LIB_PATH_ROOT% ^
-  --embed-mumps ^
   --out=%SRC_DIR%/build/std ^
   --disable-mpi ^
   --maths-libs=auto ^

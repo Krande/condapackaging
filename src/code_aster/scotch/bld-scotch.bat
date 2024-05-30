@@ -16,7 +16,11 @@ if "%FC%" == "ifx" (
   call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
   set FC=ifx
 )
-
+if "%mpi%" == "nompi" (
+    set USE_MPI=OFF
+) else (
+    set USE_MPI=ON
+)
 set CFLAGS=%CFLAGS% /nologo -DINTSIZE=64
 
 cmake ^
@@ -25,10 +29,13 @@ cmake ^
   -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
   -D BUILD_SHARED_LIBS=OFF ^
   -D CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
+  -D MPI_THREAD_MULTIPLE=%USE_MPI% ^
+  -D BUILD_PTSCOTCH=%USE_MPI% ^
   -D THREADS_PTHREADS_INCLUDE_DIR="%LIBRARY_INC%" ^
   -D THREADS_PTHREADS_WIN32_LIBRARY:FILEPATH="%LIBRARY_LIB%\pthread.lib" ^
   -B build ^
   %SRC_DIR%
+
 if errorlevel 1 exit 1
 
 cmake --build ./build --config Release
