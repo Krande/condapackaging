@@ -53,7 +53,7 @@ outputs:
       run_exports:
         - {{ pin_subpackage('libscotch', max_pin='x.x.x') }}
       ignore_run_exports:
-        - {{ mpi }}
+        - {{ mpi }}       # [mpi != 'nompi']
     requirements:
       build:
         - {{ compiler('c') }}
@@ -157,7 +157,7 @@ outputs:
       run_exports:
         - {{ pin_subpackage('scotch', max_pin='x.x.x') }}
       ignore_run_exports:
-        - {{ mpi }}
+        - {{ mpi }}       # [mpi != 'nompi']
     requirements:
       build:
         - cmake

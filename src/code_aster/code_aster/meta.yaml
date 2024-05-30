@@ -65,11 +65,12 @@ requirements:
 
   host:
     - python
-    - pyyaml
     - numpy
     - libboost-devel
     - mkl-devel                                     # [win]
     - openblas                                      # [not win]
+    - libblas
+    - liblapack
     - metis {{ metis_ver }}
     - mumps {{ mumps_ver }}
     - mfront {{ mfront_ver }}
