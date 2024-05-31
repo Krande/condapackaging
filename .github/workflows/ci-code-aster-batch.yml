@@ -13,7 +13,7 @@ on:
         description: 'Which builds'
         required: true
         type: string
-        default: "code_aster"
+        default: "all"
       conda_label:
         description: 'Conda Channel for dependencies'
         required: false

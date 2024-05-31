@@ -26,12 +26,17 @@ cxx_compiler_version:
 fortran_compiler_version:
   - 12            # [linux]
 
+channel_sources:
+  - conda-forge
+  - lapack_rc         # [win]
+
+# https://github.com/conda-forge/intel_repack-feedstock/issues/26
 libblas:
 - 3.9 *netlib     # [not win]
-- 3.9 *mkl        # [win]
+- 3.11 *netlib        # [win]
 liblapack:
 - 3.9 *netlib     # [not win]
-- 3.9 *mkl        # [win]
+- 3.11 *netlib        # [win]
 
 numpy:
   - 1.22
