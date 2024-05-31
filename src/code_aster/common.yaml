@@ -33,11 +33,11 @@ channel_sources:
 
 # https://github.com/conda-forge/intel_repack-feedstock/issues/26
 libblas:
-- 3.9 *netlib     # [not win]
-- 3.11 *netlib        # [win]
+  - 3.9 *netlib     # [not win]
+  - 3.11 *netlib        # [win]
 liblapack:
-- 3.9 *netlib     # [not win]
-- 3.11 *netlib        # [win]
+  - 3.9 *netlib     # [not win]
+  - 3.11 *netlib        # [win]
 
 numpy:
   - 1.22
