@@ -37,10 +37,13 @@ def main(directory: str | pathlib.Path) -> None:
         directory (str): The directory to search for files and perform replacements.
     """
     files = find_files(directory)
+    if len(files) == 0:
+        raise FileNotFoundError(f'No files found in {directory} matching the pattern *_struc.h or *_root.h')
     for file_path in files:
         replace_text_in_file(file_path)
 
 
 if __name__ == '__main__':
-    include_dir = pathlib.Path(os.getenv('SRC_DIR')).resolve().absolute() / 'mumps/5.6.2/include'
+    # include_dir = pathlib.Path(os.getenv('SRC_DIR')).resolve().absolute() / 'mumps/5.6.2/include'
+    include_dir = r'C:\work\code\mumps'
     main(include_dir)
