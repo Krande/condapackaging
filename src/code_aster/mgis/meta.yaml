@@ -32,14 +32,11 @@ requirements:
   host:
     - python
     - numpy
-    - boost
     - mfront
 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - mfront 4.1.0 =aster_*           # [not win]
-    - mfront 4.2.0                    # [win]
 
 #
 #test:

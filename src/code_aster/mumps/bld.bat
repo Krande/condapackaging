@@ -37,6 +37,7 @@ cmake -G "Ninja" ^
       -D BUILD_DOUBLE:BOOL=ON ^
       -D BUILD_COMPLEX:BOOL=ON ^
       -D BUILD_COMPLEX16:BOOL=ON ^
+      -D PY_POSTPROCESSING_SCRIPT_FILE:FILEPATH=%RECIPE_DIR%/integer_replace.py ^
       ..
 
 if errorlevel 1 exit 1

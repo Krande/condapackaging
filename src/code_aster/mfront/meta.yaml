@@ -78,8 +78,8 @@ about:
     material properties (for instance the Young modulus, the thermal conductivity, etc.)
     mechanical behaviours. Numerical performances of generated mechanical behaviours were given a particular attention. Various benchmarks show that MFront implementations are competitive with native implementations available in the Cast3M, Code-Aster, Abaqus Standard and Cyrano3 solvers.
     simple point-wise models, such as material swelling used in fuel performance codes.
-  doc_url: http://tfel.sourceforge.net/documentations.html
-  dev_url: http://tfel.sourceforge.net/devel.html
+  doc_url: https://tfel.sourceforge.net
+  dev_url: https://tfel.sourceforge.net/devel.html
 
 extra:
   recipe-maintainers:

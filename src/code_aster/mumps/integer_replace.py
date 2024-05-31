@@ -1,3 +1,5 @@
+import os
+import pathlib
 from pathlib import Path
 
 
@@ -27,7 +29,7 @@ def replace_text_in_file(file_path: Path) -> None:
     file_path.write_text(updated_content)
 
 
-def main(directory: str) -> None:
+def main(directory: str | pathlib.Path) -> None:
     """
     Main function to find and replace text in all matched files within a directory.
 
@@ -40,9 +42,5 @@ def main(directory: str) -> None:
 
 
 if __name__ == '__main__':
-    import sys
-
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <directory>")
-    else:
-        main(sys.argv[1])
+    include_dir = pathlib.Path(os.getenv('SRC_DIR')).resolve().absolute() / 'mumps/5.6.2/include'
+    main(include_dir)
