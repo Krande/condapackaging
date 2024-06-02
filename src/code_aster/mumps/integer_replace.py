@@ -1,7 +1,9 @@
 import os
 import pathlib
+import subprocess
 from pathlib import Path
 
+SRC_DIR = pathlib.Path(os.getenv('SRC_DIR')).resolve().absolute() / 'mumps/5.6.2'
 
 def find_files(directory: str) -> list[Path]:
     """
@@ -43,7 +45,13 @@ def main(directory: str | pathlib.Path) -> None:
         replace_text_in_file(file_path)
 
 
+def run_patch_on_mumps() -> None:
+    patch_file = pathlib.Path(__file__).parent / 'patches/int_patch_for_aster.patch'
+    print(f'Running patch on MUMPS at "{SRC_DIR}" with file: "{patch_file}"')
+    result = subprocess.run(['patch', '-p1', '-i', patch_file], cwd=SRC_DIR, capture_output=True, shell=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f'Patch failed: "{result.stdout + result.stderr}"')
+
+
 if __name__ == '__main__':
-    # include_dir = pathlib.Path(os.getenv('SRC_DIR')).resolve().absolute() / 'mumps/5.6.2/include'
-    include_dir = r'C:\work\code\mumps'
-    main(include_dir)
+    run_patch_on_mumps()
