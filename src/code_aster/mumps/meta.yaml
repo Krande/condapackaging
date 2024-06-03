@@ -54,6 +54,7 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
+    - clang  # [win]
     - waf    # [not win]
     - make   # [not win]
     - cmake  # [win]

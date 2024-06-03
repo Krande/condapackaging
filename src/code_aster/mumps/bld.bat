@@ -15,11 +15,12 @@ cd build
 ::   call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
 ::   set FC=ifx
 :: )
-
+set CC=clang-cl
+set CXX=clang-cl
 set FC=flang-new
 
 :: Needed for the pthread library when linking with scotch
-set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib scotch.lib metis.lib
+set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
 set FCFLAGS=%FCFLAGS% -Dtry_null_space -DUSE_SCHEDAFFINITY
 

@@ -4,23 +4,25 @@ set BISON_PKGDATADIR=%BUILD_PREFIX%\Library\share\winflexbison\data\
 set CC=cl.exe
 set CXX=cl.exe
 
-if not defined ONEAPI_ROOT (
-  echo "ONEAPI_ROOT is not defined"
-  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
-)
-set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+@REM if not defined ONEAPI_ROOT (
+@REM   echo "ONEAPI_ROOT is not defined"
+@REM   set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
+@REM )
+@REM set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+@REM
+@REM if "%FC%" == "ifx" (
+@REM   echo "Already using Intel LLVM Fortran compiler"
+@REM ) else (
+@REM   call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+@REM   set FC=ifx
+@REM )
+@REM if "%mpi%" == "nompi" (
+@REM     set USE_MPI=OFF
+@REM ) else (
+@REM     set USE_MPI=ON
+@REM )
 
-if "%FC%" == "ifx" (
-  echo "Already using Intel LLVM Fortran compiler"
-) else (
-  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
-  set FC=ifx
-)
-if "%mpi%" == "nompi" (
-    set USE_MPI=OFF
-) else (
-    set USE_MPI=ON
-)
+set FC=flang-new
 set CFLAGS=%CFLAGS% /nologo -DINTSIZE=64
 
 cmake ^
