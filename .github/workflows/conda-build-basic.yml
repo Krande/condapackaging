@@ -8,6 +8,16 @@ on:
         description: 'package name'
         type: string
         required: true
+      job_name:
+        description: 'Name of job'
+        type: string
+        required: false
+        default: ""
+      arg_data:
+        description: 'A base64 serialized dictionary with all relevant build args. Local build args will always override these.'
+        type: string
+        required: false
+        default: ""
       debug_build:
         description: 'should produce a debug build'
         type: string
@@ -87,11 +97,6 @@ on:
         default: ""
       build_selection:
         description: 'A comma separated list of jobs'
-        type: string
-        required: false
-        default: ""
-      job_name:
-        description: 'Name of job'
         type: string
         required: false
         default: ""

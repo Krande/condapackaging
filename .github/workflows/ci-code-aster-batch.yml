@@ -135,6 +135,7 @@ jobs:
         ]
     with:
       package_name: ${{ matrix.package.name }}
+      job_name: ${{ matrix.package.name }}
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -144,7 +145,6 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
-      job_name: ${{ matrix.package.name }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
     secrets: inherit
 
@@ -153,6 +153,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: parmetis
+      job_name: parmetis
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -163,7 +164,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: parmetis
     secrets: inherit
 
   build_batch_mumps:
@@ -171,6 +171,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
+      job_name: mumps
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -182,7 +183,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: mumps
     secrets: inherit
 
   build_batch_libmed:
@@ -190,6 +190,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
+      job_name: libmed
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -201,7 +202,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: libmed
     secrets: inherit
 
   build_batch_petsc:
@@ -209,6 +209,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: petsc
+      job_name: petsc
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -219,7 +220,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: petsc
     secrets: inherit
 
   build_batch_medcoupling:
@@ -227,6 +227,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
+      job_name: medcoupling
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -238,7 +239,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: medcoupling
+
     secrets: inherit
 
   build_batch_mfront:
@@ -246,6 +247,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mfront
+      job_name: mfront
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -256,7 +258,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: mfront
     secrets: inherit
 
   build_batch_mgis:
@@ -264,6 +265,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mgis
+      job_name: mgis
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
@@ -274,7 +276,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      job_name: mgis
     secrets: inherit
 
   build_batch_code_aster:

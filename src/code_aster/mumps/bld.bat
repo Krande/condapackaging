@@ -3,21 +3,25 @@
 mkdir build
 cd build
 
-if not defined ONEAPI_ROOT (
-  echo "ONEAPI_ROOT is not defined"
-  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
-)
-set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+:: if not defined ONEAPI_ROOT (
+::   echo "ONEAPI_ROOT is not defined"
+::   set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
+:: )
+:: set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
+::
+:: if "%FC%" == "ifx" (
+::   echo "Already using Intel LLVM Fortran compiler"
+:: ) else (
+::   call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+::   set FC=ifx
+:: )
 
-if "%FC%" == "ifx" (
-  echo "Already using Intel LLVM Fortran compiler"
-) else (
-  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
-  set FC=ifx
-)
+set FC=flang-new
 
 :: Needed for the pthread library when linking with scotch
-set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
+set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib scotch.lib metis.lib
+set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
+set FCFLAGS=%FCFLAGS% -Dtry_null_space -DUSE_SCHEDAFFINITY
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
@@ -31,13 +35,15 @@ cmake -G "Ninja" ^
       -D gemmt:BOOL=ON ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
+      -D openmp:BOOL=ON ^
       -D parallel:BOOL=OFF ^
       -D BUILD_SHARED_LIBS:BOOL=OFF ^
       -D BUILD_SINGLE:BOOL=ON ^
       -D BUILD_DOUBLE:BOOL=ON ^
       -D BUILD_COMPLEX:BOOL=ON ^
       -D BUILD_COMPLEX16:BOOL=ON ^
-      -D PY_POSTPROCESSING_SCRIPT_FILE:FILEPATH=%RECIPE_DIR%/integer_replace.py ^
+      -D MUMPS_PATCH_FILE:FILEPATH=%RECIPE_DIR%/patches/int_patch_for_aster.patch ^
+      -D MUMPS_PATCH_DIR:PATH=%SRC_DIR%/mumps/5.6.2 ^
       ..
 
 if errorlevel 1 exit 1

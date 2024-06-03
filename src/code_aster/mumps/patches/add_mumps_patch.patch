@@ -1,0 +1,33 @@
+Subject: [PATCH] add mumps patch
+---
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	(revision 5c71b6d7923b61271071bb90360695d1106270c6)
++++ b/CMakeLists.txt	(date 1717405311086)
+@@ -126,6 +126,22 @@
+ 
+ message(VERBOSE "MUMPS ${MUMPS_UPSTREAM_VERSION} source directory: ${mumps_SOURCE_DIR}")
+ 
++find_package(Patch)
++if(Patch_FOUND)
++  message("Patch found: ${Patch_EXECUTABLE}")
++endif()
++
++# Apply patch file from env var MUMPS_PATCH using a work directory MUMPS_PATCH_DIR
++if(DEFINED MUMPS_PATCH_FILE)
++  if(DEFINED MUMPS_PATCH_DIR)
++    set(patch_dir ${MUMPS_PATCH_DIR})
++  else()
++    set(patch_dir ${mumps_SOURCE_DIR})
++  endif()
++  message(STATUS "Applying patch ${MUMPS_PATCH_FILE} in $patch_dir")
++  execute_process(COMMAND ${Patch_EXECUTABLE} -p1 -i ${MUMPS_PATCH_FILE} WORKING_DIRECTORY ${patch_dir})
++endif()
++
+ # --- MUMPS build
+ 
+ # --- mpiseq (No MPI)
