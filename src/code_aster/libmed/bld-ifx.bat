@@ -7,11 +7,14 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-if "%PKG_DEBUG%" == "True" (
-    set CMAKE_BUILD_TYPE=Debug
-) else (
-    set CMAKE_BUILD_TYPE=Release
-)
+REM currently fails with debug build
+set CMAKE_BUILD_TYPE=Release
+
+REM if "%PKG_DEBUG%" == "True" (
+REM
+REM ) else (
+REM     set CMAKE_BUILD_TYPE=Release
+REM )
 
 :: This updates the symbols to lowercase and adds an underscore
 xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y

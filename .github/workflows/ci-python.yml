@@ -1,0 +1,23 @@
+name: ci-mgis
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/ci-mgis.yml
+    branches:
+      - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: python
+      job_name: "python"
+      pkg_dir: src
+      conda_label: "devtools"
+      use_quetz: "True"
+      platforms: "windows-latest"
+      extra_build_args: " -m __root__/src/code_aster/common.yaml"
+      debug_build: 'True'
+    secrets: inherit
