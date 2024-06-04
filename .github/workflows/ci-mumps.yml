@@ -2,7 +2,11 @@ name: ci-mumps
 
 on:
   workflow_dispatch:
-
+  push:
+    paths:
+      - .github/workflows/ci-mumps.yml
+#    branches:
+#      - donotrun
 jobs:
   build:
     uses: ./.github/workflows/conda-build-basic.yml
