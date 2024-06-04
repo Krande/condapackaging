@@ -53,7 +53,7 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - "{{ compiler('fortran') }}" # [not win]
     - clang  # [win]
     - waf    # [not win]
     - make   # [not win]

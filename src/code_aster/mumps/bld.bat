@@ -1,23 +1,18 @@
 @echo off
 
+setlocal enabledelayedexpansion
+
 mkdir build
 cd build
 
-:: if not defined ONEAPI_ROOT (
-::   echo "ONEAPI_ROOT is not defined"
-::   set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
-:: )
-:: set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
-::
-:: if "%FC%" == "ifx" (
-::   echo "Already using Intel LLVM Fortran compiler"
-:: ) else (
-::   call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
-::   set FC=ifx
-:: )
-set CC=clang-cl
-set CXX=clang-cl
-set FC=flang-new
+:: Set compilers
+set CC=cl
+set CXX=cl
+:: set FC=flang-new
+
+if not "%FC%" == "flang-new" (
+    call %RECIPE_DIR%\activate_ifx.bat
+)
 
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
@@ -31,7 +26,7 @@ cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE:STRING=Release ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.6.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
-      -D LAPACK_VENDOR:STRING=MKL ^
+      -D LAPACK_VENDOR:STRING=MKL64 ^
       -D intsize64:BOOL=ON ^
       -D gemmt:BOOL=ON ^
       -D metis:BOOL=ON ^
@@ -43,11 +38,11 @@ cmake -G "Ninja" ^
       -D BUILD_DOUBLE:BOOL=ON ^
       -D BUILD_COMPLEX:BOOL=ON ^
       -D BUILD_COMPLEX16:BOOL=ON ^
-      -D MUMPS_PATCH_FILE:FILEPATH=%RECIPE_DIR%/patches/int_patch_for_aster.patch ^
-      -D MUMPS_PATCH_DIR:PATH=%SRC_DIR%/mumps/5.6.2 ^
       ..
 
 if errorlevel 1 exit 1
 cmake --build . --config Release --target install
 
 if errorlevel 1 exit 1
+
+endlocal
