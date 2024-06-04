@@ -8,9 +8,11 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
-      boa: false
+      job_name: "mumps"
+      platforms: "windows-latest"
       pkg_dir: src/code_aster
-      conda_label: debug
-      conda_user: krandedev
+      conda_label: code-aster-dev
+      use_quetz: "True"
+      extra_build_args: " -m __root__/src/code_aster/common.yaml"
       debug_build: 'True'
     secrets: inherit
