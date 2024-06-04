@@ -3,11 +3,17 @@
 mkdir build
 cd build
 
+if "%PKG_DEBUG%" == "True" (
+    set CMAKE_BUILD_TYPE=Debug
+) else (
+    set CMAKE_BUILD_TYPE=Release
+)
+
 cmake ^
     -G "Ninja" ^
     -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-    -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
     -DSHARED=ON ^
     -Dintsize=64 ^
     -Drealsize=64 ^

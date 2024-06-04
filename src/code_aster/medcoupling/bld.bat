@@ -3,9 +3,15 @@
 mkdir build
 cd build
 
+if "%PKG_DEBUG%" == "True" (
+    set CMAKE_BUILD_TYPE=Debug
+) else (
+    set CMAKE_BUILD_TYPE=Release
+)
+
 cmake -G "Ninja" .. ^
     -Wno-dev ^
-    -D CMAKE_BUILD_TYPE="Release" ^
+    -D CMAKE_BUILD_TYPE="%CMAKE_BUILD_TYPE%" ^
     -D PYTHON_ROOT_DIR="%PREFIX%" ^
     -D CMAKE_CXX_FLAGS="/bigobj /EHsc" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PYTHON%" ^

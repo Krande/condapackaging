@@ -4,24 +4,21 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
-if not defined ONEAPI_ROOT (
-  echo "ONEAPI_ROOT is not defined"
-  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
+if not "%FC%" == "flang-new" (
+    call %RECIPE_DIR%\activate_ifx.bat
 )
-set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
 
-if "%FC%" == "ifx" (
-  echo "Already using Intel LLVM Fortran compiler"
+if "%PKG_DEBUG%" == "True" (
+    set CMAKE_BUILD_TYPE=Debug
 ) else (
-  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
-  set FC=ifx
+    set CMAKE_BUILD_TYPE=Release
 )
 
 set FFLAGS=%FCFLAGS% /fpp /MD
 
 :: Configure step.
 cmake -G "Ninja" ^
-      -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
+      -D CMAKE_BUILD_TYPE:STRING=%CMAKE_BUILD_TYPE% ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
       -D HDF5_BUILD_CPP_LIB:BOOL=ON ^

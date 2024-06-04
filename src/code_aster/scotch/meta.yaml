@@ -50,6 +50,8 @@ outputs:
       script: ${RECIPE_DIR}/build-scotch.sh  # [unix]
       script: "%RECIPE_DIR%\\bld-scotch.bat"  # [win]
       string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+      script_env:
+        - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
       run_exports:
         - {{ pin_subpackage('libscotch', max_pin='x.x.x') }}
       ignore_run_exports:

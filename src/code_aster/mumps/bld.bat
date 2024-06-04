@@ -14,6 +14,12 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
+if "%PKG_DEBUG%" == "True" (
+    set CMAKE_BUILD_TYPE=Debug
+) else (
+    set CMAKE_BUILD_TYPE=Release
+)
+
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
@@ -23,7 +29,7 @@ set FCFLAGS=%FCFLAGS% -Dtry_null_space -DUSE_SCHEDAFFINITY
 cmake -G "Ninja" ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
-      -D CMAKE_BUILD_TYPE:STRING=Release ^
+      -D CMAKE_BUILD_TYPE:STRING=%CMAKE_BUILD_TYPE% ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.6.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=MKL64 ^

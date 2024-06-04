@@ -42,6 +42,8 @@ build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   script: "%RECIPE_DIR%\\bld-ifx.bat"  # [win]
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
 

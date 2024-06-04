@@ -38,6 +38,8 @@ build:
   detect_binary_files_with_prefix: true
   string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
   number: "{{ build }}"
+  script_env:
+    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }}
 

@@ -3,13 +3,19 @@ echo Build MFRONT/TFEL
 
 set FC=flang-new
 
+if "%PKG_DEBUG%" == "True" (
+    set CMAKE_BUILD_TYPE=Debug
+) else (
+    set CMAKE_BUILD_TYPE=Release
+)
+
 cmake -B build . -G "Ninja" -Wno-dev ^
     %CMAKE_ARGS% ^
     -DCMAKE_CXX_COMPILER=clang-cl ^
     -DCMAKE_C_COMPILER=clang-cl ^
     -DCMAKE_LINKER=lld-link ^
     -DCMAKE_NM=llvm-nm ^
-    -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
     -Denable-fortran=ON ^
     -Denable-python-bindings=ON ^
     -Denable-cyrano=ON ^
