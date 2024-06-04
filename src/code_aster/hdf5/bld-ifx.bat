@@ -7,12 +7,14 @@ set HDF5_EXT_ZLIB=zlib.lib
 if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
+REM currently fails with debug build
+set CMAKE_BUILD_TYPE=Release
 
-if "%PKG_DEBUG%" == "True" (
-    set CMAKE_BUILD_TYPE=Debug
-) else (
-    set CMAKE_BUILD_TYPE=Release
-)
+REM if "%PKG_DEBUG%" == "True" (
+REM
+REM ) else (
+REM     set CMAKE_BUILD_TYPE=Release
+REM )
 
 set FFLAGS=%FCFLAGS% /fpp /MD
 
