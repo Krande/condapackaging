@@ -32,6 +32,7 @@ requirements:
   host:
     - python
     - numpy
+    - libboost-python-devel
     - mfront
 
   run:
