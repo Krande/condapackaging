@@ -40,7 +40,7 @@ on:
       conda_user:
         description: 'conda user'
         type: string
-        required: true
+        required: false
       conda_upstream_label:
         description: 'conda upstream label'
         type: string
