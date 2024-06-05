@@ -9,8 +9,8 @@ project(mymath)
 
 option(PY_VER, "Python version to use")
 
-find_package(PythonInterp ${PY_VER} REQUIRED)
+find_package (Python COMPONENTS Interpreter Development)
 #            PATHS $ENV{CONDA_PREFIX}
 
 # This goes after, since it uses PythonInterp as hint
-find_package(PythonLibs ${PY_VER} REQUIRED)
+#find_package(PythonLibs ${PY_VER} REQUIRED)

@@ -191,9 +191,6 @@ outputs:
         - python_abi {{ ver2 }}.* *_cp{{ ver2nd }}
 {% endif %}
     test:
-      downstreams:
-        - cython
-        - setuptools
       requires:
         - ripgrep
         - cmake
