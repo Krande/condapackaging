@@ -1,10 +1,10 @@
-name: ci-mgis
+name: ci-python
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - .github/workflows/ci-mgis.yml
+      - .github/workflows/ci-python.yml
     branches:
       - donotrun
 
@@ -14,10 +14,11 @@ jobs:
     with:
       package_name: python
       job_name: "python"
+      platforms: "windows-latest"
+      python_versions: "3.11"
       pkg_dir: src
       conda_label: "devtools"
       use_quetz: "True"
-      platforms: "windows-latest"
       extra_build_args: " -m __root__/src/code_aster/common.yaml"
       debug_build: 'True'
     secrets: inherit
