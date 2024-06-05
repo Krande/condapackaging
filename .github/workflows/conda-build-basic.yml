@@ -334,6 +334,7 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
+              - ${{ secrets.QUETZ_URL }}/get/devtools
               - ${{ env.EXTRA_CHANNEL }}
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
