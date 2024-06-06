@@ -49,9 +49,7 @@ outputs:
     build:
       script: ${RECIPE_DIR}/build-scotch.sh  # [unix]
       script: "%RECIPE_DIR%\\bld-scotch.bat"  # [win]
-      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
-      script_env:
-        - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+      string: aster_{{ mpi_prefix }}_{{build_type}}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
         - {{ pin_subpackage('libscotch', max_pin='x.x.x') }}
       ignore_run_exports:
@@ -155,7 +153,7 @@ outputs:
   - name: scotch
     build:
       script: cmake --install ./build --component=scotch
-      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+      string: aster_{{ mpi_prefix }}_{{build_type}}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
         - {{ pin_subpackage('scotch', max_pin='x.x.x') }}
       ignore_run_exports:

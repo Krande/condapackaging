@@ -13,3 +13,7 @@ temp/
 .secrets
 *.egg-info
 __pycache__/
+# pixi environments
+.pixi
+*.egg-info
+

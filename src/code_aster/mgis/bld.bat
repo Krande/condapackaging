@@ -7,14 +7,12 @@ rem Set TFELHOME to the PREFIX environment variable
 set TFELHOME=%PREFIX%
 set FC=flang-new
 
-REM currently fails with debug build
 set CMAKE_BUILD_TYPE=Release
 
-REM if "%PKG_DEBUG%" == "True" (
-REM
-REM ) else (
-REM     set CMAKE_BUILD_TYPE=Release
-REM )
+if "%build_type%" == "debug" (
+    set FCFLAGS=%FCFLAGS%/Od /debug:full /Zi
+    set CFLAGS=%CFLAGS%/Od /debug:full /Zi
+)
 
 cmake -B build . -G "Ninja" ^
     %CMAKE_ARGS% ^

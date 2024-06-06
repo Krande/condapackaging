@@ -12,10 +12,8 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: '{{ aster_variant }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
+  string: '{{ aster_variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   number: 3
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }}
 

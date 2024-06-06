@@ -1,0 +1,23 @@
+[project]
+name = "mamba-build"
+version = "0.1.0"
+description = "A basic conda build environment"
+channels = ["conda-forge"]
+platforms = ["win-64"]
+
+[tasks]
+
+scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/scotch" }
+metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/metis" }
+mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mumps" }
+libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/libmed" }
+medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/medcoupling" }
+mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mfront" }
+mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mgis" }
+code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/code_aster" }
+
+[dependencies]
+boa = ">=0.17.0,<0.18"
+python-dotenv = ">=1.0.1,<1.1"
+quetz-client = ">=0.5.0,<0.6"
+m2-patch = "2.7.5.*"

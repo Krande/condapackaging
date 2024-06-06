@@ -9,7 +9,7 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-if "%PKG_DEBUG%" == "True" (
+if "%build_type%" == "debug" (
     set CMAKE_BUILD_TYPE=Debug
 ) else (
     set CMAKE_BUILD_TYPE=Release

@@ -1,7 +1,3 @@
-mpi:
-#  - openmpi
-  - nompi
-
 build_type:
   - release
   - debug

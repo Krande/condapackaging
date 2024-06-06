@@ -3,14 +3,13 @@ echo Build MFRONT/TFEL
 
 set FC=flang-new
 
-REM currently fails with debug build
+
 set CMAKE_BUILD_TYPE=Release
 
-REM if "%PKG_DEBUG%" == "True" (
-REM
-REM ) else (
-REM     set CMAKE_BUILD_TYPE=Release
-REM )
+if "%build_type%" == "debug" (
+    set FCFLAGS=%FCFLAGS%/Od /debug:full /Z7
+    set CFLAGS=%CFLAGS%/Od /debug:full /Z7
+)
 
 cmake -B build . -G "Ninja" -Wno-dev ^
     %CMAKE_ARGS% ^
