@@ -3,11 +3,10 @@
 mkdir build
 cd build
 
+set CMAKE_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set CMAKE_BUILD_TYPE=Debug
-    set CFLAGS=%CFLAGS% /Od /debug:full /Z7
-) else (
-    set CMAKE_BUILD_TYPE=Release
+    set CFLAGS=%CFLAGS% /Od /Z7
 )
 
 cmake ^
