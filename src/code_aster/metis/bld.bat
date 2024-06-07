@@ -11,12 +11,12 @@ if "%build_type%" == "debug" (
 
 cmake ^
     -G "Ninja" ^
-    -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-    -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-    -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
-    -DSHARED=ON ^
-    -Dintsize=64 ^
-    -Drealsize=64 ^
+    -D CMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
+    -D CMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
+    -D CMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
+    -D SHARED=ON ^
+    -D intsize=64 ^
+    -D realsize=64 ^
     ..
 
 if errorlevel 1 exit 1

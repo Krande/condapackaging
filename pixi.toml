@@ -15,9 +15,11 @@ medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd=
 mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mfront" }
 mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mgis" }
 code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/code_aster" }
+all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"]}
 
 [dependencies]
 boa = ">=0.17.0,<0.18"
 python-dotenv = ">=1.0.1,<1.1"
 quetz-client = ">=0.5.0,<0.6"
 m2-patch = "2.7.5.*"
+pixi-pycharm = ">=0.0.5,<0.1"

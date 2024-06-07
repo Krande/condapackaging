@@ -17,14 +17,14 @@ if not "%FC%" == "flang-new" (
 set CMAKE_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set CMAKE_BUILD_TYPE=Debug
-    set CFLAGS=%CFLAGS% /Od /debug:full /Z7
-    set FCFLAGS=%FCFLAGS% /Od /debug:full /Z7
+    set CFLAGS=%CFLAGS% /Od /debug /Z7
+    set FCFLAGS=%FCFLAGS% /Od /debug /Z7
 )
 
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
-set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
-set FCFLAGS=%FCFLAGS% -Dtry_null_space -DUSE_SCHEDAFFINITY
+set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY -DPORD_INTSIZE64
+set FCFLAGS=%FCFLAGS% -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
@@ -48,7 +48,7 @@ cmake -G "Ninja" ^
       ..
 
 if errorlevel 1 exit 1
-cmake --build . --config Release --target install
+cmake --build . --config %CMAKE_BUILD_TYPE% --target install
 
 if errorlevel 1 exit 1
 

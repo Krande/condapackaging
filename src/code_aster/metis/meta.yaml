@@ -15,7 +15,7 @@ build:
   string: '{{ aster_variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   number: 3
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
 requirements:
   build:
