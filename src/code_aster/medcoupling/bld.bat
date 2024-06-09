@@ -6,7 +6,7 @@ cd build
 REM currently fails with debug build
 set CMAKE_BUILD_TYPE=Release
 
-REM if "%PKG_DEBUG%" == "True" (
+REM if "%build_type%" == "Debug" (
 REM
 REM ) else (
 REM     set CMAKE_BUILD_TYPE=Release

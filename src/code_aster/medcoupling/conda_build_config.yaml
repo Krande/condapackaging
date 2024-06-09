@@ -1,3 +1,7 @@
 mpi:
   - openmpi               # [not win]
   - nompi
+
+build_type:
+  - release
+  - debug
