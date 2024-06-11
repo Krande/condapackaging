@@ -32,7 +32,7 @@ on:
         description: 'mpi variants'
         required: true
         type: string
-        default: "mpi=nompi,build_type=debug"
+        default: "mpi=nompi;build_type=debug"
       extra_build_args:
         description: 'Extra build arguments'
         required: true
