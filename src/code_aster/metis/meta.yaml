@@ -13,7 +13,6 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  script: bld.bat # [win]
   string: '{{ aster_variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   number: 3
   run_exports:
