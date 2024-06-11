@@ -130,6 +130,7 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
+      variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
@@ -148,6 +149,7 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
+      variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
@@ -200,6 +202,7 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
+      variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
@@ -238,6 +241,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
@@ -254,6 +258,7 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       python_versions: ${{ needs.env.outputs.python_versions }}
+      variants: ${{ needs.env.outputs.variants }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
