@@ -8,12 +8,13 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 REM currently fails with debug build
-@REM set CMAKE_BUILD_TYPE=Release
 
+set CMAKE_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set CMAKE_BUILD_TYPE=Debug
-) else (
-    set CMAKE_BUILD_TYPE=Release
+    @REM set CMAKE_BUILD_TYPE=Debug
+    REM setting CMAKE_BUILD_TYPE=Debug causes the build to fail because it wants to use debug python build
+    set CFLAGS=%CFLAGS% /Od /Z7
+    set FCFLAGS=%FCFLAGS% /Od /Z7
 )
 
 set FFLAGS=%FCFLAGS% /fpp /MD

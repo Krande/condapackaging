@@ -21,8 +21,9 @@ all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "li
 
 # Convert a meta.yaml to a recipe.yaml
 convert = { cmd="conda-recipe-manager convert", cwd="src/code_aster" }
-rmetis = { cmd = ["rattler-build", "build","-r","src/code_aster/metis/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
-rmumps = { cmd = ["rattler-build", "build","-r","src/code_aster/mumps/recipe.yaml", "-m", "src/code_aster/win.yaml", "-m", "src/code_aster/mumps/conda_build_config.yaml"] }
+rscotch = { cmd = ["src/code_aster/rattler-wrap.bat", "scotch"] }
+rmetis = { cmd = ["src/code_aster/rattler-wrap.bat", "metis"] }
+rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 
 [dependencies]
 boa = ">=0.17.0,<0.18"

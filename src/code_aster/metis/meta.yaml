@@ -9,9 +9,11 @@ package:
 source:
   - fn: 'METIS_scivision_{{ version }}.tar.gz'
     url: https://github.com/scivision/METIS/archive/refs/tags/v{{ version }}.tar.gz
+    sha256: 26b55bc1cfb2267a64f45240d280deeff19743f211eb9a00c68f2b0cb7be4aa3
 
 build:
   detect_binary_files_with_prefix: true
+  script: bld.bat # [win]
   string: '{{ aster_variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
   number: 3
   run_exports:

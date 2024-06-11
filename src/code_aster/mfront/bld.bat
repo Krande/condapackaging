@@ -7,30 +7,30 @@ set FC=flang-new
 set CMAKE_BUILD_TYPE=Release
 
 if "%build_type%" == "debug" (
-    set FCFLAGS=%FCFLAGS%/Od /debug:full /Z7
-    set CFLAGS=%CFLAGS%/Od /debug:full /Z7
+    set FCFLAGS=%FCFLAGS% -g -cpp
+    set CFLAGS=%CFLAGS% /Od /Zi
 )
 
 cmake -B build . -G "Ninja" -Wno-dev ^
     %CMAKE_ARGS% ^
-    -DCMAKE_CXX_COMPILER=clang-cl ^
-    -DCMAKE_C_COMPILER=clang-cl ^
-    -DCMAKE_LINKER=lld-link ^
-    -DCMAKE_NM=llvm-nm ^
-    -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
-    -Denable-fortran=ON ^
-    -Denable-python-bindings=ON ^
-    -Denable-cyrano=ON ^
-    -Denable-aster=ON ^
-    -Ddisable-website=ON ^
-    -Denable-portable-build=ON ^
-    -DPython_ADDITIONAL_VERSIONS=%CONDA_PY% ^
-    -Denable-python=ON ^
-    -DPYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
-    -DPYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
-    -DPYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^
-    -DSITE_PACKAGES_DIR:PATH=%SP_DIR% ^
-    -DUSE_EXTERNAL_COMPILER_FLAGS=ON
+    -D CMAKE_CXX_COMPILER=clang-cl ^
+    -D CMAKE_C_COMPILER=clang-cl ^
+    -D CMAKE_LINKER=lld-link ^
+    -D CMAKE_NM=llvm-nm ^
+    -D CMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
+    -D enable-fortran=ON ^
+    -D enable-python-bindings=ON ^
+    -D enable-cyrano=ON ^
+    -D enable-aster=ON ^
+    -D disable-website=ON ^
+    -D enable-portable-build=ON ^
+    -D Python_ADDITIONAL_VERSIONS=%CONDA_PY% ^
+    -D enable-python=ON ^
+    -D PYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
+    -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
+    -D PYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^
+    -D SITE_PACKAGES_DIR:PATH=%SP_DIR% ^
+    -D USE_EXTERNAL_COMPILER_FLAGS=ON
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine
 cmake --build build --target install

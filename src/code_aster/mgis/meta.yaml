@@ -13,8 +13,6 @@ source:
 build:
   number: 2
   detect_binary_files_with_prefix: true
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }}
 

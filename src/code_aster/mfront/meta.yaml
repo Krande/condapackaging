@@ -19,12 +19,8 @@ source:
 
 build:
   number: {{ build }}
-  skip: true  # [py2k or osx or (python_impl == 'pypy')]
-  skip: true  # [win and py<39]
-  detect_binary_files_with_prefix: true
-  string: "py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}"
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  skip: true  # [osx]
+  string: "py{{ CONDA_PY }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }}
 
@@ -34,8 +30,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
-    - lld                         # [win]
     - make                        # [not win]
+    - clang                       # [win]
+    - lld                         # [win]
     - ninja                       # [win]
     - libgomp                     # [linux]
     - llvm-openmp                 # [osx]

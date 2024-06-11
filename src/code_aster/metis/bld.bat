@@ -15,8 +15,8 @@ cmake ^
     -D CMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
     -D CMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
     -D SHARED=ON ^
-    -D intsize=64 ^
-    -D realsize=64 ^
+    -D IDXTYPEWIDTH=64 ^
+    -D REALTYPEWIDTH=64 ^
     ..
 
 if errorlevel 1 exit 1

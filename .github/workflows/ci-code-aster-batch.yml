@@ -59,7 +59,6 @@ jobs:
       # This is where the conda user and label should be set
       code_aster_version: ${{ steps.env.outputs.code_aster_version }}
       conda_label: ${{ steps.env.outputs.unique_suffix }}
-      debug_build: ${{ inputs.debug_build }}
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
       variants: ${{ inputs.variants }}
