@@ -28,19 +28,11 @@ on:
         required: true
         type: string
         default: "windows-latest"
-      mpi_variants:
+      variants:
         description: 'mpi variants'
         required: true
         type: string
-        default: "mpi=nompi"
-      debug_build:
-        type: choice
-        required: true
-        description: Debug build or not
-        options:
-          - "True"
-          - "False"
-        default: "True"
+        default: "mpi=nompi,build_type=debug"
       extra_build_args:
         description: 'Extra build arguments'
         required: true
@@ -70,7 +62,7 @@ jobs:
       debug_build: ${{ inputs.debug_build }}
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
-      mpi_variants: ${{ inputs.mpi_variants }}
+      variants: ${{ inputs.variants }}
       description: ${{ inputs.description }}
       extra_build_args: ${{ inputs.extra_build_args }}
 
@@ -139,7 +131,6 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
@@ -157,7 +148,6 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
@@ -175,10 +165,9 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      variants: ${{ needs.env.outputs.mpi_variants }}
+      variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
@@ -194,10 +183,9 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      variants: ${{ needs.env.outputs.mpi_variants }}
+      variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
@@ -213,7 +201,6 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
@@ -231,10 +218,9 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      variants: ${{ needs.env.outputs.mpi_variants }}
+      variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
@@ -251,7 +237,6 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
@@ -269,7 +254,6 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
@@ -287,10 +271,9 @@ jobs:
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      variants: ${{ needs.env.outputs.mpi_variants }}
+      variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}

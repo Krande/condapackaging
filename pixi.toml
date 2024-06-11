@@ -20,8 +20,9 @@ code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"]}
 
 # Convert a meta.yaml to a recipe.yaml
-convert-recipe = { cmd="conda-recipe-manager convert", cwd="src/code_aster" }
+convert = { cmd="conda-recipe-manager convert", cwd="src/code_aster" }
 rmetis = { cmd = ["rattler-build", "build","-r","src/code_aster/metis/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
+rmumps = { cmd = ["rattler-build", "build","-r","src/code_aster/mumps/recipe.yaml", "-m", "src/code_aster/win.yaml", "-m", "src/code_aster/mumps/conda_build_config.yaml"] }
 
 [dependencies]
 boa = ">=0.17.0,<0.18"

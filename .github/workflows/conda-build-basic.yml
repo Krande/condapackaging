@@ -18,11 +18,6 @@ on:
         type: string
         required: false
         default: ""
-      debug_build:
-        description: 'should produce a debug build'
-        type: string
-        required: false
-        default: "False"
       pkg_dir:
         description: 'work dir'
         type: string
@@ -106,7 +101,6 @@ on:
         required: false
         default: ""
 env:
-  PKG_DEBUG: ${{ inputs.debug_build }}
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
   WORK_DIR: ${{ inputs.work_dir }}
   ARTIFACTS_DIR: ${{ inputs.work_dir }}/artifacts
@@ -334,7 +328,6 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
-              - ${{ secrets.QUETZ_URL }}/get/devtools
               - ${{ env.EXTRA_CHANNEL }}
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
