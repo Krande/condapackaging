@@ -95,7 +95,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytz-2024.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pyyaml-6.0.1-py312he70551f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/quetz-client-0.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.16.2-ha08ef0e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.17.0-ha08ef0e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/referencing-0.35.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-14.2.4.post0-hcfcfb64_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-cpp-14.2.4.post0-h63175ca_1.conda
@@ -585,8 +585,8 @@ packages:
   - pyyaml
   - jsonschema
   - requests
-  - pytest ; extra == 'dev'
   - conda-build ; extra == 'conda-build'
+  - pytest ; extra == 'dev'
   requires_python: '>=3.11'
 - kind: conda
   name: dacite
@@ -1821,12 +1821,12 @@ packages:
   timestamp: 1681285151066
 - kind: conda
   name: rattler-build
-  version: 0.16.2
+  version: 0.17.0
   build: ha08ef0e_0
   subdir: win-64
-  url: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.16.2-ha08ef0e_0.conda
-  sha256: 990fcfd2edfaf456b19fcd5e32a9fbee86c7c6dca9d643a8a6bcea5ff96dc4da
-  md5: 0ddd2c813b68bdf4053519211b249c47
+  url: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.17.0-ha08ef0e_0.conda
+  sha256: 94cce788913fadbbac298678ba5ebb711e12e9c75c3758f8f2d37107ac78f4af
+  md5: fdb1fade1711d5373dac85a3d376528d
   depends:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
@@ -1834,8 +1834,8 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls: []
-  size: 7083480
-  timestamp: 1716511002729
+  size: 7551888
+  timestamp: 1718176009285
 - kind: conda
   name: referencing
   version: 0.35.1
