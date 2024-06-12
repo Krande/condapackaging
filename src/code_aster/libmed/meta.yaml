@@ -40,7 +40,6 @@ source:
 
 build:
   number: {{ build }}
-  script: "%RECIPE_DIR%\\bld-ifx.bat"  # [win]
   skip: true  # [(osx or win) and mpi != "nompi"]
   # Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi
   # add build string so packages can depend on
@@ -54,9 +53,7 @@ build:
   {% else %}
   {% set mpi_prefix = "nompi" %}
   {% endif %}
-  string: "{{ mpi_prefix }}_py{{ CONDA_PY }}_h{{ PKG_HASH }}_{{ build }}"
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }} {{ mpi_prefix }}_*
 

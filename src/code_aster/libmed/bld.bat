@@ -1,66 +1,71 @@
-@echo off
+@echo OFF
+
+setlocal ENABLEDELAYEDEXPANSION
 
 mkdir build
 cd build
-set MY_PY_VER=%PY_VER:.=%
 
-set FCFLAGS=-fdefault-integer-8 %FCFLAGS%
-set FFLAGS=-fdefault-integer-8 %FFLAGS%
-set MED_MEDINT_TYPE=int
-
-if exist "%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe" (
-    echo "Mingw-w64 found"
-    set CC=%BUILD_PREFIX%\Library\mingw-w64\bin\gcc.exe
-    set CXX=%BUILD_PREFIX%\Library\mingw-w64\bin\g++.exe
-    set FC=%BUILD_PREFIX%\Library\mingw-w64\bin\gfortran.exe
-    set RC=%BUILD_PREFIX%\Library\mingw-w64\bin\windres.exe
-    set F77=${FC}
+if not "%FC%" == "flang-new" (
+    call %RECIPE_DIR%\activate_ifx.bat
 )
 
-IF "%PKG_DEBUG%"=="True" (
-    echo Debugging Enabled
-    REM Set compiler flags for debugging, for instance
-    set CFLAGS=-g -O0 %CFLAGS%
-    set CXXFLAGS=-g -O0 %CXXFLAGS%
-    set FCFLAGS=-g -O0 %FCFLAGS%
-    set BUILD_TYPE=Debug
-    REM Additional debug build steps
-) ELSE (
-    set BUILD_TYPE=Release
-    echo Debugging Disabled
-)
-set INCLUDE=%LIBRARY_PREFIX%\include;%INCLUDE%
+REM currently fails with debug build
+set BUILD_TYPE=Release
 
-cmake -G "Ninja" -S %SRC_DIR%^
-    -Wno-dev ^
-    -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
-    -D CMAKE_INSTALL_PREFIX:FILEPATH=%LIBRARY_PREFIX% ^
-    -D CMAKE_PREFIX_PATH:FILEPATH=%LIBRARY_PREFIX% ^
-    -D CMAKE_INCLUDE_PATH:FILEPATH=%LIBRARY_PREFIX%\include ^
-    -D HDF5_ROOT_DIR:FILEPATH="%LIBRARY_PREFIX%" ^
-    -D HDF5_INCLUDE_DIRS:FILEPATH="%LIBRARY_PREFIX%\include" ^
-    -D MEDFILE_INSTALL_DOC=OFF ^
-    -D MEDFILE_BUILD_PYTHON=ON ^
-    -D MEDFILE_BUILD_SHARED_LIBS=ON ^
-    -D MEDFILE_BUILD_STATIC_LIBS=OFF ^
-    -D MEDFILE_USE_UNICODE=OFF ^
-    -D PYTHON_INCLUDE_DIR=%PREFIX%\include ^
-    -D PYTHON_EXECUTABLE:FILEPATH=%PREFIX%\python.exe ^
-    -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
-    -D SIZEOF_LONG_LONG=8
+if "%build_type%" == "debug" (
+    set CFLAGS=%CFLAGS% /Od /Zi
+    if "%FC%" == "flang-new" (
+        set FFLAGS=%FFLAGS% -g -cpp
+    ) else (
+        set FFLAGS=%FFLAGS% /Od /Zi
+    )
+
+)
+
+:: This updates the symbols to lowercase and adds an underscore
+xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
+
+set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
+
+set CFLAGS=%CFLAGS%
+
+cmake -G "Ninja" ^
+  %CMAKE_ARGS% ^
+  -D CMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
+  -D Python_FIND_STRATEGY:STRING=LOCATION ^
+  -D Python_FIND_REGISTRY:STRING=NEVER ^
+  -D Python3_ROOT_DIR:FILEPATH="%PREFIX%" ^
+  -D HDF5_ROOT_DIR:FILEPATH="%LIBRARY_PREFIX%" ^
+  -D MEDFILE_INSTALL_DOC=OFF ^
+  -D MEDFILE_BUILD_PYTHON=ON ^
+  -D MEDFILE_BUILD_TESTS=OFF ^
+  -D MEDFILE_BUILD_SHARED_LIBS=ON ^
+  -D MEDFILE_BUILD_STATIC_LIBS=OFF ^
+  -D MEDFILE_USE_UNICODE=OFF ^
+  -D MED_MEDINT_TYPE="long long" ^
+  -Wno-dev ^
+  ..
 
 if errorlevel 1 exit 1
+
 ninja
+
 if errorlevel 1 exit 1
+
+mkdir %SP_DIR%\med
+
+if errorlevel 1 exit 1
+
 ninja install
 
-REM DEL /q %PREFIX%\bin\mdump %PREFIX%\bin\xmdump
-REM COPY /y %LIBRARY_PREFIX%\bin\mdump4.exe %LIBRARY_PREFIX%\bin\mdump.exe
-REM COPY /y %LIBRARY_PREFIX%\bin\xmdump4.exe %LIBRARY_PREFIX%\bin\xmdump.exe
-MKDIR %SP_DIR%\med
-MOVE %LIBRARY_PREFIX%\lib\python%PY_VER%\site-packages\med %SP_DIR%\med
-:: MOVE %LIBRARY_PREFIX%\lib\libmedC.* %LIBRARY_PREFIX%\bin\
+if errorlevel 1 exit 1
 
-:: Generate stubs for pybind11
-::%PYTHON% %RECIPE_DIR%/stubs/custom_stubs_gen.py
-::echo "Stubs generation completed"
+copy %LIBRARY_BIN%\mdump4.exe %LIBRARY_BIN%\mdump.exe
+
+if errorlevel 1 exit 1
+
+copy %LIBRARY_BIN%\xmdump4 %LIBRARY_BIN%\xmdump
+
+if errorlevel 1 exit 1
+
+endlocal

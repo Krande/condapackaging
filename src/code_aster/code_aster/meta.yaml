@@ -48,9 +48,7 @@ source:
 build:
   detect_binary_files_with_prefix: true
   number: {{ build }}
-  string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_np{{CONDA_NPY}}h{{ PKG_HASH }}_{{ build }}"
-  script_env:
-    - PKG_DEBUG={{ environ.get('PKG_DEBUG', 'False') }}
+  string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_{{ build_type}}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }}
 
@@ -71,13 +69,13 @@ requirements:
     - openblas                                      # [not win]
     - libblas
     - liblapack
-    - metis {{ metis_ver }}
-    - mumps {{ mumps_ver }}
-    - mfront {{ mfront_ver }}
-    - mgis {{ mgis_ver }}
-    - libmed {{ med_ver }}                          # [win]
-    - scotch {{ scotch_ver }}                       # [win]
-    - medcoupling {{ medcoupling_ver }}             # [win]
+    - metis {{ metis_ver }} *{{ build_type }}*
+    - mumps {{ mumps_ver }} *{{ build_type }}*
+    - mfront {{ mfront_ver }} *{{ build_type }}*
+    - mgis {{ mgis_ver }} *{{ build_type }}*
+    - libmed {{ med_ver }} *{{ build_type }}*
+    - scotch {{ scotch_ver }} *{{ build_type }}*
+    - medcoupling {{ medcoupling_ver }} *{{ build_type }}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]

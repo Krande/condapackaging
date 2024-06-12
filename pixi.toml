@@ -6,7 +6,7 @@ channels = ["conda-forge"]
 platforms = ["win-64"]
 
 [tasks]
-
+_set_output = "set OUTPUT_FOLDER=%CONDA_PREFIX%"
 hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/hdf5" }
 
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/scotch" }

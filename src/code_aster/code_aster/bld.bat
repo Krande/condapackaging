@@ -4,20 +4,12 @@ setlocal enabledelayedexpansion
 
 echo "Setting compiler env vars"
 
+:: set FC=flang-new.exe
 
-if not defined ONEAPI_ROOT (
-  echo "ONEAPI_ROOT is not defined"
-  set "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI"
-)
-set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
-
-if "%FC%" == "ifx" (
-  echo "Already using Intel LLVM Fortran compiler"
-) else (
-  call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+if not "%FC%" == "flang-new" (
+    call %RECIPE_DIR%\activate_ifx.bat
 )
 
-set FC=ifx.exe
 set CC=clang-cl.exe
 set CXX=clang-cl.exe
 
@@ -68,6 +60,10 @@ if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
 :: Add lib paths
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
 
+if %build_type% == "debug" (
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+)
+
 :: Add Math libs
 set LDFLAGS=%LDFLAGS% mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
 
@@ -108,7 +104,11 @@ waf configure ^
 
 if errorlevel 1 exit 1
 
-waf install_debug -v
+if %build_type% == "debug" (
+    waf install_debug -v
+) else (
+    waf install -v
+)
 
 if errorlevel 1 exit 1
 
