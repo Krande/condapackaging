@@ -55,7 +55,7 @@ build:
   {% endif %}
   string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} {{ mpi_prefix }}_*
+    - {{ pin_subpackage(name, 'x.x') }} *{{ mpi_prefix }}_*
 
 requirements:
   build:
@@ -70,8 +70,7 @@ requirements:
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
   host:
     - python
-    - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*  # [mpi != "nompi"]
-    - hdf5 {{ hdf5 }} nompi_*  # [mpi == "nompi"]
+    - hdf5 {{ hdf5 }} {{ mpi_prefix }}*
     - zlib
     - {{ mpi }}  # [mpi != "nompi"]
   run:
