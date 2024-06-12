@@ -10,7 +10,7 @@
 # prioritize release over debug
 {% if build_type == 'release' %}
 {% set build = build + 200 %}
-{% endif
+{% endif %}
 
 # add build string so packages can depend on
 # mpi or nompi variants explicitly:

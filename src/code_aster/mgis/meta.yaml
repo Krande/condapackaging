@@ -38,7 +38,7 @@ requirements:
     - python
     - numpy
     - libboost-python-devel
-    - mfront *{{ build_type }}*
+    - mfront *=*{{ build_type }}*
 
   run:
     - python
