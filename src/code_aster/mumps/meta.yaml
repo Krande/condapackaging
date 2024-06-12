@@ -9,6 +9,11 @@
 
 {% set build = 2 %}
 
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
+{% endif %}
+
 {% if mpi == 'nompi' %}
 # prioritize nompi variant via build number
 {% set build = build + 100 %}
@@ -42,10 +47,10 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: aster_py{{ CONDA_PY }}_{{mpi_prefix}}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
-  number: 2
+  string: aster_py{{ CONDA_PY }}_{{mpi_prefix}}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
+  number: {{ build
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
 requirements:
   build:

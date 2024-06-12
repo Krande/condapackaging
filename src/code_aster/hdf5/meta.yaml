@@ -1,11 +1,14 @@
 {% set version = "1.14.4.2" %}
 {% set build = 0 %}
 
-# recipe-lint fails if mpi is undefined
-{% set mpi = mpi or 'nompi' %}
-{% if mpi == "nompi" %}
 # prioritize nompi via build number
+{% if mpi == "nompi" %}
 {% set build = build + 100 %}
+{% endif %}
+
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
 {% endif %}
 
 {% if mpi != "nompi" %}
@@ -43,7 +46,7 @@ build:
   number: {{ build }}
   string: {{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
+    - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}*{{ build_type}}*
 
 requirements:
   build:

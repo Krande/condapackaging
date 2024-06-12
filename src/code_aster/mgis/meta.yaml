@@ -1,5 +1,11 @@
 {% set name = "mgis" %}
 {% set version = "2.2" %}
+{% set build = 2 %}
+
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
+{% endif %}
 
 
 package:
@@ -11,11 +17,11 @@ source:
     url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-{{ version }}.tar.gz
 
 build:
-  number: 2
+  number: {{ build}}
   detect_binary_files_with_prefix: true
-  string: "py{{ CONDA_PY }}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"
+  string: "py{{ CONDA_PY }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
 requirements:
   build:

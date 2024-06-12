@@ -9,9 +9,7 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-REM currently fails with debug build
 set BUILD_TYPE=Release
-
 if "%build_type%" == "debug" (
     set CFLAGS=%CFLAGS% /Od /Zi
     if "%FC%" == "flang-new" (
@@ -19,7 +17,6 @@ if "%build_type%" == "debug" (
     ) else (
         set FFLAGS=%FFLAGS% /Od /Zi
     )
-
 )
 
 :: This updates the symbols to lowercase and adds an underscore

@@ -1,6 +1,12 @@
 {% set name = "metis" %}
 {% set version = "5.1.0.4" %}
 {% set aster_variant = "aster4" %}
+{% set build = 3 %}
+
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
+{% endif %}
 
 package:
   name: '{{ name|lower }}'
@@ -13,8 +19,8 @@ source:
 
 build:
   detect_binary_files_with_prefix: true
-  string: '{{ aster_variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}'
-  number: 3
+  string: '{{ aster_variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}'
+  number: {{ build }}
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 

@@ -4,6 +4,12 @@
 
 {% set build = 3 %}
 
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
+{% endif %}
+
+
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -22,7 +28,7 @@ build:
   skip: true  # [osx]
   string: "py{{ CONDA_PY }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
 requirements:
   build:

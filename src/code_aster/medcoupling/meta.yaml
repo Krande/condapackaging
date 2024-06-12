@@ -6,6 +6,12 @@
 # prioritize nompi variant via build number
 {% set build = build + 100 %}
 {% endif %}
+
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
+{% endif
+
 # add build string so packages can depend on
 # mpi or nompi variants explicitly:
 # `pkg * mpi_mpich_*` for mpich
@@ -39,7 +45,7 @@ build:
   string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_{{ build_type}}_h{{ PKG_HASH }}_{{ build }}"
   number: "{{ build }}"
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
 requirements:
   build:

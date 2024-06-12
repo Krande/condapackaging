@@ -7,31 +7,22 @@
 # prioritize nompi variant via build number
 {% set build = build + 100 %}
 {% endif %}
+
+# prioritize release over debug
+{% if build_type == 'release' %}
+{% set build = build + 200 %}
+{% endif %}
+
 # add build string so packages can depend on
 # mpi or nompi variants explicitly:
 # `pkg * mpi_mpich_*` for mpich
 # `pkg * mpi_*` for any mpi
 # `pkg * nompi_*` for no mpi
-
 {% if mpi != 'nompi' %}
 {% set mpi_prefix = "mpi_" + mpi %}
 {% else %}
 {% set mpi_prefix = "nompi" %}
 {% endif %}
-
-# Dependencies
-{% set med_ver = '4.1.1*' %}                  # [win]
-{% set metis_ver = '5.1.0*' %}                # [win]
-{% set mumps_ver = '5.6.2' %}                 # [win]
-{% set petsc_ver = '3.17.1*' %}               # [win]
-{% set scotch_ver = '7.0.4*' %}               # [win]
-{% set mfront_ver = '4.2.0' %}                # [win]
-{% set medcoupling_ver = '9.12.0' %}          # [win]
-{% set mgis_ver = '2.2' %}                    # [win]
-
-{% set homard_ver = '11.12' %}
-{% set mpi4py_ver = "3.1.3" %}
-
 
 package:
   name: '{{ name|lower }}'
@@ -69,13 +60,13 @@ requirements:
     - openblas                                      # [not win]
     - libblas
     - liblapack
-    - metis {{ metis_ver }} *{{ build_type }}*
-    - mumps {{ mumps_ver }} *{{ build_type }}*
-    - mfront {{ mfront_ver }} *{{ build_type }}*
-    - mgis {{ mgis_ver }} *{{ build_type }}*
-    - libmed {{ med_ver }} *{{ build_type }}*
-    - scotch {{ scotch_ver }} *{{ build_type }}*
-    - medcoupling {{ medcoupling_ver }} *{{ build_type }}*
+    - metis *{{ build_type }}*
+    - mumps *{{ build_type }}*
+    - mfront *{{ build_type }}*
+    - mgis *{{ build_type }}*
+    - libmed *{{ build_type }}*
+    - scotch *{{ build_type }}*
+    - medcoupling *{{ build_type }}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
