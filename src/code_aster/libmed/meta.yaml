@@ -60,7 +60,7 @@ build:
   {% endif %}
   string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} *{{ mpi_prefix }}_{{ build_type}}*
+    - {{ pin_subpackage(name, 'x.x') }}
 
 requirements:
   build:
