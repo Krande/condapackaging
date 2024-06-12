@@ -12,4 +12,4 @@ if "%FC%" == "ifx" (
     call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
 )
 
-set FC=ifx
+set FC=ifx.exe

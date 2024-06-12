@@ -32,7 +32,7 @@ requirements:
     - python
     - numpy
     - libboost-python-devel
-    - mfront
+    - mfront *{{ build_type }}*
 
   run:
     - python

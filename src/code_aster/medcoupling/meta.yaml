@@ -57,7 +57,7 @@ requirements:
     - numpy
     - libboost-devel
     - libxml2
-    - libmed
+    - libmed {{ mpi_prefix }}*{{ build_type }}*
     - petsc                                     # [mpi != 'nompi']
     - {{ mpi }}                                 # [mpi != 'nompi']
 

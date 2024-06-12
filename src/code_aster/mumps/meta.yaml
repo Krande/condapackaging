@@ -64,7 +64,7 @@ requirements:
     - libblas
     - liblapack
     - mkl-devel  # [win]
-    - metis {{ metis_ver }}=aster4*{{build_type}}*
+    - metis {{ metis_ver }}=*{{build_type}}*
     - scotch {{ scotch_ver }}=*aster*{{build_type}}*
     - parmetis {{ parmetis_ver }}               # [mpi != "nompi"]
     - scalapack {{ scalapack_ver }}             # [mpi != "nompi"]
