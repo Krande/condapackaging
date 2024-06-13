@@ -17,7 +17,7 @@ if not exist %RECIPE_FILE% (
     conda-recipe-manager convert %THIS_DIR%/%REPLACEMENT%/meta.yaml -o %RECIPE_FILE%
 )
 
-set CMD=rattler-build build -r %RECIPE_FILE% -m %THIS_DIR%\win.yaml -m %THIS_DIR%/%REPLACEMENT%/conda_build_config.yaml
+set CMD=rattler-build build -r %RECIPE_FILE% -m %THIS_DIR%\win.yaml -m %THIS_DIR%/%REPLACEMENT%/conda_build_config.yaml --python=3.11
 
 echo Running command: %CMD%
 %CMD%

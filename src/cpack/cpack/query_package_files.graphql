@@ -1,0 +1,13 @@
+{
+  package(channelName: "__CHANNEL_NAME__", name: "__PACKAGE_NAME__") {
+    variants(limit: 300) {
+      page {
+        filename
+        platform
+        md5
+        yankedReason
+        repoDataPatches
+      }
+    }
+  }
+}

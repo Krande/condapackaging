@@ -24,6 +24,7 @@ rscotch = { cmd = ["src/code_aster/rattler-wrap.bat", "scotch"] }
 rmetis = { cmd = ["src/code_aster/rattler-wrap.bat", "metis"] }
 rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 
+
 [dependencies]
 boa = ">=0.17.0,<0.18"
 python-dotenv = ">=1.0.1,<1.1"
@@ -38,6 +39,11 @@ conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-
 channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
 [feature.debug]
 channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
+
+[feature.release.tasks]
+rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
+[feature.debug.tasks]
+rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 
 [feature.release.dependencies]
 

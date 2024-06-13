@@ -49,7 +49,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/joblib-1.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/json5-0.9.25-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonpatch-1.33-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-2.4-py311h1ea47a8_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-3.0.0-py311h1ea47a8_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-4.22.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-specifications-2023.12.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/krb5-1.21.2-heb0366b_0.conda
@@ -188,7 +188,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/dacite-1.8.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/distro-1.9.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.0-pyhd8ed1ab_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/filelock-3.14.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/filelock-3.15.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/fire-0.6.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/fmt-10.2.1-h181d51b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/frozendict-2.4.4-py312h4389bb4_0.conda
@@ -198,7 +198,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/joblib-1.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/json5-0.9.25-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonpatch-1.33-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-2.4-py312h2e8e312_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-3.0.0-py312h2e8e312_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-4.22.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-specifications-2023.12.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/krb5-1.21.2-heb0366b_0.conda
@@ -231,7 +231,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/more-itertools-10.3.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/msys2-conda-epoch-20160418-1.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/win-64/openssl-3.3.1-h2466b09_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/packaging-24.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/packaging-24.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pkginfo-1.11.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pkgutil-resolve-name-1.3.10-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/platformdirs-4.2.2-pyhd8ed1ab_0.conda
@@ -336,7 +336,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/joblib-1.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/json5-0.9.25-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonpatch-1.33-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-2.4-py311h1ea47a8_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-3.0.0-py311h1ea47a8_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-4.22.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-specifications-2023.12.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/krb5-1.21.2-heb0366b_0.conda
@@ -1199,22 +1199,6 @@ packages:
   timestamp: 1704921321122
 - kind: conda
   name: filelock
-  version: 3.14.0
-  build: pyhd8ed1ab_0
-  subdir: noarch
-  noarch: python
-  url: https://conda.anaconda.org/conda-forge/noarch/filelock-3.14.0-pyhd8ed1ab_0.conda
-  sha256: 6031be667e1b0cc0dee713f1cbca887cdee4daafa8bac478da33096f3147d38b
-  md5: 831d85ae0acfba31b8efd0f0d07da736
-  depends:
-  - python >=3.7
-  license: Unlicense
-  purls:
-  - pkg:pypi/filelock?source=conda-forge-mapping
-  size: 15902
-  timestamp: 1714422911808
-- kind: conda
-  name: filelock
   version: 3.15.1
   build: pyhd8ed1ab_0
   subdir: noarch
@@ -1312,7 +1296,7 @@ packages:
   build_number: 100
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/hdf5-1.14.4.2-nompi_debug_h745aa61_100.conda
-  sha256: 8c43f9b7bd9326fc74a210aac2e798fbf9843ed78ceaf53802a565ecc9b9f9f6
+  sha256: 8a6ff5aab1a1a756f0eff5fd8e7e23da86c266aba671ac00d7e0c05032483b0a
   depends:
   - libaec >=1.1.3,<2.0a0
   - libcurl >=8.8.0,<9.0a0
@@ -1326,8 +1310,8 @@ packages:
   license: LicenseRef-HDF5
   license_family: BSD
   purls: []
-  size: 2412446
-  timestamp: 1718220593101
+  size: 2384562
+  timestamp: 1718283099889
 - kind: conda
   name: hdf5
   version: 1.14.4.2
@@ -1335,7 +1319,7 @@ packages:
   build_number: 300
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/hdf5-1.14.4.2-nompi_release_h8365c04_300.conda
-  sha256: c4178f789a952dc47b177b3d5a57ec794150337c061ae275930e722794856d18
+  sha256: 80df4170cbf579fcf39f4a5a416b4cda3f6b9aa4e757d1868f827ddb97fee1ad
   depends:
   - libaec >=1.1.3,<2.0a0
   - libcurl >=8.8.0,<9.0a0
@@ -1349,8 +1333,8 @@ packages:
   license: LicenseRef-HDF5
   license_family: BSD
   purls: []
-  size: 2434637
-  timestamp: 1718219813952
+  size: 2380933
+  timestamp: 1718283012432
 - kind: conda
   name: idna
   version: '3.7'
@@ -1475,40 +1459,36 @@ packages:
   timestamp: 1695536420928
 - kind: conda
   name: jsonpointer
-  version: '2.4'
-  build: py311h1ea47a8_3
-  build_number: 3
+  version: 3.0.0
+  build: py311h1ea47a8_0
   subdir: win-64
-  url: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-2.4-py311h1ea47a8_3.conda
-  sha256: 13042586b08e8caa60615e7c42d05601f9421e8bda5df932e3ef9d2401bf2435
-  md5: db8fc59f9215e668e602f769d0bf67bb
+  url: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-3.0.0-py311h1ea47a8_0.conda
+  sha256: 50cda289c46d043cbfd0f4fd0b6ec6793e6bfc6b4e307baa40486a391d501215
+  md5: fb9c38edbc17bbaa549a8fdc933ada68
   depends:
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   license: BSD-3-Clause
-  license_family: BSD
   purls:
   - pkg:pypi/jsonpointer?source=conda-forge-mapping
-  size: 34654
-  timestamp: 1695397742357
+  size: 42767
+  timestamp: 1718283925914
 - kind: conda
   name: jsonpointer
-  version: '2.4'
-  build: py312h2e8e312_3
-  build_number: 3
+  version: 3.0.0
+  build: py312h2e8e312_0
   subdir: win-64
-  url: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-2.4-py312h2e8e312_3.conda
-  sha256: 98d86d5ccb3a95da2cd96b394c157aa6fef0d4908b8878c3e2b5931f6bc5fd57
-  md5: 9d9572e257bf4559f20629efb0d3511d
+  url: https://conda.anaconda.org/conda-forge/win-64/jsonpointer-3.0.0-py312h2e8e312_0.conda
+  sha256: 74d440e8250ff2ca05013b959de954bc85d84ff14a3b60c9e3dc7e071cddfa42
+  md5: 6509bc42d9d26be656db3332da504913
   depends:
-  - python >=3.12.0rc3,<3.13.0a0
+  - python >=3.12,<3.13.0a0
   - python_abi 3.12.* *_cp312
   license: BSD-3-Clause
-  license_family: BSD
   purls:
   - pkg:pypi/jsonpointer?source=conda-forge-mapping
-  size: 34602
-  timestamp: 1695397923441
+  size: 42461
+  timestamp: 1718283943216
 - kind: conda
   name: jsonschema
   version: 4.22.0
@@ -1957,7 +1937,7 @@ packages:
   build_number: 112
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/libmed-4.1.1-py311_nompi_debug_hf843f0f_112.conda
-  sha256: 7dd9b60f880f37ada1c45cdf6b5298ca958e7700cfa3994756aeeef7d3f85b12
+  sha256: d7233b08cc70c6ca515d3aed2f288c8c3566d0c0cfd8dd8e3043792da1863843
   depends:
   - hdf5 >=1.14.4,<1.14.5.0a0
   - hdf5 >=1.14.4,<1.14.5.0a0 *debug*
@@ -1972,8 +1952,8 @@ packages:
   license: LGPL-3.0-only
   license_family: LGPL
   purls: []
-  size: 1730068
-  timestamp: 1718221679227
+  size: 1748757
+  timestamp: 1718284217731
 - kind: conda
   name: libmed
   version: 4.1.1
@@ -1981,7 +1961,7 @@ packages:
   build_number: 312
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/libmed-4.1.1-py311_nompi_release_h46e05e6_312.conda
-  sha256: c0315147bedb8efd0d574eef03b16104735fe8ab3bcce8f1ead7cb6c04775983
+  sha256: 7b3c3116b1e833ad99480ad1385329a14870dae351d16694c14d1a96a148d2f7
   depends:
   - hdf5 >=1.14.4,<1.14.5.0a0
   - hdf5 >=1.14.4,<1.14.5.0a0 *release*
@@ -1996,8 +1976,8 @@ packages:
   license: LGPL-3.0-only
   license_family: LGPL
   purls: []
-  size: 1717894
-  timestamp: 1718221679162
+  size: 1724843
+  timestamp: 1718284427115
 - kind: conda
   name: libscotch
   version: 7.0.4
@@ -2005,7 +1985,7 @@ packages:
   build_number: 102
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/libscotch-7.0.4-aster_nompi_debug_he89662c_102.conda
-  sha256: a658e93edcc8488e82d909b0f62bd930c1ebd778486c17559151c36cf45f2c82
+  sha256: 99d5e9c90bb0bfbadabac77ca0218c416bc8c0cdfb007c52b7acde551c4d7818
   depends:
   - bzip2 >=1.0.8,<2.0a0
   - libflang >=18.1.7
@@ -2020,8 +2000,8 @@ packages:
   platform: win
   license: CECILL-C
   purls: []
-  size: 703938
-  timestamp: 1718219928047
+  size: 703341
+  timestamp: 1718282628364
 - kind: conda
   name: libscotch
   version: 7.0.4
@@ -2029,7 +2009,7 @@ packages:
   build_number: 302
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/libscotch-7.0.4-aster_nompi_release_ha6f9ad9_302.conda
-  sha256: 9eb821c661401375d911e88c545849d32bd3c288d3267f0ff73692211e0d789a
+  sha256: fd60f34fec7f182bf58199e4edb61383f646d06b9fc674acdb31bf339a17574a
   depends:
   - bzip2 >=1.0.8,<2.0a0
   - libflang >=18.1.7
@@ -2044,8 +2024,8 @@ packages:
   platform: win
   license: CECILL-C
   purls: []
-  size: 373406
-  timestamp: 1718219824814
+  size: 373496
+  timestamp: 1718282719026
 - kind: conda
   name: libsolv
   version: 0.7.29
@@ -2373,7 +2353,7 @@ packages:
   build_number: 102
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/medcoupling-9.12.0-py311_nompi_debug_hbd024a2_102.conda
-  sha256: 15f5662c92c2b04bb340625e6dbad23bf2f6f871d9f198aa535e39b75e0b2d21
+  sha256: d191a02920a676e26dfdf343c2555f5d0a91ac026db54ba6359c054441e067f9
   depends:
   - libboost >=1.84,<1.85.0a0
   - libmed >=4.1,<4.2.0a0
@@ -2389,8 +2369,8 @@ packages:
   license: LGPL-2.1-or-later
   license_family: LGPL
   purls: []
-  size: 8207809
-  timestamp: 1718223040578
+  size: 7871199
+  timestamp: 1718286517573
 - kind: conda
   name: medcoupling
   version: 9.12.0
@@ -2398,7 +2378,7 @@ packages:
   build_number: 302
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/medcoupling-9.12.0-py311_nompi_release_habbc725_302.conda
-  sha256: 1f40d455b0a63439958253eab9a918aec66c0706d1c98009fd67114b1b814792
+  sha256: 3c21b0a76e51f4c63f6076cfe7b3dc6c24b9b958e2ac8193a7117fdc52e37d5d
   depends:
   - libboost >=1.84,<1.85.0a0
   - libmed >=4.1,<4.2.0a0
@@ -2414,8 +2394,8 @@ packages:
   license: LGPL-2.1-or-later
   license_family: LGPL
   purls: []
-  size: 8552138
-  timestamp: 1718222782161
+  size: 8361398
+  timestamp: 1718287456417
 - kind: conda
   name: menuinst
   version: 2.1.1
@@ -2461,7 +2441,7 @@ packages:
   build_number: 3
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/mfront-4.2.0-py311_debug_h7bb788a_3.conda
-  sha256: 37333207c595b5a307db33328d25989c660135450b15b67b6f3535203fb107f3
+  sha256: f2c26e1b1c3b0377cd066b315b2e8a0f1cff396d8d616c483731c1a311f801e8
   depends:
   - libboost-python >=1.84.0,<1.85.0a0
   - libflang >=18.1.7
@@ -2475,8 +2455,8 @@ packages:
   license: GPL-3.0-only
   license_family: GPL
   purls: []
-  size: 4050163
-  timestamp: 1718220673477
+  size: 4054486
+  timestamp: 1718283420752
 - kind: conda
   name: mfront
   version: 4.2.0
@@ -2484,7 +2464,7 @@ packages:
   build_number: 203
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/mfront-4.2.0-py311_release_h0dcebea_203.conda
-  sha256: 8def7b95dfabf9ba1b514adc0471331f2675af10f31a3390f22bf65e8020ae29
+  sha256: 7f5dabcf009715f10e7d2290f567df26d056fe3270e992df9ddb65313e9bc626
   depends:
   - libboost-python >=1.84.0,<1.85.0a0
   - libflang >=18.1.7
@@ -2498,8 +2478,8 @@ packages:
   license: GPL-3.0-only
   license_family: GPL
   purls: []
-  size: 4043139
-  timestamp: 1718220925807
+  size: 4044964
+  timestamp: 1718283433931
 - kind: conda
   name: mgis
   version: '2.2'
@@ -2507,7 +2487,7 @@ packages:
   build_number: 2
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/mgis-2.2-py311_debug_h04e8b95_2.conda
-  sha256: 7d958dfcde2aa2b82d46b284e2c4a18cc874cf82c362fe2a812fbd92070587db
+  sha256: 41d7afdb972946754b28bcb8acc6f64954a16c39604496c07de6882877e83225
   depends:
   - libboost-python >=1.84.0,<1.85.0a0
   - libflang >=18.1.7
@@ -2523,8 +2503,8 @@ packages:
   license: Apache-2.0
   license_family: Apache
   purls: []
-  size: 439220
-  timestamp: 1718222642350
+  size: 437579
+  timestamp: 1718284660249
 - kind: conda
   name: mgis
   version: '2.2'
@@ -2532,7 +2512,7 @@ packages:
   build_number: 202
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/mgis-2.2-py311_release_h2b2344e_202.conda
-  sha256: 68c80193cb337a11bf801ad74aaf192a287d176230d9e0e25f1d1221dfc19f6b
+  sha256: 2822312141e8f1969c70e623d951d4ba377184c40c122bb48908130e50deb253
   depends:
   - libboost-python >=1.84.0,<1.85.0a0
   - libflang >=18.1.7
@@ -2548,8 +2528,8 @@ packages:
   license: Apache-2.0
   license_family: Apache
   purls: []
-  size: 437672
-  timestamp: 1718222287851
+  size: 438293
+  timestamp: 1718284146067
 - kind: conda
   name: mkl
   version: 2024.1.0
@@ -2641,23 +2621,6 @@ packages:
   purls: []
   size: 8383610
   timestamp: 1717550042871
-- kind: conda
-  name: packaging
-  version: '24.0'
-  build: pyhd8ed1ab_0
-  subdir: noarch
-  noarch: python
-  url: https://conda.anaconda.org/conda-forge/noarch/packaging-24.0-pyhd8ed1ab_0.conda
-  sha256: a390182d74c31dfd713c16db888c92c277feeb6d1fe96ff9d9c105f9564be48a
-  md5: 248f521b64ce055e7feae3105e7abeb8
-  depends:
-  - python >=3.8
-  license: Apache-2.0
-  license_family: APACHE
-  purls:
-  - pkg:pypi/packaging?source=conda-forge-mapping
-  size: 49832
-  timestamp: 1710076089469
 - kind: conda
   name: packaging
   version: '24.1'
@@ -3473,15 +3436,15 @@ packages:
   build_number: 102
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/scotch-7.0.4-aster_nompi_debug_hac525dd_102.conda
-  sha256: ebe684a1227588bf42e7e0ae805e34b0554a7baea392fcb3d70c4f0352f1713a
+  sha256: d8b59a93cf518a1ed2ea8a2948a91f0fa54b8c59624f41d4e6078b1e7e94c779
   depends:
   - libscotch 7.0.4 aster_nompi_debug_he89662c_102
   arch: x86_64
   platform: win
   license: CECILL-C
   purls: []
-  size: 371168
-  timestamp: 1718220785612
+  size: 369053
+  timestamp: 1718283144229
 - kind: conda
   name: scotch
   version: 7.0.4
@@ -3489,15 +3452,15 @@ packages:
   build_number: 302
   subdir: win-64
   url: https://repo.prefix.dev/code-aster/win-64/scotch-7.0.4-aster_nompi_release_hfa1337c_302.conda
-  sha256: 75a039f9271360b233d9ad592983326c00e5cc85977b988ca02d13c6fcd585d0
+  sha256: 6e1a2169b1aed6f844ea7176cddc4a1a0a0d6a04e5e29ff3b6d9a93bac19c716
   depends:
   - libscotch 7.0.4 aster_nompi_release_ha6f9ad9_302
   arch: x86_64
   platform: win
   license: CECILL-C
   purls: []
-  size: 344816
-  timestamp: 1718219950579
+  size: 346963
+  timestamp: 1718283173497
 - kind: conda
   name: setuptools
   version: 70.0.0

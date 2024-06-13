@@ -1,0 +1,12 @@
+{
+  channel(name: "__CHANNEL_NAME__") {
+    name
+    description
+    packages {
+      pages
+      page {
+        name
+      }
+    }
+  }
+}

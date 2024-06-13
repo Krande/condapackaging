@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
-{% set version = '17.0.17' %}
-{% set win_build = '8' %}
+{% set version = '17.0.20' %}
+{% set win_build = '1' %}
 {% set build = 0 %}
 
 {% if mpi == 'nompi' %}
@@ -31,6 +31,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'                                                             # [win]
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz   # [win]
+    sha256: 3fd596ad42f8f1689ced11f174243cc34778bdd84c9f0f25bb3e32551d02ce27
   - fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
     patches:                                                                                                              # [not win]
@@ -60,13 +61,13 @@ requirements:
     - openblas                                      # [not win]
     - libblas
     - liblapack
-    - metis *{{ build_type }}*
-    - mumps *{{ build_type }}*
-    - mfront *{{ build_type }}*
-    - mgis *{{ build_type }}*
-    - libmed *{{ build_type }}*
-    - scotch *{{ build_type }}*
-    - medcoupling *{{ build_type }}*
+    - metis *=*{{ build_type }}*
+    - mumps *=*{{ build_type }}*
+    - mfront *=*{{ build_type }}*
+    - mgis *=*{{ build_type }}*
+    - libmed *=*{{ build_type }}*
+    - scotch *=*{{ build_type }}*
+    - medcoupling *=*{{ build_type }}*
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
@@ -104,7 +105,7 @@ about:
   home: https://www.code-aster.org
   license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
   license_family: GPL
-  summary: 'Code_Aster : a finite element solver'
+  summary: "Code_Aster - a finite element solver"
   description: |
     Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
   doc_url: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
