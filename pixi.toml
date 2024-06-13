@@ -2,7 +2,7 @@
 name = "mamba-build"
 version = "0.1.0"
 description = "A basic conda build environment"
-channels = ["conda-forge"]
+channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
 platforms = ["win-64"]
 
 [tasks]
@@ -34,11 +34,6 @@ rattler-build = ">=0.17.0,<0.18"
 
 [pypi-dependencies]
 conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
-
-[feature.release]
-channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
-[feature.debug]
-channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
 
 [feature.release.tasks]
 rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }

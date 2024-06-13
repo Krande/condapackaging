@@ -159,6 +159,7 @@ environments:
       - pypi: git+https://github.com/conda-incubator/conda-recipe-manager.git@516e435ca058339f5c3ddced15ae739e28bacebc
   default:
     channels:
+    - url: https://repo.prefix.dev/code-aster/
     - url: https://conda.anaconda.org/conda-forge/
     indexes:
     - https://pypi.org/simple
