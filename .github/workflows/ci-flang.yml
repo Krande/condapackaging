@@ -19,6 +19,5 @@ jobs:
       conda_label: devtools
       use_quetz: "True"
       extra_build_args: " -m __root__/src/code_aster/common.yaml"
-      debug_build: 'True'
       use_intel_fortran: 'False'
     secrets: inherit
