@@ -1,0 +1,24 @@
+name: ci-mkl
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/ci-mkl.yml
+#    branches:
+#      - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mkl
+      job_name: "mkl"
+      platforms: "windows-latest"
+      pkg_dir: src
+      conda_label: devtools
+      use_quetz: "True"
+      extra_build_args: " -m __root__/src/code_aster/common.yaml"
+      debug_build: 'True'
+      use_intel_fortran: 'False'
+    secrets: inherit

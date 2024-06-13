@@ -6,9 +6,8 @@ channels = ["conda-forge"]
 platforms = ["win-64"]
 
 [tasks]
-_set_output = "set OUTPUT_FOLDER=%CONDA_PREFIX%"
-hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/hdf5" }
 
+hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/hdf5" }
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/metis" }
 mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mumps" }
@@ -34,3 +33,31 @@ rattler-build = ">=0.17.0,<0.18"
 
 [pypi-dependencies]
 conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
+
+[feature.release]
+channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
+[feature.debug]
+channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
+
+[feature.release.dependencies]
+
+hdf5 = { build = "*release*" }
+libmed = { build = "*release*" }
+medcoupling = { build = "*release*" }
+mfront = { build = "*release*" }
+mgis = { build = "*release*" }
+scotch = { build = "*release*" }
+
+[feature.debug.dependencies]
+
+hdf5 = { build = "*debug*" }
+libmed = { build = "*debug*" }
+medcoupling = { build = "*debug*" }
+mfront = { build = "*debug*" }
+mgis = { build = "*debug*" }
+scotch = { build = "*debug*" }
+
+[environments]
+
+debug = ["debug"]
+release = ["release"]
