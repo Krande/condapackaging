@@ -17,7 +17,7 @@ set CXX=clang-cl.exe
 SET OUTPUT_DIR=%SRC_DIR%/build/std
 echo "OUTPUT_DIR: %OUTPUT_DIR%"
 
-set ASTER_PLATFORM_MSVC=1
+set ASTER_PLATFORM_MSVC64=1
 set ASTER_PLATFORM_WINDOWS=1
 
 set MKLROOT=%LIBRARY_PREFIX%
@@ -51,10 +51,9 @@ set LIBPATH=%PREF_ROOT%/libs %LIBPATH%
 
 REM /MD link with MSVCRT.lib. /FS allow for c compiler calls to vc140.pdb on multiple threads (for cl.exe only)
 
-set CFLAGS=%CFLAGS% /FS /MD
-set CXXFLAGS=%CXXFLAGS% /MD
-set FCFLAGS=%FCFLAGS% /fpp /MD
-set FCFLAGS=%FCFLAGS% /names:lowercase /assume:underscore /assume:nobscc
+set CFLAGS=%CFLAGS% /FS /MD /DMKL_ILP64
+set CXXFLAGS=%CXXFLAGS% /MD /DMKL_ILP64
+set FCFLAGS=%FCFLAGS% /fpp /MD /4I8 /double-size:64 /real-size:64 /integer-size:64 /names:lowercase /assume:underscore /assume:nobscc
 
 if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
 
@@ -66,13 +65,10 @@ if %build_type% == "debug" (
 )
 
 :: Add Math libs
-set LDFLAGS=%LDFLAGS% mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
+set LDFLAGS=%LDFLAGS% mkl_intel_ilp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
 
 :: Add threading libs
 set LDFLAGS=%LDFLAGS% pthread.lib
-
-:: Add hdf5 libs
-@REM set LDFLAGS=%LDFLAGS% hdf5.lib hdf5_hl.lib
 
 :: Add metis libs
 set LDFLAGS=%LDFLAGS% metis.lib

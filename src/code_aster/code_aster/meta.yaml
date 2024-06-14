@@ -1,5 +1,5 @@
 {% set name = 'code-aster' %}
-{% set version = '17.0.20' %}
+{% set version = '17.0.21' %}
 {% set win_build = '1' %}
 {% set build = 0 %}
 
@@ -31,7 +31,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'                                                             # [win]
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz   # [win]
-    sha256: 3fd596ad42f8f1689ced11f174243cc34778bdd84c9f0f25bb3e32551d02ce27
+    sha256: 6829de96bd97922b086ebb43cf59e04b75a39b32d312d43bea5fc4516984f0b7
   - fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
     patches:                                                                                                              # [not win]
@@ -63,7 +63,6 @@ requirements:
     - openblas                                      # [not win]
     - libblas
     - liblapack
-    - intel-openmp                                 # [win]
     - metis *=*{{ build_type }}*
     - mumps *=*{{ build_type }}*
     - mfront *=*{{ build_type }}*
@@ -71,6 +70,7 @@ requirements:
     - libmed *=*{{ build_type }}*
     - scotch *=*{{ build_type }}*
     - medcoupling *=*{{ build_type }}*
+    - psutil
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
