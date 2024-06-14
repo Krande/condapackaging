@@ -70,6 +70,9 @@ set LDFLAGS=%LDFLAGS% mkl_intel_ilp64_dll.lib mkl_intel_thread_dll.lib mkl_core_
 :: Add threading libs
 set LDFLAGS=%LDFLAGS% pthread.lib
 
+:: Add mumps libs
+set LDFLAGS=%LDFLAGS% mpiseq.lib esmumps.lib scotch.lib scotcherr.lib scotcherrexit.lib
+
 :: Add metis libs
 set LDFLAGS=%LDFLAGS% metis.lib
 
