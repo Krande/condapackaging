@@ -43,6 +43,8 @@ build:
   string: "py{{ CONDA_PY }}_{{ mpi_prefix }}_{{ build_type}}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }}
+  ignore_run_exports:
+    - llvm-openmp  # [win]
 
 requirements:
   build:
@@ -75,6 +77,8 @@ requirements:
 
   run:
     - python
+    - intel-openmp                                 # [win]
+    - intel-fortran-rt                             # [win]
     - {{ pin_compatible('numpy', max_pin='x.x') }}
     - {{ mpi }}                                     # [mpi != "nompi"]
     - libxcrypt                                     # [not win]
@@ -90,12 +94,13 @@ test:
 #    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'sslp201a|sdld23a|sdnl133b|sdnl133a' --resutest=../cmathissue --only-failed-results -j 1 # related to py310&py39 failing only
   requires:
-    - libmed {{ med_ver }}                          # [win]
-    - scotch {{ scotch_ver }}                       # [win]
-    - medcoupling {{ medcoupling_ver }}             # [win]
-    - libmed {{ med_ver }}{{mpi}}*                  # [not win]
-    - scotch {{ scotch_ver }}{{mpi}}*               # [not win]
-    - medcoupling {{ medcoupling_ver }}{{mpi}}*     # [not win]
+    - metis *=*{{ build_type }}*
+    - mumps *=*{{ build_type }}*
+    - mfront *=*{{ build_type }}*
+    - mgis *=*{{ build_type }}*
+    - libmed *=*{{ build_type }}*
+    - scotch *=*{{ build_type }}*
+    - medcoupling *=*{{ build_type }}*
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]
     - parmetis                                      # [mpi != "nompi"]
   files:
