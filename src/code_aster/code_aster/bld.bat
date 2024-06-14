@@ -97,10 +97,18 @@ waf configure ^
   --med-libs="med medC medfwrap medimport" ^
   --prefix=%LIB_PATH_ROOT% ^
   --out=%SRC_DIR%/build/std ^
+  --enable-med ^
+  --enable-hdf5 ^
+  --enable-mumps ^
+  --enable-openmp ^
+  --enable-metis ^
+  --enable-scotch ^
   --disable-mpi ^
-  --maths-libs=auto ^
+  --disable-petsc ^
   --install-tests ^
-  --without-hg
+  --maths-libs=auto ^
+  --without-hg ^
+  --without-repo
 
 if errorlevel 1 exit 1
 
