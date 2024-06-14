@@ -7,7 +7,7 @@ rem Set TFELHOME to the PREFIX environment variable
 set TFELHOME=%PREFIX%
 set FC=flang-new
 
-set CMAKE_BUILD_TYPE=Release
+set BUILD_TYPE=Release
 
 if "%build_type%" == "debug" (
     set FCFLAGS=%FCFLAGS%/Od /debug:full /Zi
@@ -16,7 +16,7 @@ if "%build_type%" == "debug" (
 
 cmake -B build . -G "Ninja" ^
     %CMAKE_ARGS% ^
-    -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
+    -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
     -Denable-c-bindings=ON ^
     -Denable-fortran-bindings=ON ^
     -Denable-python-bindings=ON ^

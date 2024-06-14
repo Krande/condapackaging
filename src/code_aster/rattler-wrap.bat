@@ -17,9 +17,19 @@ if not exist %RECIPE_FILE% (
     conda-recipe-manager convert %THIS_DIR%/%REPLACEMENT%/meta.yaml -o %RECIPE_FILE%
 )
 
-set CMD=rattler-build build -r %RECIPE_FILE% -m %THIS_DIR%\win.yaml -m %THIS_DIR%/%REPLACEMENT%/conda_build_config.yaml --python=3.11
+set CMD=rattler-build build -r %RECIPE_FILE% -m %THIS_DIR%\win.yaml -m %THIS_DIR%/%REPLACEMENT%/conda_build_config.yaml
 
-echo Running command: %CMD%
-%CMD%
+:: Shift arguments
+set ARGS=
+shift
+:loop
+if "%~1"=="" goto done
+set ARGS=%ARGS% %1
+shift
+goto loop
+:done
+
+echo Running command: %CMD% %ARGS%
+%CMD% %ARGS%
 
 endlocal

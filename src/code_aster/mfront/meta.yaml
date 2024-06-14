@@ -27,6 +27,8 @@ build:
   number: {{ build }}
   skip: true  # [osx]
   string: "py{{ CONDA_PY }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}"
+  ignore_run_exports:
+    - llvm-openmp  # [win]
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
@@ -48,6 +50,7 @@ requirements:
     - zlib  # [linux]
   run:
     - python
+    - intel-openmp                # [win]
     - libstdcxx-ng  # [linux]
     - libgcc-ng  # [linux]
 

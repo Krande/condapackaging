@@ -2,9 +2,7 @@
 echo Build MFRONT/TFEL
 
 set FC=flang-new
-
-
-set CMAKE_BUILD_TYPE=Release
+set BUILD_TYPE=Release
 
 if "%build_type%" == "debug" (
     set FCFLAGS=%FCFLAGS% -g -cpp
@@ -17,7 +15,7 @@ cmake -B build . -G "Ninja" -Wno-dev ^
     -D CMAKE_C_COMPILER=clang-cl ^
     -D CMAKE_LINKER=lld-link ^
     -D CMAKE_NM=llvm-nm ^
-    -D CMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% ^
+    -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
     -D enable-fortran=ON ^
     -D enable-python-bindings=ON ^
     -D enable-cyrano=ON ^

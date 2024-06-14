@@ -49,6 +49,8 @@ build:
   detect_binary_files_with_prefix: true
   string: aster_py{{ CONDA_PY }}_{{mpi_prefix}}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
   number: {{ build }}
+  ignore_run_exports:
+    - llvm-openmp  # [win]
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
 
@@ -56,8 +58,7 @@ requirements:
   build:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}" # [not win]
-    - clang  # [win]
+    - "{{ compiler('fortran') }}"  # [not win]
     - waf    # [not win]
     - make   # [not win]
     - cmake  # [win]

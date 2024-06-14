@@ -59,6 +59,7 @@ outputs:
         - {{ pin_subpackage('libscotch', max_pin='x.x.x') }} *{{ build_type}}*
       ignore_run_exports:
         - {{ mpi }}       # [mpi != 'nompi']
+        - llvm-openmp  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
