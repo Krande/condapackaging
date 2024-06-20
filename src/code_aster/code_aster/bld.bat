@@ -135,9 +135,9 @@ REM Move all .pyd files to %SP_DIR%
 for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.pyd") do move "%%f" "%SP_DIR%"
 
 REM Move all dll/lib/pdb files to %BIN_DIR%
-for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.dll") do move "%%f" "%BIN_DIR%"
-for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.lib") do move "%%f" "%BIN_DIR%"
-for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.pdb") do move "%%f" "%BIN_DIR%"
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.dll") do move "%%f" "%LIBRARY_BIN%"
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.lib") do move "%%f" "%LIBRARY_BIN%"
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.pdb") do move "%%f" "%LIBRARY_BIN%"
 
 echo Files moved successfully.
 
