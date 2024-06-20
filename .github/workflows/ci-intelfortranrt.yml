@@ -1,0 +1,23 @@
+name: ci-intelfortranrt
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/ci-intelfortranrt.yml
+#    branches:
+#      - donotrun
+
+jobs:
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: intelfortranrt
+      job_name: "intelfortranrt"
+      platforms: "windows-latest"
+      pkg_dir: src
+      conda_label: devtools
+      use_quetz: "True"
+      extra_build_args: " -m __root__/src/code_aster/common.yaml"
+      use_intel_fortran: 'False'
+    secrets: inherit
