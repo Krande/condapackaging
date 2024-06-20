@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
 {% set version = '17.0.21' %}
-{% set win_build = '1' %}
+{% set win_build = '2' %}
 {% set build = 0 %}
 
 {% if mpi == 'nompi' %}
