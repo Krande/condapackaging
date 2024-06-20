@@ -52,12 +52,21 @@ REM /MD link with MSVCRT.lib. /FS allow for c compiler calls to vc140.pdb on mul
 
 set CFLAGS=%CFLAGS% /FS /MD /DMKL_ILP64
 set CXXFLAGS=%CXXFLAGS% /MD /DMKL_ILP64
-set FCFLAGS=%FCFLAGS% /fpp /MD /4I8 /double-size:64 /real-size:64 /integer-size:64 /names:lowercase /assume:underscore /assume:nobscc
 
+if "%FC%" == "ifx.exe" (
+    echo "Using Intel Fortran LLVM IFX compiler"
+    set FC_SEARCH=ifort
+    set FCFLAGS=%FCFLAGS% /fpp /MD /4I8 /double-size:64 /real-size:64 /integer-size:64 /names:lowercase /assume:underscore /assume:nobscc /DMKL_ILP64
+    :: Add lib paths
+    set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
+) else (
+    echo "Using LLVM Flang Fortran compiler"
+    set FC_SEARCH=flang
+    set FCFLAGS=%FCFLAGS% -cpp --dependent-lib=msvcrt -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8 -funderscoring
+    :: Add lib paths
+    set LDFLAGS=%LDFLAGS% -L %LIB_PATH_ROOT%/lib -L %LIB_PATH_ROOT%/bin -L %PREF_ROOT%/libs
+)
 if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
-
-:: Add lib paths
-set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
 
 if %build_type% == "debug" (
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
@@ -82,9 +91,7 @@ set INCLUDES_BIBC=%PREF_ROOT%/include %SRC_DIR%/bibfor/include %INCLUDES_BIBC%
 
 set DEFINES=H5_BUILT_AS_DYNAMIC_LIB PYBIND11_NO_ASSERT_GIL_HELD_INCREF_DECREF
 
-python conda\update_version.py
-
-set BUILD=std
+python conda\scripts\update_version.py
 
 python %RECIPE_DIR%\config\set_env_var.py %SRC_DIR%
 
@@ -106,17 +113,32 @@ waf configure ^
   --disable-petsc ^
   --install-tests ^
   --maths-libs=auto ^
+  --msvc-entry ^
   --without-hg ^
   --without-repo
 
 if errorlevel 1 exit 1
 
-if %build_type% == "debug" (
+if "%build_type%" == "debug" (
     waf install_debug -v
 ) else (
     waf install -v
 )
 
 if errorlevel 1 exit 1
+
+REM Move code_aster and run_aster directories (including subdirectories)
+move "%LIBRARY_PREFIX%\lib\aster\code_aster" "%SP_DIR%\code_aster"
+move "%LIBRARY_PREFIX%\lib\aster\run_aster" "%SP_DIR%\run_aster"
+
+REM Move all .pyd files to %SP_DIR%
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.pyd") do move "%%f" "%SP_DIR%"
+
+REM Move all dll/lib/pdb files to %BIN_DIR%
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.dll") do move "%%f" "%BIN_DIR%"
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.lib") do move "%%f" "%BIN_DIR%"
+for %%f in ("%LIBRARY_PREFIX%\lib\aster\*.pdb") do move "%%f" "%BIN_DIR%"
+
+echo Files moved successfully.
 
 endlocal

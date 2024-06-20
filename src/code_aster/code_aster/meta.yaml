@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
 {% set version = '17.0.21' %}
-{% set win_build = '2' %}
+{% set win_build = '3' %}
 {% set build = 0 %}
 
 {% if mpi == 'nompi' %}
@@ -31,7 +31,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'                                                             # [win]
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz   # [win]
-    sha256: 6829de96bd97922b086ebb43cf59e04b75a39b32d312d43bea5fc4516984f0b7
+    sha256: 9da7ea830cf136f9c04e04fa61388d8ce24a1d079ac3be780a5ad2a0ad46ef70                                              # [win]
   - fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
     patches:                                                                                                              # [not win]
@@ -45,6 +45,8 @@ build:
     - {{ pin_subpackage(name, 'x.x') }}
   ignore_run_exports:
     - llvm-openmp  # [win]
+  ignore_run_exports_from:
+    - intel-fortran-rt
 
 requirements:
   build:
@@ -78,7 +80,7 @@ requirements:
 
   run:
     - python
-    - intel-fortran-rt                             # [win]
+    - intel-fortran-rt                              # [win]
     - {{ pin_compatible('numpy', max_pin='x.x') }}
     - {{ mpi }}                                     # [mpi != "nompi"]
     - libxcrypt                                     # [not win]
