@@ -85,11 +85,6 @@ on:
         type: string
         required: false
         default: False
-      quetz_extra_channel:
-        description: 'Extra channel to add to conda'
-        type: string
-        required: false
-        default: ""
       build_selection:
         description: 'A comma separated list of jobs'
         type: string
@@ -100,6 +95,11 @@ on:
         type: string
         required: false
         default: ""
+      use_devtools:
+        description: 'Use devtools channel'
+        type: string
+        required: false
+        default: False
 env:
   CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
   WORK_DIR: ${{ inputs.work_dir }}
@@ -295,14 +295,6 @@ jobs:
             echo "USE_INTEL=True" >> $GITHUB_ENV
           fi
 
-      - name: Set up extra channel
-        run: |
-          if [[ "${{ inputs.quetz_extra_channel }}" != "" ]]; then
-            echo "EXTRA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.quetz_extra_channel }}" >> $GITHUB_ENV
-          else
-            echo "EXTRA_CHANNEL=" >> $GITHUB_ENV
-          fi
-
       - name: set quetz channel if using quetz or anaconda
         run: |
           if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
@@ -328,7 +320,6 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
-              - ${{ env.EXTRA_CHANNEL }}
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
@@ -339,6 +330,11 @@ jobs:
             typer
             quetz-client
             conda-build
+
+      - name: use devtools channel
+        if: ${{ inputs.use_devtools == 'True' }}
+        run: |
+          conda config --add channels ${{ secrets.QUETZ_URL }}/get/devtools
 
       - name: Install cpack-actions
         run: |

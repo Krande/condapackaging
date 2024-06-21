@@ -46,6 +46,14 @@ on:
           - "True"
           - "False"
         default: "True"
+      use_devtools:
+        description: 'Install devtools'
+        type: choice
+        required: false
+        options:
+          - "True"
+          - "False"
+        default: "True"
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -137,6 +145,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -155,6 +164,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_mumps:
@@ -173,6 +183,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_libmed:
@@ -191,6 +202,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_petsc:
@@ -209,6 +221,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_medcoupling:
@@ -227,7 +240,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_mfront:
@@ -246,6 +259,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_mgis:
@@ -264,6 +278,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_code_aster:
@@ -282,6 +297,7 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   test_mpi:
@@ -297,6 +313,7 @@ jobs:
       suffix: "mpi"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       description: ${{ needs.env.outputs.description }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   test_seq:
@@ -312,4 +329,5 @@ jobs:
       suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       description: ${{ needs.env.outputs.description }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit

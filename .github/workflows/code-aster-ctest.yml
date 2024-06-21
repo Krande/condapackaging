@@ -44,6 +44,11 @@ on:
         type: string
         required: false
         default: ""
+      use_devtools:
+        description: 'Use devtools channel'
+        type: string
+        required: false
+        default: False
 env:
   VARIANT_FLAG: "*nompi*"
   PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
@@ -104,6 +109,11 @@ jobs:
             python=${{ matrix.pyver }}
             colorama
             code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
+
+      - name: use devtools channel
+        if: ${{ inputs.use_devtools == 'True' }}
+        run: |
+          conda config --add channels ${{ secrets.QUETZ_URL }}/get/devtools
 
       - name: run ctest [seq]
         if: ${{ inputs.mpi == false }}
