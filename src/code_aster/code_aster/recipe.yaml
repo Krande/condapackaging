@@ -22,14 +22,18 @@ package:
 
 source:
   - url: https://gitlab.com/krande/src/-/archive/${{ version }}.${{ win_build }}/src-${{ version }}.${{ win_build }}.tar.gz
-    sha256: 9da7ea830cf136f9c04e04fa61388d8ce24a1d079ac3be780a5ad2a0ad46ef70  # [win]
-    file_name: ${{ name }}_${{ version }}.${{ win_build }}_win.tar.gz
+    sha256: 9da7ea830cf136f9c04e04fa61388d8ce24a1d079ac3be780a5ad2a0ad46ef70
 
 build:
   number: ${{ build }}
-  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type}}_h${{ PKG_HASH }}_${{ build }}
+  script:
+    file: bld.bat
+    env:
+      build_type: ${{ build_type }}
+  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type }}_h${{ PKG_HASH }}_${{ build }}
   prefix_detection:
     ignore_binary_files: true
+
 
 requirements:
   build:
@@ -59,21 +63,11 @@ requirements:
     - scotch *=*${{ build_type }}*
     - medcoupling *=*${{ build_type }}*
     - psutil
-    - if: "mpi != \"nompi\""
-      then: ${{ mpi }}
-    - if: "mpi != 'nompi'"
-      then: mpi4py ${{ mpi4py_ver }}
-    - if: "mpi != \"nompi\""
-      then: petsc ${{ petsc_ver }}
-    - if: "mpi != \"nompi\""
-      then: parmetis
   run:
     - python
     - if: win
       then: intel-fortran-rt
     - ${{ pin_compatible('numpy', upper_bound='x.x') }}
-    - if: "mpi != \"nompi\""
-      then: ${{ mpi }}
     - if: not win
       then: libxcrypt
   run_exports:
