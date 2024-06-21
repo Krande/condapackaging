@@ -1,5 +1,4 @@
 mpi:
-#  - openmpi
   - nompi
 
 build_type:

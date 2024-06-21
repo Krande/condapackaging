@@ -52,7 +52,7 @@ build:
   ignore_run_exports:
     - llvm-openmp  # [win]
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type}}*
+    - {{ pin_subpackage(name, max_pin='x.x') }} *{{ build_type}}*
 
 requirements:
   build:
@@ -100,7 +100,7 @@ test:
 
 about:
   home: https://mumps-solver.org/index.php
-  license: CeCILL-C free/libre
+  license: CeCILL-C
   summary: 'MUMPS is a library which provides a powerful sparse direct parallel solver'
   description: |
     MUMPS is a library which provides a powerful sparse direct parallel solver. It is available in Code_Aster’s linear solvers both for sequential and parallel use.

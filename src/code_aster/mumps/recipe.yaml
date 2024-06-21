@@ -1,0 +1,93 @@
+schema_version: 1
+
+context:
+  name: mumps
+  version: 5.6.2
+  metis_ver: 5.1.0
+  parmetis_ver: 4.0.3
+  scalapack_ver: 2.1.0
+  scotch_ver: 7.0.4
+  build: 100
+  mpi_prefix: nompi
+  build_type: debug
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/scivision/mumps/archive/refs/tags/v5.7.1.0.tar.gz  # [win]
+    sha256: dd37641e3164329238ce947a6249680f27ca9033c5e7caae76981a3fd2628937  # [win]
+    patches:  # [win]
+      - if: win
+        then: patches/add_mumps_patch.patch
+
+build:
+  number: ${{ build }}
+  string: aster_py${{ CONDA_PY }}_${{mpi_prefix}}_${{ build_type }}_h${{ PKG_HASH }}_${{ build }}
+  prefix_detection:
+    ignore_binary_files: true
+
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - if: not win
+      then:
+       - ${{ compiler('fortran') }}
+       - waf
+       - make
+    - if: win
+      then: cmake
+  host:
+    - python
+    - numpy
+    - zlib
+    - libblas
+    - liblapack
+    - if: win
+      then: mkl-devel
+    - metis=${{ metis_ver }}*${{ build_type }}*
+    - scotch=${{ scotch_ver }}=*aster*${{ build_type }}
+  run:
+    - ${{ pin_compatible('numpy') }}
+  ignore_run_exports:
+    by_name:
+      - llvm-openmp
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
+
+tests:
+  - files:
+      recipe:
+        - test_files_exists.bat
+    script:
+      - if: linux
+        then: test -f $PREFIX/lib/libcmumps.so
+      - if: linux
+        then: test -f $PREFIX/lib/libdmumps.so
+      - if: linux
+        then: test -f $PREFIX/lib/libmumps_common.so
+      - if: linux
+        then: test -f $PREFIX/lib/libpord.so
+      - if: linux
+        then: test -f $PREFIX/lib/libsmumps.so
+      - if: linux
+        then: test -f $PREFIX/lib/libzmumps.so
+      - if: win
+        then: test_files_exists.bat
+      - if: win
+        then: test -f %LIBRARY_PREFIX%/include/cmumps_c.h
+
+about:
+  license: CECILL-C
+  summary: MUMPS is a library which provides a powerful sparse direct parallel solver
+  description: |
+    MUMPS is a library which provides a powerful sparse direct parallel solver. It is available in Code_Aster’s linear solvers both for sequential and parallel use.
+  homepage: https://mumps-solver.org/index.php
+  repository: https://github.com/scivision/mumps
+
+extra:
+  recipe-maintainers:
+    - Krande
