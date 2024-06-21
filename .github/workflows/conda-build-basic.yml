@@ -303,6 +303,11 @@ jobs:
             echo "CONDA_CHANNEL=${{ needs.build_prep.outputs.conda_channel }}" >> $GITHUB_ENV
           fi
 
+      - name: use devtools channel
+        if: ${{ inputs.use_devtools == 'True' }}
+        run: |
+          echo "EXTRA_CHANNEL=${{ secrets.QUETZ_URL }}/get/devtools" >> $GITHUB_ENV
+
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: build-env
@@ -320,6 +325,7 @@ jobs:
               zstd_compression_level: 19
             channel_priority: strict
             channels:
+              - ${{ env.EXTRA_CHANNEL }}
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
@@ -330,11 +336,6 @@ jobs:
             typer
             quetz-client
             conda-build
-
-      - name: use devtools channel
-        if: ${{ inputs.use_devtools == 'True' }}
-        run: |
-          conda config --add channels ${{ secrets.QUETZ_URL }}/get/devtools
 
       - name: Install cpack-actions
         run: |
