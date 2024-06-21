@@ -1,0 +1,112 @@
+# prioritize nompi variant via build number
+# prioritize release over debug
+# add build string so packages can depend on
+# mpi or nompi variants explicitly:
+# `pkg * mpi_mpich_*` for mpich
+# `pkg * mpi_*` for any mpi
+# `pkg * nompi_*` for no mpi
+#    - run_ctest -R 'forma01a' --resutest=../resutest --only-failed-results -j 1
+#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
+schema_version: 1
+
+context:
+  name: code-aster
+  version: 17.0.21
+  win_build: 3
+  build: 200
+  mpi_prefix: nompi
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://gitlab.com/krande/src/-/archive/${{ version }}.${{ win_build }}/src-${{ version }}.${{ win_build }}.tar.gz
+    sha256: 9da7ea830cf136f9c04e04fa61388d8ce24a1d079ac3be780a5ad2a0ad46ef70  # [win]
+    file_name: ${{ name }}_${{ version }}.${{ win_build }}_win.tar.gz
+
+build:
+  number: ${{ build }}
+  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type}}_h${{ PKG_HASH }}_${{ build }}
+  prefix_detection:
+    ignore_binary_files: true
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - if: not win
+      then: ${{ compiler('fortran') }}
+    - pyyaml
+    - waf 2.0.27
+    - if: win
+      then: clang
+  host:
+    - python
+    - numpy
+    - libboost-devel
+    - if: win
+      then: mkl-devel
+    - if: not win
+      then: openblas
+    - libblas
+    - liblapack
+    - metis *=*${{ build_type }}*
+    - mumps *=*${{ build_type }}*
+    - mfront *=*${{ build_type }}*
+    - mgis *=*${{ build_type }}*
+    - libmed *=*${{ build_type }}*
+    - scotch *=*${{ build_type }}*
+    - medcoupling *=*${{ build_type }}*
+    - psutil
+    - if: "mpi != \"nompi\""
+      then: ${{ mpi }}
+    - if: "mpi != 'nompi'"
+      then: mpi4py ${{ mpi4py_ver }}
+    - if: "mpi != \"nompi\""
+      then: petsc ${{ petsc_ver }}
+    - if: "mpi != \"nompi\""
+      then: parmetis
+  run:
+    - python
+    - if: win
+      then: intel-fortran-rt
+    - ${{ pin_compatible('numpy', upper_bound='x.x') }}
+    - if: "mpi != \"nompi\""
+      then: ${{ mpi }}
+    - if: not win
+      then: libxcrypt
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
+  ignore_run_exports:
+    by_name:
+      - llvm-openmp
+
+tests:
+  - python:
+      imports:
+        - code_aster
+      pip_check: false
+
+  - script:
+      - run_aster --help
+      - python basic_import.py
+    files:
+      source:
+        - basic_import.py
+
+about:
+  license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
+  summary: Code_Aster - a finite element solver
+  description: |
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+  homepage: https://www.code-aster.org
+  repository: https://sourceforge.net/projects/codeaster/
+  documentation: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande
+
+extra:
+  recipe-maintainers:
+    - Krande
+
+
+

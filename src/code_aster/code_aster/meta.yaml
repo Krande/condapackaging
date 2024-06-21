@@ -45,8 +45,6 @@ build:
     - {{ pin_subpackage(name, 'x.x') }}
   ignore_run_exports:
     - llvm-openmp  # [win]
-  ignore_run_exports_from:
-    - intel-fortran-rt
 
 requirements:
   build:

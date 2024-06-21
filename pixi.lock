@@ -119,7 +119,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytz-2024.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pyyaml-6.0.1-py311ha68e1ae_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/quetz-client-0.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.17.1-ha08ef0e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.18.0-ha08ef0e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/referencing-0.35.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-14.2.4.post0-hcfcfb64_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-cpp-14.2.4.post0-h63175ca_1.conda
@@ -253,7 +253,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytz-2024.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pyyaml-6.0.1-py312he70551f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/quetz-client-0.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.17.1-ha08ef0e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.18.0-ha08ef0e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/referencing-0.35.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-14.2.4.post0-hcfcfb64_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-cpp-14.2.4.post0-h63175ca_1.conda
@@ -407,7 +407,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytz-2024.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pyyaml-6.0.1-py311ha68e1ae_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/quetz-client-0.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.17.1-ha08ef0e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.18.0-ha08ef0e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/referencing-0.35.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-14.2.4.post0-hcfcfb64_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/reproc-cpp-14.2.4.post0-h63175ca_1.conda
@@ -3151,12 +3151,12 @@ packages:
   timestamp: 1681285151066
 - kind: conda
   name: rattler-build
-  version: 0.17.1
+  version: 0.18.0
   build: ha08ef0e_0
   subdir: win-64
-  url: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.17.1-ha08ef0e_0.conda
-  sha256: c6853c485f3af1b131b45b6c99e2bf04a3ef468451e6a69a34d03305989a4d1e
-  md5: 3a370b488f3394925d449a035a20320f
+  url: https://conda.anaconda.org/conda-forge/win-64/rattler-build-0.18.0-ha08ef0e_0.conda
+  sha256: 9ef228abad4ae43ce3d593e663377121256c3d1b24c15bdad63b99360d93642a
+  md5: e16038ab99ceb6bbb01437a317e69e97
   depends:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
@@ -3164,8 +3164,8 @@ packages:
   license: BSD-3-Clause
   license_family: BSD
   purls: []
-  size: 7574080
-  timestamp: 1718658329269
+  size: 7575687
+  timestamp: 1718810859286
 - kind: conda
   name: referencing
   version: 0.35.1

@@ -1,0 +1,111 @@
+# ensure mpi is defined (needed for conda-smithy recipe-lint)
+# prioritize nompi variant via build number
+# prioritize release over debug
+# Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi
+# add build string so packages can depend on
+# mpi or nompi variants explicitly:
+# `pkg * mpi_mpich_*` for mpich
+# `pkg * mpi_*` for any mpi
+# `pkg * nompi_*` for no mpi
+schema_version: 1
+
+context:
+  name: libmed
+  version: 4.1.1
+  build: 200
+  sha256: fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0
+  mpi: "mpi or 'nompi'"
+  mpi_prefix: nompi
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/Krande/med-copy/archive/refs/tags/${{ version }}.tar.gz
+  sha256: ${{ sha256 }}
+  patches:
+    - patches/ignore-hdf5-bounds-check-cmake.patch
+    - patches/ignore-hdf5-bounds-check-source.patch
+    - patches/do_not_modify_windows_path.patch
+    - patches/install-in-runtime-and_archive.patch
+    - if: win
+      then: patches/cmake-modern-python.patch
+    - patches/do-not-make-symlinks-on-windows.patch
+    - patches/link-privately.patch
+    - if: win
+      then: patches/fix_flang_fortran.patch
+    - if: win
+      then: patches/fix_medfwrap_symbols.patch
+
+build:
+  number: ${{ build }}
+  script: bld.bat
+  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type }}_h${{ PKG_HASH }}_${{ build }}
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - if: not win
+      then: ${{ compiler('fortran') }}
+    - swig >=4.0.2
+    - cmake
+    - if: win
+      then: ninja
+    - if: unix
+      then: make
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+  host:
+    - python
+    - hdf5 * ${{ mpi_prefix }}_${{ build_type }}*
+    - zlib
+    - if: "mpi != \"nompi\""
+      then: ${{ mpi }}
+  run:
+    - python
+    - if: "mpi != \"nompi\""
+      then: ${{ mpi }}
+    - ${{ pin_compatible('hdf5', max_pin='x.x') }}
+  run_exports:
+    - ${{ pin_subpackage(name, max_pin='x.x') }}
+
+tests:
+  - python:
+      imports:
+        - med
+      pip_check: false
+  - files:
+      recipe:
+        - if: win
+          then: test_symbols.bat
+    requirements:
+      run:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+    script:
+      - if: unix
+        then: test -f ${PREFIX}/lib/libmed${SHLIB_EXT}
+      - if: linux
+        then: nm ${PREFIX}/lib/libmedC.so | grep MEDlibraryNumVersion
+      - if: win
+        then: test_symbols.bat
+
+about:
+  license: LGPL-3.0-only
+  license_file: COPYING
+  summary: MED - interoperable format for data interchange between mesh based solvers.
+  description: |
+    The purpose of the MED module is to provide a standard for storing and recovering computer data associated to numerical meshes and fields, and to facilitate the exchange between codes and solvers.
+  homepage: https://www.salome-platform.org/user-section/about/med
+  repository: https://git.salome-platform.org/gitweb/?p=modules/med.git;a=summary
+  documentation: http://www.salome-platform.org/
+
+extra:
+  recipe-maintainers:
+    - Krande
+    - ldallolio
+    - looooo
+    - ldallolio-irt
