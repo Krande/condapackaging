@@ -1142,8 +1142,8 @@ packages:
   - pyyaml
   - jsonschema
   - requests
-  - pytest ; extra == 'dev'
   - conda-build ; extra == 'conda-build'
+  - pytest ; extra == 'dev'
   requires_python: '>=3.11'
 - kind: conda
   name: dacite
