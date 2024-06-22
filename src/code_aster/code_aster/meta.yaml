@@ -78,6 +78,7 @@ requirements:
 
   run:
     - python
+    - psutil
     - intel-fortran-rt                              # [win]
     - {{ pin_compatible('numpy', max_pin='x.x') }}
     - {{ mpi }}                                     # [mpi != "nompi"]
