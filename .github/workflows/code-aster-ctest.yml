@@ -53,6 +53,7 @@ env:
   VARIANT_FLAG: "*nompi*"
   PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
   CONDA_CHANNEL: ""
+  DEV_CHANNEL: ""
 
 jobs:
   # run a preceding job to get the matrix only if matrix_str is None
@@ -95,6 +96,11 @@ jobs:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
 
+      - name: use devtools channel
+        if: ${{ inputs.use_devtools == 'True' }}
+        run: |
+          echo "DEV_CHANNEL=${{ secrets.QUETZ_URL }}/get/devtools" >> $GITHUB_ENV
+
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
@@ -103,17 +109,13 @@ jobs:
             remote_backoff_factor: 5
             channel_priority: strict
             channels:
+              - ${{ env.DEV_CHANNEL }}
               - ${{ env.CONDA_CHANNEL }}
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
             colorama
             code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
-
-      - name: use devtools channel
-        if: ${{ inputs.use_devtools == 'True' }}
-        run: |
-          conda config --add channels ${{ secrets.QUETZ_URL }}/get/devtools
 
       - name: run ctest [seq]
         if: ${{ inputs.mpi == false }}
