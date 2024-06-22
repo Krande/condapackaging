@@ -104,6 +104,9 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
+          init-shell: >-
+            bash
+            cmd.exe
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5
@@ -116,15 +119,22 @@ jobs:
             python=${{ matrix.pyver }}
             colorama
             code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
+      
+
+      - name: build local packages Windows
+        if: ${{ runner.os == 'Windows' && inputs.mpi == false }}
+        shell: cmd /E:on /C call {0}
+        run: |
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
       - name: run ctest [seq]
-        if: ${{ inputs.mpi == false }}
+        if: ${{ runner.os == 'Linux' && inputs.mpi == false }}
         continue-on-error: true
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
       - name: run ctest [mpi]
-        if: ${{ inputs.mpi == true }}
+        if: ${{ runner.os == 'Linux' && inputs.mpi == true }}
         continue-on-error: true
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=8.0 --only-failed-results -j 2
