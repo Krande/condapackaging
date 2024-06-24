@@ -18,6 +18,7 @@ set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
+    set CXXFLAGS=%CFLAGS% /Od /Zi
     set FCFLAGS=%FCFLAGS% /Od /debug /Zi
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
@@ -49,6 +50,7 @@ cmake -G "Ninja" ^
       -D BUILD_TESTING:BOOL=OFF ^
       -D HDF5_BUILD_EXAMPLES:BOOL=OFF ^
       %SRC_DIR%
+
 if errorlevel 1 exit 1
 
 :: Build C libraries and tools.
