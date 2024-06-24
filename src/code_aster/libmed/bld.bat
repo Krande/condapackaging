@@ -70,6 +70,12 @@ ninja install
 
 if errorlevel 1 exit 1
 
+if "%build_type%" == "debug" (
+    :: Move the pdb files to the library bin directory
+    for %%f in ("%SRC_DIR%\build\src\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\tools\medimport\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+)
+
 copy %LIBRARY_BIN%\mdump4.exe %LIBRARY_BIN%\mdump.exe
 
 if errorlevel 1 exit 1

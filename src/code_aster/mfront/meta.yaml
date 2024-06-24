@@ -39,7 +39,7 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake
     - make                        # [not win]
-    - clang                       # [win]
+    - clang 18.1.7                # [win]
     - lld                         # [win]
     - ninja                       # [win]
     - libgomp                     # [linux]

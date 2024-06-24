@@ -43,8 +43,9 @@ source:
     - patches/cmake-modern-python.patch  # [win]
     - patches/do-not-make-symlinks-on-windows.patch
     - patches/link-privately.patch
-    - patches/fix_flang_fortran.patch     # [win]
-    - patches/fix_medfwrap_symbols.patch  # [win]
+    - patches/fix_flang_fortran.patch           # [win]
+    - patches/fix_medfwrap_symbols.patch        # [win]
+    - patches/fix_medimport_output_path.patch   # [win]
 
 build:
   number: {{ build }}

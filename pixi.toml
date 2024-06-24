@@ -11,11 +11,11 @@ hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/co
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/metis" }
 mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mumps" }
-libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/libmed" }
-medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/medcoupling" }
-mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mfront" }
-mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mgis" }
-code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/code_aster" }
+libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/libmed" }
+medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/medcoupling" }
+mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/mfront" }
+mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/mgis" }
+code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/code_aster" }
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"]}
 
 # Convert a meta.yaml to a recipe.yaml

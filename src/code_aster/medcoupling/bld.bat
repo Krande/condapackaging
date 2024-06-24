@@ -1,5 +1,7 @@
 @echo off
 
+setlocal enabledelayedexpansion
+
 mkdir build
 cd build
 
@@ -52,11 +54,24 @@ if errorlevel 1 exit 1
 
 :: Move dll files from %PREFIX%/Library/Lib to %PREFIX%/Library/Bin
 :: This is needed for the python bindings to work
+echo "Moving dll files to %LIBRARY_BIN%"
+for %%f in ("%LIBRARY_LIB%\*.dll") do move "%%f" "%LIBRARY_BIN%"
 
-cd %LIBRARY_LIB%
-move *.dll %LIBRARY_BIN%
+:: Move python files from bin to sp_dir
+echo "Moving python files to %SP_DIR%"
+for %%f in ("%LIBRARY_BIN%\*.py") do move "%%f" "%SP_DIR%"
 
-:: if debug build, copy the pdb files
 if "%build_type%" == "debug" (
-    move *.pdb %LIBRARY_BIN%
+    :: Move the pdb files to the library bin directory
+    echo "Moving pdb files to %LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\MEDLoader\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\MEDCoupling\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\INTERP_KERNEL\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\ICoCo\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\MEDPartitioner\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\RENUMBER\*.pdb") do move "%%f" "%LIBRARY_BIN%"
 )
+
+if errorlevel 1 exit 1
+
+endlocal

@@ -40,4 +40,23 @@ IF ERRORLEVEL 1 (
   type configure.log
   exit /b 1
 )
+
+echo "Moving dll files to %LIBRARY_BIN%"
+for %%f in ("%LIBRARY_LIB%\*.lib") do move "%%f" "%LIBRARY_BIN%"
+
+if "%build_type%" == "debug" (
+    :: Move the pdb files to the library bin directory
+    echo "Moving pdb files to %LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\mfront\src\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\Config\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\Exception\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\Glossary\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\Material\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\Math\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\NUMODIS\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\System\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\UnicodeSupport\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+    for %%f in ("%SRC_DIR%\build\src\Utilities\*.pdb") do move "%%f" "%LIBRARY_BIN%"
+)
+
 echo MFRONT/TFEL build complete

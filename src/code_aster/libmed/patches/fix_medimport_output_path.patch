@@ -1,0 +1,21 @@
+Subject: [PATCH] fix medimport output path
+---
+Index: tools/medimport/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tools/medimport/CMakeLists.txt b/tools/medimport/CMakeLists.txt
+--- a/tools/medimport/CMakeLists.txt	(revision 1f0a8baac3fdb655d3954f189a513a3b1f2513cf)
++++ b/tools/medimport/CMakeLists.txt	(date 1719238455722)
+@@ -59,7 +59,9 @@
+     VERSION 0.4.0)
+   TARGET_LINK_LIBRARIES(medimportengine medC)
+   SET_TARGET_PROPERTIES(medimportengine PROPERTIES OUTPUT_NAME medimport)
+-  INSTALL(TARGETS medimportengine DESTINATION lib${LIB_SUFFIX})
++  INSTALL(TARGETS medimportengine
++          RUNTIME DESTINATION bin
++          ARCHIVE DESTINATION lib${LIB_SUFFIX})
+   SET(_lib_to_link "medimportengine")
+ ENDIF()
+ 
