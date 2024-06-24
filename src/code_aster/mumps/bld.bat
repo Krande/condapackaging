@@ -14,9 +14,9 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set BUILD_TYPE=Debug
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /debug /Z7
     set FCFLAGS=%FCFLAGS% /Od /debug /Z7
 )
@@ -30,7 +30,7 @@ set FCFLAGS=%FCFLAGS% -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INT
 cmake -G "Ninja" ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
-      -D CMAKE_BUILD_TYPE:STRING=%BUILD_TYPE% ^
+      -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.6.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=MKL64 ^
@@ -48,7 +48,7 @@ cmake -G "Ninja" ^
       ..
 
 if errorlevel 1 exit 1
-cmake --build . --config %BUILD_TYPE% --target install
+cmake --build . --config %TGT_BUILD_TYPE% --target install
 
 if errorlevel 1 exit 1
 

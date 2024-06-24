@@ -11,8 +11,10 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
+
 if "%build_type%" == "debug" (
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
@@ -26,11 +28,12 @@ xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
 set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
 
-set CFLAGS=%CFLAGS%
+echo "FFLAGS: %FFLAGS%"
+echo "CFLAGS: %CFLAGS%"
 
 cmake -G "Ninja" ^
   %CMAKE_ARGS% ^
-  -D CMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
+  -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
   -D Python_FIND_STRATEGY:STRING=LOCATION ^
   -D Python_FIND_REGISTRY:STRING=NEVER ^
   -D Python3_ROOT_DIR:FILEPATH="%PREFIX%" ^

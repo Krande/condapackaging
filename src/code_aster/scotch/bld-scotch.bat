@@ -9,16 +9,18 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set BUILD_TYPE=Debug
+    set TGT_BUILD_TYPE=RelWithDebInfo
+    set FCFLAGS=%FCFLAGS% -g -cpp
+    set CFLAGS=%CFLAGS% /Od /Zi
 )
 
 set CFLAGS=%CFLAGS% /nologo
 
 cmake ^
   -G "Ninja" ^
-  -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+  -D CMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^
   -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
   -D BUILD_SHARED_LIBS=OFF ^
   -D INTSIZE=64 ^
@@ -32,7 +34,7 @@ cmake ^
 
 if errorlevel 1 exit 1
 
-cmake --build ./build --config %BUILD_TYPE%
+cmake --build ./build --config %TGT_BUILD_TYPE%
 if errorlevel 1 exit 1
 cmake --install ./build --component=libscotch
 if errorlevel 1 exit 1

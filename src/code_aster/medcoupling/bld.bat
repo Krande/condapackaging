@@ -4,8 +4,9 @@ mkdir build
 cd build
 
 REM currently fails with debug build
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
@@ -16,7 +17,7 @@ if "%build_type%" == "debug" (
 
 cmake -G "Ninja" .. ^
     -Wno-dev ^
-    -D CMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
+    -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
     -D PYTHON_ROOT_DIR="%PREFIX%" ^
     -D CMAKE_CXX_FLAGS="/bigobj /EHsc" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PYTHON%" ^

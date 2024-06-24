@@ -7,16 +7,17 @@ rem Set TFELHOME to the PREFIX environment variable
 set TFELHOME=%PREFIX%
 set FC=flang-new
 
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
 
 if "%build_type%" == "debug" (
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set FCFLAGS=%FCFLAGS%/Od /debug:full /Zi
     set CFLAGS=%CFLAGS%/Od /debug:full /Zi
 )
 
 cmake -B build . -G "Ninja" ^
     %CMAKE_ARGS% ^
-    -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+    -DCMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^
     -Denable-c-bindings=ON ^
     -Denable-fortran-bindings=ON ^
     -Denable-python-bindings=ON ^

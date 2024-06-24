@@ -3,9 +3,9 @@
 mkdir build
 cd build
 
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set CMAKE_BUILD_TYPE=Debug
+    set TGT_BUILD_TYPE=Debug
     set CFLAGS=%CFLAGS% /Od /Z7
 )
 
@@ -13,7 +13,7 @@ cmake ^
     -G "Ninja" ^
     -D CMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -D CMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-    -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+    -D CMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^
     -D SHARED=ON ^
     -D intsize=64 ^
     -D realsize=64 ^
