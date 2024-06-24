@@ -12,7 +12,8 @@ if "%build_type%" == "debug" (
 )
 
 cmake -B build . -G "Ninja" -Wno-dev ^
-    %CMAKE_ARGS% ^
+    -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
+    -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
     -D CMAKE_CXX_COMPILER=clang-cl ^
     -D CMAKE_C_COMPILER=clang-cl ^
     -D CMAKE_LINKER=lld-link ^

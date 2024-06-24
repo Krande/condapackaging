@@ -14,7 +14,7 @@ if not "%FC%" == "flang-new" (
 set TGT_BUILD_TYPE=Release
 
 if "%build_type%" == "debug" (
-    set TGT_BUILD_TYPE=Debug
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
     set CXXFLAGS=%CFLAGS% /Od /Zi /EHsc
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
@@ -35,7 +35,8 @@ echo "CFLAGS: %CFLAGS%"
 echo "LDFLAGS: %LDFLAGS%"
 
 cmake -G "Ninja" ^
-  %CMAKE_ARGS% ^
+  -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
+  -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
   -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
   -D CMAKE_Fortran_FLAGS:STRING="%FFLAGS%" ^
   -D CMAKE_C_FLAGS:STRING="%CFLAGS%" ^

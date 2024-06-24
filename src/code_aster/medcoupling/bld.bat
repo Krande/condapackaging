@@ -19,6 +19,8 @@ if "%build_type%" == "debug" (
 
 cmake -G "Ninja" .. ^
     -Wno-dev ^
+    -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
+    -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
     -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
     -D PYTHON_ROOT_DIR="%PREFIX%" ^
     -D CMAKE_CXX_FLAGS="/bigobj /EHsc" ^
@@ -40,8 +42,7 @@ cmake -G "Ninja" .. ^
     -D MEDCOUPLING_PARTITIONER_PARMETIS=OFF ^
     -D MEDCOUPLING_PARTITIONER_METIS=OFF ^
     -D MEDCOUPLING_PARTITIONER_SCOTCH=OFF ^
-    -D MEDCOUPLING_PARTITIONER_PTSCOTCH=OFF ^
-    %CMAKE_ARGS%
+    -D MEDCOUPLING_PARTITIONER_PTSCOTCH=OFF
 
 if errorlevel 1 exit 1
 ninja
@@ -54,3 +55,8 @@ if errorlevel 1 exit 1
 
 cd %LIBRARY_LIB%
 move *.dll %LIBRARY_BIN%
+
+:: if debug build, copy the pdb files
+if "%build_type%" == "debug" (
+    move *.pdb %LIBRARY_BIN%
+)
