@@ -19,6 +19,7 @@ if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /debug /Z7
     set FCFLAGS=%FCFLAGS% /Od /debug /Z7
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 
 :: Needed for the pthread library when linking with scotch

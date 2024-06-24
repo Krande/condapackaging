@@ -8,6 +8,7 @@ if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set FCFLAGS=%FCFLAGS% -g -cpp
     set CFLAGS=%CFLAGS% /Od /Zi
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 
 cmake -B build . -G "Ninja" -Wno-dev ^

@@ -7,6 +7,7 @@ set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
     set CFLAGS=%CFLAGS% /Od /Z7
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 
 cmake ^

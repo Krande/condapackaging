@@ -8,6 +8,7 @@ set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
     ) else (

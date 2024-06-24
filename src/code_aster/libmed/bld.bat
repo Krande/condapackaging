@@ -16,6 +16,7 @@ set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
     ) else (
@@ -30,6 +31,7 @@ set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
 
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"
+echo "LDFLAGS: %LDFLAGS%"
 
 cmake -G "Ninja" ^
   %CMAKE_ARGS% ^

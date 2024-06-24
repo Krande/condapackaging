@@ -1,3 +1,7 @@
+@echo off
+
+setlocal ENABLEDELAYEDEXPANSION
+
 mkdir build
 cd build
 
@@ -9,21 +13,23 @@ set HDF5_EXT_ZLIB=zlib.lib
 if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
-REM currently fails with debug build
 
-set BUILD_TYPE=Release
+set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    @REM set CMAKE_BUILD_TYPE=Debug
-    REM setting CMAKE_BUILD_TYPE=Debug causes the build to fail because it wants to use debug python build
-    set CFLAGS=%CFLAGS% /Od /Z7
-    set FCFLAGS=%FCFLAGS% /Od /Z7
+    set TGT_BUILD_TYPE=RelWithDebInfo
+    set CFLAGS=%CFLAGS% /Od /Zi
+    set FCFLAGS=%FCFLAGS% /Od /debug /Zi
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 
 set FFLAGS=%FCFLAGS% /fpp /MD
 
+echo "FFLAGS: %FFLAGS%"
+echo "CFLAGS: %CFLAGS%"
+
 :: Configure step.
 cmake -G "Ninja" ^
-      -D CMAKE_BUILD_TYPE:STRING=%BUILD_TYPE% ^
+      -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
       -D HDF5_BUILD_CPP_LIB:BOOL=ON ^
@@ -59,3 +65,5 @@ del /f %PREFIX%\Library\COPYING
 if errorlevel 1 exit 1
 del /f %PREFIX%\Library\RELEASE.txt
 if errorlevel 1 exit 1
+
+endlocal
