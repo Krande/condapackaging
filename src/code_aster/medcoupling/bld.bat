@@ -8,7 +8,7 @@ cd build
 REM currently fails with debug build
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set TGT_BUILD_TYPE=Debug
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set CXXFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
