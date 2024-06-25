@@ -144,9 +144,22 @@ jobs:
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
-      - name: add mamba data
+      - name: add mamba data for linux
+        if: ${{ runner.os == 'Linux' }}
+        continue-on-error: true
         run: |
           echo "$(micromamba list)" > ${{ github.workspace }}/ctest/mamba.txt
+
+      - name: add conda data for windows
+        if: ${{ runner.os == 'Windows' }}
+        continue-on-error: true
+        shell: cmd /E:on /C call {0}
+        run: |
+          set wspace=${{ github.workspace }}
+          REM change backslashes to forward slashes
+          set wspace=%wspace:\=/%
+
+          micromamba list > %wspace%/ctest/conda.txt
 
       - name: print debug logs
         continue-on-error: true
