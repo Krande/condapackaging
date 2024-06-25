@@ -14,9 +14,9 @@ if not "%FC%" == "flang-new" (
 set TGT_BUILD_TYPE=Release
 
 if "%build_type%" == "debug" (
-    set TGT_BUILD_TYPE=RelWithDebInfo
-    set CFLAGS=%CFLAGS% /Od /Zi
-    set CXXFLAGS=%CFLAGS% /Od /Zi /EHsc
+    set TGT_BUILD_TYPE=Debug
+    set CFLAGS=%CFLAGS% /nologo /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
+    set CXXFLAGS=%CFLAGS% /nologo /MD /Od /Zi /EHsc -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
@@ -28,7 +28,7 @@ if "%build_type%" == "debug" (
 :: This updates the symbols to lowercase and adds an underscore
 xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
-set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
+set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64 /assume:byterecl
 
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"
@@ -37,11 +37,12 @@ echo "LDFLAGS: %LDFLAGS%"
 cmake -G "Ninja" ^
   -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
   -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
-  -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
+  -D CMAKE_BUILD_TYPE:STRING="%TGT_BUILD_TYPE%" ^
   -D CMAKE_Fortran_FLAGS:STRING="%FFLAGS%" ^
   -D CMAKE_C_FLAGS:STRING="%CFLAGS%" ^
   -D CMAKE_CXX_FLAGS:STRING="%CXXFLAGS%" ^
   -D CMAKE_EXE_LINKER_FLAGS:STRING="%LDFLAGS%" ^
+  -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
   -D Python_FIND_STRATEGY:STRING=LOCATION ^
   -D Python_FIND_REGISTRY:STRING=NEVER ^
   -D Python3_ROOT_DIR:FILEPATH="%PREFIX%" ^
@@ -51,7 +52,7 @@ cmake -G "Ninja" ^
   -D MEDFILE_BUILD_TESTS=OFF ^
   -D MEDFILE_BUILD_SHARED_LIBS=ON ^
   -D MEDFILE_BUILD_STATIC_LIBS=OFF ^
-  -D MEDFILE_USE_UNICODE=ON ^
+  -D MEDFILE_USE_UNICODE=OFF ^
   -D MED_MEDINT_TYPE="long long" ^
   -Wno-dev ^
   ..

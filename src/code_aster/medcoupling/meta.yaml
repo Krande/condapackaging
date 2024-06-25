@@ -33,6 +33,8 @@ source:
   - fn: 'medcoupling_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     sha256: a475ae8555f376565bb5bf55e396e784a07bd2841d49fd06051bec815692e453
+    patches:
+      - patches/add_a_python_no_debug_conditional.patch
   - fn: 'config_{{ version }}.tar.gz'
     url: https://git.salome-platform.org/gitweb/?p=tools/configuration.git;a=snapshot;h=V{{ version.replace('.', '_') }};sf=tgz
     folder: deps/config
@@ -52,7 +54,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
-    - clang  # [win]
+    - clang                                     # [win]
     - make                                      # [not win]
     - ninja                                     # [win]
     - cmake
@@ -79,8 +81,8 @@ test:
     - MEDCouplingRemapper
     - MEDLoader
     - MEDPartitioner
-    - MEDCoupling  # [linux]
-    - MEDCouplingCompat  # [win or osx]
+    - MEDCoupling           # [linux]
+    - MEDCouplingCompat     # [win or osx]
 
 about:
   home: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git

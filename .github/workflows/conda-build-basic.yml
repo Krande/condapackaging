@@ -183,7 +183,7 @@ jobs:
 
   build_conda:
     needs: [ build_prep ]
-    name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.key }}=${{ matrix.variants.value }}
+    name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}
     runs-on: ${{ matrix.platform.os }}
     defaults:
       run:

@@ -44,6 +44,8 @@ IF ERRORLEVEL 1 (
 echo "Moving dll files to %LIBRARY_BIN%"
 for %%f in ("%LIBRARY_LIB%\*.lib") do move "%%f" "%LIBRARY_BIN%"
 
+if errorlevel 1 exit 1
+
 if "%build_type%" == "debug" (
     :: Move the pdb files to the library bin directory
     echo "Moving pdb files to %LIBRARY_BIN%"
@@ -58,5 +60,7 @@ if "%build_type%" == "debug" (
     for %%f in ("%SRC_DIR%\build\src\UnicodeSupport\*.pdb") do move "%%f" "%LIBRARY_BIN%"
     for %%f in ("%SRC_DIR%\build\src\Utilities\*.pdb") do move "%%f" "%LIBRARY_BIN%"
 )
+
+if errorlevel 1 exit 1
 
 echo MFRONT/TFEL build complete

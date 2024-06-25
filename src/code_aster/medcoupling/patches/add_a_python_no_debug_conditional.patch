@@ -1,0 +1,26 @@
+Subject: [PATCH] add a python no_debug conditional
+---
+Index: src/MEDCoupling_Swig/MEDCouplingDataArrayTraits.hxx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MEDCoupling_Swig/MEDCouplingDataArrayTraits.hxx b/src/MEDCoupling_Swig/MEDCouplingDataArrayTraits.hxx
+--- a/src/MEDCoupling_Swig/MEDCouplingDataArrayTraits.hxx	(revision 929bc1bc7522a7eb9ae91f10b9748bd481ef46ee)
++++ b/src/MEDCoupling_Swig/MEDCouplingDataArrayTraits.hxx	(date 1719301134250)
+@@ -23,7 +23,14 @@
+ 
+ #include "MEDCouplingMemArray.hxx"
+ 
+-#include <Python.h>
++#if defined(_DEBUG) && defined(SWIG_PYTHON_INTERPRETER_NO_DEBUG)
++/* Use debug wrappers with the Python release dll */
++# undef _DEBUG
++# include <Python.h>
++# define _DEBUG 1
++#else
++# include <Python.h>
++#endif
+ 
+ #ifdef WITH_NUMPY
+ #include <numpy/arrayobject.h>

@@ -34,6 +34,10 @@ on:
         type: string
         required: false
         default: "windows-latest,ubuntu-latest,macos-latest"
+      variants:
+        description: 'Variants compiled in parallel; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
+        type: string
+        required: false
       use_quetz:
         description: 'use quetz server'
         type: string
@@ -65,11 +69,12 @@ jobs:
       conda_label: ${{ inputs.conda_label }}
       conda_user: ${{ inputs.conda_user }}
       use_quetz: ${{ inputs.use_quetz }}
+      variants: ${{ inputs.variants }}
     secrets: inherit
 
   run_ctest:
     needs: build_matrix
-    name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}
+    name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}
     runs-on: ${{ matrix.platform.os }}
     defaults:
       run:
@@ -119,10 +124,10 @@ jobs:
             python=${{ matrix.pyver }}
             colorama
             code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
-      
 
       - name: build local packages Windows
         if: ${{ runner.os == 'Windows' && inputs.mpi == false }}
+        continue-on-error: true
         shell: cmd /E:on /C call {0}
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2

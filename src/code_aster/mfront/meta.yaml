@@ -47,28 +47,28 @@ requirements:
   host:
     - libboost-python-devel
     - python
-    - zlib  # [linux]
+    - zlib                        # [linux]
   run:
     - python
     - intel-openmp                # [win]
-    - libstdcxx-ng  # [linux]
-    - libgcc-ng  # [linux]
+    - libstdcxx-ng                # [linux]
+    - libgcc-ng                   # [linux]
 
 test:
   commands:
     - tfel-config --version
-    - tfel-doc --version  # [linux]
-    - tfel-check --version  # [linux]
+    - tfel-doc --version          # [linux]
+    - tfel-check --version        # [linux]
     - mtest --version
     - mfront --list-stress-criteria
     - mfront-doc --version
     - mfront-query --version
     - mfm --version
-    - test -f $PREFIX/lib/libTFELConfig.so  # [linux]
+    - test -f $PREFIX/lib/libTFELConfig.so          # [linux]
     - test -f $PREFIX/lib/libTFELUnicodeSupport.so  # [linux]
-    - test -f $PREFIX/lib/libTFELGlossary.so  # [linux]
-    - test -f $PREFIX/lib/libTFELException.so  # [linux]
-    - test -f $PREFIX/lib/libTFELUtilities.so  # [linux]
+    - test -f $PREFIX/lib/libTFELGlossary.so        # [linux]
+    - test -f $PREFIX/lib/libTFELException.so       # [linux]
+    - test -f $PREFIX/lib/libTFELUtilities.so       # [linux]
 
   imports:
     - tfel

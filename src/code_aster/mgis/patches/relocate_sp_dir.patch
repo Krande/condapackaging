@@ -1,0 +1,26 @@
+Subject: [PATCH] relocate sp_dir
+---
+Index: bindings/python/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bindings/python/CMakeLists.txt b/bindings/python/CMakeLists.txt
+--- a/bindings/python/CMakeLists.txt	(revision 12b4e3217d0b1bac7949a5c1d3b834cd134d883d)
++++ b/bindings/python/CMakeLists.txt	(date 1719313002500)
+@@ -9,8 +9,13 @@
+   endif(WIN32)
+ else(MGIS_APPEND_SUFFIX)
+   if(WIN32)
+-    set(MGIS_PYTHON_MODULES_INSTALL_DIRECTORY
+-        "bin/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/mgis")
++    if(MGIS_PYTHON_SITE_PACKAGES_DIRECTORY)
++      set(MGIS_PYTHON_MODULES_INSTALL_DIRECTORY
++          "${MGIS_PYTHON_SITE_PACKAGES_DIRECTORY}/mgis")
++    else(MGIS_PYTHON_SITE_PACKAGES_DIRECTORY)
++      set(MGIS_PYTHON_MODULES_INSTALL_DIRECTORY
++          "bin/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/mgis")
++    endif(MGIS_PYTHON_SITE_PACKAGES_DIRECTORY)
+   else(WIN32)
+     set(MGIS_PYTHON_MODULES_INSTALL_DIRECTORY
+         "lib${LIB_SUFFIX}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/mgis")

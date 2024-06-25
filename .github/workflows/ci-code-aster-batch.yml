@@ -29,7 +29,7 @@ on:
         type: string
         default: "windows-latest"
       variants:
-        description: 'mpi variants'
+        description: 'Build variants'
         required: true
         type: string
         default: "mpi=nompi;build_type=debug,mpi=nompi;build_type=release"
@@ -308,6 +308,7 @@ jobs:
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: true
+      variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       suffix: "mpi"
@@ -323,6 +324,7 @@ jobs:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
+      variants: ${{ needs.env.outputs.variants }}
       mpi: false
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
