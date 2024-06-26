@@ -28,7 +28,7 @@ if "%build_type%" == "debug" (
 :: This updates the symbols to lowercase and adds an underscore
 xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
-set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64 /assume:byterecl
+set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64
 
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"

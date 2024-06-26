@@ -80,7 +80,7 @@ test:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   files:
-    - test_symbols.bat  # [win]
+    - tests\test_symbols.bat  # [win]
   imports:
     - med
   commands:
