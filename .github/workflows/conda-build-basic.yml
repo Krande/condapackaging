@@ -110,6 +110,7 @@ env:
   CONDA_CHANNEL: ""
   EXTRA_BUILD_ARGS: ""
   CONDA_BUILD_DIR: ""
+  SHELL_NAME: bash
 
 jobs:
   should_run:
@@ -274,6 +275,11 @@ jobs:
         run: |
           curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.15.sdk.tar.xz | tar -xvJf - -C /Users/runner/work/
 
+      - name: Update SHELL_NAME if running windows
+        if: ${{ runner.os == 'Windows' }}
+        run: |
+          echo "SHELL_NAME=bash cmd.exe" >> $GITHUB_ENV
+
       - name: set ENV vars
         run: |
           pwd
@@ -312,9 +318,7 @@ jobs:
         with:
           environment-name: build-env
           cache-environment: true
-          init-shell: >-
-            bash
-            cmd.exe
+          init-shell: ${{ env.SHELL_NAME }}
           condarc: |
             remote_max_retries: 5
             remote_backoff_factor: 5

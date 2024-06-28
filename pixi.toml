@@ -3,23 +3,23 @@ name = "mamba-build"
 version = "0.1.0"
 description = "A basic conda build environment"
 channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
-platforms = ["win-64"]
+platforms = ["win-64", "linux-64"]
 
 [tasks]
 # Add '--python=3.11 --variants="{build_type: debug}"- to run a single variant
-hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/hdf5" }
-scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/scotch" }
-metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/metis" }
-mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd="src/code_aster/mumps" }
-libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/libmed" }
-medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/medcoupling" }
-mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/mfront" }
-mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/mgis" }
-code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd="src/code_aster/code_aster" }
-all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"]}
+hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/hdf5" }
+scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
+metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
+mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/mumps" }
+libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/libmed" }
+medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/medcoupling" }
+mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/mfront" }
+mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
+code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
+all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 
 # Convert a meta.yaml to a recipe.yaml
-convert = { cmd="conda-recipe-manager convert", cwd="src/code_aster" }
+convert = { cmd = "conda-recipe-manager convert", cwd = "src/code_aster" }
 rscotch = { cmd = ["src/code_aster/rattler-wrap.bat", "scotch"] }
 rmetis = { cmd = ["src/code_aster/rattler-wrap.bat", "metis"] }
 rlibmed = { cmd = ["src/code_aster/rattler-wrap.bat", "libmed"] }
@@ -30,8 +30,10 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 boa = ">=0.17.0,<0.18"
 python-dotenv = ">=1.0.1,<1.1"
 quetz-client = ">=0.5.0,<0.6"
-m2-patch = "2.7.5.*"
 rattler-build = ">=0.18.0,<0.19"
+
+[target.win-64.dependencies]
+m2-patch = "2.7.5.*"
 
 [pypi-dependencies]
 conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
@@ -41,7 +43,10 @@ rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 [feature.debug.tasks]
 dca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 
-[feature.release.dependencies]
+[feature.debug]
+platforms = ["win-64"]
+
+[feature.debug.dependencies]
 
 hdf5 = { build = "*release*" }
 libmed = { build = "*release*" }
@@ -50,7 +55,10 @@ mfront = { build = "*release*" }
 mgis = { build = "*release*" }
 scotch = { build = "*release*" }
 
-[feature.debug.dependencies]
+[feature.release]
+platforms = ["win-64"]
+
+[feature.release.dependencies]
 
 hdf5 = { build = "*debug*" }
 libmed = { build = "*debug*" }
@@ -61,5 +69,5 @@ scotch = { build = "*debug*" }
 
 [environments]
 
-debug = ["debug"]
-release = ["release"]
+#debug = { features = ["debug"] }
+#release = { features = ["release"] }
