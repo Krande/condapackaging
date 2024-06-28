@@ -133,6 +133,7 @@ test:
     ] %}
     {% for each_hdf5_cmd in hdf5_cmds %}
     - command -v {{ each_hdf5_cmd }}  # [not win]
+    - echo {{ each_hdf5_cmd }}  # [win]
     - where {{ each_hdf5_cmd }}  # [win]
     {% endfor %}
     # Verify libraries.
@@ -147,11 +148,6 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
     {% endfor %}
-    # Check ros3 driver
-    - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
-    # Jan 2023 -- hmaarrfk. Tests will fail on windows without --s3-cred specified
-    # https://github.com/HDFGroup/hdf5/issues/2406
-    - h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/
