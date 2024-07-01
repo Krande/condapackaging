@@ -16,7 +16,7 @@ if not "%FC%" == "flang-new" (
 
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set TGT_BUILD_TYPE=Debug
+    set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
     set CXXFLAGS=%CFLAGS% /Od /Zi
     set FCFLAGS=%FCFLAGS% /Od /debug /Zi
