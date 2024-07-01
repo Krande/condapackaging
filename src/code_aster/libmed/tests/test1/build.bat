@@ -1,9 +1,11 @@
 @echo off
 
+echo "Building test1.exe"
+
 setlocal
 
-set INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
-set VS_VARS_PATH=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build
+REM set INTEL_VARS_PATH=C:\Program Files (x86)\Intel\oneAPI\compiler\latest\env
+REM set VS_VARS_PATH=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build
 
 if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
@@ -25,5 +27,7 @@ if errorlevel 1 exit 1
 call test1.exe
 
 if errorlevel 1 exit 1
+
+echo "Successfully built and tested test1.exe"
 
 endlocal
