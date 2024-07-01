@@ -1,0 +1,93 @@
+Subject: [PATCH] fix med write windows
+---
+Index: src/hdfi/_MEDfileOpen.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/hdfi/_MEDfileOpen.c b/src/hdfi/_MEDfileOpen.c
+--- a/src/hdfi/_MEDfileOpen.c	(revision 2d183a589c7a4a03a30bd4bcb25798e4decb1f36)
++++ b/src/hdfi/_MEDfileOpen.c	(date 1719822580669)
+@@ -76,7 +76,7 @@
+    est que l'on peut modifier des fichiers med de différentes versions majeures de fichiers.
+    L'inconvénient est que l'on ne profite pas des évolutions de performances d'HDF.
+ */
+-  if ( H5Pset_libver_bounds( _fapl, H5F_LIBVER_18, H5F_LIBVER_18 ) ) {
++  if (H5Pset_libver_bounds(_fapl, H5F_LIBVER_18, H5F_LIBVER_V114)) {
+     MED_ERR_(_fid,MED_ERR_INIT,MED_ERR_PROPERTY,MED_ERR_FILEVERSION_MSG);
+     goto ERROR;
+   }
+Index: src/hdfi/_MEDfileCreate.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/hdfi/_MEDfileCreate.c b/src/hdfi/_MEDfileCreate.c
+--- a/src/hdfi/_MEDfileCreate.c	(revision 2d183a589c7a4a03a30bd4bcb25798e4decb1f36)
++++ b/src/hdfi/_MEDfileCreate.c	(date 1719822580659)
+@@ -79,7 +79,7 @@
+     _h518medfileMMN[MED_FILE_H518_MINOR  ]= _i8_minor;
+     _h518medfileMMN[MED_FILE_H518_RELEASE]= _i8_release; /* 0 */
+ 
+-    _fp = fopen(filename, "w");
++    _fp = fopen(filename, "wb");
+     if(!_fp) {
+       MED_ERR_(_fid,MED_ERR_CREATE,MED_ERR_FILE,filename);
+       ISCRUTE(major);ISCRUTE(minor);ISCRUTE(release);
+Index: src/fi/medfile.f
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fi/medfile.f b/src/fi/medfile.f
+--- a/src/fi/medfile.f	(revision 2d183a589c7a4a03a30bd4bcb25798e4decb1f36)
++++ b/src/fi/medfile.f	(date 1719822580664)
+@@ -27,8 +27,10 @@
+       integer access
+       integer major, minor, rel
+       integer*8 mfifvop
++      integer len_name  ! Local variable to hold length
+ c
+-      fid = mfifvop(name, access, major, minor, rel, len(name))
++      len_name = len_trim(name)  ! Get the trimmed length of the name
++      fid = mfifvop(name, access, major, minor, rel, len_name)
+       if (fid.lt.0) then
+          cret = fid
+       else
+Index: src/ci/MEDfileCompatibility.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/ci/MEDfileCompatibility.c b/src/ci/MEDfileCompatibility.c
+--- a/src/ci/MEDfileCompatibility.c	(revision 2d183a589c7a4a03a30bd4bcb25798e4decb1f36)
++++ b/src/ci/MEDfileCompatibility.c	(date 1719822580649)
+@@ -54,7 +54,9 @@
+ 
+   /* Si le fichier n'est pas un fichier hdf retourne en indiquant hdfok=false et medok=false 
+      mais pas de code d'erreur */
+-  if  ( H5Fis_hdf5(filename) <= 0 )  {goto SORTIE;};
++
++  hid_t is_accessible = H5Fis_accessible(filename, H5P_DEFAULT);
++  if  ( is_accessible < 0 ) {goto SORTIE;};
+ 
+   /* Si l'on ne peut pas déterminer la version de la bibliothèque med, renvoie une erreur */
+   if (MEDlibraryHdfNumVersion(&_hmajeur, &_hmineur, &_hrelease) < 0) {
+Index: src/cfi/filecf.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/cfi/filecf.c b/src/cfi/filecf.c
+--- a/src/cfi/filecf.c	(revision 2d183a589c7a4a03a30bd4bcb25798e4decb1f36)
++++ b/src/cfi/filecf.c	(date 1719822580654)
+@@ -59,8 +59,7 @@
+ #ifdef PPRO_NT
+ med_idt
+ MFIFVOP(const char const *name,
+-	const unsigned int bidon,
+-	const int const *access, 
++	const int const *access,
+ 	const med_int* const major, 
+ 	const med_int* const minor, 
+ 	const med_int* const release,

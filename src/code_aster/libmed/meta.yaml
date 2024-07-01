@@ -46,6 +46,7 @@ source:
     - patches/fix_flang_fortran.patch           # [win]
     - patches/fix_medfwrap_symbols.patch        # [win]
     - patches/fix_medimport_output_path.patch   # [win]
+    - patches/fix_med_write_windows.patch       # [win]
 
 build:
   number: {{ build }}
@@ -81,12 +82,14 @@ test:
     - {{ compiler('cxx') }}
   files:
     - tests\test_symbols.bat  # [win]
+#    - tests\test1\build.bat  # [win]
   imports:
     - med
   commands:
     - test -f ${PREFIX}/lib/libmed${SHLIB_EXT}                   # [unix]
     - nm ${PREFIX}/lib/libmedC.so | grep MEDlibraryNumVersion    # [linux]
     - test_symbols.bat                                           # [win]
+#    - test1\build.bat                                            # [win]
 
 about:
   home: https://www.salome-platform.org/user-section/about/med
