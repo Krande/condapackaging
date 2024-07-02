@@ -30,6 +30,7 @@ def test_shell_win2():
     # run a shell script build.bat in the external terminal
     subprocess.run(["cmd", "/c", "start", "build.bat"], cwd="test2", check=True)
 
+
 def test_direct_access():
     import ctypes
 
@@ -65,3 +66,23 @@ def test_direct_access():
                ctypes.byref(major), ctypes.byref(minor),
                ctypes.byref(rel), ctypes.byref(cret))
     print("After mfivop call:", name.value)
+
+
+def test_openmp():
+    import ctypes
+
+    prefix = pathlib.Path(os.getenv('CONDA_PREFIX'))
+    bin_dir = prefix / 'Library' / 'bin'
+    dll_file = bin_dir / 'libiomp5md.dll'
+
+    # Load the shared library
+    lib = ctypes.CDLL(dll_file.as_posix())
+
+    # Define the return type of the function
+    lib.omp_set_num_threads.argtypes = [ctypes.c_int]
+    lib.omp_set_num_threads.restype = ctypes.c_int
+
+    lib.omp_get_max_threads.restype = ctypes.c_int
+    lib.omp_set_num_threads(ctypes.c_int(1))
+    result = lib.omp_get_max_threads()
+    print("Number of threads:", result)
