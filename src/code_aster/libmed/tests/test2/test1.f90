@@ -1,6 +1,6 @@
 program hello
+    use subroutines, only: call_me
     implicit none
-#include <med.hf>
     character(len=255) :: kfic
     character(len=200) :: nofimd
     character(len=200) :: nom  ! Add this line to declare 'nom'
@@ -15,7 +15,7 @@ program hello
     kfic = 'fort.80'
     ! Initialize the variable 'nofimd'
     nom = kfic(1:200)
-    acces = 5
+    acces = 3
     cret = 0
 
     major = 3
@@ -26,11 +26,11 @@ program hello
     ! Print diagnostic message
     print *, 'Before calling subroutine'
     ! Wait for user to press enter
-!    print *, 'Press enter to continue'
-!    read(*, '(A)') dummy
+    print *, 'Press enter to continue'
+    read(*, '(A)') dummy
 
     ! Call the subroutine
-    call mfivop(fid, nom, acces, major, minor, rel, cret)
+    call call_me(fid, nom, acces, major, minor, rel, cret)
     ! raise an error if cret is not 0 and exit with non-zero status
     if (cret /= 0) then
         print *, 'Error calling mfivop'
