@@ -15,6 +15,10 @@ if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
     HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
+    if [[ "$build_type" == "debug" ]]; then
+        HDF5_OPTIONS="${HDF5_OPTIONS} --enable-debug=all"
+    fi
+
 fi
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
