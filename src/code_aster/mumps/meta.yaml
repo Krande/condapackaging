@@ -61,7 +61,7 @@ requirements:
     - "{{ compiler('fortran') }}"  # [not win]
     - waf    # [not win]
     - make   # [not win]
-    - cmake  # [win]
+    - cmake 3.29  # [win]
 
   host:
     - python
