@@ -40,7 +40,7 @@ cmake -G "Ninja" ^
       -D gemmt:BOOL=ON ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
-      -D openmp:BOOL=OFF ^
+      -D openmp:BOOL=ON ^
       -D parallel:BOOL=OFF ^
       -D BUILD_SHARED_LIBS:BOOL=OFF ^
       -D BUILD_SINGLE:BOOL=ON ^
