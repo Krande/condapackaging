@@ -25,16 +25,14 @@ if "%build_type%" == "debug" (
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY -DPORD_INTSIZE64
-set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64
+set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64 -DWORKAROUNDINTELILP64OPENMPLIMITATION
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
-      -D MUMPS_PATCH_DIR:PATH=%SRC_DIR%/mumps/5.6.2 ^
-      -D MUMPS_PATCH_FILE:PATH=%RECIPE_DIR%/patches/int_patch_for_aster.patch ^
-      -D Patch_EXECUTABLE:PATH=%BUILD_PREFIX%/Library/usr/bin/patch.exe ^
+      -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.6.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=MKL64 ^
