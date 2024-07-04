@@ -125,20 +125,20 @@ jobs:
             colorama
             code-aster=${{ inputs.code_aster_version }}=${{ env.VARIANT_FLAG }}
 
-      - name: build local packages Windows
+      - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && inputs.mpi == false }}
         continue-on-error: true
         shell: cmd /E:on /C call {0}
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
-      - name: run ctest [seq]
+      - name: run ctest [seq] [Linux]
         if: ${{ runner.os == 'Linux' && inputs.mpi == false }}
         continue-on-error: true
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
-      - name: run ctest [mpi]
+      - name: run ctest [mpi] [Linux]
         if: ${{ runner.os == 'Linux' && inputs.mpi == true }}
         continue-on-error: true
         run: |
@@ -185,10 +185,14 @@ jobs:
           fi
           python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str > ${{ github.workspace }}/ctest/summary.txt
 
+      - name: update env vars
+        run: |
+          echo "PKG_TAR=ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}-${{ matrix.pyver }}-${{ matrix.variants.value }}.tar.gz" >> $GITHUB_ENV
+
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v3
         with:
-          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ inputs.suffix }}
+          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}-${{ inputs.suffix }}
           path: ${{ github.workspace }}/ctest
 
   upload_test_results:
