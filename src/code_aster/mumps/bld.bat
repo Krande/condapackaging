@@ -25,7 +25,7 @@ if "%build_type%" == "debug" (
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY -DPORD_INTSIZE64
-set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64 -DWORKAROUNDINTELILP64OPENMPLIMITATION
+set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64 /integer-size:64 /4I8
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
@@ -33,7 +33,7 @@ cmake -G "Ninja" ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
-      -D MUMPS_UPSTREAM_VERSION:STRING=5.6.2 ^
+      -D MUMPS_UPSTREAM_VERSION:STRING=5.7.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=MKL64 ^
       -D intsize64:BOOL=ON ^
