@@ -1,7 +1,7 @@
 {% set name = "libmed" %}
-{% set version = "4.1.1.2" %}
+{% set version = "4.1.1.3" %}
 {% set build = 12 %}
-{% set sha256 = "547d3fa80ba68c0a57458e282a18afa0047471c0ee3848e8b9f8e1e36105ab4d" %}
+{% set sha256 = "71a1629fe682d48369b111a95744300157179c3e342611b34c49451e0385a26b" %}
 
 # ensure mpi is defined (needed for conda-smithy recipe-lint)
 {% set mpi = mpi or 'nompi' %}
