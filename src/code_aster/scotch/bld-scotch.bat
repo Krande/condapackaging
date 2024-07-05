@@ -11,7 +11,7 @@ if not "%FC%" == "flang-new" (
 
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
-    set TGT_BUILD_TYPE=RelWithDebInfo
+    set TGT_BUILD_TYPE=Debug
     if "%FC%" == "flang-new" (
         set FCFLAGS=%FCFLAGS% -g -cpp
     ) else (
@@ -22,7 +22,13 @@ if "%build_type%" == "debug" (
 )
 
 set CFLAGS=%CFLAGS% /nologo
-set FCFLAGS=%FCFLAGS% /nologo /integer-size:64 /4I8
+if "%FC%" == "flang-new" (
+    set FCFLAGS=%FCFLAGS% -cpp -fdefault-integer-8
+) else (
+    set FCFLAGS=%FCFLAGS% /nologo /integer-size:64 /4I8 /fpp /TP
+)
+
+
 cmake ^
   -G "Ninja" ^
   -D CMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^

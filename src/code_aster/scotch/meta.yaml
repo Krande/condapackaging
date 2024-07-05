@@ -64,7 +64,8 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ stdlib("c") }}
-        - {{ compiler('fortran') }}
+        - {{ compiler('fortran') }}  # [not win]
+        - clang                      # [win]
         - cmake
         - make          # [unix]
         - ninja         # [win]
