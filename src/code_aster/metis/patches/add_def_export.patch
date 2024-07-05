@@ -1,0 +1,35 @@
+Subject: [PATCH] add def export
+---
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	(revision e3b7cc43bc15696a06c21d19fd5376d34eb8b3ca)
++++ b/CMakeLists.txt	(date 1720182349456)
+@@ -12,6 +12,7 @@
+ enable_testing()
+ 
+ option(BUILD_TESTING "Build METIS self-tests" ON)
++set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
+ 
+ if(NOT intsize)
+   set(intsize 32)
+Index: src/libmetis/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/libmetis/CMakeLists.txt b/src/libmetis/CMakeLists.txt
+--- a/src/libmetis/CMakeLists.txt	(revision e3b7cc43bc15696a06c21d19fd5376d34eb8b3ca)
++++ b/src/libmetis/CMakeLists.txt	(date 1720181919576)
+@@ -2,6 +2,8 @@
+ file(GLOB metis_sources *.c)
+ # Build libmetis.
+ add_library(metis ${METIS_LIBRARY_TYPE} ${GKlib_sources} ${metis_sources})
++target_link_options(metis PRIVATE /DEF:src/libmetis/CMakeFiles/metis.dir/./exports.def)
++
+ target_include_directories(metis PUBLIC
+ $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+ $<INSTALL_INTERFACE:include>
