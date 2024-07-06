@@ -206,7 +206,7 @@ jobs:
         id: setup-fortran
         with:
           compiler: intel
-          version: '2024.2'
+          version: '2024.1'
 
       - name: create variant_str (if exists)
         if: ${{ inputs.variants }}
