@@ -106,9 +106,9 @@ waf configure ^
   --enable-med ^
   --enable-hdf5 ^
   --enable-mumps ^
-  --enable-openmp ^
   --enable-metis ^
   --enable-scotch ^
+  --disable-openmp ^
   --disable-mpi ^
   --disable-petsc ^
   --install-tests ^
