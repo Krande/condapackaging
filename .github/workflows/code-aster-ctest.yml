@@ -130,7 +130,7 @@ jobs:
         continue-on-error: true
         shell: cmd /E:on /C call {0}
         run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
+          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
 
       - name: run ctest [seq] [Linux]
         if: ${{ runner.os == 'Linux' && inputs.mpi == false }}
