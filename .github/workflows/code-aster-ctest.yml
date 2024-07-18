@@ -86,11 +86,18 @@ jobs:
       - uses: actions/checkout@v4
       - name: evaluate if seq or mpi
         run: |
-          var_flag="*${{ matrix.variants.value }}"
+          var_flag=""
           
           if [[ ${{ inputs.mpi }} == true ]]; then
             var_flag="${var_flag}*openmpi"
           fi
+          
+          if [[ ${{ matrix.variants.value }} == *debug* ]]; then
+              var_flag="${var_flag}*debug"
+          else
+              var_flag="${var_flag}*release"
+          fi
+          
           echo "VARIANT_FLAG=${var_flag}*" >> $GITHUB_ENV
 
       - name: set ENV CONDA_CHANNEL
