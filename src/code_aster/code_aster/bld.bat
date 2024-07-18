@@ -68,8 +68,17 @@ if "%FC%" == "ifx.exe" (
 )
 if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
 
-if %build_type% == "debug" (
+:: Create dll debug pdb
+if "%build_type%" == "debug" (
+    set FCFLAGS=%FCFLAGS% /check:stack
+    set CFLAGS=%CFLAGS% /Zi
+    set CXXFLAGS=%CXXFLAGS% /Zi
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+) else (
+    REM set the equivalent of RelWithDebInfo
+    set FCFLAGS=%FCFLAGS% /debug:full /debug-parameters:all /traceback
+    set CFLAGS=%CFLAGS% /Z7
+    set CXXFLAGS=%CXXFLAGS% /Z7
 )
 
 :: Add Math libs
