@@ -102,10 +102,16 @@ jobs:
           
           if in_mpi == 'true':
               var_flag+="*openmpi"
+          else:
+              var_flag+="*nompi"
+          
           if 'debug' in mat_var:
               var_flag+="*debug"
           else:
               var_flag+="*release"
+          
+          if var_flag != "":
+              var_flag += "*"
           
           set_env('VARIANT_FLAG', var_flag)
 
