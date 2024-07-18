@@ -85,20 +85,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: evaluate if seq or mpi
+        shell: python
+        env:
+          IN_MPI: ${{ inputs.mpi }}
+          MATRIX_VARIANT: ${{ matrix.variants.value }}
         run: |
+          import os
+          
+          def set_env(name, value):
+            with open(os.environ['GITHUB_ENV'], 'a') as fh:
+              print(f'{name}={value}', file=fh)
+          
           var_flag=""
+          in_mpi = os.environ['IN_MPI']
+          mat_var = os.environ['MATRIX_VARIANT']
           
-          if [[ ${{ inputs.mpi }} == true ]]; then
-            var_flag="${var_flag}*openmpi"
-          fi
+          if in_mpi == 'true':
+              var_flag+="*openmpi"
+          if 'debug' in mat_var:
+              var_flag+="*debug"
+          else:
+              var_flag+="*release"
           
-          if [[ ${{ matrix.variants.value }} == *debug* ]]; then
-              var_flag="${var_flag}*debug"
-          else
-              var_flag="${var_flag}*release"
-          fi
-          
-          echo "VARIANT_FLAG=${var_flag}*" >> $GITHUB_ENV
+          set_env('VARIANT_FLAG', var_flag)
 
       - name: set ENV CONDA_CHANNEL
         run: |
