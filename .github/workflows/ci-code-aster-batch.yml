@@ -303,7 +303,6 @@ jobs:
   test_mpi:
     needs: [ build_batch_code_aster, env ]
     uses: ./.github/workflows/code-aster-ctest.yml
-    if: ${{ runner.os == 'Linux' }}
     with:
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
