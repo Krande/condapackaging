@@ -11,7 +11,7 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-set TGT_BUILD_TYPE=Release
+set TGT_BUILD_TYPE=RelWithDebInfo
 set CFLAGS=%CFLAGS% /nologo /MD
 set CXXFLAGS=%CFLAGS% /nologo /MD /EHsc
 
