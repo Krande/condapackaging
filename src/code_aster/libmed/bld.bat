@@ -12,11 +12,13 @@ if not "%FC%" == "flang-new" (
 )
 
 set TGT_BUILD_TYPE=Release
+set CFLAGS=%CFLAGS% /nologo /MD
+set CXXFLAGS=%CFLAGS% /nologo /MD /EHsc
 
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
-    set CFLAGS=%CFLAGS% /nologo /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
-    set CXXFLAGS=%CFLAGS% /nologo /MD /Od /Zi /EHsc -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
+    set CFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
+    set CXXFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
