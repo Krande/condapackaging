@@ -84,7 +84,7 @@ clang:
   - '18.1.8'
 
 intel_fortran_rt:
-  - '2024.2'
+  - '2024.1'
 
 pin_run_as_build:
   hdf5: x.x.x

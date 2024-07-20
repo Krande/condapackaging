@@ -1,5 +1,5 @@
 {% set name = "mumps" %}
-{% set version = "5.6.2" %}
+{% set version = "5.7.2" %}
 # Dependencies
 {% set metis_ver = "5.1.0" %}
 {% set parmetis_ver = "4.0.3" %}
