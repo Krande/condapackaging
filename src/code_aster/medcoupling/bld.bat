@@ -15,7 +15,7 @@ if "%build_type%" == "debug" (
     if "%FC%" == "flang-new" (
         set FFLAGS=%FFLAGS% -g -cpp
     ) else (
-        set FFLAGS=%FFLAGS% /Od /Zi
+        set FFLAGS=%FFLAGS% /Od /Zi /debug /traceback
     )
 )
 
@@ -25,7 +25,7 @@ cmake -G "Ninja" .. ^
     -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
     -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
     -D PYTHON_ROOT_DIR="%PREFIX%" ^
-    -D CMAKE_CXX_FLAGS="/bigobj /EHsc" ^
+    -D CMAKE_CXX_FLAGS="/bigobj /EHs" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PYTHON%" ^
     -D CONFIGURATION_ROOT_DIR="%SRC_DIR%/deps/config" ^
     -D SALOME_CMAKE_DEBUG=ON ^

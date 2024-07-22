@@ -19,7 +19,7 @@ if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
     set CXXFLAGS=%CFLAGS% /Od /Zi
-    set FCFLAGS=%FCFLAGS% /Od /debug /Zi
+    set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 

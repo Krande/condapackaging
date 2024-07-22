@@ -15,7 +15,7 @@ if "%build_type%" == "debug" (
     if "%FC%" == "flang-new" (
         set FCFLAGS=%FCFLAGS% -g -cpp
     ) else (
-        set FCFLAGS=%FCFLAGS% /Od /debug /Zi
+        set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
     )
     set CFLAGS=%CFLAGS% /Od /Zi
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
