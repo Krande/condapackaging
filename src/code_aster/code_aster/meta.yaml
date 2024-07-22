@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
 {% set version = '17.1.0' %}
-{% set win_build = '2' %}
+{% set win_build = '3' %}
 {% set build = 0 %}
 
 {% if mpi == 'nompi' %}
@@ -31,7 +31,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'                                                             # [win]
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz   # [win]
-    sha256: 5ea167a42679466719c2187e8cabce66620046d97a9073adaf91b4f9f1d2e05b                                              # [win]
+    sha256: 4f57b9dcea210fe238d67e3d17ddea599745146ff70f37dd49949b0005a751ca                                              # [win]
   - fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
     url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
     patches:                                                                                                              # [not win]
