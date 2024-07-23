@@ -11,9 +11,9 @@ if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
 
-set TGT_BUILD_TYPE=RelWithDebInfo
+set TGT_BUILD_TYPE=Release
 set CFLAGS=%CFLAGS% /nologo /MD
-set CXXFLAGS=%CFLAGS% /nologo /MD /EHsc
+set CXXFLAGS=%CFLAGS% /nologo /MD /EHs
 
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
