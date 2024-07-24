@@ -20,12 +20,13 @@ echo "build_type: %build_type%"
 for %%L in (%hdf5_libs%) do (
     echo "Checking library: %%L"
     if "%build_type%" == "debug" (
-        if not exist %PREFIX%\Library\lib\%%L_D.lib (
-           echo Library not found: %PREFIX%\Library\lib\%%L_D.lib
+        REM Use L_D if using Debug build. Using RelWithDebInfo build type.
+        if not exist %PREFIX%\Library\lib\%%L.lib (
+           echo Library not found: %PREFIX%\Library\lib\%%L.lib
             exit /b 1
         )
-        if not exist %PREFIX%\Library\bin\%%L_D.dll (
-            echo Library not found: %PREFIX%\Library\bin\%%L_D.dll
+        if not exist %PREFIX%\Library\bin\%%L.dll (
+            echo Library not found: %PREFIX%\Library\bin\%%L.dll
             exit /b 1
         )
     ) else (
