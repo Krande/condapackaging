@@ -86,67 +86,11 @@ test:
     - zlib
   files:
     - test
+    - run_test.sh
+    - run_test.bat
   commands:
-    # Verify UNIX CLI tools.
-    {% if mpi == 'nompi' %}
-    {% set h5_compilers = [
-        "h5c++",
-        "h5cc",
-        "h5fc",
-    ] %}
-    {% else %}
-    # no p on parallel h5c++!
-    {% set h5_compilers = [
-        "h5c++",
-        "h5pcc",
-        "h5pfc",
-    ] %}
-    {% endif %}
-    {% set hdf5_unix_cmds = h5_compilers + [
-        "h5redeploy",
-    ] %}
-    {% if build_platform == target_platform %}
-    {% set hdf5_unix_cmds = hdf5_unix_cmds + [
-        "h5perf_serial",
-    ] %}
-    {% endif %}
-    {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
-    - command -v {{ each_hdf5_unix_cmd }}   # [not win]
-    {% endfor %}
-    # Verify CLI tools.
-    {% set hdf5_cmds = [
-        "gif2h5",
-        "h52gif",
-        "h5copy",
-        "h5debug",
-        "h5diff",
-        "h5dump",
-        "h5import",
-        "h5jam",
-        "h5ls",
-        "h5mkgrp",
-        "h5repack",
-        "h5repart",
-        "h5stat",
-        "h5unjam"
-    ] %}
-    {% for each_hdf5_cmd in hdf5_cmds %}
-    - command -v {{ each_hdf5_cmd }}  # [not win]
-    - echo {{ each_hdf5_cmd }}  # [win]
-    - where {{ each_hdf5_cmd }}  # [win]
-    {% endfor %}
-    # Verify libraries.
-    {% set hdf5_libs = [
-        "hdf5",
-        "hdf5_cpp",
-        "hdf5_hl",
-        "hdf5_hl_cpp"
-    ] %}
-    {% for each_hdf5_lib in hdf5_libs %}
-    - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}  # [not win]
-    - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
-    {% endfor %}
+    - run_test.sh  # [not win]
+    - run_test.bat  # [win]
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/
