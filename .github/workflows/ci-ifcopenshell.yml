@@ -7,7 +7,7 @@ on:
         description: 'Extra build arguments'
         required: true
         type: string
-        default: " -m __root__/src/code_aster/common.yaml"
+        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
       python_versions:
         description: 'Python Versions'
         required: true
