@@ -1,9 +1,13 @@
 occt:
-  - 7.8.1=novtk*
+  - 7.7.2=novtk*
 
 pin_run_as_build:
   occt: x.x.x
   cgal-cpp: x.x.x
+
+build_type:
+  - debug
+  - release
 
 mpi:
   - nompi

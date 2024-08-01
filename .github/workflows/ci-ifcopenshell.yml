@@ -14,7 +14,7 @@ on:
         type: string
         default: "3.11,3.12"
       conda_label:
-        description: 'strutools'
+        description: 'Conda channel name'
         required: false
         type: string
       platforms:
@@ -26,7 +26,7 @@ on:
         description: 'Build variants'
         required: true
         type: string
-        default: "occt=7.8.1=*novtk*;mpi=nompi"
+        default: "build_type=debug;build_type=release"
       description:
         description: 'Release Description'
         required: false

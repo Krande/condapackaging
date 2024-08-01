@@ -1,5 +1,15 @@
 set CLICOLOR_FORCE=1
 
+
+set TGT_BUILD_TYPE=Release
+if "%build_type%" == "debug" (
+    set TGT_BUILD_TYPE=Debug
+    set CFLAGS=%CFLAGS% /Od /Zi
+    set CXXFLAGS=%CFLAGS% /Od /Zi
+    set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+)
+
 mkdir build && cd build
 
 REM Remove dot from PY_VER for use in library name
@@ -10,7 +20,7 @@ set LIBXML2="%LIBRARY_PREFIX%/lib/libxml2.lib"
 
 cmake -G "Ninja" ^
  -D SCHEMA_VERSIONS="2x3;4;4x1;4x3_add2" ^
- -D CMAKE_BUILD_TYPE:STRING=Release ^
+ -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
  -D CMAKE_INSTALL_PREFIX:FILEPATH="%LIBRARY_PREFIX%" ^
  -D CMAKE_PREFIX_PATH:FILEPATH="%LIBRARY_PREFIX%" ^
  -D CMAKE_SYSTEM_PREFIX_PATH:FILEPATH="%LIBRARY_PREFIX%" ^
