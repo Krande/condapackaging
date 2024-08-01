@@ -1,25 +1,10 @@
 occt:
-  - 7.7.2=novtk*
-  - 7.7.2=all*
+  - 7.8.1=novtk*
 
 pin_run_as_build:
-  hdf5: x.x
   occt: x.x.x
   cgal-cpp: x.x.x
 
-CONDA_BUILD_SYSROOT:
-  - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
-
-c_compiler:                   # [win]
- - vs2019                     # [win]
-
-cxx_compiler:                 # [win]
- - vs2019                     # [win]
-
-# Compile with specific HDF5 so that the linux variant can be used together with Code_Aster
-hdf5:                 # [linux]
-  - 1.10.6            # [linux]
-
-mpi:                  # [linux]
-  - nompi             # [linux]
+mpi:
+  - nompi
   - openmpi           # [linux]

@@ -13,11 +13,25 @@ on:
         required: true
         type: string
         default: "3.11,3.12"
+      conda_label:
+        description: 'strutools'
+        required: false
+        type: string
       platforms:
         description: 'Platforms'
         required: true
         type: string
-        default: "ubuntu-latest"
+        default: "windows-latest"
+      variants:
+        description: 'Build variants'
+        required: true
+        type: string
+        default: "occt=7.8.1=*novtk*;mpi=nompi"
+      description:
+        description: 'Release Description'
+        required: false
+        type: string
+        default: "Compilations of ifcopenshell"
   push:
     paths:
       - .github/workflows/ci-ifcopenshell.yml
@@ -29,13 +43,14 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ifcopenshell
-      conda_label: "main"
-      conda_user: krande
-      debug_build: 'False'
+      pkg_dir: src
+      conda_label: ${{ inputs.conda_label }}
+      conda_user: krandedev
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
-      variants: "occt=7.7.2=*novtk*;mpi=nompi,occt=7.7.2=*novtk*;mpi=openmpi"
-      description: "Compilations of ifcopenshell"
-      use_quetz: "False"
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+
     secrets: inherit

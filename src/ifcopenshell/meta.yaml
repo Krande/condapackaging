@@ -1,5 +1,5 @@
 {% set name = "ifcopenshell" %}
-{% set version = "0.7.0.240217" %}
+{% set version = "0.7.11.240801" %}
 
 {% set build = 0 %}
 
@@ -31,36 +31,35 @@ build:
   number: {{ build }}
   string: py{{ CONDA_PY }}_{{ variant_name }}_{{ mpi }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} *{{ variant_name }}*
 
 requirements:
   build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - cmake
+    - ninja
+    - swig >=4.1.1
+    - {{ stdlib("c") }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - ninja >=1.10.2
-    - cmake
-    - swig 4.1.1
-
   host:
     - python
-    - occt
-    - cgal-cpp
     - libboost-devel
+    - occt *=*{{ variant_name }}*
     - libxml2
-    - hdf5 {{ hdf5 }} *{{ mpi }}*
+    - cgal-cpp
+    - hdf5
+    - eigen
     - mpfr
-    - {{ mpi }}                           # [mpi != 'nompi']
-    - mpi4py                              # [mpi != 'nompi']
-    - gmp                                 # [unix]
-    - mpir                                # [win]
     - nlohmann_json
+    - gmp  # [unix]
+    - mpir  # [win]
     - zlib
-
   run:
     - python
-    - {{ pin_compatible('numpy') }}
-    - hdf5 {{ hdf5 }} *{{ mpi }}*
-    - {{ mpi }}                           # [mpi != 'nompi']
+    - {{ pin_compatible('occt', max_pin='x.x.x') }} *{{ variant_name }}*
+    - {{ pin_compatible('cgal-cpp', max_pin='x.x') }}
 
 test:
   imports:
