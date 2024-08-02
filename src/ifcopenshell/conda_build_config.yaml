@@ -1,5 +1,9 @@
+variant:
+#  - all
+  - novtk
+
 occt:
-  - 7.7.2=novtk*
+  - 7.7.2
 
 pin_run_as_build:
   occt: x.x.x
