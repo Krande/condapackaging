@@ -62,9 +62,9 @@ test:
   imports:
     - ifcopenshell
   commands:
-    - pytest .
+    - pytest tests
   files:
-    - ./test_basic_ifc_ops.py
+    - tests/test_basic_ifc_ops.py
   requires:
     - pytest
 
