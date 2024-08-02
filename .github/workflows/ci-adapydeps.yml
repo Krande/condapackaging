@@ -1,4 +1,4 @@
-name: ci-h5py
+name: ci-adapydeps
 
 # bump 1
 # libnetcdf4,netcdf4 are meshio indirect dependencies...
