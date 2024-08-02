@@ -2,7 +2,7 @@ variant:
 #  - all
   - novtk
 
-occt:
+occt_version:
   - 7.8.1
 
 pin_run_as_build:
