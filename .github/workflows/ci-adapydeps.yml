@@ -11,7 +11,7 @@ on:
         description: 'Build Selection'
         required: true
         type: string
-        default: "hdf5,gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
+        default: "gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
       description:
         description: 'Release Description'
         required: true
