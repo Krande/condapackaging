@@ -5,9 +5,8 @@ on:
     inputs:
       description:
         description: 'Release Description'
-        required: false
+        required: true
         type: string
-        default: "Compilations of ifcopenshell"
       conda_label:
         description: 'Conda channel name'
         required: false
