@@ -57,7 +57,7 @@ build:
 
   run_exports:
     #   https://abi-laboratory.pro/tracker/timeline/netcdf/
-    - {{ pin_subpackage('libnetcdf', max_pin='x.x.x') }} {{ build_pin }}{{ build_type }}_*
+    - {{ pin_subpackage('libnetcdf', max_pin='x.x.x') }} *{{ build_pin }}{{ build_type }}_*
 
 requirements:
   build:

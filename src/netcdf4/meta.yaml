@@ -41,7 +41,7 @@ build:
 
   string: {{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} {{ build_pin }}{{ build_type }}_*
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_pin }}{{ build_type }}_*
   entry_points:
     - ncinfo = netCDF4.utils:ncinfo
     - nc4tonc3 = netCDF4.utils:nc4tonc3
