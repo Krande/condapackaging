@@ -2,8 +2,13 @@ mkdir %SRC_DIR%\build
 cd %SRC_DIR%\build
 
 set BUILD_TYPE=Release
-:: set BUILD_TYPE=RelWithDebInfo
-:: set BUILD_TYPE=Debug
+if "%build_type%" == "debug" (
+    set BUILD_TYPE=Debug
+    set CFLAGS=%CFLAGS% /Od /Zi
+    set CXXFLAGS=%CFLAGS% /Od /Zi
+    set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+)
 
 rem to be filled with mpi options
 set PARALLEL=""

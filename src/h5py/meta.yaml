@@ -49,9 +49,11 @@ build:
   # `pkg * mpi_mpich_*` for mpich
   # `hdf5 * mpi_*` for any mpi
   # `hdf5 * nompi_*` for no mpi
-  string: {{ mpi_prefix }}_py{{ py }}h{{ PKG_HASH }}_{{ build }}
+  string: {{ mpi_prefix }}_{{ build_type }}_py{{ py }}h{{ PKG_HASH }}_{{ build }}
   script_env:
     - HDF5_HAS_ROS3=1  # [build_platform != target_platform]
+  run_exports:
+    - {{ pin_subpackage(name, 'x.x') }} *{{ mpi_prefix }}_{{ build_type }}*
 
 requirements:
   build:
@@ -72,8 +74,7 @@ requirements:
     - mpi4py >=3.0  # [mpi != 'nompi']
     # need to list hdf5 twice to get version pinning from conda_build_config
     # and build pinning from {{ mpi_prefix }}
-    - hdf5
-    - hdf5 * {{ mpi_prefix }}_*
+    - hdf5 * {{ mpi_prefix }}*{{ build_type }}*
     - cython >=0.29.31,<1
     - pkgconfig
   run:

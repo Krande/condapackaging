@@ -32,9 +32,16 @@ build:
   {% else %}
   {% set mpi_prefix = "nompi" %}
   {% endif %}
-  string: {{ mpi_prefix }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+
+  {% if mpi != 'nompi' %}
+  {% set build_pin = mpi_prefix + '_*' %}
+  {% else %}
+  {% set build_pin = '' %}
+  {% endif %}
+
+  string: {{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }}
+    - {{ pin_subpackage(name, 'x.x') }} {{ build_pin }}{{ build_type }}_*
   entry_points:
     - ncinfo = netCDF4.utils:ncinfo
     - nc4tonc3 = netCDF4.utils:nc4tonc3
@@ -56,10 +63,8 @@ requirements:
     - cftime >=1.0.1
     # need to list hdf5 and libnetcdf twice to get version pinning from conda_build_config
     # and build pinning from {{ mpi_prefix }}
-    - hdf5
-    - hdf5 * {{ mpi_prefix }}_*
-    - libnetcdf
-    - libnetcdf * {{ mpi_prefix }}_*
+    - hdf5 * {{ mpi_prefix }}_*{{ build_type }}_*
+    - libnetcdf * {{ mpi_prefix }}_*{{ build_type }}_*
     - {{ mpi }}  # [mpi != 'nompi']
     - mpi4py  # [mpi != 'nompi']
     - zlib
@@ -68,12 +73,6 @@ requirements:
     - setuptools
     - certifi
     - cftime
-    # the 'nompi' build should work with both non-MPI and MPI variants of the
-    # following libs
-    - hdf5  # [mpi == 'nompi']
-    - libnetcdf  # [mpi == 'nompi']
-    - hdf5 * {{ mpi_prefix }}_*  # [mpi != 'nompi']
-    - libnetcdf * {{ mpi_prefix }}_*  # [mpi != 'nompi']
     - {{ mpi }}  # [mpi != 'nompi']
     - mpi4py  # [mpi != 'nompi']
     - openssh  # [mpi == 'openmpi']

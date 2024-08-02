@@ -3,3 +3,6 @@ mpi:
 #  - mpich
 #  - openmpi
 
+build_type:
+  - debug
+  - release

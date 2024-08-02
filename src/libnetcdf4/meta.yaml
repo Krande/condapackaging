@@ -8,6 +8,10 @@
 {% set build = build + 100 %}
 {% endif %}
 
+{% if build_type == "debug" %}
+{% set build = build + 10 %}
+{% endif %}
+
 package:
   name: libnetcdf
   version: {{ version }}
@@ -39,7 +43,7 @@ build:
   # `PKG_NAME * mpi_mpich_*` for mpich
   # `PKG_NAME * mpi_*` for any mpi
   # `PKG_NAME * nompi_*` for no mpi
-  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+  string: {{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
 
   # mpi builds require the right mpi
   # non-mpi builds *do not* appear to require non-mpi builds
@@ -53,7 +57,7 @@ build:
 
   run_exports:
     #   https://abi-laboratory.pro/tracker/timeline/netcdf/
-    - {{ pin_subpackage('libnetcdf', max_pin='x.x.x') }} {{ build_pin }}
+    - {{ pin_subpackage('libnetcdf', max_pin='x.x.x') }} {{ build_pin }}{{ build_type }}_*
 
 requirements:
   build:
@@ -75,9 +79,7 @@ requirements:
     - blosc
     - bzip2
     - hdf4
-    # without this repeat reference, conda-smithy doesn't pin correctly
-    - hdf5
-    - hdf5 * {{ mpi_prefix }}_*
+    - hdf5 * {{ mpi_prefix }}_*{{ build_type }}_*
     - libaec
     - libcurl
     - libpnetcdf  # [mpi != 'nompi']

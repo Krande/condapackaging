@@ -23,7 +23,9 @@ outputs:
   - name: gmsh
     build:
       number: {{ build }}
-      string: py{{ CONDA_PY }}_{{ variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ build_type }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
+      run_exports:
+        - {{ pin_subpackage(name, 'x.x') }} *{{ build_type }}_{{ variant }}*
     script: build_gmsh.sh  # [not win]
     script: bld_gmsh.bat  # [win]
     requirements:

@@ -24,7 +24,7 @@ build:
   number: {{ build }}
   string: py{{ CONDA_PY }}_{{ build_type }}_{{ variant }}_{{ mpi }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} *{{ variant }}*
+    - {{ pin_subpackage(name, 'x.x') }} *{{ build_type }}_{{ variant }}*
 
 requirements:
   build:
@@ -44,7 +44,7 @@ requirements:
     - cgal-cpp
     - numpy
     - lark
-    - hdf5
+    - hdf5 * *{{ build_type }}*
     - eigen
     - mpfr
     - nlohmann_json
