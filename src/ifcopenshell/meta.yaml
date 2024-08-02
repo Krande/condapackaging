@@ -41,7 +41,7 @@ requirements:
   host:
     - python
     - libboost-devel
-    - occt 7.7.2=*{{ variant }}*
+    - occt *=*{{ variant }}*
     - libxml2
     - cgal-cpp
     - numpy
