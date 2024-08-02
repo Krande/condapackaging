@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       build_selection:
-        description: 'Dependencies'
+        description: 'Build Selection'
         required: true
         type: string
         default: "hdf5,gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
