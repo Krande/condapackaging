@@ -24,7 +24,7 @@ source:
 build:
   binary_relocation: false [osx]
   number: {{ build }}
-  string: py{{ CONDA_PY }}_{{ variant }}_{{ mpi }}_h{{ PKG_HASH }}_{{ build }}
+  string: py{{ CONDA_PY }}_{{ build_type }}_{{ variant }}_{{ mpi }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage(name, 'x.x') }} *{{ variant }}*
 
