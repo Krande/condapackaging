@@ -53,7 +53,7 @@ build:
   script_env:
     - HDF5_HAS_ROS3=1  # [build_platform != target_platform]
   run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} *{{ mpi_prefix }}_{{ build_type }}*
+    - {{ pin_subpackage(name, 'x.x') }} {{ mpi_prefix }}
 
 requirements:
   build:
