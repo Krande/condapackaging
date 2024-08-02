@@ -2,6 +2,36 @@ name: ci-gmsh
 
 on:
   workflow_dispatch:
+    inputs:
+      description:
+        description: 'Release Description'
+        required: false
+        type: string
+        default: "Compilations of ifcopenshell"
+      conda_label:
+        description: 'Conda channel name'
+        required: false
+        type: string
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "windows-latest"
+      variants:
+        description: 'Build variants'
+        required: true
+        type: string
+        default: "build_type=debug,build_type=release"
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
   push:
     paths:
       - .github/workflows/ci-gmsh.yml
@@ -13,10 +43,13 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: gmsh
-      conda_label: dev
-      conda_user: krande
-      debug_build: 'False'
-      python_versions: "3.10,3.11"
-      platforms: "ubuntu-latest,windows-latest,macos-latest"
-      variants: "occt=7.7.2=*novtk*,occt=7.7.2=*all*"
+      pkg_dir: src
+      conda_label: ${{ inputs.conda_label }}
+      conda_user: krandedev
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit

@@ -1,16 +1,11 @@
 {% set name = "gmsh" %}
-{% set version = "4.11.1" %}
-{% set sha256 = "c5fe1b7cbd403888a814929f2fd0f5d69e27600222a18c786db5b76e8005b365" %}
+{% set version = "4.13.1" %}
+{% set sha256 = "77972145f431726026d50596a6a44fb3c1c95c21255218d66955806b86edbe8d" %}
 {% set build = 0 %}
 
-# Prioritize the 'novtk' build variant for reduced file size
-{% if "novtk" in occt %}
-  {% set build = build + 200 %}
-  {% set variant_name = "novtk" %}
-{% elif "all" in occt %}
-  {% set build = build + 100 %}
-  {% set variant_name = "all" %}
-{% endif %}
+# Higher number -> Always prioritize "novtk" variant over "all" variant
+{% set build = build + 200 %}   # [variant == "novtk"]
+{% set build = build + 100 %}   # [variant == "all"]
 
 package:
   name: gmsh-packages
@@ -27,9 +22,8 @@ source:
 outputs:
   - name: gmsh
     build:
-      skip: true  # [win and vc<14]
       number: {{ build }}
-      string: py{{ CONDA_PY }}_{{ variant_name }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
     script: build_gmsh.sh  # [not win]
     script: bld_gmsh.bat  # [win]
     requirements:
@@ -38,6 +32,7 @@ outputs:
         - make  # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - {{ stdlib("c") }}
         - {{ cdt('libselinux') }}        # [linux]
         - {{ cdt('libxcb') }}            # [linux]
         - {{ cdt('libxau') }}            # [linux]
@@ -45,17 +40,18 @@ outputs:
         - {{ cdt('libxxf86vm') }}        # [linux]
         - {{ cdt('mesa-libgl-devel') }}  # [linux]
         - {{ cdt('mesa-dri-drivers') }}  # [linux]
+        - python *
 
       host:
-        - python
         - libblas
         - liblapack
-        - gmp  # [not win]
+        - gmp                # [not win]
         - occt
         - fltk
+        - hdf5
         - libpng
-        - jpeg
-        - libglu  # [linux]
+        - libjpeg-turbo
+        - libglu             # [linux]
         - zlib
         - xorg-libxfixes     # [linux]
         - xorg-libxext       # [linux]
@@ -67,9 +63,8 @@ outputs:
       run:
         - gmp  # [not win]
         - {{ pin_compatible('occt', max_pin='x.x.x') }}
-        - python
         - libpng
-        - jpeg
+        - libjpeg-turbo
         - zlib
         - libglu  # [linux]
         - xorg-libxfixes     # [linux]
@@ -88,7 +83,7 @@ outputs:
       noarch: python
       skip: true  # [build_platform != target_platform]
       number: {{ build }}
-      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
     script: install_python.sh  # [not win]
     script: install_python.bat  # [win]
     requirements:

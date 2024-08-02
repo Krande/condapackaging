@@ -3,6 +3,36 @@ name: ci-h5py
 # bump 1
 on:
   workflow_dispatch:
+    inputs:
+      description:
+        description: 'Release Description'
+        required: false
+        type: string
+        default: "Compilations of ifcopenshell"
+      conda_label:
+        description: 'Conda channel name'
+        required: false
+        type: string
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "windows-latest"
+      variants:
+        description: 'Build variants'
+        required: true
+        type: string
+        default: "build_type=debug,build_type=release"
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
   push:
     paths:
       - .github/workflows/ci-adapydeps.yml

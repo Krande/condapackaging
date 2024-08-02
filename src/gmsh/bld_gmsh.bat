@@ -1,3 +1,12 @@
+set TGT_BUILD_TYPE=Release
+if "%build_type%" == "debug" (
+    set TGT_BUILD_TYPE=RelWithDebInfo
+    set CFLAGS=%CFLAGS% /Od /Zi
+    set CXXFLAGS=%CFLAGS% /Od /Zi
+    set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+)
+
 :: Needed so we can find stdint.h from msinttypes.
 set LIB=%LIBRARY_LIB%;%LIB%
 set LIBPATH=%LIBRARY_LIB%;%LIBPATH%
@@ -8,6 +17,7 @@ cd build
 
 :: Configure.
 cmake -G "NMake Makefiles" ^
+      -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -D ENABLE_OS_SPECIFIC_INSTALL=OFF ^
       -D ENABLE_BUILD_DYNAMIC=ON ^

@@ -1,40 +1,14 @@
-occt:
-  - 7.7.2=novtk*
-  - 7.7.2=all*
+variant:
+  - novtk
+#  - all
 
-hdf5:
-  - 1.10.6
+c_stdlib:
+  - vs              # [win]
 
 pin_run_as_build:
   occt: x.x.x
-  hdf5: x.x.x
 
-CONDA_BUILD_SYSROOT:
-  - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
 
-c_compiler:
-  - vs2019                     # [win]
-  - gcc                        # [linux]
-  - clang                      # [osx]
-cxx_compiler:
-  - vs2019                     # [win]
-  - gxx                        # [linux]
-  - clangxx                    # [osx]
-
-cxx_compiler_version:
-  - '12'                        # [linux]
-  - '15'                        # [osx]
-c_compiler_version:
-  - '12'                        # [linux]
-  - '15'                        # [osx]
-
-MACOSX_DEPLOYMENT_TARGET:
-  - '10.12'
-MACOSX_SDK_VERSION:
-  - '10.15'
-
-zlib:
-  - '1.2'
 cairo:
   - '1'
 cdt_name:
