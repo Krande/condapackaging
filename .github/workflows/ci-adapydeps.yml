@@ -7,7 +7,7 @@ name: ci-adapydeps
 on:
   workflow_dispatch:
     inputs:
-      deps:
+      build_selection:
         description: 'Dependencies'
         required: true
         type: string
