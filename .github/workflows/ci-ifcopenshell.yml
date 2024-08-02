@@ -3,20 +3,20 @@ name: ci-ifcopenshell
 on:
   workflow_dispatch:
     inputs:
-      extra_build_args:
-        description: 'Extra build arguments'
-        required: true
+      description:
+        description: 'Release Description'
+        required: false
         type: string
-        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
+        default: "Compilations of ifcopenshell"
+      conda_label:
+        description: 'Conda channel name'
+        required: false
+        type: string
       python_versions:
         description: 'Python Versions'
         required: true
         type: string
         default: "3.11,3.12"
-      conda_label:
-        description: 'Conda channel name'
-        required: false
-        type: string
       platforms:
         description: 'Platforms'
         required: true
@@ -27,11 +27,11 @@ on:
         required: true
         type: string
         default: "build_type=debug,build_type=release"
-      description:
-        description: 'Release Description'
-        required: false
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
         type: string
-        default: "Compilations of ifcopenshell"
+        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
   push:
     paths:
       - .github/workflows/ci-ifcopenshell.yml
