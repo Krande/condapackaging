@@ -1,5 +1,6 @@
-{% set version = "1.6.4" %}
-{% set build = 4 %}
+{% set name = "netcdf4" %}
+{% set version = "1.7.1" %}
+{% set build = 2 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -9,15 +10,15 @@
 {% endif %}
 
 package:
-  name: netcdf4
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/n/netCDF4/netCDF4-{{ version }}.tar.gz
-  sha256: 66da6542cbc7a6045cd1d979397dfd5a3f6c880c76d52b8f98bb108c82ee8c6e
+  url: https://github.com/Unidata/netcdf4-python/archive/refs/tags/v{{ version }}rel.tar.gz
+  sha256: 42c189fb646a2993f15791b3835797389d7d0791de033ed4347955c673194605
 
 build:
-  skip: true  # [(win and vc<14) or (win and mpi != 'nompi')]
+  skip: true  # [(win and mpi != 'nompi')]
   number: {{ build }}
 
   # add build string so packages can depend on
@@ -32,12 +33,12 @@ build:
   {% set mpi_prefix = "nompi" %}
   {% endif %}
   string: {{ mpi_prefix }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}
+  run_exports:
+    - {{ pin_subpackage(name, 'x.x') }}
   entry_points:
     - ncinfo = netCDF4.utils:ncinfo
     - nc4tonc3 = netCDF4.utils:nc4tonc3
     - nc3tonc4 = netCDF4.utils:nc3tonc4
-  run_exports:
-    - {{ pin_subpackage('netcdf4', 'x.x') }}
 
 requirements:
   build:
@@ -45,7 +46,8 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
     - numpy                                  # [build_platform != target_platform]
-    - {{ compiler('c') }}
+    - {{ compiler("c") }}
+    - {{ stdlib("c") }}
   host:
     - python
     - pip
@@ -54,38 +56,46 @@ requirements:
     - cftime >=1.0.1
     # need to list hdf5 and libnetcdf twice to get version pinning from conda_build_config
     # and build pinning from {{ mpi_prefix }}
-    - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*
+    - hdf5
+    - hdf5 * {{ mpi_prefix }}_*
     - libnetcdf
     - libnetcdf * {{ mpi_prefix }}_*
-    - {{ mpi }}                             # [mpi != 'nompi']
-    - mpi4py                                # [mpi != 'nompi']
+    - {{ mpi }}  # [mpi != 'nompi']
+    - mpi4py  # [mpi != 'nompi']
     - zlib
   run:
     - python
     - setuptools
-    - {{ pin_compatible('numpy') }}
     - certifi
     - cftime
     # the 'nompi' build should work with both non-MPI and MPI variants of the
     # following libs
-    - hdf5 {{ hdf5 }} {{ mpi_prefix }}_*
-    - libnetcdf * {{ mpi_prefix }}_*
-    - {{ mpi }}                             # [mpi != 'nompi']
-    - mpi4py                                # [mpi != 'nompi']
-    - openssh                               # [mpi == 'openmpi']
+    - hdf5  # [mpi == 'nompi']
+    - libnetcdf  # [mpi == 'nompi']
+    - hdf5 * {{ mpi_prefix }}_*  # [mpi != 'nompi']
+    - libnetcdf * {{ mpi_prefix }}_*  # [mpi != 'nompi']
+    - {{ mpi }}  # [mpi != 'nompi']
+    - mpi4py  # [mpi != 'nompi']
+    - openssh  # [mpi == 'openmpi']
 
 test:
+  source_files:
+    - test
   files:
     - parallel_test.py  # [mpi != 'nompi']
   imports:
     - netCDF4
     - cftime
+  requires:
+    - cython
+    - packaging
   commands:
     - ncinfo -h
     - nc4tonc3 -h
     - nc3tonc4 -h
     - mpirun -np 4 python parallel_test.py  # [mpi == 'mpich']
     - mpirun --oversubscribe -np 4 python parallel_test.py  # [mpi == 'openmpi']
+    - cd test && python run_all.py
 
 about:
   home: http://github.com/Unidata/netcdf4-python
