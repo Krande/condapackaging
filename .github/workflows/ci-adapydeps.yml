@@ -1,6 +1,9 @@
 name: ci-h5py
 
 # bump 1
+# libnetcdf4,netcdf4 are meshio indirect dependencies...
+# Consider making meshio an optional dependency?
+
 on:
   workflow_dispatch:
     inputs:
@@ -8,7 +11,7 @@ on:
         description: 'Dependencies'
         required: true
         type: string
-        default: "hdf5,gmsh,ifcopenshell,netcdf4,h5py"
+        default: "hdf5,gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
       description:
         description: 'Release Description'
         required: false
@@ -147,9 +150,26 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+  libnetcdf4:
+    uses: ./.github/workflows/conda-build-basic.yml
+    needs: [ hdf5, env ]
+    with:
+      package_name: libnetcdf4
+      job_name: libnetcdf4
+      pkg_dir: src
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      build_selection: ${{ inputs.build_selection }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
+    secrets: inherit
   netcdf4:
     uses: ./.github/workflows/conda-build-basic.yml
-    needs: [hdf5, env]
+    needs: [hdf5, env, libnetcdf4]
     with:
       package_name: netcdf4
       job_name: netcdf4

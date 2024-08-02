@@ -20,7 +20,7 @@ source:
 # Will use git_url until a tag contains https://github.com/h5py/h5py/pull/2422
   git_url: https://github.com/h5py/h5py.git
   git_tag: 44ba349e5ecd21ecbc75b1314063e96d30aec872
-  git_depth: 0
+  git_depth: 1
 
 
 # add build string so packages can depend on
