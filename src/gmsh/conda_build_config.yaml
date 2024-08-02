@@ -1,9 +1,9 @@
 variant:
   - novtk
 #  - all
-
-c_stdlib:
-  - vs              # [win]
+build_type:
+    - debug
+    - release
 
 pin_run_as_build:
   occt: x.x.x
@@ -12,4 +12,4 @@ pin_run_as_build:
 cairo:
   - '1'
 cdt_name:
-  - cos6
+  - cos7

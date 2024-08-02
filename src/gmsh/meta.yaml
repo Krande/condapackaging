@@ -23,7 +23,7 @@ outputs:
   - name: gmsh
     build:
       number: {{ build }}
-      string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
     script: build_gmsh.sh  # [not win]
     script: bld_gmsh.bat  # [win]
     requirements:
@@ -83,7 +83,7 @@ outputs:
       noarch: python
       skip: true  # [build_platform != target_platform]
       number: {{ build }}
-      string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
     script: install_python.sh  # [not win]
     script: install_python.bat  # [win]
     requirements:
