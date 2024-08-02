@@ -14,9 +14,8 @@ on:
         default: "hdf5,gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
       description:
         description: 'Release Description'
-        required: false
+        required: true
         type: string
-        default: "Compilations of ifcopenshell"
       conda_label:
         description: 'Conda channel name'
         required: false
