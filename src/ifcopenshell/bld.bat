@@ -18,6 +18,8 @@ set MY_PY_VER=%PY_VER:.=%
 
 set LIBXML2="%LIBRARY_PREFIX%/lib/libxml2.lib"
 
+python %RECIPE_DIR%/config/update_version.py %SRC_DIR%/src/ifcopenshell-python/ifcopenshell/__init__.py %PKG_VERSION%
+
 cmake -G "Ninja" ^
  -D SCHEMA_VERSIONS="2x3;4;4x1;4x3_add2" ^
  -D SWIG_PYTHON_INTERPRETER_NO_DEBUG:BOOL=ON ^
