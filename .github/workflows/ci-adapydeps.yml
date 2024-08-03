@@ -207,11 +207,11 @@ jobs:
             remote_backoff_factor: 5
             channel_priority: strict
             channels:
+              - https://repo.prefix.dev/code-aster
               - ${{ secrets.QUETZ_URL }}/get/${{ needs.env.outputs.conda_label }}
               - conda-forge
-              - https://repo.prefix.dev/code-aster
           create-args: >-
-            python=${{ matrix.pyver }}
+            python=3.12
             colorama
             ada-py
             pytest
