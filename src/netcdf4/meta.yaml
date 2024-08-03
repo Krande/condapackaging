@@ -8,6 +8,7 @@
 # prioritize nompi via build number
 {% set build = build + 100 %}
 {% endif %}
+{% set build = build + 10 %}   # [build_type == "release"]
 
 package:
   name: {{ name }}

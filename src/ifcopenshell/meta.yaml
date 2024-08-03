@@ -11,6 +11,8 @@
   {% set build = build + 1 %}
 {% endif %}
 
+{% set build = build + 10 %}   # [build_type == "release"]
+
 package:
   name: {{ name }}
   version: {{ version }}

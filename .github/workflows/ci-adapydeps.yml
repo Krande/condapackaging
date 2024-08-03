@@ -182,3 +182,42 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
+  test_adapy_win:
+    runs-on: windows-latest
+    needs: [hdf5, env, libnetcdf4, netcdf4, h5py, ifcopenshell]
+    defaults:
+        run:
+            shell: cmd
+    steps:
+
+      - name: checkout adapy
+        uses: actions/checkout@v4
+        with:
+          repository: Krande/adapy
+          ref: main
+
+      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+        with:
+          environment-name: test-env
+          init-shell: >-
+            cmd.exe
+          condarc: |
+            remote_max_retries: 5
+            remote_backoff_factor: 5
+            channel_priority: strict
+            channels:
+              - ${{ secrets.QUETZ_URL }}/get/${{ needs.env.outputs.conda_label }}
+              - conda-forge
+          create-args: >-
+            python=${{ matrix.pyver }}
+            colorama
+            ada-py
+            pytest
+            code-aster=*=*release*
+
+      - name: run tests
+        shell: cmd /E:on /C call {0}
+        run: |
+          cd adapy
+          pytest tests

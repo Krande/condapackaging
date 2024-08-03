@@ -8,7 +8,7 @@
 {% set build = build + 100 %}
 {% endif %}
 
-{% if build_type == "debug" %}
+{% if build_type == "release" %}
 {% set build = build + 10 %}
 {% endif %}
 
