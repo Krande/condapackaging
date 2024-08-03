@@ -136,6 +136,23 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+  gmsh:
+    uses: ./.github/workflows/conda-build-basic.yml
+    needs: [ hdf5, env ]
+    with:
+      package_name: gmsh
+      job_name: gmsh
+      pkg_dir: src
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      build_selection: ${{ inputs.build_selection }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
+    secrets: inherit
   ifcopenshell:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [hdf5, env]
@@ -190,7 +207,7 @@ jobs:
 
   test_adapy_win:
     runs-on: windows-latest
-    needs: [hdf5, env, libnetcdf4, netcdf4, h5py, ifcopenshell]
+    needs: [hdf5, env, libnetcdf4, netcdf4, h5py,gmsh, ifcopenshell]
     defaults:
         run:
             shell: cmd
