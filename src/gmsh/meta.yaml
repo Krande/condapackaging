@@ -7,6 +7,7 @@
 {% set build = build + 200 %}   # [variant == "novtk"]
 {% set build = build + 100 %}   # [variant == "all"]
 {% set build = build + 10 %}   # [build_type == "release"]
+{% set build_pin = build_type + '_' +  variant %}
 
 package:
   name: gmsh-packages
@@ -24,9 +25,9 @@ outputs:
   - name: gmsh
     build:
       number: {{ build }}
-      string: py{{ CONDA_PY }}_{{ build_type }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ build_pin }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
-        - {{ pin_subpackage(name, 'x.x') }} *{{ build_type }}_{{ variant }}*
+        - {{ pin_subpackage(name, 'x.x') }} {{ build_pin }}
     script: build_gmsh.sh  # [not win]
     script: bld_gmsh.bat  # [win]
     requirements:
@@ -86,12 +87,12 @@ outputs:
       noarch: python
       skip: true  # [build_platform != target_platform]
       number: {{ build }}
-      string: py{{ CONDA_PY }}_{{ build_type }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
+      string: py{{ CONDA_PY }}_{{ build_pin }}_h{{ PKG_HASH }}_{{ build }}
     script: install_python.sh  # [not win]
     script: install_python.bat  # [win]
     requirements:
       run:
-        - {{ pin_subpackage("gmsh", max_pin="x.x.x") }} *{{ build_type }}_{{ variant }}*
+        - {{ pin_subpackage("gmsh", exact=True) }}
         - numpy
         - python
     test:
