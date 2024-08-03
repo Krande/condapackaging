@@ -12,6 +12,11 @@ on:
         required: true
         type: string
         default: "gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
+      adapy_branch:
+        description: 'Adapy Branch'
+        required: true
+        type: string
+        default: "main"
       description:
         description: 'Release Description'
         required: true
@@ -195,7 +200,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Krande/adapy
-          ref: main
+          ref: ${{ inputs.adapy_branch }}
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
