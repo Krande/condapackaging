@@ -209,6 +209,7 @@ jobs:
             channels:
               - ${{ secrets.QUETZ_URL }}/get/${{ needs.env.outputs.conda_label }}
               - conda-forge
+              - https://repo.prefix.dev/code-aster
           create-args: >-
             python=${{ matrix.pyver }}
             colorama
