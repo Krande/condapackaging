@@ -239,6 +239,11 @@ jobs:
             pytest
             code-aster=*=*release*
 
+      - name: pip install adapy
+        run: |
+          cd adapy
+          pip install -e .
+
       - name: run tests
         shell: cmd /E:on /C call {0}
         run: |
