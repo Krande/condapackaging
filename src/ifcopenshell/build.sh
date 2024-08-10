@@ -1,10 +1,15 @@
 #!/bin/bash
 export CLICOLOR_FORCE=1
 
-if [ `uname` == Darwin ]; then
-  export CFLAGS="$CFLAGS -Wl,-twolevel_namespace"
-  export CXXFLAGS="$CXXFLAGS -Wl,-twolevel_namespace"
-  export LDFLAGS="$LDFLAGS -Wl,-twolevel_namespace"
+# IF osx use file lib suffix .dylib
+# IF linux use file lib suffix .so
+# IF windows use file lib suffix .dll
+
+if [ "$(uname)" == "Darwin" ]; then
+    export FSUFFIX=dylib
+    export LDFLAGS="$LDFLAGS -Wl,-flat_namespace,-undefined,suppress"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    export FSUFFIX=so
 fi
 
 if [[ "$mpi" == "nompi" ]]; then
@@ -16,15 +21,16 @@ else
   export FC=$PREFIX/bin/mpifort
 fi
 
+TGT_CMAKE_BUILD_TYPE=Release
+if [[ "$build_type" == "debug" ]]; then
+  export TGT_CMAKE_BUILD_TYPE=RelWithDebInfo
+fi
 
-# Overwrite the CMakeLists.txt file with the one from the config folder (which has a fix for finding hdf5 and zlibs)
-#cp $RECIPE_DIR/config/CMakeLists.txt "${SRC_DIR}/cmake/CMakeLists.txt"
-
-cmake -G Ninja \
- -Wno-dev \
- -DSCHEMA_VERSIONS="2x3;4;4x1;4x3_add1" \
- -DCMAKE_BUILD_TYPE=Release \
+cmake ${CMAKE_ARGS} -G Ninja \
+ -DSCHEMA_VERSIONS="2x3;4;4x1;4x3_add2" \
+ -DCMAKE_BUILD_TYPE=$TGT_CMAKE_BUILD_TYPE \
  -DCMAKE_INSTALL_PREFIX=$PREFIX \
+  ${CMAKE_PLATFORM_FLAGS[@]} \
  -DCMAKE_PREFIX_PATH=$PREFIX \
  -DCMAKE_SYSTEM_PREFIX_PATH=$PREFIX \
  -DPYTHON_EXECUTABLE:FILEPATH=$PYTHON \
@@ -37,7 +43,10 @@ cmake -G Ninja \
  -DHDF5_LIBRARY_DIR=$PREFIX/lib \
  -DJSON_INCLUDE_DIR=$PREFIX/include \
  -DCGAL_INCLUDE_DIR=$PREFIX/include \
- -DCOLLADA_SUPPORT=0 \
+ -DLIBXML2_INCLUDE_DIR=$PREFIX/include/libxml2 \
+ -DLIBXML2_LIBRARIES=$PREFIX/lib/libxml2.$FSUFFIX \
+ -DEIGEN_DIR:FILEPATH=$PREFIX/include/eigen3 \
+ -DCOLLADA_SUPPORT:BOOL=OFF \
  -DBUILD_EXAMPLES:BOOL=OFF \
  -DIFCXML_SUPPORT:BOOL=ON \
  -DGLTF_SUPPORT:BOOL=ON \
@@ -46,6 +55,7 @@ cmake -G Ninja \
  -DBUILD_IFCGEOM:BOOL=ON \
  -DBUILD_GEOMSERVER:BOOL=OFF \
  -DBOOST_USE_STATIC_LIBS:BOOL=OFF \
+ -DCITYJSON_SUPPORT:BOOL=OFF \
  ./cmake
 
 ninja

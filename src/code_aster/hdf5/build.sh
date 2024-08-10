@@ -16,7 +16,7 @@ if [[ "$target_platform" == linux-* ]]; then
     # is only valid for linux
     HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
     if [[ "$build_type" == "debug" ]]; then
-        HDF5_OPTIONS="${HDF5_OPTIONS} --enable-debug=all"
+        HDF5_OPTIONS="${HDF5_OPTIONS} --enable-build-mode=debug"
     fi
 
 fi

@@ -108,7 +108,7 @@ jobs:
     with:
       package_name: hdf5
       job_name: hdf5
-      pkg_dir: src
+      pkg_dir: src/code_aster
       conda_label: ${{ needs.env.outputs.conda_label }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       python_versions: ${{ inputs.python_versions }}
