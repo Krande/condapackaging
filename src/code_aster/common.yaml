@@ -56,9 +56,6 @@ zip_keys:
   - numpy
   - python
 
-openmpi:
-  - 4.1.6
-
 hdf5:
   - 1.14.4.3
 
@@ -85,6 +82,14 @@ clang:
 
 intel_fortran_rt:
   - '2024.1'
+
+#
+#openmpi:
+#  - 4.1.6
+
+
+mpi:
+  - nompi
 
 pin_run_as_build:
   hdf5: x.x.x
