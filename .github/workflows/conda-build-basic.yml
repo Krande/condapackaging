@@ -195,6 +195,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
       - name: pre script
         if: ${{ inputs.prep_script }}
         continue-on-error: true
