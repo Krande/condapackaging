@@ -32,7 +32,7 @@ except ImportError:
 
 from . import version
 
-if version.hdf5_version_tuple != version.hdf5_built_version_tuple:
+if version.hdf5_version_tuple[0:3] != version.hdf5_built_version_tuple[0:3]:
     _warn(("h5py is running against HDF5 {0} when it was built against {1}, "
            "this may cause problems").format(
             str(version.hdf5_version_tuple),
