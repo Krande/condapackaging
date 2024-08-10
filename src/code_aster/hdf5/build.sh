@@ -11,21 +11,19 @@ export HDF5_LIBTOOL=$BUILD_PREFIX/bin/libtool
 
 HDF5_OPTIONS=
 
+if [[ "$build_type" == "debug" && "$mpi" == "nompi" ]]; then
+    HDF5_OPTIONS="${HDF5_OPTIONS} --enable-build-mode=debug"
+else
+    HDF5_OPTIONS="${HDF5_OPTIONS} --enable-build-mode=production"
+fi
+
 if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
     HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
-    if [[ "$build_type" == "debug" && "$mpi" == "nompi" ]]; then
-        HDF5_OPTIONS="${HDF5_OPTIONS} --enable-build-mode=debug"
-    fi
-
 fi
 # first print CPU_COUNT
 echo "CPU_COUNT: $CPU_COUNT"
-if [[ "$mpi" == "openmpi" ]]; then
-  export CPU_COUNT=3
-fi
-echo "CPU_COUNT: $CPU_COUNT (after setting)"
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export HDF5_OPTIONS="${HDF5_OPTIONS} --enable-parallel"

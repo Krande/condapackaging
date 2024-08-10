@@ -89,7 +89,7 @@ test:
     - run_test.sh
     - run_test.bat
   commands:
-    - run_test.sh  # [not win]
+    - ./run_test.sh  # [not win]
     - run_test.bat  # [win]
 
 about:

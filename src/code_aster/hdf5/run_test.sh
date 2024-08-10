@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Stop on first error
+set -euxo pipefail
+
 # Verify UNIX CLI tools.
 if [ "${mpi}" == "nompi" ]; then
     h5_compilers=("h5c++" "h5cc" "h5fc")
@@ -30,3 +33,6 @@ hdf5_libs=("hdf5" "hdf5_cpp" "hdf5_hl" "hdf5_hl_cpp")
 for each_hdf5_lib in "${hdf5_libs[@]}"; do
     test -f "$PREFIX/lib/lib${each_hdf5_lib}${SHLIB_EXT}" || exit 1
 done
+
+
+exit 0
