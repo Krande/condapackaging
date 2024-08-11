@@ -4,6 +4,7 @@ export CLICOLOR_FORCE=1
 # Install metis-aster
 echo "** Building METIS **"
 
+TGT_BUILD_TYPE=Release
 if [[ "${build_type}" == "debug" ]]; then
     echo "Debugging Enabled"
     export TGT_BUILD_TYPE="Debug"
