@@ -1,11 +1,11 @@
 {% set name = "mumps" %}
 {% set version = "5.7.2" %}
+
 # Dependencies
 {% set metis_ver = "5.1.0" %}
 {% set parmetis_ver = "4.0.3" %}
 {% set scalapack_ver = "2.1.0" %}
 {% set scotch_ver = "7.0.4" %}
-{% set prereq_file = "codeaster-prerequisites-20240327-oss" %}
 
 {% set build = 2 %}
 
@@ -35,14 +35,8 @@ package:
   version: '{{ version }}'
 
 source:
-  - url: https://github.com/Krande/mumps/archive/refs/tags/v5.7.2.2.tar.gz  # [win]
-    sha256: 5810cd68efadb99675a92a08a0e50eb7eae24ca35d4d6ddc9537dfc09f144f6f  # [win]
-#    patches:                            # [win]
-#      - patches/add_mumps_patch.patch   # [win]
-  - fn: "{{ prereq_file }}.tar.gz"                                                                                 # [linux]
-    url: https://github.com/Krande/condapackaging/releases/download/{{ prereq_file }}/{{ prereq_file }}.tar.gz     # [linux]
-    sha256: d3a94ba2c01c1f5866ece9f940581c3801a632c2245169d2a90112ebcdb6c67e                                       # [linux]
-    folder: deps/                                                                                                  # [linux]
+  - url: https://github.com/Krande/mumps/archive/refs/tags/v5.7.2.2.tar.gz
+    sha256: 5810cd68efadb99675a92a08a0e50eb7eae24ca35d4d6ddc9537dfc09f144f6f
 
 
 build:
@@ -59,9 +53,9 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"  # [not win]
-    - waf    # [not win]
+    - ninja
     - make   # [not win]
-    - cmake 3.29  # [win]
+    - cmake 3.29
     - m2-patch    # [win]
 
   host:
