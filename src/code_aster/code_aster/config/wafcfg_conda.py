@@ -1,5 +1,5 @@
 import os
-
+import platform
 
 def configure(self):
     opts = self.options
