@@ -2,7 +2,7 @@
 
 import pathlib
 import time
-
+THIS_DIR = pathlib.Path(__file__).parent
 
 # cleanup previous files
 def clean():
@@ -32,8 +32,11 @@ from code_aster.Commands import *
 from math import *
 
 # Read the Mesh
+med_file = THIS_DIR / "Cantilever_CA_EIG_sh.med"
+rmed_file = med_file.with_suffix(".rmed")
+
 mesh = CA.Mesh()
-mesh.readMedFile("Cantilever_CA_EIG_sh.med")
+mesh.readMedFile(med_file.as_posix())
 
 # Assign mechanical properties to the different mesh groups
 sh_sets = ('elMyBeam_e1_top_fl_sh', 'elMyBeam_e2_top_fl_sh', 'elMyBeam_e3_web_sh', 'elMyBeam_e4_top_fl_sh',
@@ -146,7 +149,7 @@ IMPR_RESU(
     UNITE=80,
     VERSION_MED="4.1.0"
 )
-modes.printMedFile("Cantilever_CA_EIG_sh_modes.rmed")
+modes.printMedFile(rmed_file.as_posix())
 # Results Information
 
 CA.close()
