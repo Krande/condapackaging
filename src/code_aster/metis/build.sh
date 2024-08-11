@@ -18,11 +18,11 @@ mkdir "content"
 #tar -xzf "$SRC_DIR/deps/archives/gklib-master.tar.gz" -C ${SRC_DIR}/content --strip-components=1
 #tar -xzf "$SRC_DIR/deps/archives/parmetis-4.0.3_aster3.tar.gz" -C ${SRC_DIR} --strip-components=1
 
-cmake -Bbuild -Drealsize=64 -Dintsize=64 -DBUILD_SHARED_LIBS=ON \
+cmake -Bbuild -G Ninja -Drealsize=64 -Dintsize=64 -DBUILD_SHARED_LIBS=ON \
     -D CMAKE_INSTALL_PREFIX="${PREFIX}" \
     -D CMAKE_PREFIX_PATH="${PREFIX}" \
     -D CMAKE_BUILD_TYPE=${TGT_BUILD_TYPE}
 
-cmake --build build
+ninja -C build install
 
 echo "METIS Build complete"

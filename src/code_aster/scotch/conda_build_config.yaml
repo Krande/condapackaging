@@ -1,7 +1,7 @@
 mpi:
   - mpich    # [not win]
   - openmpi  # [not win]
-#  - msmpi    # [win]
+#  - msmpi   # [win]
   - nompi    # [win]
 
 mpich:

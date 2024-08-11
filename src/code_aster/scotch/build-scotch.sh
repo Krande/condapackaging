@@ -10,6 +10,20 @@ else
   shared_flags="-Wl,-shared"
 fi
 
+if [[ "$mpi" == "nompi" ]]; then
+  USE_MPI=OFF
+else
+  USE_MPI=ON
+fi
+
+export TGT_BUILD_TYPE=Release
+if [[ "${build_type}" == "debug" ]]; then
+  echo "Debugging Enabled"
+  export TGT_BUILD_TYPE="Debug"
+else
+  echo "Debugging Disabled"
+fi
+
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   # Build dummysizes helper executable
   (
@@ -43,6 +57,9 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   # Cross-compile run results
   export CMAKE_ARGS="${CMAKE_ARGS} -DMPI_RUN_RESULT_C_libver_mpi_normal:INTERNAL=1 -DMPI_RUN_RESULT_C_libver_mpi_normal__TRYRUN_OUTPUT:STRING="""
 else
+  if [[ "${mpi}" == "nompi" ]]; then
+    echo "Building Scotch without MPI support"
+  fi
   BUILD_DUMMYSIZES=ON
 fi
 
@@ -51,10 +68,12 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" && "${mpi}" == "openmpi" ]]; then
 fi
 
 cmake ${CMAKE_ARGS} \
-  -D CMAKE_BUILD_TYPE=Release \
+  -D CMAKE_BUILD_TYPE=$TGT_BUILD_TYPE \
   -D CMAKE_SHARED_LINKER_FLAGS="$shared_flags" \
   -D CMAKE_INSTALL_PREFIX=$PREFIX \
   -D BUILD_SHARED_LIBS=ON \
+  -D BUILD_PTSCOTCH=$USE_MPI \
+  -D MPI_THREAD_MULTIPLE=$USE_MPI \
   -D BUILD_DUMMYSIZES=$BUILD_DUMMYSIZES \
   -B build \
   .
