@@ -57,7 +57,3 @@ cmake .. \
 
 make -j$CPU_COUNT
 make install
-
-# Generate stubs for pybind11
-python "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
-echo "Stubs generation completed"
