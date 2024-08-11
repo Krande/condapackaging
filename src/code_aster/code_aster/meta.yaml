@@ -29,13 +29,13 @@ package:
   version: '{{ version }}'
 
 source:
-  - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'                                                             # [win]
-    url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz   # [win]
-    sha256: 106961189406fc5a17ff1cbd5f57f98f5a402e761f55093116f878514fcad850                                              # [win]
-  - fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
-    url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
-    patches:                                                                                                              # [not win]
-      - patches/skip_numpy_distutils_check.patch                                                                          # [not win]
+  - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'
+    url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz
+    sha256: 106961189406fc5a17ff1cbd5f57f98f5a402e761f55093116f878514fcad850
+  #- fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
+  #  url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
+  #  patches:                                                                                                              # [not win]
+  #    - patches/skip_numpy_distutils_check.patch                                                                          # [not win]
 
 build:
   detect_binary_files_with_prefix: true
@@ -60,6 +60,7 @@ requirements:
     - numpy
     - libboost-devel
     - mkl-devel                                     # [win]
+    - psutil                                        # [win]
     - openblas                                      # [not win]
     - libblas
     - liblapack
@@ -70,7 +71,6 @@ requirements:
     - libmed *=*{{ build_type }}*
     - scotch *=*{{ build_type }}*
     - medcoupling *=*{{ build_type }}*
-    - psutil
     - {{ mpi }}                                     # [mpi != "nompi"]
     - mpi4py {{ mpi4py_ver }}                       # [mpi != 'nompi']
     - petsc {{ petsc_ver }}                         # [mpi != "nompi"]

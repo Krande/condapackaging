@@ -2,14 +2,6 @@
 
 export CLICOLOR_FORCE=1
 
-# This adds a printout of the error when trying to import the code_aster module. Useful when debugging
-#cp $RECIPE_DIR/config/__init__.py code_aster/__init__.py
-
-# remove the share cmake files
-#find ${PREFIX}/share/cmake -type d -name "medfile-*" -exec rm -rf {} +
-
-python "${RECIPE_DIR}/config/update_version.py"
-
 export CONFIG_PARAMETERS_addmem=2000
 export TFELHOME=${PREFIX}
 
@@ -33,15 +25,21 @@ export LIBPATH_MEDCOUPLING="${PREFIX}/lib"
 export INCLUDES_MEDCOUPLING="${PREFIX}/include"
 export PYPATH_MEDCOUPLING=${SP_DIR}
 
-# Tried with cleaner flags (but did nothing to reduce compilation errors for MPI)
-#export LDFLAGS="-lmedC $LDFLAGS"
-#export FLDFLAGS="-lmedfwrap $FLDFLAGS"
+python conda/scripts/update_version.py
+python ${RECIPE_DIR}/config/set_env_var.py ${SRC_DIR}
 
-if [[ "${PKG_DEBUG}" == "True" ]]; then
+mpi_type=std
+if [[ "$mpi" != "nompi" ]]; then
+  mpi_type=mpi
+fi
+
+build_type=release
+if [[ "${build_type}" == "debug" ]]; then
     echo "Debugging Enabled"
     export CFLAGS="-g -O0 ${CFLAGS}"
     export CXXFLAGS="-g -O0 ${CXXFLAGS}"
     export FCFLAGS="-g -O0 ${FCFLAGS}"
+    build_type=debug
 else
     echo "Debugging Disabled"
 fi
@@ -67,14 +65,14 @@ if [[ "$mpi" == "nompi" ]]; then
     --use-config=wafcfg_conda \
     --use-config-dir="$RECIPE_DIR"/config \
     --prefix="${PREFIX}" \
-    --med-libs="medC" \
+    --med-libs="med medC medfwrap medimport" \
     --libdir="${PREFIX}/lib" \
     --install-tests \
     --disable-mpi \
     --without-hg \
     configure
 
-  if [[ "${PKG_DEBUG}" == "True" ]]; then
+  if [[ "${build_type}" == "debug" ]]; then
       ./waf_std install_debug -v
   else
       echo "Debugging Disabled"
@@ -103,7 +101,7 @@ else
     --without-hg
 
 
-  if [[ "${PKG_DEBUG}" == "True" ]]; then
+  if [[ "${build_type}" == "debug" ]]; then
       ./waf_mpi install_debug
   else
       ./waf_mpi install
@@ -120,15 +118,6 @@ export LD_LIBRARY_PATH="${PREFIX}/lib/aster"
 mv "${PREFIX}/lib/aster/code_aster" "${SP_DIR}/code_aster"
 mv "${PREFIX}/lib/aster/run_aster" "${SP_DIR}/run_aster"
 
-mpi_type=std
-build_type=release
-if [[ "$mpi" != "nompi" ]]; then
-  mpi_type=mpi
-fi
-
-if [[ "${PKG_DEBUG}" == "True" ]]; then
-  build_type=debug
-fi
 
 mv ${SRC_DIR}/build/${mpi_type}/${build_type}/code_aster/*.py "${SP_DIR}/code_aster/Utilities/"
 # note to self. aster.so is symlinked to libaster.so
@@ -138,10 +127,6 @@ mv ${PREFIX}/lib/aster/libAsterMFrOff*.so "${PREFIX}/lib/"
 mv "${PREFIX}/lib/aster/med_aster.so" "${SP_DIR}/"
 mv ${PREFIX}/lib/aster/*.so "${SP_DIR}/"
 cp "${RECIPE_DIR}/config/__init__.py" "${SP_DIR}/code_aster/__init__.py"
-
-# Generate stubs for pybind11
-${PREFIX}/bin/python  "${RECIPE_DIR}/stubs/custom_stubs_gen.py"
-echo "Stubs generation completed"
 
 # copy modified shell scripts and create backups of the ones we don't want.
 cp "${PREFIX}/bin/run_aster" "${PREFIX}/bin/_run_aster_old"

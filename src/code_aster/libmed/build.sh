@@ -28,8 +28,8 @@ else
 fi
 
 
-export FCFLAGS="-fdefault-integer-8 ${FCFLAGS}"
-export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
+export FCFLAGS="-fdefault-integer-8 -cpp ${FCFLAGS}"
+export FFLAGS="-fdefault-integer-8 -cpp ${FFLAGS}"
 
 mkdir -p build
 pushd build
@@ -38,7 +38,7 @@ pushd build
 # and new style (Python) variables
 cmake -Wno-dev \
   ${CMAKE_ARGS} \
-  -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+  -D CMAKE_BUILD_TYPE=${BUILD_TYPE} \
   -D Python_FIND_VIRTUALENV=FIRST \
   -D Python_FIND_STRATEGY=LOCATION \
   -D Python_ROOT_DIR="${PREFIX}" \

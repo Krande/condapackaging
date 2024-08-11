@@ -54,7 +54,6 @@ requirements:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"  # [not win]
     - ninja
-    - make   # [not win]
     - cmake 3.29
     - m2-patch    # [win]
 
