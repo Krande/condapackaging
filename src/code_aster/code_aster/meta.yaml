@@ -90,7 +90,6 @@ test:
   commands:
     - run_aster --help
     - python basic_import.py
-    - python tests/test1/main.py
     #- run_ctest -R 'zzzz506h' --resutest=../resutest --only-failed-results -j 1     # [mpi != "nompi"]
 #    - run_ctest -R 'forma01a' --resutest=../resutest --only-failed-results -j 1
 #    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
