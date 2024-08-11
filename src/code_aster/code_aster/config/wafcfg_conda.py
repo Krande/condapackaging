@@ -28,9 +28,10 @@ def configure(self):
     ])
 
     if mpi_variant is False:
-        self.env.append_value('INCLUDES', [
-            conda_prefix + '/include_seq',
-        ])
+        if platform.system() == 'Windows':
+            self.env.append_value('INCLUDES', [
+                conda_prefix + '/include_seq',
+            ])
     else:
         opts.parallel = 1
         opts.enable_petsc = True
