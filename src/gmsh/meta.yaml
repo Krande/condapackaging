@@ -3,11 +3,8 @@
 {% set sha256 = "77972145f431726026d50596a6a44fb3c1c95c21255218d66955806b86edbe8d" %}
 {% set build = 0 %}
 
-# Higher number -> Always prioritize "novtk" variant over "all" variant
-{% set build = build + 200 %}   # [variant == "novtk"]
-{% set build = build + 100 %}   # [variant == "all"]
 {% set build = build + 10 %}   # [build_type == "release"]
-{% set build_pin = build_type + '_' +  variant %}
+{% set build_pin = build_type %}
 
 package:
   name: gmsh-packages
