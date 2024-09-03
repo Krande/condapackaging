@@ -83,6 +83,9 @@ clang:
 intel_fortran_rt:
   - '2024.1'
 
+gmp:
+- '6.3'
+
 #
 #openmpi:
 #  - 4.1.6
