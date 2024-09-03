@@ -4,8 +4,13 @@ cp ${RECIPE_DIR}/Makefile_MT Makefile_MT
 if [[ ${HOST} =~ .*linux.* ]]; then
 	export LDFLAGS="${LDFLAGS} -lrt"
 fi
+
 if [[ ${target_platform} != osx-64 ]]; then
-    export FFLAGS="${LDFLAGS} -fallow-argument-mismatch"
+    export FFLAGS="${FFLAGS} ${LDFLAGS} -fallow-argument-mismatch"
+fi
+
+if [[ ${target_platform} == osx-* ]]; then
+  export CFLAGS="${CFLAGS} -Wno-error=implicit-function-declaration"
 fi
 
 make -f Makefile_MT \
@@ -14,5 +19,5 @@ make -f Makefile_MT \
     VERSION="${PKG_VERSION}" -j${CPU_COUNT}
 
 mkdir -p ${PREFIX}/bin
-cp ccx_*_MT ${PREFIX}/bin/ccx
+cp ccx_*_conda ${PREFIX}/bin/ccx
 cd $SRC_DIR

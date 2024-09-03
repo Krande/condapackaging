@@ -102,6 +102,23 @@ jobs:
           print(f"{conda_label=}")
           set_output('unique_suffix', conda_label)
 
+  calculix:
+    uses: ./.github/workflows/conda-build-basic.yml
+    needs: env
+    with:
+      package_name: calculix
+      job_name: calculix
+      pkg_dir: src
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      build_selection: ${{ inputs.build_selection }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
+    secrets: inherit
   hdf5:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: env

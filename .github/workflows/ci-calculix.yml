@@ -1,45 +1,121 @@
 name: ci-calculix
 
 # bump 1
+# libnetcdf4,netcdf4 are meshio indirect dependencies...
+# Consider making meshio an optional dependency?
+
 on:
   workflow_dispatch:
+    inputs:
+      build_selection:
+        description: 'Build Selection'
+        required: true
+        type: string
+        default: "gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
+      adapy_branch:
+        description: 'Adapy Branch'
+        required: true
+        type: string
+        default: "main"
+      description:
+        description: 'Release Description'
+        required: true
+        type: string
+      conda_label:
+        description: 'Conda channel name'
+        required: false
+        type: string
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.11,3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "windows-latest"
+      variants:
+        description: 'Build variants'
+        required: true
+        type: string
+        default: "build_type=debug,build_type=release"
+      extra_build_args:
+        description: 'Extra build arguments'
+        required: true
+        type: string
+        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
   push:
     paths:
-      - .github/workflows/ci-calculix.yml
+      - .github/workflows/ci-adapydeps.yml
     branches:
-    - donotrun
+      - donotrun
 
 jobs:
-  build_test:
-    name: calculix-${{ matrix.platform.name }}-${{ matrix.pyver.name }}
-    runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        pyver: [
-          { name: py311, distver: '3.11'},
-        ]
-        platform: [
-          { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
-        ]
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      conda_user: krandedev
+      pkg_dir: src
+      use_quetz: "True"
+      # This is where the conda user and label should be set
+      conda_label: ${{ steps.env.outputs.unique_suffix }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      extra_build_args: ${{ inputs.extra_build_args }}
+
     steps:
       - uses: actions/checkout@v4
-      - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
-        with:
-          environment-name: conda-build
-          channels: conda-forge
-          channel-priority: strict
-          environment-file: environment.conda.yml
-          extra-specs: |
-            python=${{ matrix.pyver.distver }}
 
-      - name: build local packages
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
         run: |
-          conda mambabuild . --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev
-        working-directory: src/calculix/conda
+          python -m pip install --upgrade pip
+          pip install toposort==1.10
+          pip install ./src/cpack          
+
+      - name: dummy step
+        id: env
+        shell: python
+        env:
+          CONDA_LABEL: ${{ inputs.conda_label }}
+        run: |
+          import os
+          import re
+
+
+          def set_output(name, value):
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+                  print(f'{name}={value}', file=fh)
+
+          # Auto generate Conda label if not manually set
+          conda_label = os.getenv('CONDA_LABEL', None)
+          if not conda_label:
+            conda_label = "adapy-${{ github.run_id }}"
+
+          print(f"{conda_label=}")
+          set_output('unique_suffix', conda_label)
+
+  calculix:
+    uses: ./.github/workflows/conda-build-basic.yml
+    needs: env
+    with:
+      package_name: calculix
+      job_name: calculix
+      pkg_dir: src
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      build_selection: ${{ inputs.build_selection }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
+    secrets: inherit

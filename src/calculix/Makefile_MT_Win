@@ -1,0 +1,29 @@
+# Set default commands for MSVC and LLVM Flang
+AR ?= lib
+FC ?= flang-new
+CC ?= cl
+CFLAGS += /Wall /O2 /openmp /I $(SPOOLES_INCLUDE_DIR) /DARCH=\"Windows\" /DSPOOLES /DARPACK /DMATRIXSTORAGE
+FFLAGS += /Wall /O2 /openmp
+
+# Rule for compiling C files
+.c.obj :
+	$(CC) $(CFLAGS) /c $<
+
+# Rule for compiling Fortran files
+.f.obj :
+	$(FC) $(FFLAGS) -c $<
+
+include Makefile.inc
+
+SCCXMAIN = ccx_$(VERSION).c
+
+OCCXF = $(SCCXF:.f=.obj)
+OCCXC = $(SCCXC:.c=.obj)
+OCCXMAIN = $(SCCXMAIN:.c=.obj)
+
+LIBS = \
+    $(LIB_DIR)/spooles.lib
+
+# Target for building the main executable
+ccx_$(VERSION)_conda: $(OCCXMAIN) ccx_$(VERSION)_conda.lib
+	powershell ./date.pl; $(CC) $(CFLAGS) /c ccx_$(VERSION).c; $(FC) $(FFLAGS) -o $@ $(OCCXMAIN) ccx_$(VERSION)_conda.lib $(LDFLAGS) arpack.lib lapack
