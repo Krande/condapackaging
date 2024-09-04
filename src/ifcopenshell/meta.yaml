@@ -46,7 +46,8 @@ requirements:
     - eigen
     - mpfr
     - nlohmann_json
-    - gmp
+    - gmp   # [unix]
+    - mpir  # [win]
     - zlib
   run:
     - python
