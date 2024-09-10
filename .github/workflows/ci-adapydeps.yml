@@ -11,7 +11,7 @@ on:
         description: 'Build Selection'
         required: true
         type: string
-        default: "gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py"
+        default: "gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py,occt,pythonocc-core"
       adapy_branch:
         description: 'Adapy Branch'
         required: true
@@ -101,6 +101,42 @@ jobs:
           
           print(f"{conda_label=}")
           set_output('unique_suffix', conda_label)
+
+  occt:
+    uses: ./.github/workflows/conda-build-basic.yml
+    needs: env
+    with:
+      package_name: occt
+      job_name: occt
+      pkg_dir: src
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      build_selection: ${{ inputs.build_selection }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
+    secrets: inherit
+
+  pythonoocc-core:
+    uses: ./.github/workflows/conda-build-basic.yml
+    needs: [env, occt]
+    with:
+      package_name: pythonocc-core
+      job_name: pythonocc-core
+      pkg_dir: src
+      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_user: ${{ needs.env.outputs.conda_user }}
+      python_versions: ${{ inputs.python_versions }}
+      platforms: ${{ inputs.platforms }}
+      variants: ${{ inputs.variants }}
+      description: ${{ inputs.description }}
+      build_selection: ${{ inputs.build_selection }}
+      use_quetz: "True"
+      extra_build_args: ${{ inputs.extra_build_args }}
+    secrets: inherit
 
   calculix:
     uses: ./.github/workflows/conda-build-basic.yml
@@ -224,7 +260,7 @@ jobs:
 
   test_adapy_win:
     runs-on: windows-latest
-    needs: [hdf5, env, libnetcdf4, netcdf4, h5py,gmsh, ifcopenshell]
+    needs: [hdf5, env, libnetcdf4, netcdf4, h5py,gmsh, ifcopenshell, pythonoocc-core]
     defaults:
         run:
             shell: cmd
