@@ -3,5 +3,5 @@ build_type:
   - release
 
 variant:
-  - vtk
-  - core
+  - novtk
+  - all
