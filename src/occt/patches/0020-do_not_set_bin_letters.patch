@@ -1,0 +1,89 @@
+Subject: [PATCH] do not set bin letters
+---
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	(revision 656b0d217fcc3f6611dfabc0206bd2d967ed5265)
++++ b/CMakeLists.txt	(date 1725992980022)
+@@ -252,9 +252,9 @@
+ 
+ set (BIN_LETTER "")
+ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+-  set (BIN_LETTER "d")
++  set (BIN_LETTER "")
+ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+-  set (BIN_LETTER "i")
++  set (BIN_LETTER "")
+ endif()
+ 
+ # Get all used variables: OS_WITH_BIT, COMPILER
+@@ -914,18 +914,18 @@
+ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bin")
+ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/lib")
+ 
+-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libi")
+-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bini")
+-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libi")
++#set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libi")
++#set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bini")
++#set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libi")
+ 
+-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libd")
+-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bind")
+-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libd")
++#set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libd")
++#set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bind")
++#set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/libd")
+ 
+ if (WIN32)
+   set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE        "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bin")
+-  set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bini")
+-  set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG          "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bind")
++  set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bin")
++  set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG          "${CMAKE_BINARY_DIR}/${OS_WITH_BIT}/${COMPILER}/bin")
+ endif()
+ 
+ string(TIMESTAMP CURRENT_TIME "%H:%M:%S")
+Index: adm/cmake/occt_macros.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/adm/cmake/occt_macros.cmake b/adm/cmake/occt_macros.cmake
+--- a/adm/cmake/occt_macros.cmake	(revision 656b0d217fcc3f6611dfabc0206bd2d967ed5265)
++++ b/adm/cmake/occt_macros.cmake	(date 1725991718521)
+@@ -607,9 +607,9 @@
+   install(CODE "if (\"\${CMAKE_INSTALL_CONFIG_NAME}\" MATCHES \"^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$\")
+     set (OCCT_INSTALL_BIN_LETTER \"\")
+   elseif (\"\${CMAKE_INSTALL_CONFIG_NAME}\" MATCHES \"^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$\")
+-    set (OCCT_INSTALL_BIN_LETTER \"i\")
++    set (OCCT_INSTALL_BIN_LETTER \"\")
+   elseif (\"\${CMAKE_INSTALL_CONFIG_NAME}\" MATCHES \"^([Dd][Ee][Bb][Uu][Gg])$\")
+-    set (OCCT_INSTALL_BIN_LETTER \"d\")
++    set (OCCT_INSTALL_BIN_LETTER \"\")
+   endif()")
+ endmacro()
+ 
+Index: tools/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tools/CMakeLists.txt b/tools/CMakeLists.txt
+--- a/tools/CMakeLists.txt	(revision 656b0d217fcc3f6611dfabc0206bd2d967ed5265)
++++ b/tools/CMakeLists.txt	(date 1725991783944)
+@@ -172,9 +172,9 @@
+ 
+ set (BIN_LETTER "")
+ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+-  set (BIN_LETTER "d")
++  set (BIN_LETTER "")
+ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+-  set (BIN_LETTER "i")
++  set (BIN_LETTER "")
+ endif()
+ 
+ # Get all used variables: OS_WITH_BIT, COMPILER
