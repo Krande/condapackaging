@@ -40,12 +40,14 @@ cmake --build build -- -v install
 if errorlevel 1 exit 1
 
 :: Move the outputs from bind and libd (or bini and libi for relwithdebuginfo) to bin and lib
-@REM if "%TGT_BUILD_TYPE%" == "Debug" (
-@REM     move /Y "%LIBRARY_PREFIX%\libd\*" "%LIBRARY_PREFIX%\lib\"
-@REM     rmdir /S /Q "%LIBRARY_PREFIX%\libd"
-@REM     move /Y "%LIBRARY_PREFIX%\bind\*" "%LIBRARY_PREFIX%\bin\"
-@REM     rmdir /S /Q "%LIBRARY_PREFIX%\bind"
-@REM ) else if "%TGT_BUILD_TYPE%" == "RelWithDebInfo" (
-@REM     move /Y "%LIBRARY_PREFIX%\libi\*" "%LIBRARY_PREFIX%\lib\"
-@REM     move /Y "%LIBRARY_PREFIX%\bini\*" "%LIBRARY_PREFIX%\bin\"
-@REM )
+if "%TGT_BUILD_TYPE%" == "Debug" (
+    move /Y "%LIBRARY_PREFIX%\libd\*" "%LIBRARY_PREFIX%\lib\"
+    move /Y "%LIBRARY_PREFIX%\bind\*" "%LIBRARY_PREFIX%\bin\"
+    rmdir /S /Q "%LIBRARY_PREFIX%\libd"
+    rmdir /S /Q "%LIBRARY_PREFIX%\bind"
+) else if "%TGT_BUILD_TYPE%" == "RelWithDebInfo" (
+    move /Y "%LIBRARY_PREFIX%\libi\*" "%LIBRARY_PREFIX%\lib\"
+    move /Y "%LIBRARY_PREFIX%\bini\*" "%LIBRARY_PREFIX%\bin\"
+    rmdir /S /Q "%LIBRARY_PREFIX%\libi"
+    rmdir /S /Q "%LIBRARY_PREFIX%\bini"
+)
