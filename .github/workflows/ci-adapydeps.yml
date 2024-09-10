@@ -120,7 +120,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
 
-  pythonoocc-core:
+  pythonoocc_core:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [env, occt]
     with:
@@ -191,7 +191,7 @@ jobs:
     secrets: inherit
   gmsh:
     uses: ./.github/workflows/conda-build-basic.yml
-    needs: [ hdf5, env ]
+    needs: [ hdf5, occt, env ]
     with:
       package_name: gmsh
       job_name: gmsh
@@ -206,9 +206,10 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
   ifcopenshell:
     uses: ./.github/workflows/conda-build-basic.yml
-    needs: [hdf5, env]
+    needs: [hdf5, occt, pythonoocc_core, env]
     with:
       package_name: ifcopenshell
       job_name: ifcopenshell
@@ -260,7 +261,7 @@ jobs:
 
   test_adapy_win:
     runs-on: windows-latest
-    needs: [hdf5, env, libnetcdf4, netcdf4, h5py,gmsh, ifcopenshell, pythonoocc-core]
+    needs: [hdf5, env, libnetcdf4, netcdf4, h5py,gmsh, ifcopenshell, pythonoocc_core]
     defaults:
         run:
             shell: cmd
