@@ -24,7 +24,7 @@ on:
         description: 'Python Versions'
         required: true
         type: string
-        default: "3.11,3.12"
+        default: "3.12"
       platforms:
         description: 'Platforms'
         required: true
@@ -34,7 +34,7 @@ on:
         description: 'Build variants'
         required: true
         type: string
-        default: "build_type=debug,build_type=release"
+        default: "build_type=debug,build_type=release,variant=novtk,variant=all"
       extra_build_args:
         description: 'Extra build arguments'
         required: true
