@@ -29,7 +29,7 @@ on:
         description: 'Python Versions'
         required: true
         type: string
-        default: "3.11,3.12"
+        default: "3.12"
       platforms:
         description: 'Platforms'
         required: true
