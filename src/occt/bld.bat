@@ -1,3 +1,17 @@
+set TGT_BUILD_TYPE=Release
+if "%build_type%" == "debug" (
+    set TGT_BUILD_TYPE=RelWithDebInfo
+    set CFLAGS=%CFLAGS% /Od /Zi
+    set CXXFLAGS=%CFLAGS% /Od /Zi
+    set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+)
+
+if "%variant%" == "novtk" (
+    set USE_VTK=OFF
+) else (
+    set USE_VTK=ON
+)
+
 cmake -S . -B build  -G Ninja ^
       -D CMAKE_PREFIX_PATH:FILEPATH="%LIBRARY_PREFIX%" ^
       -D CMAKE_LIBRARY_PATH:FILEPATH="%LIBRARY_PREFIX%/lib" ^
@@ -5,13 +19,13 @@ cmake -S . -B build  -G Ninja ^
       -D INSTALL_DIR_LAYOUT="Unix" ^
       -D BUILD_MODULE_Draw=OFF ^
       -D 3RDPARTY_DIR:FILEPATH="%LIBRARY_PREFIX%" ^
-      -D CMAKE_BUILD_TYPE="Release" ^
+      -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
       -D USE_TBB=OFF ^
       -D BUILD_RELEASE_DISABLE_EXCEPTIONS=OFF ^
       -D USE_VTK:BOOL=%USE_VTK% ^
       -D 3RDPARTY_VTK_LIBRARY_DIR:FILEPATH="%LIBRARY_PREFIX%/lib" ^
       -D 3RDPARTY_VTK_DLL_DIR:FILEPATH="%LIBRARY_PREFIX%/bin" ^
-      -D 3RDPARTY_VTK_INCLUDE_DIR:FILEPATH="%LIBRARY_PREFIX%/include/vtk-9.2" ^
+      -D 3RDPARTY_VTK_INCLUDE_DIR:FILEPATH="%LIBRARY_PREFIX%/include/vtk-9.3" ^
       -D VTK_RENDERING_BACKEND:STRING="OpenGL2" ^
       -D GLEW_LIBRARY:FILEPATH="%LIBRARY_PREFIX%/lib/glew32.lib" ^
       -D TBB_LIBRARY_RELEASE:FILEPATH="%LIBRARY_PREFIX%/lib/tbb.lib" ^
