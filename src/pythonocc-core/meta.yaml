@@ -4,6 +4,7 @@
 # Higher number -> Always prioritize "all" variant over "novtk" variant
 {% set build = build + 100 %}   # [variant == "novtk"]
 {% set build = build + 200 %}   # [variant == "all"]
+{% set build = build + 10 %}    # [build_type == "debug"]
 
 package:
   name: pythonocc-core

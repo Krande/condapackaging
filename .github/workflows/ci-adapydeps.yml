@@ -39,7 +39,8 @@ on:
         description: 'Build variants'
         required: true
         type: string
-        default: "build_type=debug,build_type=release"
+#        default: "build_type=debug,build_type=release"
+        default: "build_type=debug;variant=novtk,build_type=release;variant=novtk,build_type=release;variant=all,build_type=debug;variant=all"
       extra_build_args:
         description: 'Extra build arguments'
         required: true
