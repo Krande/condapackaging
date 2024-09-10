@@ -1,18 +1,7 @@
+build_type:
+  - debug
+  - release
+
 variant:
   - novtk
   - all
-
-hdf5:
-  - 1.10.6
-
-pin_run_as_build:
-  occt: x.x.x
-
-CONDA_BUILD_SYSROOT:
-  - "/Users/runner/work/MacOSX10.15.sdk"  # [osx]
-
-#c_compiler:
-# - vs2019                     # [win]
-#
-#cxx_compiler:
-# - vs2019                     # [win]

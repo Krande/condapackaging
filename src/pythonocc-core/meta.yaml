@@ -1,25 +1,21 @@
-{% set name = "pythonocc-core" %}
-{% set version = "7.7.2" %}
-{% set build = 1 %}
-
-package:
-  name: {{ name }}
-  version: {{ version }}
-
+{% set version = "7.8.1" %}
+{% set build = 0 %}
 
 # Higher number -> Always prioritize "all" variant over "novtk" variant
 {% set build = build + 100 %}   # [variant == "novtk"]
 {% set build = build + 200 %}   # [variant == "all"]
 
+package:
+  name: pythonocc-core
+  version: {{ version }}
+
 source:
   url: https://github.com/tpaviot/pythonocc-core/archive/{{ version }}.tar.gz
-  sha256: 0f6473be2800a64222ef86a3de70e3beaa2320a3839ebde1b4f6e845a369c0d9
-
+  sha256: 80479eba1af917c5fd3a8ea3eae7d3d91336d1477c0380a16238be07751f66eb
 
 build:
+  string: {{ variant }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
   number: {{ build }}
-  string: py{{ CONDA_PY }}_{{ variant }}_h{{ PKG_HASH }}_{{ build }}
-
 
 requirements:
   build:
@@ -27,39 +23,48 @@ requirements:
     - numpy                                  # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
     - {{ cdt('libxi-devel') }}           # [linux]
     - ninja
     - cmake
-    - swig 4.1.1
-
+    - swig 4.2.1
   host:
     - python
-    - occt {{ version }} *{{ variant }}*
+    - occt {{ version }} *{{ variant }}*{{ build_type }}*
     - numpy
-
   run:
     - python
-    - occt {{ version }} *{{ variant }}*
+    - occt {{ version }} *{{ variant }}*{{ build_type }}*
     - six
     - {{ pin_compatible("numpy") }}
     - svgwrite
-
   run_constrained:
     - occt {{ version }} *{{ variant }}*
 
 test:
+  source_files:
+    - test
   imports:
     - OCC
     - OCC.Core.BRepPrimAPI
-    - OCC.Core.MeshDS
-    - OCC.Core.Tesselator
-  source_files:
-    - test/
   requires:
     - pyqt >=5
+    - pytest
+    - mypy
 
 about:
   home: https://github.com/tpaviot/pythonocc-core
-  license: LGPL
-  summary: An industrial strength 3D CAD python package
+  license: LGPL-3.0-or-later
+  license_family: LGPL
+  license_file: LICENSE
+  summary: python bindings for opencascade (occt)
+  description: |
+    pythonocc is a python package whose purpose is 
+    to provide 3D modeling features. It is intended 
+    to CAD/PDM/PLM and BIM related development.
+  dev_url: https://github.com/tpaviot/pythonocc-core
+
+extra:
+  recipe-maintainers:
+    - looooo
