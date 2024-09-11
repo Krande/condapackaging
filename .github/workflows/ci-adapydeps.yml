@@ -39,13 +39,12 @@ on:
         description: 'Build variants'
         required: true
         type: string
-#        default: "build_type=debug,build_type=release"
         default: "build_type=debug;variant=novtk,build_type=release;variant=novtk"
       extra_build_args:
         description: 'Extra build arguments'
         required: true
         type: string
-        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster -c conda-forge"
+        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
   push:
     paths:
       - .github/workflows/ci-adapydeps.yml
@@ -156,6 +155,7 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
   hdf5:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: env
@@ -173,6 +173,7 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
   h5py:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [hdf5, env]
@@ -190,6 +191,7 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
   gmsh:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [ hdf5, occt, env ]
@@ -225,6 +227,7 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
   libnetcdf4:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [ hdf5, env ]
@@ -242,6 +245,7 @@ jobs:
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
     secrets: inherit
+
   netcdf4:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [hdf5, env, libnetcdf4]
