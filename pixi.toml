@@ -33,6 +33,7 @@ boa = ">=0.17.0,<0.18"
 python-dotenv = ">=1.0.1,<1.1"
 quetz-client = ">=0.5.0,<0.6"
 rattler-build = ">=0.18.0,<0.19"
+pixi-pycharm = ">=0.0.6,<0.0.7"
 
 [target.win-64.dependencies]
 m2-patch = "2.7.5.*"

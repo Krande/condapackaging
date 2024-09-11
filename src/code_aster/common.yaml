@@ -114,3 +114,11 @@ pin_run_as_build:
     max_pin: x.x
   gfortran:
     max_pin: x.x
+
+
+fontconfig:
+  - '2'
+freetype:
+  - '2'
+vtk:
+  - 9.3.0
