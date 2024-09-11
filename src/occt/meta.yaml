@@ -2,9 +2,9 @@
 {% set version = "7.8.1" %}
 {% set build = 3 %}
 
-{% set build = build + 100 %}   # [variant == "novtk"]
-{% set build = build + 200 %}   # [variant == "all"]
-{% set build = build + 10 %}    # [build_type == "debug"]
+{% set build = build + 200 %}   # [variant == "novtk"]
+{% set build = build + 100 %}   # [variant == "all"]
+{% set build = build + 10 %}    # [build_type == "release"]
 
 package:
   name: {{ name }}
@@ -60,6 +60,7 @@ requirements:
     - freetype
     - freeimage
     - fontconfig
+    - tbb-devel
     - xorg-libxt  # [linux]
     - rapidjson
     - vtk  # [variant=='all']

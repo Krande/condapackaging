@@ -122,3 +122,8 @@ freetype:
   - '2'
 vtk:
   - 9.3.0
+
+tbb:
+  - '2021'
+tbb_devel:
+  - '2021'

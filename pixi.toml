@@ -6,8 +6,8 @@ channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
 platforms = ["win-64", "linux-64"]
 
 [tasks]
-occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
-pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
+occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
+pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
 # Add '--python=3.11 --variants="{build_type: debug}"- to run a single variant
 hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/hdf5" }
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
