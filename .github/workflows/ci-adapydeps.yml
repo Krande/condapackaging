@@ -44,7 +44,8 @@ on:
         description: 'Extra build arguments'
         required: true
         type: string
-        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster"
+        default: " -m __root__/src/code_aster/common.yaml"
+
   push:
     paths:
       - .github/workflows/ci-adapydeps.yml
@@ -172,6 +173,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_intel_fortran: "True"
     secrets: inherit
 
   h5py:
@@ -190,6 +192,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_intel_fortran: "True"
     secrets: inherit
 
   gmsh:

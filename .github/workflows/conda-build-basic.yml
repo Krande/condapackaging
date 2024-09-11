@@ -328,7 +328,7 @@ jobs:
       - name: use devtools channel
         if: ${{ inputs.use_devtools == 'True' }}
         run: |
-          echo "EXTRA_CHANNEL=${{ secrets.QUETZ_URL }}/get/devtools" >> $GITHUB_ENV
+          echo "EXTRA_CHANNEL=https://repo.prefix.dev/code-aster" >> $GITHUB_ENV
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
