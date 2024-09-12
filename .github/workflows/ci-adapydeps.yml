@@ -11,7 +11,7 @@ on:
         description: 'Build Selection'
         required: true
         type: string
-        default: "gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py,occt,pythonocc-core"
+        default: "hdf5,gmsh,ifcopenshell,libnetcdf4,netcdf4,h5py,occt,pythonocc-core"
       adapy_branch:
         description: 'Adapy Branch'
         required: true
@@ -39,13 +39,18 @@ on:
         description: 'Build variants'
         required: true
         type: string
-#        default: "build_type=debug,build_type=release"
         default: "build_type=debug;variant=novtk,build_type=release;variant=novtk"
       extra_build_args:
         description: 'Extra build arguments'
         required: true
         type: string
-        default: " -m __root__/src/code_aster/common.yaml -c https://repo.prefix.dev/code-aster -c conda-forge"
+        default: " -m __root__/src/code_aster/common.yaml"
+      use_devtools:
+        description: 'Use devtools from prefix.dev'
+        required: false
+        type: string
+        default: "False"
+
   push:
     paths:
       - .github/workflows/ci-adapydeps.yml
@@ -119,6 +124,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   pythonoocc_core:
@@ -137,6 +143,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   calculix:
@@ -155,7 +162,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
+
   hdf5:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: env
@@ -172,7 +181,10 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_intel_fortran: "True"
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
+
   h5py:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [hdf5, env]
@@ -189,7 +201,10 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_intel_fortran: "True"
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
+
   gmsh:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [ hdf5, occt, env ]
@@ -206,6 +221,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   ifcopenshell:
@@ -224,7 +240,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
+
   libnetcdf4:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [ hdf5, env ]
@@ -241,7 +259,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
+
   netcdf4:
     uses: ./.github/workflows/conda-build-basic.yml
     needs: [hdf5, env, libnetcdf4]
@@ -258,6 +278,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_quetz: "True"
       extra_build_args: ${{ inputs.extra_build_args }}
+      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   test_adapy_win:

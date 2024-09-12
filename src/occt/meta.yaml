@@ -60,7 +60,7 @@ requirements:
     - freetype
     - freeimage
     - fontconfig
-    - tbb-devel
+    - tbb-devel   # [build_type=='debug']
     - xorg-libxt  # [linux]
     - rapidjson
     - vtk  # [variant=='all']
@@ -70,6 +70,7 @@ requirements:
     - fontconfig
     - xorg-libxt  # [linux]
     - rapidjson
+    - tbb-devel   # [build_type=='debug']
     - vtk  # [variant=='all']
 
 test:
