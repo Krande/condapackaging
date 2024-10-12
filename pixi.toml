@@ -29,7 +29,7 @@ rscotch = { cmd = ["src/code_aster/rattler-wrap.bat", "scotch"] }
 rmetis = { cmd = ["src/code_aster/rattler-wrap.bat", "metis"] }
 rlibmed = { cmd = ["src/code_aster/rattler-wrap.bat", "libmed"] }
 rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
-
+conv = { cmd = "conda-recipe-manager convert" }
 
 [dependencies]
 boa = ">=0.17.0,<0.18"
@@ -37,15 +37,15 @@ python-dotenv = ">=1.0.1,<1.1"
 quetz-client = ">=0.5.0,<0.6"
 rattler-build = ">=0.18.0,<0.19"
 pixi-pycharm = ">=0.0.6,<0.0.7"
-
-[target.win-64.dependencies]
-m2-patch = "2.7.5.*"
+matplotlib = "*"
 
 [pypi-dependencies]
 conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
 
 [feature.release.tasks]
 rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
+
+
 [feature.debug.tasks]
 dca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 
@@ -72,6 +72,7 @@ medcoupling = { build = "*debug*" }
 mfront = { build = "*debug*" }
 mgis = { build = "*debug*" }
 scotch = { build = "*debug*" }
+
 
 [environments]
 
