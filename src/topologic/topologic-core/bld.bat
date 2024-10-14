@@ -32,3 +32,7 @@ if errorlevel 1 exit 1
 cmake --install "build-core" --config %TGT_BUILD_TYPE%
 
 if errorlevel 1 exit 1
+
+REM copy the DLLs to the bin directory
+xcopy /Y /I %LIBRARY_LIB%\TopologicCore\*.dll %LIBRARY_PREFIX%\bin
+xcopy /Y /I %LIBRARY_LIB%\TopologicPythonBindings\*.pyd %SP_DIR%

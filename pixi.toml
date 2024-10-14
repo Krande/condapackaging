@@ -38,7 +38,7 @@ conv = { cmd = "conda-recipe-manager convert" }
 boa = ">=0.17.0,<0.18"
 python-dotenv = ">=1.0.1,<1.1"
 quetz-client = ">=0.5.0,<0.6"
-rattler-build = ">=0.18.0,<0.19"
+rattler-build = ">=0.25.0,<0.26"
 pixi-pycharm = ">=0.0.6,<0.0.7"
 matplotlib = "*"
 conda-recipe-manager = ">=0.3.0,<0.4"

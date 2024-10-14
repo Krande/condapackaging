@@ -13,9 +13,15 @@ source:
   url: https://github.com/wassimj/Topologic/archive/refs/tags/v${{ version }}.tar.gz
   sha256: c29953364d91f8523403f9f7c244d1e6462243027882273a52731cdc9bf1238e
   file_name: ${{ name }}-${{ version }}-source.tgz
+  patches:
+    - patches/do_not_use_pybind11_subdir.patch
 
 build:
   number: ${{ build }}
+  script:
+    - if: win
+      then:
+        - ${{ RECIPE_DIR }}/bld.bat
 
 requirements:
   build:
@@ -23,6 +29,7 @@ requirements:
     - ${{ stdlib("c") }}
     - cmake
     - ninja
+    - pybind11
   host:
     - occt
     - scipy
