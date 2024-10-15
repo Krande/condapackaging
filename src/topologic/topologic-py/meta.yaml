@@ -1,0 +1,46 @@
+{% set name = "topologicpy" %}
+{% set version = "0.7.65" %}
+{% set build = 0 %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}-source.tgz
+  url: https://github.com/wassimj/topologicpy/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 5e6d7ab2d7d530c768558b4db543713b4a73a3a95644e4768e08411df8ebc58a
+
+build:
+  number: {{ build }}
+  run_exports:
+    - {{ pin_subpackage(name, max_pin='x.x.x') }}
+
+
+requirements:
+  host:
+    - pip
+    - setuptools
+    - python
+  run:
+    - numpy
+    - scipy >=1.4.1
+    - numpy >=1.18.0
+    - pandas
+    - topologic-core>=7.0.1
+
+
+about:
+  home: https://topologic.app/
+  license_family: AGPL
+  license: AGPL-3.0-or-later
+  license_file: LICENSE
+  summary: Data Exchange with ISO 10303 (STEP) standards
+  description: |
+    Topologic is a software modelling library enabling hierarchical and topological 
+    representations of architectural spaces, buildings and artefacts through non-manifold topology
+  dev_url: https://github.com/wassimj/Topologic
+
+extra:
+  recipe-maintainers:
+    - Krande
