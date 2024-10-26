@@ -1,6 +1,6 @@
 {% set name = "mfront" %}
-{% set version = "4.2.0" %}
-{% set sha256 = "cf8a309c4d19a8e36232f8540ff28aa0d6285645f8dfb1ac57dd481ba3453e02" %}
+{% set version = "4.2.1" %}
+{% set sha256 = "14f27257014a992a4e511f35390e4b9a086f6a5ed74087f891f8c00306f1758f" %}
 
 {% set build = 3 %}
 
@@ -19,8 +19,6 @@ source:
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-{{ version }}.tar.gz
   sha256: {{ sha256 }}
   patches:
-    - patches/fix_v4_2_0_clang_win.patch  # [win]
-    - patches/override_site_package_dir_for_windows.patch  # [win]
     - patches/support_llvm-flang.patch  # [win]
 
 build:

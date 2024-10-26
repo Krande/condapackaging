@@ -16,11 +16,11 @@ hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
 mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/mumps" }
-libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: release}"], cwd = "src/code_aster/libmed" }
-medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/medcoupling" }
-mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/mfront" }
-mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
-code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.11", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
+libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: release}"], cwd = "src/code_aster/libmed" }
+medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/medcoupling" }
+mfront = { cmd = ["rattler-build", "build", "-r", "recipe.yaml", "-m", "../common_rattler.yaml", "-m", "../py312_debug.yaml", "--output-dir", "../../../output"], cwd = "src/code_aster/mfront" }
+mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
+code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/code_aster/win.yaml"] }

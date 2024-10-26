@@ -1,0 +1,105 @@
+# prioritize release over debug
+schema_version: 1
+
+context:
+  name: mfront
+  version: 4.2.1
+  sha256: 14f27257014a992a4e511f35390e4b9a086f6a5ed74087f891f8c00306f1758f
+  build: 1
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-${{ version }}.tar.gz
+  sha256: ${{ sha256 }}
+  patches:
+    - if: win
+      then: patches/support_llvm-flang.patch
+
+build:
+  number: ${{ build }}
+  skip: osx
+
+requirements:
+  build:
+    - ${{ compiler('fortran') }}
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - cmake
+    - if: not win
+      then: make
+    - if: win
+      then: clang
+    - if: win
+      then: lld
+    - if: win
+      then: ninja
+    - if: linux
+      then: libgomp
+    - if: osx
+      then: llvm-openmp
+  host:
+    - libboost-python-devel
+    - python
+    - if: linux
+      then: zlib
+  run:
+    - python
+    - if: win
+      then: intel-openmp
+    - if: linux
+      then: libstdcxx-ng
+    - if: linux
+      then: libgcc-ng
+  run_exports:
+    - ${{ name }}
+
+tests:
+  - python:
+      imports:
+        - tfel
+        - tfel.math
+        - tfel.material
+      pip_check: false
+  - script:
+      - tfel-config --version
+      - if: linux
+        then: tfel-doc --version
+      - if: linux
+        then: tfel-check --version
+      - mtest --version
+      - mfront --list-stress-criteria
+      - mfront-doc --version
+      - mfront-query --version
+      - mfm --version
+      - if: linux
+        then: test -f $PREFIX/lib/libTFELConfig.so
+      - if: linux
+        then: test -f $PREFIX/lib/libTFELUnicodeSupport.so
+      - if: linux
+        then: test -f $PREFIX/lib/libTFELGlossary.so
+      - if: linux
+        then: test -f $PREFIX/lib/libTFELException.so
+      - if: linux
+        then: test -f $PREFIX/lib/libTFELUtilities.so
+
+about:
+  license: GPL-3.0-only
+  license_file: LICENCE-GNU-GPL
+  summary: MFront, a code generation tool dedicated to material knowledge
+  description: |
+    MFront is a code generator which translates a set of closely related domain specific languages into plain C++ on top of the TFEL library. Those languages cover three kinds of material knowledge:
+    material properties (for instance the Young modulus, the thermal conductivity, etc.)
+    mechanical behaviours. Numerical performances of generated mechanical behaviours were given a particular attention. Various benchmarks show that MFront implementations are competitive with native implementations available in the Cast3M, Code-Aster, Abaqus Standard and Cyrano3 solvers.
+    simple point-wise models, such as material swelling used in fuel performance codes.
+  homepage: http://tfel.sourceforge.net
+  repository: https://tfel.sourceforge.net/devel.html
+  documentation: https://tfel.sourceforge.net
+
+extra:
+  recipe-maintainers:
+    - Krande
+    - ldallolio
+

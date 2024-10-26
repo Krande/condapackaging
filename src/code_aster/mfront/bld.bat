@@ -12,8 +12,7 @@ if "%build_type%" == "debug" (
 )
 
 cmake -B build . -G "Ninja" -Wno-dev ^
-    -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
-    -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
+    %CMAKE_ARGS% ^
     -D CMAKE_CXX_COMPILER=clang-cl ^
     -D CMAKE_C_COMPILER=clang-cl ^
     -D CMAKE_LINKER=lld-link ^
@@ -30,7 +29,7 @@ cmake -B build . -G "Ninja" -Wno-dev ^
     -D PYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
     -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
     -D PYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^
-    -D SITE_PACKAGES_DIR:PATH=%SP_DIR% ^
+    -D TFEL_PYTHON_SITE_PACKAGES_DIR:PATH=%SP_DIR% ^
     -D USE_EXTERNAL_COMPILER_FLAGS=ON
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine
