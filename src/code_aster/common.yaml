@@ -23,9 +23,13 @@ c_compiler_version:
   - 12            # [linux]
 cxx_compiler_version:
   - 12            # [linux]
+
+clang:
+  - '19.1.2'      # [win]
+
 fortran_compiler_version:
-  - 12            # [linux]
-  - 18.1.8        # [win]
+  - '12'            # [linux]
+  - '19.1.2'        # [win]
 
 channel_sources:
   - conda-forge
@@ -60,7 +64,7 @@ hdf5:
   - 1.14.4.3
 
 boost:
-  - '1.84'
+  - '1.86'
 
 libboost_python_devel:
   - '1.86'
@@ -77,19 +81,8 @@ libxml2:
 zlib:
   - '1'
 
-clang:
-  - '18.1.8'
-
 intel_fortran_rt:
-  - '2024.1'
-
-#gmp:
-#- '6'
-
-#
-#openmpi:
-#  - 4.1.6
-
+  - '2024.2'
 
 mpi:
   - nompi
@@ -127,3 +120,7 @@ tbb:
   - '2021'
 tbb_devel:
   - '2021'
+
+target_platform:
+- win-64   # [win]
+- sysroot  # [linux]
