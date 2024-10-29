@@ -25,7 +25,6 @@ jobs:
       package_name: hdf5
       conda_label: "hdf5"
       conda_user: krande
-      debug_build: 'False'
       python_versions: "3.12"
       platforms: "ubuntu-latest"
       variants: "mpi=nompi,mpi=openmpi"
