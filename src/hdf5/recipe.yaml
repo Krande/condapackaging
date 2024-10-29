@@ -1,0 +1,99 @@
+schema_version: 1
+
+context:
+  version: 1.14.5
+  build_base: 0
+  build: ${{ 200+build_base|int if build_type == 'release' else build_base|int }}
+  mpi_prefix: nompi
+
+package:
+  name: hdf5
+  version: ${{ version }}
+
+source:
+  url: https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5_${{ version }}.tar.gz
+  sha256: c83996dc79080a34e7b5244a1d5ea076abfd642ec12d7c25388e2fdd81d26350
+
+build:
+  script:
+    - if: win
+      then: bld.bat
+    - if: not win
+      then: build.sh
+  number: ${{ build }}
+  string: ${{ mpi_prefix }}_${{ build_type }}_h${{ PKG_HASH }}_${{ build }}
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - if: not win
+      then:
+        - ${{ compiler('fortran') }}
+        - gnuconfig
+        - automake
+        - autoconf
+        - libtool
+        - make
+    - if: win
+      then:
+        - ninja
+        - cmake
+    - openssl
+  host:
+    - zlib
+    - libaec
+    - libcurl
+    - openssl
+  run:
+    - if: win
+      then: intel-fortran-rt
+
+tests:
+  - files:
+      recipe:
+        - test
+        - run_test.sh
+        - run_test.bat
+    requirements:
+      run:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - if: not win
+          then: ${{ compiler('fortran') }}
+        - if: not win
+          then: pkg-config
+        - if: not win
+          then: cmake
+        - if: not win
+          then: make
+        - zlib
+    script:
+      - if: not win
+        then: ./run_test.sh
+      - if: win
+        then: run_test.bat
+
+about:
+  license: LicenseRef-HDF5
+  license_file: COPYING
+  summary: HDF5 is a data model, library, and file format for storing and managing data
+  homepage: https://www.hdfgroup.org/solutions/hdf5/
+  repository: https://github.com/HDFGroup/hdf5
+  documentation: https://portal.hdfgroup.org/display/HDF5/HDF5
+
+extra:
+  recipe-maintainers:
+    - hmaarrfk
+    - jakirkham
+    - gillins
+    - groutr
+    - ocefpaf
+    - astrofrog
+    - marqh
+    - marcelotrevisani
+    - scopatz
+    - davidbrochart
+    - SylvainCorlay
+    - varlackc
+

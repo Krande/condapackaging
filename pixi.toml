@@ -11,7 +11,8 @@ occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", 
 pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
 stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml"], cwd = "src/stepcode" }
 # Add '--python=3.11 --variants="{build_type: debug}"- to run a single variant
-hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/hdf5" }
+hdf5_mamba = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
+hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
 mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/mumps" }

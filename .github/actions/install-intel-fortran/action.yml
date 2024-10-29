@@ -1,0 +1,172 @@
+name: "Setup Fortran"
+description: "Setup Fortran compiler and toolchain"
+inputs:
+  compiler:
+    description: "Toolchain or compiler to install"
+    required: true
+    default: "gcc"
+  version:
+    description: "Version of toolchain or compiler"
+    required: false
+outputs:
+  fc:
+    description: "Path to Fortran compiler"
+    value: ${{ steps.outputs.outputs.fc }}
+  cc:
+    description: "Path to C compiler"
+    value: ${{ steps.outputs.outputs.cc }}
+  cxx:
+    description: "Path to C++ compiler"
+    value: ${{ steps.outputs.outputs.cxx }}
+runs:
+  using: "composite"
+  steps:
+    # On Windows runners the Intel toolchain is very slow to install,
+    # setup caching with daily key rotation. Steps are also needed to
+    # activate the oneAPI environment.
+    - name: Set oneAPI install dir
+      id: oneapi-root
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      shell: bash
+      run: echo "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI" >> "$GITHUB_ENV"
+    - name: Get date
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      id: get-date
+      shell: bash
+      run: echo "date=$(/bin/date -u "+%Y%m%d")" >> "$GITHUB_OUTPUT"
+    - name: Restore cache
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      id: cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ env.ONEAPI_ROOT }}
+        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
+
+    # Use micromamba for lfortran install on mac. Check if micromamba already
+    # exists, only install it if needed. If we install it, clean it up after.
+    - name: Check for micromamba
+      id: check-umamba
+      if: runner.os == 'macOS' && contains(inputs.compiler, 'lfortran')
+      shell: bash
+      run: |
+        if [ "$(command -v micromamba)" ]; then
+          echo "install=false" >> $GITHUB_OUTPUT
+        else
+          echo "install=true" >> $GITHUB_OUTPUT
+        fi
+    - uses: mamba-org/setup-micromamba@v1
+      if: runner.os == 'macOS' && contains(inputs.compiler, 'lfortran') && steps.check-umamba.outputs.install == 'true'
+      with:
+        init-shell: bash
+        post-cleanup: 'all'
+
+    # Set up the selected toolchain or compiler
+    - name: Setup toolchain
+      id: setup
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        COMPILER: ${{ inputs.compiler }}
+        VERSION: ${{ inputs.version }}
+      run: |
+        action_path=$(echo '/${{ github.action_path }}' | sed -e 's/\\/\//g' -e 's/://')
+        source "$action_path/setup-fortran.sh"
+        
+        compiler=${COMPILER:-gcc}
+        platform=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+        if [[ "$RUNNER_OS" == "macOS" ]] && [[ "$compiler" == "intel" ]]; then
+          echo "Compiler 'intel' not supported on macOS, falling back to 'intel-classic'"
+          compiler="intel-classic"
+        fi
+
+        case $compiler in
+          gcc)
+            version=${VERSION:-13}
+            install_gcc $platform
+            ;;
+          intel-classic)
+            version=${VERSION:-2023.2.0}
+            install_intel $platform true
+            ;;
+          intel)
+            version=${VERSION:-2025.0}
+            install_intel $platform false
+            ;;
+          nvidia-hpc)
+            version=${VERSION:-23.11}
+            install_nvidiahpc $platform
+            ;;
+          lfortran)
+            version=${VERSION:-0.33.0}
+            install_lfortran $platform
+            ;;
+          *)
+            exit 1
+            ;;
+        esac
+
+        echo "FC=${FC}" >> $GITHUB_ENV
+        echo "CC=${CC}" >> $GITHUB_ENV
+        echo "CXX=${CXX}" >> $GITHUB_ENV
+
+    # save oneAPI cache and activate environment
+    - name: Save cache
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: ${{ env.ONEAPI_ROOT }}
+        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
+    - name: Activate oneAPI
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      shell: cmd
+      run: |
+        ver | findstr /i "10\.0\.17" && set VS2019INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise
+        ver | findstr /i "10\.0\.20" && set VS2022INSTALLDIR=C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+        for /f "tokens=* usebackq" %%f in (`dir /b "%ONEAPI_ROOT%\compiler\" ^| findstr /V latest ^| sort`) do @set "LATEST=%%f"
+        :: this script fails when install location is not the default
+        call "%ONEAPI_ROOT%\compiler\%LATEST%\env\vars.bat"
+        set | findstr /c:"oneAPI" >> "%GITHUB_ENV%"
+
+    - name: Set outputs and env vars
+      shell: bash
+      id: outputs
+      run: |
+        # Intel compilers may have restored from cache so env vars may not be set
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+            FC=ifx
+            CC=icx
+            CXX=icx
+            echo SETVARS_COMPLETED=1>>$GITHUB_ENV
+          elif [[ "${{ inputs.compiler }}" == "intel-classic" ]]; then
+            FC=ifort
+            CC=icl
+            CXX=icl
+            echo SETVARS_COMPLETED=1>>$GITHUB_ENV
+          fi
+        fi
+
+        # set env vars
+        echo FC=$FC>>$GITHUB_ENV
+        echo CC=$CC>>$GITHUB_ENV
+        echo CXX=$CXX>>$GITHUB_ENV
+
+        # set fpm env vars
+        echo FPM_FC=$FC>>$GITHUB_ENV
+        echo FPM_CC=$CC>>$GITHUB_ENV
+        echo FPM_CXX=$CXX>>$GITHUB_ENV
+
+        # set action outputs
+        echo fc=$FC>>$GITHUB_OUTPUT
+        echo cc=$CC>>$GITHUB_OUTPUT
+        echo cxx=$CXX>>$GITHUB_OUTPUT
+
+    - name: Hide GNU linker (Windows)
+      if: runner.os == 'Windows' && !contains(inputs.compiler, 'gcc')
+      shell: bash
+      run: mv /usr/bin/link $RUNNER_TEMP/link
+
+    - name: Setup MSVC toolchain (Windows)
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'lfortran')
+      uses: ilammy/msvc-dev-cmd@v1
