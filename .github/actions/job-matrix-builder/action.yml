@@ -1,0 +1,100 @@
+name: ci-matrix-builder
+
+description: "A composite action to generate a JSON matrix for platforms or Python versions, and configure Conda channels."
+
+inputs:
+  python_versions:
+    description: "Python versions to include in the matrix."
+    required: false
+    default: ""
+  platforms:
+    description: "Runner OS to target in the matrix."
+    required: false
+    default: ""
+  variants:
+    description: "Conda package variants in key=value pairs, separated by commas."
+    required: false
+    default: ""
+  conda_label:
+    description: "Label for the Conda package."
+    required: false
+    default: ""
+  conda_user:
+    description: "Conda user for the package."
+    required: false
+    default: ""
+  conda_upstream_label:
+    description: "Upstream label for Conda."
+    required: false
+    default: "None"
+  use_quetz:
+    description: "Flag to use Quetz for channel creation."
+    required: false
+    default: "False"
+  conda_channel_description:
+    description: "Description of the Conda channel."
+    required: false
+    default: ""
+
+outputs:
+  final_matrix:
+    value: ${{ steps.set-matrix.outputs.final_matrix }}
+    description: "JSON string of the final matrix."
+  conda_channel:
+    value: ${{ steps.set-channel.outputs.conda_channel }}
+    description: "Configured Conda channel."
+  conda_upstream_label:
+    value: ${{ steps.set-channel.outputs.conda_upstream_label }}
+    description: "Upstream label for Conda."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up micromamba
+      uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-name: build-env
+        cache-environment: true
+        create-args: |
+          python=3.11
+          anaconda-client
+          python-libarchive-c
+          ruamel.yaml.jinja2
+          typer
+          quetz-client
+
+    - name: Install cpack-actions
+      shell: bash
+      run: python -m pip install .
+      working-directory: src/cpack
+
+    - name: Set matrix
+      id: set-matrix
+      shell: bash
+      run: |
+        cpack-actions matrix-builder --python-versions="${{ inputs.python_versions }}" --platforms="${{ inputs.platforms }}" --variants="${{ inputs.variants }}"
+      env:
+        GITHUB_OUTPUT: ${{ steps.set-matrix.outputs.final_matrix }}
+
+    - name: Print final_matrix
+      shell: bash
+      run: echo "final_matrix=${{ steps.set-matrix.outputs.final_matrix }}"
+
+    - name: Configure Conda upstream if needed
+      id: set-upstream
+      shell: bash
+      run: |
+        if [[ "${{ inputs.conda_upstream_label }}" == "None" ]]; then
+          echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_label }}" >> $GITHUB_ENV
+        else
+          echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_upstream_label }}" >> $GITHUB_ENV
+        fi
+
+    - name: Set custom Conda channel
+      id: set-channel
+      shell: bash
+      run: |
+        cpack-quetz create-channel "${{ inputs.conda_label }}" --create-public-channel --channel-description="${{ inputs.conda_channel_description }}"
+      env:
+        QUETZ_URL: ${{ secrets.QUETZ_URL }}
+        QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

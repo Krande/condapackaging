@@ -1,13 +1,15 @@
 name: "Setup Intel Fortran"
 description: "Setup Intel Fortran compiler"
+
 inputs:
   version:
-    description: "Version of toolchain or compiler"
+    description: "Version of intel fortran. Currently supports only v2025.0.0"
     required: false
 outputs:
   fc:
     description: "Path to Fortran compiler"
     value: ${{ steps.outputs.outputs.fc }}
+
 runs:
   using: "composite"
   steps:
