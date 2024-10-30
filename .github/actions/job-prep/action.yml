@@ -2,26 +2,23 @@ name: "Prepare job"
 description: "Prepare job for conda package compilation"
 
 inputs:
-    use_devtools:
-        description: "Flag to use devtools channel"
-        required: false
-        default: "False"
     extra_build_args:
         description: "Extra build arguments"
         required: false
         default: ""
-    variants_base64:
+    variants:
         description: "Conda package variants in key=value pairs, separated by commas"
+        required: false
+        default: ""
+    variants_base64_str:
+        description: "Base64 encoded string of the variants"
         required: false
         default: ""
     env_vars:
         description: "Environment variables in key=value pairs, separated by commas"
         required: false
         default: ""
-    conda_label:
-        description: "Label for the Conda package"
-        required: false
-        default: ""
+
 
 runs:
   using: "composite"
@@ -52,7 +49,7 @@ runs:
         import os
 
         env_file = os.environ.get("GITHUB_ENV", None)
-        decoded_bytes = base64.b64decode("${{ inputs.var_str }}")
+        decoded_bytes = base64.b64decode("${{ inputs.variants_base64_str }}")
         decoded_str = decoded_bytes.decode("utf-8")
 
         with open(env_file, "a") as my_file:
@@ -130,3 +127,17 @@ runs:
         elif [[ "$RUNNER_OS" == "Linux" ]]; then
           echo "PKG_DIR=linux-64" >> $GITHUB_ENV
         fi
+
+    # For some reason on linux, the runner swig is chosen over the conda swig
+    - name: try to remove swig on linux
+      if: ${{ runner.os == 'Linux' }} # https://docs.github.com/en/actions/learn-github-actions/contexts#runner-context
+      continue-on-error: true
+      run: |
+        sudo apt remove swig make
+        sudo rm -r /usr/bin/swig4.0
+        sudo rm -rf /usr/share/miniconda
+
+    - name: make dirs
+      run: |
+        mkdir -p ${{ env.ARTIFACTS_DIR }}
+        mkdir -p ${{ env.CROOT_DIR }}

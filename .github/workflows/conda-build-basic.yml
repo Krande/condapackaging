@@ -194,128 +194,20 @@ jobs:
       matrix: ${{ fromJson(needs.build_prep.outputs.final_matrix) }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set Swap Space
-        if: runner.os == 'Linux'
-        uses: pierotofy/set-swap-space@master
         with:
-          swap-size-gb: 10
+          fetch-depth: '2'
 
-      - name: Configure pagefile
-        if: runner.os == 'Windows'
-        uses: al-cheb/configure-pagefile-action@v1.2
+      - uses: ./.github/actions/job-prep
+        with:
+          env_vars: ${{ inputs.env_vars }}
+          variants: ${{ inputs.variants }}
+          variants_base64_str: ${{ matrix.variants.var_str }}
+          extra_build_args: ${{ inputs.extra_build_args }}
 
-      - name: Set up pagefile
-        if: runner.os == 'Windows'
-        shell: powershell
-        run: |
-          (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
-
-      - name: pre script
-        if: ${{ inputs.prep_script }}
-        continue-on-error: true
-        run: |
-          ${{ inputs.prep_script }}
-
-      - uses: awvwgk/setup-fortran@main # https://github.com/awvwgk/setup-fortran
+      - uses: ./.github/actions/install-intel-fortran
         if: ${{ inputs.use_intel_fortran == 'True' }}
-        id: setup-fortran
         with:
-          compiler: intel
-          version: '2024.1'
-
-      - name: create variant_str (if exists)
-        if: ${{ inputs.variants }}
-        env:
-          ENV_VARS_INPUT: ${{ inputs.env_vars }}
-        run: |
-          python3 <<EOF
-          import base64
-          import os
-          
-          env_file = os.environ.get("GITHUB_ENV", None)
-          decoded_bytes = base64.b64decode("${{ matrix.variants.var_str }}")
-          decoded_str = decoded_bytes.decode("utf-8")
-          
-          with open(env_file, "a") as my_file:
-            my_file.write(f"VARIANT_STR={decoded_str}\n")
-          
-          input_env_vars = os.environ.get("ENV_VARS_INPUT", None)
-          if input_env_vars:
-            input_env_vars = input_env_vars.split(",")
-            for env_var in input_env_vars:
-              env_var = env_var.strip()
-              if env_var:
-                env_var_name, env_var_value = env_var.split("=")
-                env_var_value = env_var_value.replace("__root__", os.environ["GITHUB_WORKSPACE"])
-                with open(env_file, "a") as my_file:
-                  my_file.write(f"{env_var_name}={env_var_value}\n")
-          EOF
-
-      - name: Evaluate Extra Build Args
-        env:
-          EXTRA_ARGS: ${{ inputs.extra_build_args }}
-          WORKSPACE: ${{ github.workspace}}
-        shell: python
-        run: |
-          import os
-          import platform
-          import pathlib
-          
-          
-          def set_env(name, value):
-              with open(os.environ['GITHUB_ENV'], 'a') as fh:
-                  print(f'{name}={value}', file=fh)
-          
-          
-          workspace_dir = pathlib.Path(os.getenv("WORKSPACE"))
-          extra_args = os.getenv("EXTRA_ARGS")
-          
-          # Substitute __root__ with github workspace
-          if extra_args != "":
-              if platform.system() == "Windows":
-                  new_args = []
-                  for arg in extra_args.split(' '):
-                        if "__root__" in arg:
-                            # if it's a path, and it is using single quotes, replace with double quotes
-                            new_args.append(arg.replace("'", '"'))
-                        else:
-                            new_args.append(arg)
-                  extra_args = ' '.join(new_args)
-              
-              extra_args_str = extra_args.replace('__root__', workspace_dir.as_posix())
-              set_env('EXTRA_BUILD_ARGS', extra_args_str)
-
-      - name: Download and extract MacOSX SDK
-        if: ${{ runner.os == 'macOS' }}
-        run: |
-          curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.15.sdk.tar.xz | tar -xvJf - -C /Users/runner/work/
-
-      - name: Update SHELL_NAME if running windows
-        if: ${{ runner.os == 'Windows' }}
-        run: |
-          echo "SHELL_NAME=bash cmd.exe" >> $GITHUB_ENV
-
-      - name: set ENV vars
-        run: |
-          pwd
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            echo "PKG_DIR=win-64" >> $GITHUB_ENV
-            echo "WORK_DIR=D:/a/" >> $GITHUB_ENV
-            echo "ARTIFACTS_DIR=D:/a/artifacts" >> $GITHUB_ENV
-            echo "CROOT_DIR=D:/a/build" >> $GITHUB_ENV
-          elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            echo "PKG_DIR=osx-64" >> $GITHUB_ENV
-            echo "WORK_DIR=/Users/runner/work" >> $GITHUB_ENV
-            echo "ARTIFACTS_DIR=/Users/runner/work/artifacts" >> $GITHUB_ENV
-            echo "CROOT_DIR=/Users/runner/work/build" >> $GITHUB_ENV
-          elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            echo "PKG_DIR=linux-64" >> $GITHUB_ENV
-          fi
-          
-          if [[ "${{ inputs.use_intel_fortran }}" == "True" ]]; then
-            echo "USE_INTEL=True" >> $GITHUB_ENV
-          fi
+          version: 2025.0.0
 
       - name: set quetz channel if using quetz or anaconda
         run: |
@@ -361,20 +253,6 @@ jobs:
         run: |
           python -m pip install .
         working-directory: src/cpack
-
-      # For some reason on linux, the runner swig is chosen over the conda swig
-      - name: try to remove swig on linux
-        if: ${{ runner.os == 'Linux' }} # https://docs.github.com/en/actions/learn-github-actions/contexts#runner-context
-        continue-on-error: true
-        run: |
-          sudo apt remove swig make
-          sudo rm -r /usr/bin/swig4.0
-          sudo rm -rf /usr/share/miniconda
-
-      - name: make dirs
-        run: |
-          mkdir -p ${{ env.ARTIFACTS_DIR }}
-          mkdir -p ${{ env.CROOT_DIR }}
 
       - name: build local packages Windows
         if: ${{ runner.os == 'Windows' }}

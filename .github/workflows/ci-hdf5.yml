@@ -59,5 +59,4 @@ jobs:
 #      description: "Compilations of hdf5"
 #      use_intel_fortran: "True"
 #      use_quetz: "True"
-##      prep_script: "chmod +x /home/runner/work/condapackaging/condapackaging/src/hdf5/mpiexec.sh"
 #    secrets: inherit

@@ -26,10 +26,6 @@ inputs:
     description: "Upstream label for Conda."
     required: false
     default: "None"
-  use_quetz:
-    description: "Flag to use Quetz for channel creation."
-    required: false
-    default: "False"
   conda_channel_description:
     description: "Description of the Conda channel."
     required: false
@@ -56,7 +52,6 @@ runs:
         cache-environment: true
         create-args: |
           python=3.11
-          anaconda-client
           python-libarchive-c
           ruamel.yaml.jinja2
           typer
