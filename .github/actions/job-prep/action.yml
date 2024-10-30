@@ -147,3 +147,6 @@ runs:
       run: |
         mkdir -p ${{ env.ARTIFACTS_DIR }}
         mkdir -p ${{ env.CROOT_DIR }}
+
+    - uses: ilammy/msvc-dev-cmd@v1
+      if: ${{ runner.os == 'Windows' }}
