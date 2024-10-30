@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - .github/workflows/ci-hdf5.yml
+      - .github/actions/install-intel-fortran/*
 #    branches:
 #    - donotrun
 
@@ -18,18 +19,18 @@ jobs:
       with:
           compiler: intel-fortran
           version: 2025.0.0
-
-  build:
-    uses: ./.github/workflows/conda-build-basic.yml
-    with:
-      package_name: hdf5
-      conda_label: "hdf5"
-      conda_user: krande
-      python_versions: "3.12"
-      platforms: "ubuntu-latest"
-      variants: "mpi=nompi,mpi=openmpi"
-      description: "Compilations of hdf5"
-      use_intel_fortran: "True"
-      use_quetz: "True"
-#      prep_script: "chmod +x /home/runner/work/condapackaging/condapackaging/src/hdf5/mpiexec.sh"
-    secrets: inherit
+#
+#  build:
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: hdf5
+#      conda_label: "hdf5"
+#      conda_user: krande
+#      python_versions: "3.12"
+#      platforms: "ubuntu-latest"
+#      variants: "mpi=nompi,mpi=openmpi"
+#      description: "Compilations of hdf5"
+#      use_intel_fortran: "True"
+#      use_quetz: "True"
+##      prep_script: "chmod +x /home/runner/work/condapackaging/condapackaging/src/hdf5/mpiexec.sh"
+#    secrets: inherit
