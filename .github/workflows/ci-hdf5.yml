@@ -10,58 +10,6 @@ on:
 #    - donotrun
 
 jobs:
-#  build_prep:
-#    runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        shell: bash -leo pipefail {0}
-#    outputs:
-#        final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
-#        should_run: ${{ steps.should_run.outputs.should_run }}
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          fetch-depth: '1'
-#
-#      - uses: ./.github/actions/job-eval
-#        id: should_run
-#        with:
-#          build_selection: 'a,b'
-#          job_name: 'hdf5'
-#
-#      - uses: ./.github/actions/job-matrix-builder
-#        if: ${{ needs.should_run.outputs.should_run == 'true' }}
-#        id: job-matrix-builder
-#        with:
-#          python_versions: '3.11,3.12'
-#          platforms: 'windows-latest,ubuntu-latest'
-#          variants: 'mpi=nompi'
-#
-#  run:
-#    needs: build_prep
-#    if: ${{ needs.build_prep.outputs.should_run == 'true' }}
-#    runs-on: windows-latest
-#    strategy:
-#      fail-fast: false
-#      matrix: ${{ fromJson(needs.build_prep.outputs.final_matrix) }}
-#    steps:
-#    - uses: actions/checkout@v4
-#      with:
-#        fetch-depth: '1'
-#
-#    - name: Install Intel Fortran
-#      uses: ./.github/actions/install-intel-fortran
-#      with:
-#        version: 2025.0.0
-#
-#    - uses: prefix-dev/setup-pixi@v0.5.1
-#      with:
-#        pixi-version: v0.34.0
-#        cache: true
-#
-#    - run: pixi run hdf5
-
-
   build:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
