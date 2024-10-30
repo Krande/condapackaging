@@ -173,18 +173,17 @@ jobs:
           pixi run cpack-config --root-dir=${{ env.CROOT_DIR }} --artifacts-dir=${{ env.ARTIFACTS_DIR }}
 
       - name: build local packages
+        if: ${{ runner.os == 'Windows' }}
         run: |
-          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
-        shell: pixi run bash -e {0}
+          pixi run mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
-        shell: pixi run bash -e {0}
         run: |
-          cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --force
+          pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --force
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
