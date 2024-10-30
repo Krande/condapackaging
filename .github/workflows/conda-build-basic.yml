@@ -173,7 +173,6 @@ jobs:
           pixi run cpack-config --root-dir=${{ env.CROOT_DIR }} --artifacts-dir=${{ env.ARTIFACTS_DIR }}
 
       - name: build local packages
-        if: ${{ runner.os == 'Windows' }}
         run: |
           pixi run mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
