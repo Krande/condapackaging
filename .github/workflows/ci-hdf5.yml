@@ -15,12 +15,15 @@ jobs:
     defaults:
       run:
         shell: bash -leo pipefail {0}
+    outputs:
+        final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '1'
 
       - uses: ./.github/actions/job-matrix-builder
+        id: job-matrix-builder
         with:
           python_versions: '3.11,3.12'
           platforms: 'windows-latest'
