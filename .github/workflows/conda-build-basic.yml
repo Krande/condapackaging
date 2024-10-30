@@ -32,10 +32,6 @@ on:
         description: 'conda label'
         type: string
         required: true
-      conda_user:
-        description: 'conda user'
-        type: string
-        required: false
       conda_upstream_label:
         description: 'conda upstream label'
         type: string
@@ -113,7 +109,7 @@ env:
   SHELL_NAME: bash
 
 jobs:
-  should_run:
+  build_prep:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -134,24 +130,10 @@ jobs:
 
       - uses: ./.github/actions/job-matrix-builder
         id: job-matrix-builder
-              
-
-  # run a preceding job to get the matrix only if matrix_str is None
-  build_prep:
-    needs: should_run
-    if: ${{ needs.should_run.outputs.should_run == 'true' }}
-    uses: ./.github/workflows/conda-build-prep.yml
-    with:
-      python_versions: ${{ inputs.python_versions }}
-      platforms: ${{ inputs.platforms }}
-      variants: ${{ inputs.variants }}
-      conda_label: ${{ inputs.conda_label }}
-      conda_user: ${{ inputs.conda_user }}
-      conda_upstream_label: ${{ inputs.conda_upstream_label }}
-      conda_upstream_user: ${{ inputs.conda_upstream_user }}
-      use_quetz: ${{ inputs.use_quetz }}
-      description: ${{ inputs.description }}
-    secrets: inherit
+        with:
+          python_versions: ${{ inputs.python_versions }}
+          platforms: ${{ inputs.platforms }}
+          variants: ${{ inputs.variants }}
 
   build_conda:
     needs: [ build_prep ]
@@ -180,50 +162,15 @@ jobs:
         with:
           version: 2025.0.0
 
-      - name: set quetz channel if using quetz or anaconda
-        run: |
-          if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
-            echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ needs.build_prep.outputs.conda_upstream_label }}" >> $GITHUB_ENV
-          else
-            echo "CONDA_CHANNEL=${{ needs.build_prep.outputs.conda_channel }}" >> $GITHUB_ENV
-          fi
-
-      - name: use devtools channel
-        if: ${{ inputs.use_devtools == 'True' }}
-        run: |
-          echo "EXTRA_CHANNEL=https://repo.prefix.dev/code-aster" >> $GITHUB_ENV
-
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+      - uses: prefix-dev/setup-pixi@v0.8.0
         with:
-          environment-name: build-env
-          cache-environment: true
-          init-shell: ${{ env.SHELL_NAME }}
-          condarc: |
-            remote_max_retries: 5
-            remote_backoff_factor: 5
-            conda-build:
-              root-dir: ${{ env.CROOT_DIR }}
-              output_folder: ${{ env.ARTIFACTS_DIR }}
-              pkg_format: 2
-              zstd_compression_level: 19
-            channel_priority: strict
-            channels:
-              - ${{ env.EXTRA_CHANNEL }}
-              - ${{ env.CONDA_CHANNEL }}
-              - conda-forge
-          create-args: >-
-            python=3.11
-            anaconda-client
-            boa
-            python-dotenv
-            typer
-            quetz-client
-            conda-build
+          pixi-version: v0.34.0
+          environments: "boa"
+          cache: true
 
-      - name: Install cpack-actions
+      - name: Update condarc
         run: |
-          python -m pip install .
-        working-directory: src/cpack
+          pixi run cpack-config --root-dir=${{ env.CROOT_DIR }} --artifacts-dir=${{ env.ARTIFACTS_DIR }}
 
       - name: build local packages Windows
         if: ${{ runner.os == 'Windows' }}
@@ -249,10 +196,3 @@ jobs:
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
-
-      - name: upload to anaconda
-        if: ${{ inputs.use_quetz == 'False' }}
-        run: |
-          cpack-anaconda ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} ${{ inputs.conda_user }}
-        env:
-          CONDA_API_TOKEN: ${{ secrets.CONDA_API_TOKEN }}

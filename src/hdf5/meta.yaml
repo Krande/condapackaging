@@ -1,4 +1,4 @@
-{% set version = "1.14.4.3" %}
+{% set version = "1.14.5" %}
 {% set build = 0 %}
 
 # prioritize nompi via build number
@@ -39,7 +39,7 @@ package:
 
 source:
   url: https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5_{{ version }}.tar.gz
-  sha256: 690c1db7ba0fed4ffac61709236675ffd99d95d191e8920ee79c58d7e7ea3361
+  sha256: c83996dc79080a34e7b5244a1d5ea076abfd642ec12d7c25388e2fdd81d26350
 
 
 build:

@@ -6,6 +6,7 @@ import pathlib
 from boa.core.utils import get_config
 from conda_build.api import render
 
+
 def set_output(name, value):
     with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
         print(f"{name}={value}", file=fh)
@@ -57,17 +58,3 @@ def generate_ga_matrix():
     return build_matrix
 
 
-if __name__ == '__main__':
-    # To locally test first create a .env file containing the following:
-    # INPUT_RECIPE_DIR=<absolute-path-to-your-conda-recipe-dir>
-    # INPUT_PYTHON_VERSIONS=3.10,3.11,3.12
-    # INPUT_PLATFORMS=windows-latest,ubuntu-latest
-    from dotenv import load_dotenv
-    import pprint
-
-    load_dotenv()
-
-    temp_file = pathlib.Path(r"temp\env.txt")
-    temp_file.parent.mkdir(parents=True, exist_ok=True)
-    os.environ["GITHUB_OUTPUT"] = temp_file.as_posix()
-    pprint.pprint(create_builds())

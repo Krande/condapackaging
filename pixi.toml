@@ -6,11 +6,11 @@ channels = ["conda-forge"]
 platforms = ["win-64", "linux-64"]
 
 [environments]
+cpack = ["cpack"]
 debug = { features = ["debug"] }
 release = { features = ["release"] }
 rattler = ["rattler"]
-boa = ["boa"]
-cpack = ["cpack"]
+boa = ["boa", "cpack"]
 
 
 [dependencies]
@@ -36,6 +36,7 @@ toposort = "*"
 cpack = { path = "./src/cpack", editable = true }
 
 [feature.cpack.tasks]
+
 cpack-actions = { cmd = ["cpack-actions"] }
 cpack-quetz = { cmd = ["cpack-quetz"] }
 
@@ -55,12 +56,13 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 conv = { cmd = "conda-recipe-manager convert" }
 
 [feature.boa.tasks]
+cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
 occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
 occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
 pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
 stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml"], cwd = "src/stepcode" }
 # Add '--python=3.11 --variants="{build_type: debug}"- to run a single variant
-hdf5_mamba = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
+hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
 
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
@@ -71,8 +73,6 @@ medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--py
 mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
 code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
-
-
 
 
 [feature.debug]
@@ -102,7 +102,7 @@ mgis = { build = "*debug*" }
 scotch = { build = "*debug*" }
 
 [feature.release.tasks]
-rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
+test_code_aster = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 
 [feature.debug.tasks]
-dca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
+test_code_aster = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
