@@ -39,6 +39,7 @@ jobs:
 
   run:
     needs: build_prep
+    if: ${{ needs.build_prep.outputs.should_run == 'true' }}
     runs-on: windows-latest
     strategy:
       fail-fast: false
