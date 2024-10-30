@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - .github/workflows/ci-hdf5.yml
-      - .github/actions/install-intel-fortran/*
+      - .github/actions/*
 #    branches:
 #    - donotrun
 
