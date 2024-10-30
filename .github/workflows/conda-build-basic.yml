@@ -176,7 +176,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         shell: cmd /E:on /C call {0}
         run: |
-          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
+          pixi run mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
@@ -184,7 +184,7 @@ jobs:
       - name: build local packages Linux
         if: ${{ runner.os == 'Linux' }}
         run: |
-          conda mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
+          pixi run mambabuild . --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
@@ -192,7 +192,7 @@ jobs:
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
         run: |
-          cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --force
+          pixi run cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --force
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

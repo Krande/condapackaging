@@ -56,6 +56,7 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 conv = { cmd = "conda-recipe-manager convert" }
 
 [feature.boa.tasks]
+mambabuild = { cmd = ["conda", "mambabuild"] }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
 occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
 occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
