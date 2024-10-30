@@ -171,7 +171,7 @@ jobs:
 
       - name: build local packages
         run: |
-          pixi run mambabuild ${{ env.CONDA_DIR }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
+          pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
         working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
