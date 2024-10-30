@@ -5,24 +5,44 @@ description = "A basic conda build environment"
 channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
 platforms = ["win-64", "linux-64"]
 
-[tasks]
-occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
-occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
-pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
-stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml"], cwd = "src/stepcode" }
-# Add '--python=3.11 --variants="{build_type: debug}"- to run a single variant
-hdf5_mamba = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
-hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }
-scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
-metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
-mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/mumps" }
-libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: release}"], cwd = "src/code_aster/libmed" }
-medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/medcoupling" }
-mfront = { cmd = ["rattler-build", "build", "-r", "recipe.yaml", "-m", "../common_rattler.yaml", "-m", "../py312_debug.yaml", "--output-dir", "../../../output"], cwd = "src/code_aster/mfront" }
-mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
-code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
-all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
+[dependencies]
+python-dotenv = ">=1.0.1,<1.1"
+quetz-client = ">=0.5.0,<0.6"
+pixi-pycharm = ">=0.0.8,<0.0.9"
 
+
+[feature.boa.dependencies]
+boa = ">=0.17.0,<0.18"
+
+[feature.rattler.dependencies]
+conda-recipe-manager = ">=0.3.0,<0.4"
+rattler-build = ">=0.28.0,<0.29"
+
+[environments]
+debug = { features = ["debug"] }
+release = { features = ["release"] }
+rattler = ["rattler"]
+boa = ["boa"]
+cpack = ["cpack"]
+
+[feature.cpack.dependencies]
+python-dotenv = ">=1.0.1,<1.1"
+quetz-client = ">=0.5.0,<0.6"
+python-libarchive-c = "*"
+"ruamel.yaml.jinja2" = "*"
+typer = "*"
+toposort = "*"
+
+[feature.cpack.pypi-dependencies]
+cpack = { path = "./src/cpack", editable = true }
+
+[feature.cpack.tasks]
+cpack-actions = { cmd = ["cpack-actions"] }
+cpack-quetz = { cmd = ["cpack-quetz"] }
+
+[feature.rattler.tasks]
+hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }
+mfront = { cmd = ["rattler-build", "build", "-r", "recipe.yaml", "-m", "../common_rattler.yaml", "-m", "../py312_debug.yaml", "--output-dir", "../../../output"], cwd = "src/code_aster/mfront" }
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
 
@@ -35,14 +55,24 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 
 conv = { cmd = "conda-recipe-manager convert" }
 
-[dependencies]
-boa = ">=0.17.0,<0.18"
-python-dotenv = ">=1.0.1,<1.1"
-quetz-client = ">=0.5.0,<0.6"
-rattler-build = ">=0.28.0,<0.29"
-pixi-pycharm = ">=0.0.8,<0.0.9"
-matplotlib = "*"
-conda-recipe-manager = ">=0.3.0,<0.4"
+[feature.boa.tasks]
+occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
+occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
+pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
+stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml"], cwd = "src/stepcode" }
+# Add '--python=3.11 --variants="{build_type: debug}"- to run a single variant
+hdf5_mamba = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
+
+scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
+metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
+mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/mumps" }
+libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: release}"], cwd = "src/code_aster/libmed" }
+medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/medcoupling" }
+
+mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
+code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
+all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
+
 
 [feature.release.tasks]
 rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
@@ -73,8 +103,3 @@ medcoupling = { build = "*debug*" }
 mfront = { build = "*debug*" }
 mgis = { build = "*debug*" }
 scotch = { build = "*debug*" }
-
-
-[environments]
-debug = { features = ["debug"] }
-release = { features = ["release"] }
