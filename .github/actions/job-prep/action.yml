@@ -40,6 +40,7 @@ runs:
         (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
 
     - name: create variant_str (if exists)
+      shell: bash
       if: ${{ inputs.variants }}
       env:
         ENV_VARS_INPUT: ${{ inputs.env_vars }}
@@ -102,16 +103,19 @@ runs:
             set_env('EXTRA_BUILD_ARGS', extra_args_str)
 
     - name: Download and extract MacOSX SDK
+      shell: bash
       if: ${{ runner.os == 'macOS' }}
       run: |
         curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.15.sdk.tar.xz | tar -xvJf - -C /Users/runner/work/
 
     - name: Update SHELL_NAME if running windows
+      shell: bash
       if: ${{ runner.os == 'Windows' }}
       run: |
         echo "SHELL_NAME=bash cmd.exe" >> $GITHUB_ENV
 
     - name: set ENV vars
+      shell: bash
       run: |
         pwd
         if [[ "$RUNNER_OS" == "Windows" ]]; then
@@ -130,6 +134,7 @@ runs:
 
     # For some reason on linux, the runner swig is chosen over the conda swig
     - name: try to remove swig on linux
+      shell: bash
       if: ${{ runner.os == 'Linux' }} # https://docs.github.com/en/actions/learn-github-actions/contexts#runner-context
       continue-on-error: true
       run: |
@@ -138,6 +143,7 @@ runs:
         sudo rm -rf /usr/share/miniconda
 
     - name: make dirs
+      shell: bash
       run: |
         mkdir -p ${{ env.ARTIFACTS_DIR }}
         mkdir -p ${{ env.CROOT_DIR }}

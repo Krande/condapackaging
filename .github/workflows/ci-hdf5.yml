@@ -68,7 +68,7 @@ jobs:
       package_name: hdf5
       conda_label: "hdf5"
       python_versions: "3.12"
-      platforms: "ubuntu-latest"
+      platforms: "ubuntu-latest,windows-latest"
       variants: "mpi=nompi,mpi=openmpi"
       description: "Compilations of hdf5"
       use_intel_fortran: "True"
