@@ -24,16 +24,16 @@ runs:
   using: "composite"
   steps:
     - name: Set up micromamba
-      uses: mamba-org/setup-micromamba@v1
+      uses: mamba-org/setup-micromamba@v1  # https://github.com/mamba-org/setup-micromamba
       with:
         environment-name: build-env
+        init-shell: bash
         cache-environment: true
         create-args: |
           python=3.11
           python-libarchive-c
           ruamel.yaml.jinja2
           typer
-          quetz-client
 
     - name: Install cpack-actions
       shell: bash
