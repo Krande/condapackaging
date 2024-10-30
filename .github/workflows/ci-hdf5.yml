@@ -12,6 +12,9 @@ on:
 jobs:
   build_prep:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
     steps:
       - uses: actions/checkout@v4
         with:
