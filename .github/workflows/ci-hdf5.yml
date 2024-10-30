@@ -26,8 +26,8 @@ jobs:
         id: job-matrix-builder
         with:
           python_versions: '3.11,3.12'
-          platforms: 'windows-latest'
-          variants: 'mpi=nompi,mpi=openmpi'
+          platforms: 'windows-latest,ubuntu-latest'
+          variants: 'mpi=nompi'
 
   run:
     needs: build_prep
