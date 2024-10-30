@@ -1,5 +1,4 @@
 name: ci-matrix-builder
-
 description: "A composite action to generate a JSON matrix for platforms or Python versions, and configure Conda channels."
 
 inputs:

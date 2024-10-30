@@ -13,6 +13,10 @@ jobs:
   build_prep:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
+
       - uses: ./.github/actions/job-matrix-builder
         with:
           python_versions: '3.11,3.12'
@@ -27,6 +31,8 @@ jobs:
       matrix: ${{ fromJson(needs.build_prep.outputs.final_matrix) }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: '1'
 
     - name: Install Intel Fortran
       uses: ./.github/actions/install-intel-fortran
