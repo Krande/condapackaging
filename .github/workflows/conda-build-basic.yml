@@ -158,7 +158,7 @@ jobs:
           extra_build_args: ${{ inputs.extra_build_args }}
 
       - uses: ./.github/actions/install-intel-fortran
-        if: ${{ inputs.use_intel_fortran == 'True' }}
+        if: ${{ inputs.use_intel_fortran == 'True' && runner.os == 'Windows' }}
         with:
           version: 2025.0.0
 
