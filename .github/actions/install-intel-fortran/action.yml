@@ -4,7 +4,7 @@ inputs:
   compiler:
     description: "Toolchain or compiler to install"
     required: true
-    default: "gcc"
+    default: "intel"
   version:
     description: "Version of toolchain or compiler"
     required: false
@@ -53,42 +53,9 @@ runs:
         VERSION: ${{ inputs.version }}
       run: |
         action_path=$(echo '/${{ github.action_path }}' | sed -e 's/\\/\//g' -e 's/://')
-        source "$action_path/setup-fortran.sh"
         
-        compiler=${COMPILER:-gcc}
-        platform=$(uname -s | tr '[:upper:]' '[:lower:]')
-
-        if [[ "$RUNNER_OS" == "macOS" ]] && [[ "$compiler" == "intel" ]]; then
-          echo "Compiler 'intel' not supported on macOS, falling back to 'intel-classic'"
-          compiler="intel-classic"
-        fi
-
-        case $compiler in
-          gcc)
-            version=${VERSION:-13}
-            install_gcc $platform
-            ;;
-          intel-classic)
-            version=${VERSION:-2023.2.0}
-            install_intel $platform true
-            ;;
-          intel)
-            version=${VERSION:-2025.0}
-            install_intel $platform false
-            ;;
-          nvidia-hpc)
-            version=${VERSION:-23.11}
-            install_nvidiahpc $platform
-            ;;
-          lfortran)
-            version=${VERSION:-0.33.0}
-            install_lfortran $platform
-            ;;
-          *)
-            exit 1
-            ;;
-        esac
-
+        "$GITHUB_ACTION_PATH/install-intel-fortran.bat"
+        
         echo "FC=${FC}" >> $GITHUB_ENV
         echo "CC=${CC}" >> $GITHUB_ENV
         echo "CXX=${CXX}" >> $GITHUB_ENV
@@ -120,37 +87,12 @@ runs:
         if [[ "$RUNNER_OS" == "Windows" ]]; then
           if [[ "${{ inputs.compiler }}" == "intel" ]]; then
             FC=ifx
-            CC=icx
-            CXX=icx
-            echo SETVARS_COMPLETED=1>>$GITHUB_ENV
-          elif [[ "${{ inputs.compiler }}" == "intel-classic" ]]; then
-            FC=ifort
-            CC=icl
-            CXX=icl
             echo SETVARS_COMPLETED=1>>$GITHUB_ENV
           fi
         fi
 
         # set env vars
         echo FC=$FC>>$GITHUB_ENV
-        echo CC=$CC>>$GITHUB_ENV
-        echo CXX=$CXX>>$GITHUB_ENV
-
-        # set fpm env vars
-        echo FPM_FC=$FC>>$GITHUB_ENV
-        echo FPM_CC=$CC>>$GITHUB_ENV
-        echo FPM_CXX=$CXX>>$GITHUB_ENV
 
         # set action outputs
         echo fc=$FC>>$GITHUB_OUTPUT
-        echo cc=$CC>>$GITHUB_OUTPUT
-        echo cxx=$CXX>>$GITHUB_OUTPUT
-
-    - name: Hide GNU linker (Windows)
-      if: runner.os == 'Windows' && !contains(inputs.compiler, 'gcc')
-      shell: bash
-      run: mv /usr/bin/link $RUNNER_TEMP/link
-
-    - name: Setup MSVC toolchain (Windows)
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'lfortran')
-      uses: ilammy/msvc-dev-cmd@v1

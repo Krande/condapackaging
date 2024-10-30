@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
-{% set version = '17.1.0' %}
-{% set win_build = '5' %}
+{% set version = '17.1.12' %}
+{% set win_build = '1' %}
 {% set build = 0 %}
 
 {% if mpi == 'nompi' %}
@@ -32,10 +32,6 @@ source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz
     sha256: 106961189406fc5a17ff1cbd5f57f98f5a402e761f55093116f878514fcad850
-  #- fn: '{{ name }}_{{ version }}.tar.gz'                                                                                 # [not win]
-  #  url: https://gitlab.com/codeaster/src/-/archive/{{ version }}/src-{{ version }}.tar.gz                                # [not win]
-  #  patches:                                                                                                              # [not win]
-  #    - patches/skip_numpy_distutils_check.patch                                                                          # [not win]
 
 build:
   detect_binary_files_with_prefix: true

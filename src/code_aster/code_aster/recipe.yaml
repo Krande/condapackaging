@@ -1,12 +1,3 @@
-# prioritize nompi variant via build number
-# prioritize release over debug
-# add build string so packages can depend on
-# mpi or nompi variants explicitly:
-# `pkg * mpi_mpich_*` for mpich
-# `pkg * mpi_*` for any mpi
-# `pkg * nompi_*` for no mpi
-#    - run_ctest -R 'forma01a' --resutest=../resutest --only-failed-results -j 1
-#    - run_ctest -R 'forma01a|sslp114a|mumps02a|mumps01a|zzzz121a' --resutest=../resutest --only-failed-results -j 1
 schema_version: 1
 
 context:
