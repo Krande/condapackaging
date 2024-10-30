@@ -111,9 +111,6 @@ env:
 jobs:
   build_prep:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -leo pipefail {0}
     outputs:
       final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
       should_run: ${{ steps.should_run.outputs.should_run }}
