@@ -304,6 +304,9 @@ intel_version_map_w()
     esac
   else
     case $actual_version in
+      2025.0 | 2025.0.0)
+        version=2025.0.0
+        ;;
       2024.1 | 2024.1.0)
         version=2024.1.0
         ;;
@@ -434,6 +437,10 @@ install_intel_win()
   intel_version_map_w $version $classic
 
   case $version in
+    2025.0.0)
+      WINDOWS_HPCKIT_URL=https://registrationcenter-download.intel.com/akdlm/IRC_NAS/f07e32fa-b505-4b90-8a79-e328ce9ad9d6/intel-oneapi-hpc-toolkit-2025.0.0.822_offline.exe
+      WINDOWS_HPCKIT_COMPONENTS=intel.oneapi.win.ifort-compiler:intel.oneapi.win.cpp-dpcpp-common
+      ;;
     2024.1.0)
       WINDOWS_HPCKIT_URL=https://registrationcenter-download.intel.com/akdlm/IRC_NAS/c95a3b26-fc45-496c-833b-df08b10297b9/w_HPCKit_p_2024.1.0.561_offline.exe
       WINDOWS_HPCKIT_COMPONENTS=intel.oneapi.win.ifort-compiler:intel.oneapi.win.cpp-dpcpp-common
