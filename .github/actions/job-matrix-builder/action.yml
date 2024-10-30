@@ -14,33 +14,11 @@ inputs:
     description: "Conda package variants in key=value pairs, separated by commas."
     required: false
     default: ""
-  conda_label:
-    description: "Label for the Conda package."
-    required: false
-    default: ""
-  conda_user:
-    description: "Conda user for the package."
-    required: false
-    default: ""
-  conda_upstream_label:
-    description: "Upstream label for Conda."
-    required: false
-    default: "None"
-  conda_channel_description:
-    description: "Description of the Conda channel."
-    required: false
-    default: ""
 
 outputs:
   final_matrix:
     value: ${{ steps.set-matrix.outputs.final_matrix }}
     description: "JSON string of the final matrix."
-  conda_channel:
-    value: ${{ steps.set-channel.outputs.conda_channel }}
-    description: "Configured Conda channel."
-  conda_upstream_label:
-    value: ${{ steps.set-channel.outputs.conda_upstream_label }}
-    description: "Upstream label for Conda."
 
 runs:
   using: "composite"
@@ -73,22 +51,3 @@ runs:
     - name: Print final_matrix
       shell: bash
       run: echo "final_matrix=${{ steps.set-matrix.outputs.final_matrix }}"
-
-    - name: Configure Conda upstream if needed
-      id: set-upstream
-      shell: bash
-      run: |
-        if [[ "${{ inputs.conda_upstream_label }}" == "None" ]]; then
-          echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_label }}" >> $GITHUB_ENV
-        else
-          echo "CONDA_UPSTREAM_LABEL=${{ inputs.conda_upstream_label }}" >> $GITHUB_ENV
-        fi
-
-    - name: Set custom Conda channel
-      id: set-channel
-      shell: bash
-      run: |
-        cpack-quetz create-channel "${{ inputs.conda_label }}" --create-public-channel --channel-description="${{ inputs.conda_channel_description }}"
-      env:
-        QUETZ_URL: ${{ secrets.QUETZ_URL }}
-        QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
