@@ -1,10 +1,6 @@
-name: "Setup Fortran"
-description: "Setup Fortran compiler and toolchain"
+name: "Setup Intel Fortran"
+description: "Setup Intel Fortran compiler"
 inputs:
-  compiler:
-    description: "Toolchain or compiler to install"
-    required: true
-    default: "intel"
   version:
     description: "Version of toolchain or compiler"
     required: false
@@ -12,12 +8,6 @@ outputs:
   fc:
     description: "Path to Fortran compiler"
     value: ${{ steps.outputs.outputs.fc }}
-  cc:
-    description: "Path to C compiler"
-    value: ${{ steps.outputs.outputs.cc }}
-  cxx:
-    description: "Path to C++ compiler"
-    value: ${{ steps.outputs.outputs.cxx }}
 runs:
   using: "composite"
   steps:
@@ -57,8 +47,6 @@ runs:
         "$GITHUB_ACTION_PATH/install-intel-fortran.bat"
         
         echo "FC=${FC}" >> $GITHUB_ENV
-        echo "CC=${CC}" >> $GITHUB_ENV
-        echo "CXX=${CXX}" >> $GITHUB_ENV
 
     # save oneAPI cache and activate environment
     - name: Save cache
