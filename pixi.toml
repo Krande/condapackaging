@@ -5,6 +5,14 @@ description = "A basic conda build environment"
 channels = ["conda-forge"]
 platforms = ["win-64", "linux-64"]
 
+[environments]
+debug = { features = ["debug"] }
+release = { features = ["release"] }
+rattler = ["rattler"]
+boa = ["boa"]
+cpack = ["cpack"]
+
+
 [dependencies]
 python-dotenv = ">=1.0.1,<1.1"
 pixi-pycharm = ">=0.0.8,<0.0.9"
@@ -15,14 +23,6 @@ boa = ">=0.17.0,<0.18"
 [feature.rattler.dependencies]
 conda-recipe-manager = ">=0.3.0,<0.4"
 rattler-build = ">=0.28.0,<0.29"
-
-[environments]
-debug = { features = ["debug"] }
-release = { features = ["release"] }
-rattler = ["rattler"]
-boa = ["boa"]
-cpack = ["cpack"]
-
 
 [feature.cpack.dependencies]
 python-dotenv = ">=1.0.1,<1.1"
@@ -73,11 +73,7 @@ code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--pyt
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 
 
-[feature.release.tasks]
-rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 
-[feature.debug.tasks]
-dca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
 
 [feature.debug]
 platforms = ["win-64"]
@@ -104,3 +100,9 @@ medcoupling = { build = "*debug*" }
 mfront = { build = "*debug*" }
 mgis = { build = "*debug*" }
 scotch = { build = "*debug*" }
+
+[feature.release.tasks]
+rca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }
+
+[feature.debug.tasks]
+dca = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }

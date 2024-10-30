@@ -13,6 +13,7 @@ inputs:
 
 outputs:
   should_run:
+    value: ${{ steps.evaluate_job.outputs.should_run }}
     description: "Indicates if the job should run."
 
 runs:
@@ -63,5 +64,4 @@ runs:
             set_output("should_run", "true")
         else:
             set_output("should_run", "false")
-  outputs:
-    should_run: ${{ steps.evaluate_job.outputs.should_run }}
+

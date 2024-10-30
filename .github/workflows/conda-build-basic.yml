@@ -115,54 +115,25 @@ env:
 jobs:
   should_run:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
     outputs:
-      should_run: ${{ steps.evaluate_job.outputs.should_run }}
+      final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
+      should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
-      - name: Evaluate job
-        id: evaluate_job
-        shell: python
-        env:
-          BUILD_SELECTION: ${{ inputs.build_selection }}
-          JOB_NAME: ${{ inputs.job_name }}
-        run: |
-          import os
-          
-          
-          def set_output(name, value):
-            with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-                print(f'{name}={value}', file=fh)
-          
-          job_name = os.getenv('JOB_NAME', None)
-          build_selection = os.getenv('BUILD_SELECTION', None)
-          
-          print(f'{job_name=}')
-          
-          if not build_selection:
-              set_output("should_run", "true")
-              exit(0)
-          
-          job_list = build_selection.split(',')
-          print(f'{build_selection=}')
-          print(f'{job_list=}')
-          if "all" in job_list:
-              if len(job_list) == 1:
-                  print('job_list is 1')
-                  set_output("should_run", "true")
-                  exit(0)
-              
-              if f'!{job_name}' in job_list:
-                  print(f'Job {job_name} is skipped')
-                  set_output("should_run", "false")
-                  exit(0)
-              
-              set_output("should_run", "true")
-              exit(0)
-              
-          print('all at the bottom')
-          if job_name in job_list:
-              set_output("should_run", "true")
-          else:
-              set_output("should_run", "false")
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
+
+      - uses: ./.github/actions/job-eval
+        id: should_run
+        with:
+          build_selection: ${{ github.event.inputs.build_selection }}
+          job_name: ${{ github.job }}
+
+      - uses: ./.github/actions/job-matrix-builder
+        id: job-matrix-builder
               
 
   # run a preceding job to get the matrix only if matrix_str is None
