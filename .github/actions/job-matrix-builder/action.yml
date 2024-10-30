@@ -29,8 +29,8 @@ runs:
         environment-name: build-env
         init-shell: bash
         cache-environment: true
-        create-args: |
-          python=3.11
+        create-args: >-
+          python=3.12
           python-libarchive-c
           ruamel.yaml.jinja2
           typer
