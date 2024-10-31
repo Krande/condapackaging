@@ -2,7 +2,3 @@ mpi:
   - nompi
   - mpich  # [unix]
   - openmpi  # [unix]
-
-build_type:
-  - release
-  - debug
