@@ -151,5 +151,8 @@ runs:
         mkdir -p ${{ env.ARTIFACTS_DIR }}
         mkdir -p ${{ env.CROOT_DIR }}
 
-    #- uses: ilammy/msvc-dev-cmd@v1
-     # if: ${{ runner.os == 'Windows' }}
+    - name: Give necessary permissions on linux
+      if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        sudo chmown -R +x runner:runner ${{ env.CROOT_DIR }}
