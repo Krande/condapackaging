@@ -19,7 +19,6 @@ jobs:
       python_versions: "3.12"
       platforms: "ubuntu-latest,windows-latest"
       variants: "mpi=nompi;build_type=debug,mpi=openmpi;build_type=debug"
-      description: "Compilations of hdf5"
       use_intel_fortran: "True"
       use_quetz: "True"
     secrets: inherit
