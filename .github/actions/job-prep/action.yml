@@ -155,4 +155,4 @@ runs:
       if: ${{ runner.os == 'Linux' }}
       shell: bash
       run: |
-        sudo chmown -R +x runner:runner ${{ env.CROOT_DIR }}
+        sudo chmod -R +x runner:runner ${{ env.CROOT_DIR }}
