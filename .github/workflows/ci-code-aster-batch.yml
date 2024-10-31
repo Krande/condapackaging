@@ -221,7 +221,6 @@ jobs:
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_channel: ${{ needs.env.outputs.conda_channel }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: true
       variants: ${{ needs.env.outputs.variants }}
@@ -238,7 +237,6 @@ jobs:
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
       conda_channel: ${{ needs.env.outputs.conda_channel }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       variants: ${{ needs.env.outputs.variants }}
       mpi: false
