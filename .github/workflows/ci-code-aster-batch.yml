@@ -14,7 +14,7 @@ on:
         required: true
         type: string
         default: "all"
-      conda_label:
+      conda_channel:
         description: 'Conda Channel for dependencies'
         required: false
         type: string
@@ -61,64 +61,16 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      conda_user: krandedev
       pkg_dir: src/code_aster
       use_quetz: "True"
       # This is where the conda user and label should be set
       code_aster_version: ${{ steps.env.outputs.code_aster_version }}
-      conda_label: ${{ steps.env.outputs.unique_suffix }}
-      python_versions: ${{ inputs.python_versions }}
-      platforms: ${{ inputs.platforms }}
-      variants: ${{ inputs.variants }}
-      description: ${{ inputs.description }}
-      extra_build_args: ${{ inputs.extra_build_args }}
+      conda_channel: ${{ steps.env.outputs.unique_suffix }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: ./.github/actions/ca-batch-prep
         with:
-          python-version: 3.12
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install toposort==1.10
-          pip install ./src/cpack          
-
-      - name: dummy step
-        id: env
-        shell: python
-        env:
-          CONDA_LABEL: ${{ inputs.conda_label }}
-        run: |
-          import os
-          import re
-          
-          
-          def set_output(name, value):
-              with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-                  print(f'{name}={value}', file=fh)
-          
-          # Get Code Aster Version
-          with open('src/code_aster/code_aster/meta.yaml', 'r') as file:
-            text = file.read()
-          version_pattern = r"{%\s*set\s+version\s*=\s*['\"](.+?)['\"]\s*%}"
-          match = re.search(version_pattern, text)
-          if match:
-            result = match.group(1)
-            set_output('code_aster_version', result)
-          else:
-            raise ValueError('Unable to find version number')
-          
-          # Auto generate Conda label if not manually set
-          conda_label = os.getenv('CONDA_LABEL', None)
-          if not conda_label:
-            conda_label = "ca-${{ github.run_id }}"
-          
-          print(f"{conda_label=}")
-          set_output('unique_suffix', conda_label)
+          conda_channel: ${{ inputs.conda_channel }}
 
   build_batch_1:
     needs: env
@@ -127,17 +79,14 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, boa: false },
-          { name: metis, boa: false },
-          { name: homard, boa: false },
-          { name: hdf5, boa: false }
+          { name: scotch },
+          { name: metis },
+          { name: homard },
+          { name: hdf5, pkg_dir: src }
         ]
     with:
       package_name: ${{ matrix.package.name }}
-      job_name: ${{ matrix.package.name }}
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
@@ -145,7 +94,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -153,10 +101,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: parmetis
-      job_name: parmetis
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
@@ -164,7 +109,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_mumps:
@@ -172,10 +116,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mumps
-      job_name: mumps
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
@@ -183,7 +124,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_libmed:
@@ -191,10 +131,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: libmed
-      job_name: libmed
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
@@ -202,7 +139,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_petsc:
@@ -210,10 +146,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: petsc
-      job_name: petsc
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
@@ -221,7 +154,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_medcoupling:
@@ -229,10 +161,8 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
-      job_name: medcoupling
       pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
@@ -240,7 +170,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_mfront:
@@ -248,10 +177,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mfront
-      job_name: mfront
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
@@ -259,7 +185,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_mgis:
@@ -267,10 +192,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mgis
-      job_name: mgis
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       variants: ${{ needs.env.outputs.variants }}
       platforms: ${{ needs.env.outputs.platforms }}
@@ -278,7 +200,6 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   build_batch_code_aster:
@@ -286,9 +207,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: code_aster
-      job_name: code_aster
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
@@ -297,14 +216,13 @@ jobs:
       use_quetz: ${{ needs.env.outputs.use_quetz }}
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ inputs.use_intel_fortran }}
-      use_devtools: ${{ inputs.use_devtools }}
     secrets: inherit
 
   test_mpi:
     needs: [ build_batch_code_aster, env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
-      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       mpi: true
@@ -321,7 +239,7 @@ jobs:
     needs: [ build_batch_code_aster, env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
-      conda_label: ${{ needs.env.outputs.conda_label }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       conda_user: ${{ needs.env.outputs.conda_user }}
       code_aster_version: ${{ needs.env.outputs.code_aster_version }}
       variants: ${{ needs.env.outputs.variants }}

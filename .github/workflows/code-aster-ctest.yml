@@ -3,12 +3,8 @@ name: ci-code-aster-ctest
 on:
   workflow_call:
     inputs:
-      conda_label:
+      conda_channel:
         description: 'conda label'
-        type: string
-        required: true
-      conda_user:
-        description: 'conda user'
         type: string
         required: true
       code_aster_version:
@@ -38,39 +34,34 @@ on:
         description: 'Variants compiled in parallel; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
         type: string
         required: false
-      use_quetz:
-        description: 'use quetz server'
-        type: string
-        required: false
-        default: False
-      description:
-        description: 'description'
+      test_description:
+        description: 'Description of test'
         type: string
         required: false
         default: ""
-      use_devtools:
-        description: 'Use devtools channel'
-        type: string
-        required: false
-        default: False
+
 env:
   VARIANT_FLAG: "*nompi*"
-  PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_label }}-${{ inputs.suffix }}.tar.gz
+  PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_channel }}-${{ inputs.suffix }}.tar.gz
   CONDA_CHANNEL: ""
   DEV_CHANNEL: ""
 
 jobs:
-  # run a preceding job to get the matrix only if matrix_str is None
   build_matrix:
-    uses: ./.github/workflows/conda-build-prep.yml
-    with:
-      python_versions: ${{ inputs.python_versions }}
-      platforms: ${{ inputs.platforms }}
-      conda_label: ${{ inputs.conda_label }}
-      conda_user: ${{ inputs.conda_user }}
-      use_quetz: ${{ inputs.use_quetz }}
-      variants: ${{ inputs.variants }}
-    secrets: inherit
+    runs-on: ubuntu-latest
+    outputs:
+      final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
+
+      - uses: ./.github/actions/job-matrix-builder
+        id: job-matrix-builder
+        with:
+          python_versions: ${{ inputs.python_versions }}
+          platforms: ${{ inputs.platforms }}
+          variants: ${{ inputs.variants }}
 
   run_ctest:
     needs: build_matrix
@@ -117,19 +108,16 @@ jobs:
 
       - name: set ENV CONDA_CHANNEL
         run: |
-          if [[ ${{ inputs.use_quetz }} == 'True' ]]; then
-              echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
-          else
-              echo "CONDA_CHANNEL=${{ inputs.conda_user }}/label/${{ inputs.conda_label }}" >> $GITHUB_ENV
-          fi
+            echo "CONDA_CHANNEL=${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_label }}" >> $GITHUB_ENV
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
 
-      - name: use devtools channel
-        if: ${{ inputs.use_devtools == 'True' }}
-        run: |
-          echo "DEV_CHANNEL=${{ secrets.QUETZ_URL }}/get/devtools" >> $GITHUB_ENV
+      - uses: prefix-dev/setup-pixi@v0.8.0
+        with:
+          pixi-version: v0.34.0
+          environments: "boa"
+          cache: true
 
       - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
         with:
@@ -243,7 +231,7 @@ jobs:
             Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_label }}.
             
             Notes:
-            * ${{ inputs.description }}
+            * ${{ inputs.test_description }}
           draft: false
           prerelease: false
           files: ${{ env.PKG_TAR }}

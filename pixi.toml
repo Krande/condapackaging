@@ -36,9 +36,9 @@ toposort = "*"
 cpack = { path = "./src/cpack", editable = true }
 
 [feature.cpack.tasks]
-
 cpack-actions = { cmd = ["cpack-actions"] }
 cpack-quetz = { cmd = ["cpack-quetz"] }
+ca-batch-prep = { cmd = ["python", ".github/actions/ca-batch-prep/set_vars.py"] }
 
 [feature.rattler.tasks]
 hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }

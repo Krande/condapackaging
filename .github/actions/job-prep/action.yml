@@ -130,6 +130,9 @@ runs:
           echo "CROOT_DIR=/Users/runner/work/build" >> $GITHUB_ENV
         elif [[ "$RUNNER_OS" == "Linux" ]]; then
           echo "PKG_DIR=linux-64" >> $GITHUB_ENV
+          echo "WORK_DIR=/home/runner/work" >> $GITHUB_ENV
+          echo "ARTIFACTS_DIR=/home/runner/work/artifacts" >> $GITHUB_ENV
+          echo "CROOT_DIR=/home/runner/work/build" >> $GITHUB_ENV
         fi
 
     # For some reason on linux, the runner swig is chosen over the conda swig

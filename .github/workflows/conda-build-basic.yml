@@ -8,45 +8,15 @@ on:
         description: 'package name'
         type: string
         required: true
-      job_name:
-        description: 'Name of job'
-        type: string
-        required: false
-        default: ""
-      arg_data:
-        description: 'A base64 serialized dictionary with all relevant build args. Local build args will always override these.'
-        type: string
-        required: false
-        default: ""
-      pkg_dir:
-        description: 'work dir'
-        type: string
-        required: false
-        default: src
-      work_dir:
-        description: 'work dir'
-        type: string
-        required: false
-        default: /home/runner/work
-      conda_label:
+      conda_channel:
         description: 'conda label'
         type: string
         required: true
-      conda_upstream_label:
-        description: 'conda upstream label'
-        type: string
-        required: false
-        default: None
-      conda_upstream_user:
-        description: 'conda upstream user'
-        type: string
-        required: false
-        default: None
       python_versions:
         description: 'matrix type'
         type: string
         required: false
-        default: "3.11"
+        default: "3.12"
       platforms:
         description: 'matrix type'
         type: string
@@ -66,16 +36,6 @@ on:
         type: string
         required: false
         default: ""
-      description:
-        description: 'Package channel description (if using quetz)'
-        type: string
-        required: false
-        default: "CondaPackaging Temp Channel"
-      prep_script:
-        description: 'script to run before build'
-        type: string
-        required: false
-        default: ""
       use_intel_fortran:
         description: 'Install intel fortran'
         type: string
@@ -91,19 +51,10 @@ on:
         type: string
         required: false
         default: ""
-      use_devtools:
-        description: 'Use devtools channel'
-        type: string
-        required: false
-        default: False
+
 env:
-  CONDA_DIR: ${{ inputs.pkg_dir }}/${{ inputs.package_name }}
-  WORK_DIR: ${{ inputs.work_dir }}
-  ARTIFACTS_DIR: ${{ inputs.work_dir }}/artifacts
-  CROOT_DIR: ${{ inputs.work_dir }}/build
   CLICOLOR_FORCE: "1"
   VARIANT_STR: ""
-  CONDA_CHANNEL: ""
   EXTRA_BUILD_ARGS: ""
   CONDA_BUILD_DIR: ""
   SHELL_NAME: bash
@@ -122,8 +73,8 @@ jobs:
       - uses: ./.github/actions/job-eval
         id: should_run
         with:
-          build_selection: ${{ github.event.inputs.build_selection }}
-          job_name: ${{ github.job }}
+          build_selection: ${{ inputs.build_selection }}
+          job_name: ${{ inputs.package_name }}
 
       - uses: ./.github/actions/job-matrix-builder
         id: job-matrix-builder
@@ -135,6 +86,7 @@ jobs:
   build_conda:
     needs: [ build_prep ]
     name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}
+    if: ${{ needs.build_prep.outputs.should_run == 'true' }}
     runs-on: ${{ matrix.platform.os }}
     defaults:
       run:
@@ -172,14 +124,13 @@ jobs:
       - name: build local packages
         run: |
           pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
-        working-directory: ${{ env.CONDA_DIR }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.use_quetz == 'True' }}
         run: |
-          pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_label }} --force
+          pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_channel }} --force
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

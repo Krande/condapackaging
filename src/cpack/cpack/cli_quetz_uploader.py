@@ -117,9 +117,21 @@ def quetz_manager(
     api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
     quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")],
     force: bool = False,
+    create_channel_if_not_exists: bool = False,
+    create_private_channel: bool = False,
 ):
     client = QuetzClient.from_token(quetz_url, api_key)
     qm = QuetzManager(client=client)
+
+    try:
+        qm.list_packages_for_channel(channel)
+    except requests.exceptions.HTTPError:
+        if create_channel_if_not_exists:
+            qm.add_channel(channel, private=create_private_channel)
+        else:
+            logger.error(f"Channel {channel} does not exist")
+            return
+
     logger.info(f"uploading to channel: {channel}")
     # Loop of recursive globbing find .conda and .tar.bz2 files
     for package_file in pathlib.Path(package_dir).rglob("*.conda"):

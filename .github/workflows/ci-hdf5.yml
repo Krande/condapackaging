@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: hdf5
-      conda_label: "hdf5"
+      conda_channel: "hdf5"
       python_versions: "3.12"
       platforms: "ubuntu-latest,windows-latest"
       variants: "mpi=nompi;build_type=debug,mpi=openmpi;build_type=debug"

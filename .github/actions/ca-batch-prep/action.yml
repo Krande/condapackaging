@@ -1,0 +1,31 @@
+name: "ca-batch-prep"
+description: "Code Aster Batch Prep"
+
+inputs:
+  conda_channel:
+    description: "Specific label for the Conda channel. If not provided, a unique suffix will be generated."
+    required: false
+outputs:
+  conda_channel:
+    value: ${{ steps.env.outputs.unique_suffix }}
+    description: "Unique suffix for conda channel"
+  code_aster_version:
+    value: ${{ steps.env.outputs.code_aster_version }}
+    description: "Code Aster version"
+
+runs:
+  using: "composite"
+  steps:
+      - uses: prefix-dev/setup-pixi@v0.8.0
+        with:
+          pixi-version: v0.34.0
+          environments: "cpack"
+          cache: true
+
+      - name: dummy step
+        id: env
+        shell: bash
+        env:
+          conda_channel: ${{ inputs.conda_channel }}
+        run: |
+          pixi run -e cpack ca-batch-prep
