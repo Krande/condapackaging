@@ -4,9 +4,6 @@
 {% set build_type = build_type | default('release') %}
 {% set mpi = mpi | default('nompi') %}
 
-{% if build_type not in ['debug', 'release'] %}
-  {% raise 'Invalid build_type: "{{ build_type }}". Must be "debug" or "release".' %}
-{% endif %}
 
 # prioritize nompi via build number
 {% if mpi == "nompi" %}
@@ -50,7 +47,7 @@ source:
 
 
 build:
-  skip: True  # [win && mpi != 'nompi']
+  skip: True  # [win and mpi != 'nompi']
   number: {{ build }}
   string: {{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:

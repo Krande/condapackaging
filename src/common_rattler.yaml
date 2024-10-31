@@ -35,15 +35,15 @@ fortran_compiler:
 
 c_compiler_version:
   - if: linux
-    then: 12
+    then: 13
 
 cxx_compiler_version:
   - if: linux
-    then: 12
+    then: 13
 
 fortran_compiler_version:
   - if: linux
-    then: 12
+    then: 13
   - if: win
     then: 19.1.2
 
