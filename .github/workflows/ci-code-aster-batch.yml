@@ -82,7 +82,7 @@ jobs:
           { name: scotch },
           { name: metis },
           { name: homard },
-          { name: hdf5, pkg_dir: src }
+          { name: hdf5 }
         ]
     with:
       package_name: ${{ matrix.package.name }}
@@ -161,7 +161,6 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: medcoupling
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
       conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
@@ -208,7 +207,6 @@ jobs:
     with:
       package_name: code_aster
       conda_channel: ${{ needs.env.outputs.conda_channel }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}

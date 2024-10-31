@@ -1,19 +1,16 @@
-{% set version = "18.1.7" %}
+{% set version = "20.0.0.rc1" %}
 
 package:
   name: flang-split
   version: {{ version }}
 
 source:
-  url: https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-{{ version.replace(".rc", "-rc") }}.tar.gz
-  sha256: b60df7cbe02cef2523f7357120fb0d46cbb443791cde3a5fb36b82c335c0afc9
+  git: https://github.com/llvm/llvm-project.git
 
 build:
   number: 0
   # intentionally only windows (main target) & linux (debuggability)
   skip: true  # [osx]
-  track_features:
-    - flang
 
 requirements:
   build:
@@ -23,18 +20,15 @@ requirements:
     - cmake
     - ninja
     - mlir =={{ version }}     # [build_platform != target_platform]
+    # for showing CPU info of CI agent
+    - numpy *
   host:
     - clangdev =={{ version }}
     - compiler-rt =={{ version }}
     - lit =={{ version }}
-    - intel-openmp ==2024.1
     - llvmdev =={{ version }}
     - mlir =={{ version }}
     - zlib
-
-test:
-  commands:
-    - flang --version
 
 outputs:
   - name: libflang
@@ -51,34 +45,12 @@ outputs:
         - compiler-rt =={{ version }}
         - llvmdev =={{ version }}
         - mlir =={{ version }}
-      run:
-        # necessary to link on windows (even for static lib), e.g.
-        # FortranDecimal.lib(binary-to-decimal.cpp.obj) : error LNK2019: unresolved external symbol __udivti3 ...
-        - compiler-rt =={{ version }}  # [win]
     test:
       commands:
         # shared lib on linux
         - test -f $PREFIX/lib/libFortranRuntime.so              # [linux]
         # static lib on win (fails to export symbols for shared build)
         - if not exist %LIBRARY_LIB%\FortranRuntime.lib exit 1  # [win]
-
-  - name: libfortran-main
-    script: install_libfortran_main.sh  # [unix]
-    script: install_libfortran_main.bat  # [win]
-    requirements:
-      build:
-        # if there's no build env, windows fails with EnvironmentLocationNotFound (what?!)
-        - {{ compiler('c') }}    # [win]
-        - {{ compiler('cxx') }}  # [win]
-      host:
-        # this is just here to have a non-empty host environment
-        - {{ pin_subpackage('libflang', exact=True) }}
-      run:
-        # not sure what we need here
-    test:
-      commands:
-        - test -f $PREFIX/lib/libFortran_main.a                 # [unix]
-        - if not exist %LIBRARY_LIB%\Fortran_main.lib exit 1    # [win]
 
   - name: flang
     script: install_flang.sh  # [unix]
@@ -97,7 +69,6 @@ outputs:
       host:
         - clangdev =={{ version }}
         - compiler-rt =={{ version }}
-        - intel-openmp ==2024.1
         - llvmdev =={{ version }}
         - mlir =={{ version }}
         # for required run-exports
@@ -105,34 +76,18 @@ outputs:
         - libclang-cpp =={{ version }}
         # ninja really wants to find z.lib on win
         - zlib  # [win]
+        - zstd  # [win]
         - {{ pin_subpackage('libflang', exact=True) }}
-        - {{ pin_subpackage('libfortran-main', exact=True) }}
       run:
         - sysroot_{{ target_platform }} >={{ c_stdlib_version }}    # [linux]
-        - clangdev =={{ version }}
-        - intel-openmp ==2024.1
+        - clang =={{ version }}
+        - compiler-rt =={{ version }}   # [win]
         - {{ pin_subpackage('libflang', exact=True) }}
-        - {{ pin_subpackage('libfortran-main', exact=True) }}
     test:
-      requires:
-        - {{ compiler('c') }}       # [win]
-        - {{ compiler('cxx') }}     # [win]
-      files:
-        - hello_world.f90
       commands:
         # see naming discussion: https://discourse.llvm.org/t/reviving-rename-flang-new-to-flang/68130/2
-        # - flang hello_world.f90
-        - flang-new hello_world.f90
-        - ./a.out   # [unix]
-        - a.exe     # [win]
-
-  - name: flang_{{ target_platform }}
-    run_exports:
-      strong:
-        - libflang >={{ version }}
-    requirements:
-      - {{ pin_subpackage('flang', exact=True) }}
-
+        - test -f $PREFIX/bin/flang-new                     # [linux]
+        - if not exist %LIBRARY_BIN%\flang-new.exe exit 1   # [win]
 
 about:
   home: https://flang.llvm.org

@@ -1,0 +1,14 @@
+c_compiler:          # [osx]
+  - clang_bootstrap  # [osx]
+cxx_compiler:        # [osx]
+  - clang_bootstrap  # [osx]
+
+# Starting from LLVM 14, the ABI of libclang doesn't necessarily
+# match the major version anymore - cf. #170 and
+# https://github.com/llvm/llvm-project/issues/54004
+libclang_soversion:
+  - 13
+
+# keep for use with root when it catches up
+variant:
+  - default

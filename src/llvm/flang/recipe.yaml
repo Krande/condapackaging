@@ -1,0 +1,100 @@
+schema_version: 1
+
+context:
+  version: 20.0.0.rc1
+
+recipe:
+  name: flang-split
+  version: ${{ version }}
+
+source:
+  git: https://github.com/llvm/llvm-project.git
+
+build:
+  number: 0
+  skip: osx
+
+outputs:
+  - package:
+      name: libflang
+    requirements:
+      build:
+        # for strong run-exports
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - clangdev ==${{ version }}
+        - compiler-rt ==${{ version }}
+        - llvmdev ==${{ version }}
+        - mlir ==${{ version }}
+    tests:
+      - script:
+          - if: linux
+            then: test -f $PREFIX/lib/libFortranRuntime.so
+          - if: win
+            then: if not exist %LIBRARY_LIB%\FortranRuntime.lib exit 1
+    script:
+      - if: unix
+        then: install_libflang.sh  # [unix]
+      - if: win
+        then: install_libflang.bat  # [win]
+  - package:
+      name: flang
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - clangdev ==${{ version }}
+        - compiler-rt ==${{ version }}
+        - llvmdev ==${{ version }}
+        - mlir ==${{ version }}
+        # for required run-exports
+        - llvm ==${{ version }}
+        - libclang-cpp ==${{ version }}
+        # ninja really wants to find z.lib on win
+        - if: win
+          then: zlib
+        - if: win
+          then: zstd
+        - ${{ pin_subpackage('libflang', exact=True) }}
+      run:
+        - if: linux
+          then: sysroot_${{ target_platform }} >=${{ c_stdlib_version }}
+        - clang ==${{ version }}
+        - if: win
+          then: compiler-rt ==${{ version }}
+        - ${{ pin_subpackage('libflang', exact=True) }}
+    tests:
+      - script:
+          - if: linux
+            then: test -f $PREFIX/bin/flang-new
+          - if: win
+            then: if not exist %LIBRARY_BIN%\flang-new.exe exit 1
+    script:
+      - if: unix
+        then: install_flang.sh  # [unix]
+      - if: win
+        then: install_flang.bat  # [win]
+    run_exports:
+      strong:
+        - libflang >=${{ version }}
+
+about:
+  license: Apache-2.0
+  license_file: flang/LICENSE.TXT
+  summary: Flang is a Fortran compiler targeting LLVM.
+  homepage: https://flang.llvm.org
+  repository: https://github.com/llvm/llvm-project
+
+extra:
+  recipe-maintainers:
+    - isuruf
+    - h-vetinari
+  feedstock-name: flang
+

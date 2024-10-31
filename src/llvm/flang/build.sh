@@ -1,6 +1,9 @@
 #!/bin/bash
 set -ex
 
+# show CPU arch to detect slow CI agents early (rather than wait for 6h timeout)
+python -c "import numpy; numpy.show_config()"
+
 mkdir build
 cd build
 
@@ -20,9 +23,10 @@ cmake -G Ninja \
     -DLLVM_EXTERNAL_LIT=$PREFIX/bin/lit \
     -DLLVM_LIT_ARGS=-v \
     -DLLVM_CMAKE_DIR=$PREFIX/lib/cmake/llvm \
+    -DLLVM_DIR=$PREFIX/lib/cmake/llvm \
     -DCLANG_DIR=$PREFIX/lib/cmake/clang \
     -DFLANG_INCLUDE_TESTS=OFF \
     -DMLIR_DIR=$PREFIX/lib/cmake/mlir \
     ../flang
 
-cmake --build . -j1
+cmake --build . -j2

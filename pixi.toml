@@ -41,6 +41,7 @@ cpack-quetz = { cmd = ["cpack-quetz"] }
 ca-batch-prep = { cmd = ["python", ".github/actions/ca-batch-prep/set_vars.py"] }
 
 [feature.rattler.tasks]
+flang = { cmd = ["rattler-build", "build","-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }
 mfront = { cmd = ["rattler-build", "build", "-r", "recipe.yaml", "-m", "../common_rattler.yaml", "-m", "../py312_debug.yaml", "--output-dir", "../../../output"], cwd = "src/code_aster/mfront" }
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
@@ -56,6 +57,7 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 conv = { cmd = "conda-recipe-manager convert" }
 
 [feature.boa.tasks]
+flang = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/llvm/flang" }
 mambabuild = { cmd = ["conda", "mambabuild"] }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
 occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
