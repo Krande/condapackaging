@@ -34,7 +34,7 @@ on:
         type: string
         default: "mpi=nompi;build_type=debug,mpi=nompi;build_type=release"
       extra_build_args:
-        description: 'Extra build args (use "__root__" for root directory).'
+        description: 'Extra build args ("__root__"=root dir).'
         required: false
         type: string
         default: ""
