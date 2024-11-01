@@ -3,10 +3,12 @@
 mkdir build
 cd build
 
+CFLAGS=%CFLAGS% /nologo
+
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
-    set CFLAGS=%CFLAGS% /nologo /Od /Zi
+    set CFLAGS=%CFLAGS% /Od /Zi
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 
