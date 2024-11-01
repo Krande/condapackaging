@@ -26,8 +26,8 @@ on:
         description: 'Variants compiled in parallel; <variant1_key>=<variant1_value>,<variant2_key>=<variant2_value>'
         type: string
         required: false
-      use_quetz:
-        description: 'use quetz server'
+      upload_conda:
+        description: 'Upload to conda server'
         type: string
         required: false
         default: False
@@ -128,7 +128,7 @@ jobs:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
 
       - name: Upload packages to Quetz Server
-        if: ${{ inputs.use_quetz == 'True' }}
+        if: ${{ inputs.upload_conda == 'True' }}
         run: |
           pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_channel }} --force
         env:
