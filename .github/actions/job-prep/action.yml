@@ -85,7 +85,7 @@ runs:
         WORKSPACE: ${{ github.workspace}}
       shell: bash
       run: |
-        $GITHUB_ACTION_PATH/set_extra_build_vars.py
+        python $GITHUB_ACTION_PATH/set_extra_build_vars.py
 
     - name: Append conda_channel to env vars
       shell: bash
