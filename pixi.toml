@@ -88,7 +88,7 @@ medcoupling = { build = "*debug*" }
 mfront = { build = "*debug*" }
 mgis = { build = "*debug*" }
 scotch = { build = "*debug*" }
-code_aster = { build = "*debug*" }
+#code_aster = { build = "*debug*" }
 
 [feature.release]
 platforms = ["win-64", "linux-64"]
@@ -101,7 +101,7 @@ medcoupling = { build = "*release*" }
 mfront = { build = "*release*" }
 mgis = { build = "*release*" }
 scotch = { build = "*release*" }
-code_aster = { build = "*release*" }
+#code_aster = { build = "*release*" }
 
 
 [feature.release.tasks]
