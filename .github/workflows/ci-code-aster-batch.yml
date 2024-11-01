@@ -38,7 +38,11 @@ on:
         required: false
         type: string
         default: ""
-
+      conda_channel_description:
+        description: "Conda channel description"
+        required: false
+        type: string
+        default: "A temporary channel for Code Aster development"
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
 jobs:
@@ -60,6 +64,14 @@ jobs:
         id: env
         with:
           conda_channel: ${{ inputs.conda_channel }}
+
+      - name: Create channel if not exists
+        shell: bash
+        run: |
+          pixi run -e cpack cpack-quetz create-channel ${{ steps.env.outputs.conda_channel }} --channel-description "${{ inputs.conda_channel_description }}"
+        env:
+          QUETZ_URL: ${{ secrets.QUETZ_URL }}
+          QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
 
   build_batch_1:
     needs: env
