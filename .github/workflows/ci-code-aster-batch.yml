@@ -217,6 +217,5 @@ jobs:
       variants: ${{ needs.env.outputs.variants }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      use_quetz: ${{ needs.env.outputs.use_quetz }}
       test_description: ${{ needs.env.outputs.description }}
     secrets: inherit
