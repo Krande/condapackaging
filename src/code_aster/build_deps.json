@@ -26,10 +26,7 @@
     "mgis",
     "medcoupling"
   ],
-  "test_mpi": [
-    "code_aster"
-  ],
-  "test_seq": [
+  "test": [
     "code_aster"
   ]
 }
