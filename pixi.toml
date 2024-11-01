@@ -43,7 +43,7 @@ ca-batch-prep = { cmd = ["python", ".github/actions/ca-batch-prep/set_vars.py"] 
 [feature.rattler.tasks]
 flang = { cmd = ["rattler-build", "build","-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }
-mfront = { cmd = ["rattler-build", "build", "-r", "recipe.yaml", "-m", "../common_rattler.yaml", "-m", "../py312_debug.yaml", "--output-dir", "../../../output"], cwd = "src/code_aster/mfront" }
+mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml", "--output-dir", "output"] }
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/code_aster/win.yaml"] }
 
@@ -66,6 +66,8 @@ pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python",
 stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/stepcode" }
 
 # Code Aster Packages
+homard = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/homard" }
+parmetis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/parmetis" }
 hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/metis" }

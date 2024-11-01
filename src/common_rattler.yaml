@@ -43,7 +43,15 @@ fortran_compiler_version:
   - if: linux
     then: 13
   - if: win
-    then: 19.1.2
+    then: 18
+
+clang:
+  - if: win
+    then: 18
+
+lld:
+  - if: win
+    then: 18
 
 channel_sources:
   - conda-forge
@@ -98,9 +106,6 @@ libxml2:
 
 zlib:
   - 1
-
-clang:
-  - 19.1.2
 
 intel_fortran_rt:
   - 2024.2
