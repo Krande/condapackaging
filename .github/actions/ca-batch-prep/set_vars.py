@@ -27,7 +27,8 @@ def main():
     # Auto generate Conda label if not manually set
     conda_label = os.getenv('CONDA_LABEL', None)
     if not conda_label:
-        conda_label = "ca-${{ github.run_id }}"
+        unique_id = os.getenv('UNIQUE_ID')
+        conda_label = f"ca-{unique_id}"
 
     print(f"{conda_label=}")
     set_output('unique_suffix', conda_label)

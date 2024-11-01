@@ -27,5 +27,6 @@ runs:
         shell: bash
         env:
           conda_channel: ${{ inputs.conda_channel }}
+          UNIQUE_ID: ${{ github.run_id }}
         run: |
           pixi run -e cpack ca-batch-prep
