@@ -2,6 +2,9 @@ name: "Prepare job"
 description: "Prepare job for conda package compilation"
 
 inputs:
+    conda_channel:
+      description: "Conda channel"
+      required: true
     extra_build_args:
         description: "Extra build arguments"
         required: false
@@ -18,6 +21,11 @@ inputs:
         description: "Environment variables in key=value pairs, separated by commas"
         required: false
         default: ""
+    use_devtools:
+        description: "Use devtools channel"
+        required: false
+        default: 'false'
+
 
 
 runs:
@@ -72,35 +80,20 @@ runs:
       env:
         EXTRA_ARGS: ${{ inputs.extra_build_args }}
         WORKSPACE: ${{ github.workspace}}
-      shell: python
+      shell: bash
       run: |
-        import os
-        import platform
-        import pathlib
+        $GITHUB_ACTION_PATH/set_extra_build_vars.py
 
+    - name: Append conda_channel to env vars
+      shell: bash
+      run: |
+        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_channel }}" >> $GITHUB_ENV
 
-        def set_env(name, value):
-            with open(os.environ['GITHUB_ENV'], 'a') as fh:
-                print(f'{name}={value}', file=fh)
-
-
-        workspace_dir = pathlib.Path(os.getenv("WORKSPACE"))
-        extra_args = os.getenv("EXTRA_ARGS")
-
-        # Substitute __root__ with github workspace
-        if extra_args != "":
-            if platform.system() == "Windows":
-                new_args = []
-                for arg in extra_args.split(' '):
-                      if "__root__" in arg:
-                          # if it's a path, and it is using single quotes, replace with double quotes
-                          new_args.append(arg.replace("'", '"'))
-                      else:
-                          new_args.append(arg)
-                extra_args = ' '.join(new_args)
-
-            extra_args_str = extra_args.replace('__root__', workspace_dir.as_posix())
-            set_env('EXTRA_BUILD_ARGS', extra_args_str)
+    - name: Use devtools channel
+      if: ${{ inputs.use_devtools == 'true' }}
+      shell: bash
+      run: |
+        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ secrets.QUETZ_URL }}/get/devtools" >> $GITHUB_ENV
 
     - name: Download and extract MacOSX SDK
       shell: bash

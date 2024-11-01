@@ -1,11 +1,11 @@
-{% set version = "20.0.0.rc1" %}
+{% set version = "20.0.0.git1" %}
 
 package:
   name: flang-split
   version: {{ version }}
 
 source:
-  git: https://github.com/llvm/llvm-project.git
+  url: https://github.com/Krande/llvm-project/archive/refs/tags/{{ version }}.tar.gz
 
 build:
   number: 0

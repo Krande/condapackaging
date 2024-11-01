@@ -51,6 +51,11 @@ on:
         type: string
         required: false
         default: ""
+      use_devtools:
+        description: 'Use devtools channel'
+        type: string
+        required: false
+        default: False
 
 env:
   CLICOLOR_FORCE: "1"
@@ -101,10 +106,12 @@ jobs:
 
       - uses: ./.github/actions/job-prep
         with:
+          conda_channel: ${{ inputs.conda_channel }}
           env_vars: ${{ inputs.env_vars }}
           variants: ${{ inputs.variants }}
           variants_base64_str: ${{ matrix.variants.var_str }}
           extra_build_args: ${{ inputs.extra_build_args }}
+          use_devtools: ${{ inputs.use_devtools }}
 
       - uses: ./.github/actions/install-intel-fortran
         if: ${{ inputs.use_intel_fortran == 'True' && runner.os == 'Windows' }}
@@ -130,7 +137,7 @@ jobs:
 
       - name: build local packages
         run: |
-          pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c ${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_channel }}
+          pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.upload_conda == 'True' }}

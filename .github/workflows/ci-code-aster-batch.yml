@@ -49,8 +49,6 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      pkg_dir: src/code_aster
-      upload_conda: "True"
       # This is where the conda user and label should be set
       code_aster_version: ${{ steps.env.outputs.code_aster_version }}
       conda_channel: ${{ steps.env.outputs.conda_channel }}
@@ -95,6 +93,7 @@ jobs:
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ matrix.package.use_intel_fortran }}
+      use_devtools: ${{ matrix.package.use_intel_fortran }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -125,6 +124,7 @@ jobs:
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
+      use_devtools: True
     secrets: inherit
 
   build_batch_libmed:
@@ -140,6 +140,7 @@ jobs:
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
+      use_devtools: True
     secrets: inherit
 
   build_batch_petsc:
@@ -184,7 +185,8 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: False
+      use_intel_fortran: True
+      use_devtools: True
     secrets: inherit
 
   build_batch_mgis:
@@ -199,7 +201,8 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: False
+      use_intel_fortran: True
+      use_devtools: True
     secrets: inherit
 
   build_batch_code_aster:
@@ -215,6 +218,7 @@ jobs:
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
+      use_devtools: True
     secrets: inherit
 
   test:

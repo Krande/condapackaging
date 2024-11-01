@@ -57,14 +57,22 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 conv = { cmd = "conda-recipe-manager convert" }
 
 [feature.boa.tasks]
+# Flang
+llvmdev = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/llvmdev" }
+clangdev = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/clangdev" }
 flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang" }
+
+# Other
 mambabuild = { cmd = ["conda", "mambabuild"] }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
+
+# Intel LLVM Compiler
+intelfortranrt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/intelfortranrt" }
+
+# OCCT
 occt = { cmd = ["conda", "mambabuild", ".", "-m", "../ccommon.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
-occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
 pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
 stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/stepcode" }
-intelfortranrt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/intelfortranrt" }
 
 # Code Aster Packages
 homard = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/homard" }
@@ -73,12 +81,12 @@ hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/metis" }
 mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mumps" }
+petsc = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/petsc" }
 libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/libmed" }
 medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/medcoupling" }
 mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mfront" }
 mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mgis" }
 code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/code_aster" }
-petsc = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/petsc" }
 
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 

@@ -79,6 +79,7 @@ jobs:
             channel_priority: strict
             channels:
               - ${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_channel }}
+              - ${{ secrets.QUETZ_URL }}/get/devtools
               - conda-forge
           create-args: >-
             python=${{ matrix.pyver }}
