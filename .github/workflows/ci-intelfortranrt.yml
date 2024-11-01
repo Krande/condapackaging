@@ -13,11 +13,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: intelfortranrt
-      job_name: "intelfortranrt"
       platforms: "windows-latest"
-      pkg_dir: src
-      conda_label: devtools
+      conda_channel: devtools
       use_quetz: "True"
-      extra_build_args: " -m __root__/src/code_aster/common.yaml"
-      use_intel_fortran: 'False'
     secrets: inherit
