@@ -38,14 +38,6 @@ on:
         required: false
         type: string
         default: ""
-      use_intel_fortran:
-        description: 'Install intel fortran'
-        type: choice
-        required: false
-        options:
-          - "True"
-          - "False"
-        default: "True"
 
 
 # https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
@@ -76,10 +68,10 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch },
-          { name: metis },
-          { name: homard },
-          { name: hdf5 }
+          { name: scotch, use_intel_fortran: True },
+          { name: metis, use_intel_fortran: False },
+          { name: homard, use_intel_fortran: False },
+          { name: hdf5, use_intel_fortran: True }
         ]
     with:
       package_name: ${{ matrix.package.name }}
@@ -90,7 +82,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: ${{ matrix.package.use_intel_fortran }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -104,7 +96,7 @@ jobs:
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: False
       upload_conda: True
     secrets: inherit
 
@@ -120,7 +112,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: True
     secrets: inherit
 
   build_batch_libmed:
@@ -135,7 +127,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: True
     secrets: inherit
 
   build_batch_petsc:
@@ -150,7 +142,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: False
     secrets: inherit
 
   build_batch_medcoupling:
@@ -165,7 +157,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: False
     secrets: inherit
 
   build_batch_mfront:
@@ -180,7 +172,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: False
     secrets: inherit
 
   build_batch_mgis:
@@ -195,7 +187,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: False
     secrets: inherit
 
   build_batch_code_aster:
@@ -210,7 +202,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: ${{ inputs.use_intel_fortran }}
+      use_intel_fortran: True
     secrets: inherit
 
   test:
