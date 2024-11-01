@@ -50,13 +50,13 @@ set LIBPATH=%PREF_ROOT%/libs %LIBPATH%
 
 REM /MD link with MSVCRT.lib. /FS allow for c compiler calls to vc140.pdb on multiple threads (for cl.exe only)
 
-set CFLAGS=%CFLAGS% /FS /MD /DMKL_ILP64
-set CXXFLAGS=%CXXFLAGS% /MD /DMKL_ILP64
+set CFLAGS=%CFLAGS% /FS /MD
+set CXXFLAGS=%CXXFLAGS% /MD
 
 if "%FC%" == "ifx.exe" (
     echo "Using Intel Fortran LLVM IFX compiler"
     set FC_SEARCH=ifort
-    set FCFLAGS=%FCFLAGS% /fpp /MD /4I8 /double-size:64 /real-size:64 /integer-size:64 /names:lowercase /assume:underscore /assume:nobscc /DMKL_ILP64 /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
+    set FCFLAGS=%FCFLAGS% /fpp /MD /4I8 /4R8 /names:lowercase /assume:underscore /assume:nobscc /fpe:0
     :: Add lib paths
     set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
 ) else (
@@ -82,7 +82,7 @@ if "%build_type%" == "debug" (
 )
 
 :: Add Math libs
-set LDFLAGS=%LDFLAGS% mkl_intel_ilp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
+set LDFLAGS=%LDFLAGS% mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
 
 :: Add threading libs
 set LDFLAGS=%LDFLAGS% pthread.lib
@@ -117,7 +117,6 @@ waf configure ^
   --enable-mumps ^
   --enable-metis ^
   --enable-scotch ^
-  --disable-openmp ^
   --disable-mpi ^
   --disable-petsc ^
   --install-tests ^

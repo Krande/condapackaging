@@ -64,6 +64,7 @@ occt = { cmd = ["conda", "mambabuild", ".", "-m", "../ccommon.yaml", "--python",
 occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
 pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
 stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/stepcode" }
+intelfortranrt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/intelfortranrt" }
 
 # Code Aster Packages
 homard = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/homard" }
