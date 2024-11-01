@@ -25,7 +25,7 @@ def main():
         raise ValueError('Unable to find version number')
 
     # Auto generate Conda label if not manually set
-    conda_label = os.getenv('CONDA_LABEL', None)
+    conda_label = os.getenv('CONDA_CHANNEL', None)
     if not conda_label:
         unique_id = os.getenv('UNIQUE_ID')
         conda_label = f"ca-{unique_id}"
