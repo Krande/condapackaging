@@ -57,7 +57,7 @@ jobs:
       upload_conda: "True"
       # This is where the conda user and label should be set
       code_aster_version: ${{ steps.env.outputs.code_aster_version }}
-      conda_channel: ${{ steps.env.outputs.unique_suffix }}
+      conda_channel: ${{ steps.env.outputs.conda_channel }}
 
     steps:
       - uses: actions/checkout@v4
@@ -65,6 +65,7 @@ jobs:
           fetch-depth: '1'
       
       - uses: ./.github/actions/ca-batch-prep
+        id: env
         with:
           conda_channel: ${{ inputs.conda_channel }}
 
