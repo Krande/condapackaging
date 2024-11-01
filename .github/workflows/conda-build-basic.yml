@@ -120,6 +120,7 @@ jobs:
       - name: Update condarc
         run: |
           pixi run cpack-config --root-dir=${{ env.CROOT_DIR }} --artifacts-dir=${{ env.ARTIFACTS_DIR }}
+          pixi run -e boa cpack-quetz create-channel ${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_channel }}
 
       - name: build local packages
         run: |
