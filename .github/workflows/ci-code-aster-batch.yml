@@ -4,7 +4,7 @@ name: ci-code-aster-batch
 on:
   workflow_dispatch:
     inputs:
-      description:
+      release_description:
         description: 'Release Description'
         required: true
         type: string
@@ -221,5 +221,5 @@ jobs:
       variants: ${{ inputs.variants }}
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
-      test_description: ${{ needs.env.outputs.description }}
+      test_description: ${{ inputs.release_description }}
     secrets: inherit
