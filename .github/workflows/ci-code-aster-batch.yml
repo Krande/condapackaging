@@ -22,7 +22,7 @@ on:
         description: 'Python Versions'
         required: true
         type: string
-        default: "3.11"
+        default: "3.12"
       platforms:
         description: 'Platforms'
         required: true
@@ -60,6 +60,9 @@ jobs:
       conda_channel: ${{ steps.env.outputs.unique_suffix }}
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
       - uses: ./.github/actions/ca-batch-prep
         with:
           conda_channel: ${{ inputs.conda_channel }}
