@@ -34,7 +34,7 @@ on:
         type: string
         default: "mpi=nompi;build_type=debug,mpi=nompi;build_type=release"
       extra_build_args:
-        description: 'Extra build arguments. For example, -m "__root__/src/common.yaml"'
+        description: 'Extra build args (use "__root__" for root directory).'
         required: false
         type: string
         default: ""
