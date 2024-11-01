@@ -37,6 +37,9 @@ fortran_compiler_version:
 lld:
   - '18'  # [win]
 
+swig:
+  - '4.2.1'
+
 channel_sources:
   - conda-forge
 #  - lapack_rc         # [win]

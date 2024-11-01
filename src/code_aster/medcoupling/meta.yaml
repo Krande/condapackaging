@@ -58,7 +58,7 @@ requirements:
     - make                                      # [not win]
     - ninja                                     # [win]
     - cmake
-    - swig >=4.0.2
+    - swig
 
   host:
     - python

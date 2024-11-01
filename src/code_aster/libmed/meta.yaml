@@ -48,7 +48,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - swig >=4.0.2
+    - swig
     - cmake
     - ninja                               # [win]
     - make                                # [unix]
