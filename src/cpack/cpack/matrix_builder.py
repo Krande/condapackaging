@@ -34,13 +34,19 @@ def create_actions_matrix(python_versions, platforms, variants_in):
                 continue
 
             key, *value = v.split('=')
+            value_str = '='.join(value)
             value = key + '=' + '='.join(value)
+            key_value_dict = {}
+            for sv in value.split(';'):
+                key_d = sv.split('=')[0]
+                value_d = sv.replace(key_d + '=', '')
+                key_value_dict[key_d] = value_d
             key_str = ','.join([sv.split('=')[0] for sv in value.split(';')])
 
             var_str = variant_str_builder_main(value)
             var_bytes_str = convert_to_byte_str(var_str)
 
-            variant_list_of_dicts.append({"key": key_str, "value": value, "var_str": var_bytes_str})
+            variant_list_of_dicts.append({"key": key_str, "value": value, "var_str": var_bytes_str, **key_value_dict})
         matrix["variants"] = variant_list_of_dicts
 
     return matrix
@@ -58,12 +64,12 @@ def convert_from_bytes_str(var_bytes_str: str) -> str:
 
 
 def variants_from_yml(variants_yml) -> list[dict]:
-    import ruamel.yaml as yaml
+    from ruamel.yaml import YAML
+    yaml = YAML(typ='safe', pure=True)
 
     with open(variants_yml, 'r') as f:
-        variants = yaml.safe_load(f)
+        variants = yaml.load(f)
 
-    zip_keys = variants.get('zip_keys', [])
     variants_out = []
     for key, value in variants.items():
         if isinstance(value, list):

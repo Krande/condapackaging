@@ -4,7 +4,7 @@ name: ci-code-aster
 on:
   workflow_dispatch:
     inputs:
-      conda_label:
+      conda_channel:
         description: 'Conda Channel for dependencies'
         required: true
         type: string
@@ -50,15 +50,13 @@ jobs:
       # This is where the conda user and label should be set
       package_name: code_aster
       code_aster_version: ${{ inputs.code_aster_version }}
-      conda_label: ${{ inputs.conda_label }}
-      conda_user: krandedev
-      pkg_dir: src/code_aster
+      conda_channel: ${{ inputs.conda_channel }}
       debug_build: ${{ inputs.debug_build }}
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
       variants: ${{ inputs.mpi_variants }}
       use_quetz: "True"
-      extra_build_args: " -m __root__/src/code_aster/common.yaml"
+      extra_build_args: " -m __root__/src/common.yaml"
 
     steps:
       - name: dummy step
@@ -71,44 +69,21 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ${{ needs.env.outputs.package_name }}
-      pkg_dir: ${{ needs.env.outputs.pkg_dir }}
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-      debug_build: ${{ needs.env.outputs.debug_build }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       use_quetz: ${{ needs.env.outputs.use_quetz }}
-      env_vars: "CODE_ASTER_VERSION=${{ needs.env.outputs.code_aster_version }}"
     secrets: inherit
     
-  test_mpi:
+  test:
     needs: [ build_code_aster, env ]
-#    needs: [ env ]
     uses: ./.github/workflows/code-aster-ctest.yml
     with:
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
       code_aster_version:  ${{ needs.env.outputs.code_aster_version }}
-      mpi: true
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      suffix: "mpi"
-      use_quetz: ${{ needs.env.outputs.use_quetz }}
-    secrets: inherit
-    
-  test_seq:
-    needs: [ build_code_aster, env ]
-#    needs: [ env ]
-    uses: ./.github/workflows/code-aster-ctest.yml
-    with:
-      conda_label: ${{ needs.env.outputs.conda_label }}
-      conda_user: ${{ needs.env.outputs.conda_user }}
-      code_aster_version:  ${{ needs.env.outputs.code_aster_version }}
-      mpi: false
-      python_versions: ${{ needs.env.outputs.python_versions }}
-      platforms: ${{ needs.env.outputs.platforms }}
-      suffix: "seq"
       use_quetz: ${{ needs.env.outputs.use_quetz }}
     secrets: inherit

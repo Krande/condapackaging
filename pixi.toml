@@ -7,8 +7,8 @@ platforms = ["win-64", "linux-64"]
 
 [environments]
 cpack = ["cpack"]
-debug = { features = ["debug"] }
-release = { features = ["release"] }
+debug = ["debug"]
+release = ["release"]
 rattler = ["rattler"]
 boa = ["boa", "cpack"]
 
@@ -78,30 +78,31 @@ all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "li
 
 
 [feature.debug]
-platforms = ["win-64"]
+platforms = ["win-64", "linux-64"]
 channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
 
 [feature.debug.dependencies]
-
-hdf5 = { build = "*release*" }
-libmed = { build = "*release*" }
-medcoupling = { build = "*release*" }
-mfront = { build = "*release*" }
-mgis = { build = "*release*" }
-scotch = { build = "*release*" }
-
-[feature.release]
-platforms = ["win-64"]
-channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
-
-[feature.release.dependencies]
-
 hdf5 = { build = "*debug*" }
 libmed = { build = "*debug*" }
 medcoupling = { build = "*debug*" }
 mfront = { build = "*debug*" }
 mgis = { build = "*debug*" }
 scotch = { build = "*debug*" }
+code_aster = { build = "*debug*" }
+
+[feature.release]
+platforms = ["win-64", "linux-64"]
+channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
+
+[feature.release.dependencies]
+hdf5 = { build = "*release*" }
+libmed = { build = "*release*" }
+medcoupling = { build = "*release*" }
+mfront = { build = "*release*" }
+mgis = { build = "*release*" }
+scotch = { build = "*release*" }
+code_aster = { build = "*release*" }
+
 
 [feature.release.tasks]
 test_code_aster = { cmd = ["src/code_aster/rattler-wrap.bat", "code_aster"] }

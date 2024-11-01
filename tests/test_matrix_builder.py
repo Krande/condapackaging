@@ -10,8 +10,9 @@ def test_matrix_builder_variant_specify_os():
         "pyver": ["3.10", "3.11"],
         "platform": [{"os": "windows-2022", "short": "win"}],
         "variants": [
-            {"key": "mpi", "value": "mpi=nompi", "var_str": "IC0tdmFyaWFudHM9InsnbXBpJzogJ25vbXBpJ30i"},
-            {"key": "mpi", "value": "mpi=openmpi", "var_str": "IC0tdmFyaWFudHM9InsnbXBpJzogJ29wZW5tcGknfSI="},
+            {"key": "mpi", "value": "mpi=nompi", "var_str": "IC0tdmFyaWFudHM9InsnbXBpJzogJ25vbXBpJ30i", "mpi": "nompi"},
+            {"key": "mpi", "value": "mpi=openmpi", "var_str": "IC0tdmFyaWFudHM9InsnbXBpJzogJ29wZW5tcGknfSI=",
+             "mpi": "openmpi"},
         ],
     }
 
@@ -33,11 +34,13 @@ def test_matrix_builder_variant1():
                 "key": "occt,hdf5",
                 "value": "occt=7.7.2=*novtk*;hdf5=1.10.6=*nompi*",
                 "var_str": "IC0tdmFyaWFudHM9Insnb2NjdCc6ICc3LjcuMj0qbm92dGsqJywgJ2hkZjUnOiAnMS4xMC42PSpub21waSonfSI=",
+                'hdf5': '1.10.6=*nompi*', 'occt': '7.7.2=*novtk*'
             },
             {
                 "key": "occt,hdf5",
                 "value": "occt=7.7.2=*novtk*;hdf5=1.10.6=*mpi*",
                 "var_str": "IC0tdmFyaWFudHM9Insnb2NjdCc6ICc3LjcuMj0qbm92dGsqJywgJ2hkZjUnOiAnMS4xMC42PSptcGkqJ30i",
+                'hdf5': '1.10.6=*mpi*', 'occt': '7.7.2=*novtk*'
             },
         ],
     }
@@ -69,11 +72,13 @@ def test_matrix_builder_variant2():
                 "key": "occt",
                 "value": "occt=7.7.2=*novtk*",
                 "var_str": "IC0tdmFyaWFudHM9Insnb2NjdCc6ICc3LjcuMj0qbm92dGsqJ30i",
+                "occt": "7.7.2=*novtk*",
             },
             {
                 "key": "occt",
                 "value": "occt=7.7.2=*all*",
                 "var_str": "IC0tdmFyaWFudHM9Insnb2NjdCc6ICc3LjcuMj0qYWxsKid9Ig==",
+                "occt": "7.7.2=*all*",
             },
         ],
     }
