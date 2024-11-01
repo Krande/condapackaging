@@ -9,7 +9,7 @@ on:
         type: string
         required: true
       conda_channel:
-        description: 'conda label'
+        description: 'conda channel name'
         type: string
         required: true
       python_versions:
@@ -120,6 +120,9 @@ jobs:
       - name: Update condarc
         run: |
           pixi run cpack-config --root-dir=${{ env.CROOT_DIR }} --artifacts-dir=${{ env.ARTIFACTS_DIR }}
+
+      - name: Add channel if not already exist
+        run: |
           pixi run -e boa cpack-quetz create-channel ${{ inputs.conda_channel }}
 
       - name: build local packages
