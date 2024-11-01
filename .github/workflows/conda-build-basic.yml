@@ -130,7 +130,7 @@ jobs:
       - name: Upload packages to Quetz Server
         if: ${{ inputs.upload_conda == 'True' }}
         run: |
-          pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_channel }} --force
+          pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_channel }} --force --create-channel-if-not-exists
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}

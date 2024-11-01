@@ -5,6 +5,10 @@ inputs:
   conda_channel:
     description: "Specific label for the Conda channel. If not provided, a unique suffix will be generated."
     required: false
+  conda_channel_description:
+    description: "Description for the Conda channel"
+    required: false
+    default: "A temporary channel for Code Aster development"
 outputs:
   conda_channel:
     value: ${{ steps.env.outputs.unique_suffix }}
@@ -30,3 +34,8 @@ runs:
           UNIQUE_ID: ${{ github.run_id }}
         run: |
           pixi run -e cpack ca-batch-prep
+
+      - name: Create channel if not exists
+        shell: bash
+        run: |
+          pixi run -e cpack cpack-quetz create-channel ${{ steps.env.outputs.unique_suffix }} --channel-description "${{ inputs.conda_channel_description }}"
