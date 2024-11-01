@@ -12,7 +12,7 @@ jobs:
   llvmdev:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
-      package_name: flang
+      package_name: llvmdev
       platforms: "windows-latest"
       conda_channel: "flang"
     secrets: inherit
