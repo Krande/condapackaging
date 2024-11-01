@@ -112,6 +112,7 @@ jobs:
           variants_base64_str: ${{ matrix.variants.var_str }}
           extra_build_args: ${{ inputs.extra_build_args }}
           use_devtools: ${{ inputs.use_devtools }}
+          quetz_url: ${{ secrets.QUETZ_URL }}
 
       - uses: ./.github/actions/install-intel-fortran
         if: ${{ inputs.use_intel_fortran == 'True' && runner.os == 'Windows' }}

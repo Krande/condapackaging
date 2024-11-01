@@ -7,8 +7,8 @@ on:
       - .github/workflows/ci-hdf5.yml
       - .github/actions/**/*
       - .github/workflows/conda-build-basic.yml
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   build:

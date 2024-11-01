@@ -25,7 +25,10 @@ inputs:
         description: "Use devtools channel"
         required: false
         default: 'false'
-
+    quetz_url:
+        description: "Quetz URL"
+        required: false
+        default: ""
 
 
 runs:
@@ -87,13 +90,13 @@ runs:
     - name: Append conda_channel to env vars
       shell: bash
       run: |
-        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ secrets.QUETZ_URL }}/get/${{ inputs.conda_channel }}" >> $GITHUB_ENV
+        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ inputs.quetz_url }}/get/${{ inputs.conda_channel }}" >> $GITHUB_ENV
 
     - name: Use devtools channel
       if: ${{ inputs.use_devtools == 'true' }}
       shell: bash
       run: |
-        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ secrets.QUETZ_URL }}/get/devtools" >> $GITHUB_ENV
+        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ inputs.quetz_url }}/get/devtools" >> $GITHUB_ENV
 
     - name: Download and extract MacOSX SDK
       shell: bash

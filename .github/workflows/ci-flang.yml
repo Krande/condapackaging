@@ -9,12 +9,28 @@ on:
 #      - donotrun
 
 jobs:
-  build:
+  llvmdev:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: flang
       platforms: "windows-latest"
-      use_quetz: "True"
-      extra_build_args: ""
-      use_intel_fortran: 'False'
+      conda_channel: "flang"
+    secrets: inherit
+
+  clangdev:
+    needs: [llvmdev]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: clangdev
+      platforms: "windows-latest"
+      conda_channel: "flang"
+    secrets: inherit
+
+  flang:
+    needs: [clangdev]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: flang
+      platforms: "windows-latest"
+      conda_channel: "flang"
     secrets: inherit
