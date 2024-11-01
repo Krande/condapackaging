@@ -34,10 +34,10 @@ on:
         type: string
         default: "mpi=nompi;build_type=debug,mpi=nompi;build_type=release"
       extra_build_args:
-        description: 'Extra build arguments'
-        required: true
+        description: 'Extra build arguments. For example, -m "__root__/src/common.yaml"'
+        required: false
         type: string
-        default: " -m '__root__/src/common.yaml'"
+        default: ""
       use_intel_fortran:
         description: 'Install intel fortran'
         type: choice
