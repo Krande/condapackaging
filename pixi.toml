@@ -57,23 +57,25 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 conv = { cmd = "conda-recipe-manager convert" }
 
 [feature.boa.tasks]
-flang = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/llvm/flang" }
+flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang" }
 mambabuild = { cmd = ["conda", "mambabuild"] }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
-occt = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
-occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
-pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
-stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../code_aster/common.yaml"], cwd = "src/stepcode" }
+occt = { cmd = ["conda", "mambabuild", ".", "-m", "../ccommon.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
+occtr = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'all'}\""], cwd = "src/occt" }
+pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
+stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/stepcode" }
+
+# Code Aster Packages
 hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
+scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
+metis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/metis" }
+mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mumps" }
+libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/libmed" }
+medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/medcoupling" }
+mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mfront" }
+mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mgis" }
+code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/code_aster" }
 
-scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/scotch" }
-metis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/metis" }
-mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/code_aster/mumps" }
-libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: release}"], cwd = "src/code_aster/libmed" }
-medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/medcoupling" }
-
-mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/mgis" }
-code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python=3.12", "--variants={build_type: debug}"], cwd = "src/code_aster/code_aster" }
 all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 
 

@@ -28,11 +28,14 @@ cxx_compiler_version:
   - 13            # [linux]
 
 clang:
-  - '19.1.2'      # [win]
+  - '18'      # [win]
 
 fortran_compiler_version:
   - '13'            # [linux]
-  - '19.1.2'        # [win]
+  - '18'        # [win]
+
+lld:
+  - '18'  # [win]
 
 channel_sources:
   - conda-forge
