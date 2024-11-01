@@ -2,8 +2,8 @@ schema_version: 1
 
 context:
   name: code-aster
-  version: 17.0.21
-  win_build: 3
+  version: 17.1.12
+  win_build: 1
   build: 200
   mpi_prefix: nompi
 
@@ -13,7 +13,7 @@ package:
 
 source:
   - url: https://gitlab.com/krande/src/-/archive/${{ version }}.${{ win_build }}/src-${{ version }}.${{ win_build }}.tar.gz
-    sha256: 9da7ea830cf136f9c04e04fa61388d8ce24a1d079ac3be780a5ad2a0ad46ef70
+    sha256: b110bf8c06a036bbb9d7871bcaf8ad1be27b5846706b4a5c154231add3d1aa41
 
 build:
   number: ${{ build }}
