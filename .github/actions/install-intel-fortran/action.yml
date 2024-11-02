@@ -53,14 +53,14 @@ runs:
 
     # save oneAPI cache and activate environment
     - name: Save cache
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache.outputs.cache-hit != 'true'
+      if: runner.os == 'Windows' && steps.cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         path: ${{ env.ONEAPI_ROOT }}
         key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
 
     - name: Activate oneAPI
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      if: runner.os == 'Windows'
       shell: cmd
       run: |
         ver | findstr /i "10\.0\.17" && set VS2019INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise
