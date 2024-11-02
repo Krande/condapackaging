@@ -2,6 +2,12 @@ name: ci-flang
 
 on:
   workflow_dispatch:
+    inputs:
+      build_selection:
+        description: 'Which builds'
+        required: true
+        type: string
+        default: "all,!llvmdev,!mlir"
   push:
     paths:
       - .github/workflows/ci-flang.yml
@@ -13,6 +19,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: llvmdev
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
@@ -23,6 +30,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: lld
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
@@ -33,16 +41,18 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: mlir
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
     secrets: inherit
 
   clangdev:
-    needs: [llvmdev]
+    needs: [ llvmdev ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: clangdev
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
@@ -53,26 +63,29 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: compiler-rt
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
     secrets: inherit
 
   flang:
-    needs: [compiler_rt, mlir]
+    needs: [ compiler_rt, mlir ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: flang
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
     secrets: inherit
 
   flang_activation:
-    needs: [flang, lld]
+    needs: [ flang, lld ]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: flang-activation
+      build_selection: ${{ inputs.build_selection }}
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
