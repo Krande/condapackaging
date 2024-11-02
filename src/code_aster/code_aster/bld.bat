@@ -125,7 +125,10 @@ waf configure ^
   --without-hg ^
   --without-repo
 
-if errorlevel 1 exit 1
+if errorlevel 1 (
+    type %SRC_DIR%/build/std/config.log
+    exit 1
+)
 
 if "%build_type%" == "debug" (
     waf install_debug -v
