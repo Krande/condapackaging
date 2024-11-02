@@ -32,6 +32,8 @@ source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz
     sha256: e7ccda08be9501c025b0b89826c8a6a9c252045023d8476284fc562133d933a7
+    patches:
+      - patches/fix_fortran_support.patch
 
 build:
   detect_binary_files_with_prefix: true
