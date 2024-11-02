@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
 {% set version = '17.1.12' %}
-{% set win_build = '1' %}
+{% set win_build = '2' %}
 {% set build = 0 %}
 
 {% if mpi == 'nompi' %}
@@ -31,7 +31,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz
-    sha256: b110bf8c06a036bbb9d7871bcaf8ad1be27b5846706b4a5c154231add3d1aa41
+    sha256: c57d8b6457d0a909dcde8e35e56038b663c745d542287c00fe007b50562cd153
 
 build:
   detect_binary_files_with_prefix: true
