@@ -6,7 +6,6 @@ package:
 
 source:
   url: https://github.com/Krande/llvm-project/archive/refs/tags/{{ version }}.tar.gz
-  sha256: e5106e2bef341b3f5e41340e4b6c6a58259f4021ad801acf14e88f1a84567b05
   patches:
     - patches/0001-point-header-inclusion-in-lld-MachO-CMakeLists.txt-t.patch
 
