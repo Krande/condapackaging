@@ -52,7 +52,6 @@ runs:
         
         echo "FC=${FC}" >> $GITHUB_ENV
         
-
     # save oneAPI cache and activate environment
     - name: Save cache
       if: runner.os == 'Windows' && steps.cache.outputs.cache-hit != 'true'
