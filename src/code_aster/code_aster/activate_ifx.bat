@@ -6,10 +6,13 @@ if not defined ONEAPI_ROOT (
 set "INTEL_VARS_PATH=%ONEAPI_ROOT%\compiler\latest\env"
 echo "INTEL_VARS_PATH: %INTEL_VARS_PATH%"
 
-if "%FC%" == "ifx" (
-    echo "Already using Intel LLVM Fortran compiler"
+if not defined GITHUB_ACTIONS (
+    if "%FC%" == "ifx" (
+        echo "Already using Intel LLVM Fortran compiler"
+    ) else (
+        call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+    )
 ) else (
-    call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
+    echo "Running on GitHub Actions"
 )
-
-set FC=ifx
+set FC=ifx.exe

@@ -1,0 +1,77 @@
+name: ci-code-aster
+
+# bump 1
+on:
+  workflow_dispatch:
+    inputs:
+      conda_channel:
+        description: 'Conda Channel for dependencies'
+        required: true
+        type: string
+        default: "ca-11643197251"
+      code_aster_version:
+        description: 'Code Aster Version'
+        required: true
+        type: string
+        default: "17.1.12.1"
+      python_versions:
+        description: 'Python Versions'
+        required: true
+        type: string
+        default: "3.12"
+      platforms:
+        description: 'Platforms'
+        required: true
+        type: string
+        default: "windows-latest"
+      variants:
+        description: 'mpi variants'
+        required: true
+        type: string
+        default: "mpi=nompi;build_type=debug,mpi=nompi;build_type=release"
+  push:
+#    branches:
+#    - donotrun
+
+jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      # This is where the conda user and label should be set
+      package_name: code_aster
+      code_aster_version: ${{ inputs.code_aster_version || '17.1.12.1' }}
+      conda_channel: ${{ inputs.conda_channel || 'ca-11643197251' }}
+      python_versions: ${{ inputs.python_versions || '3.12' }}
+      platforms: ${{ inputs.platforms || 'windows-latest' }}
+      variants: ${{ inputs.mpi_variants || 'mpi=nompi;build_type=debug,mpi=nompi;build_type=release' }}
+      upload_conda: "True"
+
+    steps:
+      - name: dummy step
+        id: env
+        run: |
+          echo "done"
+
+  build_code_aster:
+    needs: [ env ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: ${{ needs.env.outputs.package_name }}
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      variants: ${{ needs.env.outputs.variants }}
+      extra_build_args: ${{ needs.env.outputs.extra_build_args }}
+      upload_conda: ${{ needs.env.outputs.upload_conda }}
+    secrets: inherit
+    
+  test:
+    needs: [ build_code_aster, env ]
+    uses: ./.github/workflows/code-aster-ctest.yml
+    with:
+      conda_channel: ${{ needs.env.outputs.conda_channel }}
+      code_aster_version:  ${{ needs.env.outputs.code_aster_version }}
+      python_versions: ${{ needs.env.outputs.python_versions }}
+      platforms: ${{ needs.env.outputs.platforms }}
+      upload_conda: ${{ needs.env.outputs.upload_conda }}
+    secrets: inherit
