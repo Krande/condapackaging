@@ -41,6 +41,11 @@ on:
         type: string
         required: false
         default: False
+      activate_intel_fortran:
+        description: 'Activate intel fortran'
+        type: string
+        required: false
+        default: false
       build_selection:
         description: 'A comma separated list of jobs'
         type: string
@@ -114,10 +119,12 @@ jobs:
           use_devtools: ${{ inputs.use_devtools }}
           quetz_url: ${{ secrets.QUETZ_URL }}
 
+
       - uses: ./.github/actions/install-intel-fortran
         if: ${{ inputs.use_intel_fortran == 'True' && runner.os == 'Windows' }}
         with:
           version: 2025.0.0
+          activate: ${{ inputs.activate_intel_fortran }}
 
       - uses: prefix-dev/setup-pixi@v0.8.0
         with:

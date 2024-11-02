@@ -62,8 +62,9 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
-      build_selection: None
+      build_selection: all
       use_intel_fortran: True
+      activate_intel_fortran: True
       use_devtools: True
       upload_conda: ${{ needs.env.outputs.upload_conda }}
     secrets: inherit
