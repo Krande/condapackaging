@@ -13,7 +13,7 @@ on:
         description: 'Code Aster Version'
         required: true
         type: string
-        default: "17.1.12.1"
+        default: "17.1.12"
       python_versions:
         description: 'Python Versions'
         required: true
@@ -62,6 +62,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
+      build_selection: None
       use_intel_fortran: True
       use_devtools: True
       upload_conda: ${{ needs.env.outputs.upload_conda }}
