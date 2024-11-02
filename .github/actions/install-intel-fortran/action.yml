@@ -77,10 +77,8 @@ runs:
       run: |
         # Intel compilers may have restored from cache so env vars may not be set
         if [[ "$RUNNER_OS" == "Windows" ]]; then
-          if [[ "${{ inputs.compiler }}" == "intel" ]]; then
-            FC=ifx
-            echo SETVARS_COMPLETED=1>>$GITHUB_ENV
-          fi
+          FC=ifx
+          echo SETVARS_COMPLETED=1>>$GITHUB_ENV
         fi
 
         # set env vars
