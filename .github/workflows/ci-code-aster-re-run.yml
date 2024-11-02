@@ -1,4 +1,4 @@
-name: ci-code-aster
+name: ci-code-aster-re-run
 
 # bump 1
 on:
@@ -73,5 +73,5 @@ jobs:
       code_aster_version:  ${{ needs.env.outputs.code_aster_version }}
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
-      upload_conda: ${{ needs.env.outputs.upload_conda }}
+      variants: ${{ needs.env.outputs.variants }}
     secrets: inherit
