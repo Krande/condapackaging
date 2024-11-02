@@ -2,33 +2,33 @@ name: "Prepare job"
 description: "Prepare job for conda package compilation"
 
 inputs:
-    conda_channel:
-      description: "Conda channel"
-      required: true
-    extra_build_args:
-        description: "Extra build arguments"
-        required: false
-        default: ""
-    variants:
-        description: "Conda package variants in key=value pairs, separated by commas"
-        required: false
-        default: ""
-    variants_base64_str:
-        description: "Base64 encoded string of the variants"
-        required: false
-        default: ""
-    env_vars:
-        description: "Environment variables in key=value pairs, separated by commas"
-        required: false
-        default: ""
-    use_devtools:
-        description: "Use devtools channel"
-        required: false
-        default: 'false'
-    quetz_url:
-        description: "Quetz URL"
-        required: false
-        default: ""
+  conda_channel:
+    description: "Conda channel"
+    required: true
+  extra_build_args:
+    description: "Extra build arguments"
+    required: false
+    default: ""
+  variants:
+    description: "Conda package variants in key=value pairs, separated by commas"
+    required: false
+    default: ""
+  variants_base64_str:
+    description: "Base64 encoded string of the variants"
+    required: false
+    default: ""
+  env_vars:
+    description: "Environment variables in key=value pairs, separated by commas"
+    required: false
+    default: ""
+  use_devtools:
+    description: "Use devtools channel"
+    required: false
+    default: 'false'
+  quetz_url:
+    description: "Quetz URL"
+    required: false
+    default: ""
 
 
 runs:
@@ -82,21 +82,13 @@ runs:
     - name: Evaluate Extra Build Args
       env:
         EXTRA_ARGS: ${{ inputs.extra_build_args }}
+        QUETZ_URL: ${{ inputs.quetz_url }}
+        CONDA_CHANNEL: ${{ inputs.conda_channel }}
         WORKSPACE: ${{ github.workspace}}
+        USE_DEVTOOLS: ${{ inputs.use_devtools }}
       shell: bash
       run: |
         python $GITHUB_ACTION_PATH/set_extra_build_vars.py
-
-    - name: Append conda_channel to env vars
-      shell: bash
-      run: |
-        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ inputs.quetz_url }}/get/${{ inputs.conda_channel }}" >> $GITHUB_ENV
-
-    - name: Use devtools channel
-      if: ${{ inputs.use_devtools == 'true' }}
-      shell: bash
-      run: |
-        echo "EXTRA_BUILD_ARGS=$EXTRA_ARGS -c ${{ inputs.quetz_url }}/get/devtools" >> $GITHUB_ENV
 
     - name: Download and extract MacOSX SDK
       shell: bash

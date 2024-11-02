@@ -10,7 +10,11 @@ def set_env(name, value):
 def main():
     workspace_dir = pathlib.Path(os.getenv("WORKSPACE"))
     extra_args = os.getenv("EXTRA_ARGS")
+    quetz_url = os.getenv("QUETZ_URL")
+    conda_channel = os.getenv("CONDA_CHANNEL")
+    use_devtools = os.getenv("USE_DEVTOOLS")
 
+    extra_args_str = ""
     # Substitute __root__ with github workspace
     if extra_args != "":
         if platform.system() == "Windows":
@@ -23,8 +27,15 @@ def main():
                       new_args.append(arg)
             extra_args = ' '.join(new_args)
 
-        extra_args_str = extra_args.replace('__root__', workspace_dir.as_posix())
-        set_env('EXTRA_BUILD_ARGS', extra_args_str)
+        extra_args_str += extra_args.replace('__root__', workspace_dir.as_posix())
+
+    if quetz_url and conda_channel:
+        extra_args_str += f" -c {quetz_url}/get/{conda_channel}"
+
+    if isinstance(use_devtools, str) and use_devtools.lower() == "true":
+        extra_args_str += f" -c {quetz_url}/get/devtools"
+
+    set_env('EXTRA_BUILD_ARGS', extra_args_str)
 
 if __name__ == '__main__':
     main()
