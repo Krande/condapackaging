@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 echo "Setting compiler env vars"
 
 :: set FC=flang-new.exe
-REM set FC=ifx.exe
+set FC=ifx.exe
 if not "%FC%" == "flang-new" (
     call %RECIPE_DIR%\activate_ifx.bat
 )
