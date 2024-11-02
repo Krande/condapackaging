@@ -139,6 +139,8 @@ jobs:
       - name: build local packages
         run: |
           pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }}
+        env:
+          GITHUB_ACTIONS: true
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.upload_conda == 'True' }}

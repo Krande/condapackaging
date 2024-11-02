@@ -10,6 +10,7 @@ if not defined GITHUB_ACTIONS (
     if "%FC%" == "ifx" (
         echo "Already using Intel LLVM Fortran compiler"
     ) else (
+        echo "Setting compiler env vars"
         call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
     )
 ) else (
