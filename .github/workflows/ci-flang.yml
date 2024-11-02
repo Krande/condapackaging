@@ -18,6 +18,26 @@ jobs:
       upload_conda: True
     secrets: inherit
 
+  lld:
+    needs: [ llvmdev ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: lld
+      platforms: "windows-latest"
+      conda_channel: "flang"
+      upload_conda: True
+    secrets: inherit
+
+  mlir:
+    needs: [ llvmdev ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: mlir
+      platforms: "windows-latest"
+      conda_channel: "flang"
+      upload_conda: True
+    secrets: inherit
+
   clangdev:
     needs: [llvmdev]
     uses: ./.github/workflows/conda-build-basic.yml
@@ -28,11 +48,31 @@ jobs:
       upload_conda: True
     secrets: inherit
 
+  compiler_rt:
+    needs: [ clangdev ]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: compiler-rt
+      platforms: "windows-latest"
+      conda_channel: "flang"
+      upload_conda: True
+    secrets: inherit
+
   flang:
-    needs: [clangdev]
+    needs: [compiler_rt, mlir]
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: flang
+      platforms: "windows-latest"
+      conda_channel: "flang"
+      upload_conda: True
+    secrets: inherit
+
+  flang_activation:
+    needs: [flang, lld]
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: flang-activation
       platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True

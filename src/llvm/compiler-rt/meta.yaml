@@ -1,0 +1,108 @@
+{% set version = "20.0.0.git1" %}
+{% set major_ver = version.split('.')[0] %}
+
+package:
+  name: compiler-rt-packages
+  version: {{ version }}
+
+source:
+  url: https://github.com/Krande/llvm-project/archive/refs/tags/{{ version }}.tar.gz
+  patches:
+    - patches/0001-no-code-sign.patch
+    - patches/0002-Revert-Declare-_availability_version_check-as-weak_i.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - cmake >=3.4.3
+    - {{ compiler('cxx') }}
+    - {{ stdlib('c') }}
+    - python *
+    - ninja
+    - llvmdev {{ version }}  # [build_platform != target_platform]
+  host:
+    - clangdev {{ version }}
+    - llvmdev {{ version }}
+    - libcxx   # [osx]
+    - zlib
+    - libxml2
+
+outputs:
+  - name: compiler-rt_{{ target_platform }}
+    build:
+      noarch: generic
+      ignore_run_exports_from:
+        - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
+      detect_binary_files_with_prefix: false  # [win]
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
+      host:
+      run:
+        - clang {{ version }}
+      run_constrained:
+        - clangxx {{ version }}
+        - compiler-rt {{ version }}
+    files:
+      - lib/clang/{{ major_ver }}/lib   # [unix]
+      # avoid "Library\" for noarch output
+      - lib\clang\{{ major_ver }}\lib   # [win]
+    test:
+      commands:
+        - echo {{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}
+        - test -f $PREFIX/lib/clang/{{ major_ver }}/lib/darwin/libclang_rt.osx.a                            # [osx]
+        - if not exist %PREFIX%\lib\clang\{{ major_ver }}\lib\windows\clang_rt.builtins-x86_64.lib exit 1   # [win]
+
+  - name: compiler-rt
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
+      host:
+      run:
+        - clang {{ version }}
+        - compiler-rt_{{ target_platform }} {{ version }}
+    files:
+      - lib/clang/{{ major_ver }}/share             # [unix]
+      - lib/clang/{{ major_ver }}/include           # [unix]
+      # standard windows layout for arch-specific output
+      - Library\lib\clang\{{ major_ver }}\share     # [win]
+      - Library\lib\clang\{{ major_ver }}\include   # [win]
+      - Library\lib\clang\{{ major_ver }}\lib       # [win]
+    test:
+      # files:
+      #   - test.c.in
+      commands:
+        # {% set NEW_TARGET="10." ~ (((MACOSX_DEPLOYMENT_TARGET|default("10.13")).split(".")[1])|int + 1) %}
+        # - sed "s/@MACOSX_DEPLOYMENT_TARGET@/{{ NEW_TARGET }}/g" test.c.in > test.c
+        # - clang -mmacosx-version-min={{ MACOSX_DEPLOYMENT_TARGET }} test.c  # [osx]
+        - test -f $PREFIX/lib/clang/{{ major_ver }}/include/sanitizer/asan_interface.h                      # [unix]
+        - if not exist %LIBRARY_LIB%\clang\{{ major_ver }}\lib\windows\clang_rt.builtins-x86_64.lib exit 1  # [win]
+
+about:
+  home: http://llvm.org/
+  license: Apache-2.0 WITH LLVM-exception
+  license_file: compiler-rt/LICENSE.TXT
+  summary: compiler-rt runtime libraries
+  dev_url: https://github.com/llvm/llvm-project
+  description: |
+    builtins - low-level target-specific hooks required by code generation and other
+      runtime components
+    sanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,
+      MemorySanitizer, LeakSanitizer, DataFlowSanitizer
+    profile - library which is used to collect coverage information
+    BlocksRuntime - target-independent implementation of Apple "Blocks" runtime
+      interfaces
+
+extra:
+  recipe-maintainers:
+    - SylvainCorlay
+    - inducer
+    - jakirkham
+    - isuruf
+    - h-vetinari
+  feedstock-name: compiler-rt

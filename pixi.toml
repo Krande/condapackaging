@@ -57,10 +57,15 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 conv = { cmd = "conda-recipe-manager convert" }
 
 [feature.boa.tasks]
+
 # Flang
 llvmdev = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/llvmdev" }
+lld = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/lld" }
 clangdev = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/clangdev" }
+compiler-rt = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/compiler-rt" }
+mlir = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/mlir" }
 flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang" }
+flang-activation = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang-activation" }
 
 # Other
 mambabuild = { cmd = ["conda", "mambabuild"] }
