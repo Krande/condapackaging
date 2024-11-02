@@ -39,7 +39,7 @@ jobs:
     outputs:
       # This is where the conda user and label should be set
       package_name: code_aster
-      code_aster_version: ${{ inputs.code_aster_version || '17.1.12.1' }}
+      code_aster_version: ${{ inputs.code_aster_version || '17.1.12' }}
       conda_channel: ${{ inputs.conda_channel || 'ca-11643197251' }}
       python_versions: ${{ inputs.python_versions || '3.12' }}
       platforms: ${{ inputs.platforms || 'windows-latest' }}
