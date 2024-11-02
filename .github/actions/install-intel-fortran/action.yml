@@ -57,7 +57,7 @@ runs:
       uses: actions/cache/save@v4
       with:
         path: ${{ env.ONEAPI_ROOT }}
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
+        key: ${{ runner.os }}-intel-fortran-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
 
     - name: Activate oneAPI
       if: runner.os == 'Windows'
