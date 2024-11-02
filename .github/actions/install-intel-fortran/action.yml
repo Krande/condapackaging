@@ -18,21 +18,21 @@ runs:
     # activate the oneAPI environment.
     - name: Set oneAPI install dir
       id: oneapi-root
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      if: runner.os == 'Windows'
       shell: bash
       run: echo "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI" >> "$GITHUB_ENV"
     - name: Get date
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      if: runner.os == 'Windows'
       id: get-date
       shell: bash
       run: echo "date=$(/bin/date -u "+%Y%m%d")" >> "$GITHUB_OUTPUT"
     - name: Restore cache
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
+      if: runner.os == 'Windows'
       id: cache
       uses: actions/cache/restore@v4
       with:
         path: ${{ env.ONEAPI_ROOT }}
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
+        key: ${{ runner.os }}-intel-fortran-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
 
 
     # Set up the selected toolchain or compiler
@@ -41,7 +41,6 @@ runs:
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       env:
-        COMPILER: ${{ inputs.compiler }}
         VERSION: ${{ inputs.version }}
       run: |
         echo 'CACHE-HIT="${{ steps.cache.outputs.cache-hit }}"'
@@ -50,6 +49,7 @@ runs:
         "$GITHUB_ACTION_PATH/install-intel-fortran.bat"
         
         echo "FC=${FC}" >> $GITHUB_ENV
+        
 
     # save oneAPI cache and activate environment
     - name: Save cache
