@@ -7,7 +7,7 @@ echo "Setting compiler env vars"
 :: set FC=flang-new.exe
 set FC=ifx.exe
 if not "%FC%" == "flang-new" (
-    call %RECIPE_DIR%\activate_intel.bat
+    call %RECIPE_DIR%\activate_ifx.bat
 )
 
 set CC=clang-cl.exe
