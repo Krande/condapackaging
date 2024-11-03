@@ -55,7 +55,8 @@ runs:
         "$GITHUB_ACTION_PATH/install-intel-fortran.bat"
         
         echo "FC=${FC}" >> $GITHUB_ENV
-        
+        echo "INTEL_FORTRAN_VERSION=${VERSION}.1162" >> $GITHUB_ENV
+
     # save oneAPI cache and activate environment
     - name: Save cache
       if: runner.os == 'Windows' && steps.cache.outputs.cache-hit != 'true'
@@ -87,6 +88,7 @@ runs:
 
         # set env vars
         echo FC=$FC>>$GITHUB_ENV
+        echo "INTEL_FORTRAN_VERSION=${VERSION}.1162" >> $GITHUB_ENV
 
         # set action outputs
         echo fc=$FC>>$GITHUB_OUTPUT
