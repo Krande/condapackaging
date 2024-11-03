@@ -64,7 +64,7 @@ jobs:
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
       build_selection: all
       use_intel_fortran: True
-      activate_intel_fortran: True
+      activate_intel_fortran: false
       use_devtools: True
       upload_conda: ${{ needs.env.outputs.upload_conda }}
     secrets: inherit
