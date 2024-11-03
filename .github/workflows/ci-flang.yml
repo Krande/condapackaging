@@ -20,7 +20,7 @@ jobs:
     with:
       package_name: llvmdev
       build_selection: ${{ inputs.build_selection }}
-      platforms: "ubuntu-latest"
+      platforms: "windows-latest"
       conda_channel: "flang"
       upload_conda: True
     secrets: inherit

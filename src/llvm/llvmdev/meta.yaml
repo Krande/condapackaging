@@ -259,7 +259,7 @@ outputs:
       noarch: python
       script: python -m pip install llvm/utils/lit --no-deps -vv
       activate_in_script: true
-      skip: true  # [not linux64]
+      #skip: true  # [not linux64]
       entry_points:
         # upstream LLVM is inconsistent; there's one way specified in lit's setup.py...
         - lit = lit.main:main
