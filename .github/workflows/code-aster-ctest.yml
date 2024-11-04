@@ -109,9 +109,7 @@ jobs:
       - name: Save variants details to json
         shell: bash
         run: |
-          mkdir -p ${{ github.workspace }}/ctest
-          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json
-      
+          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json      
 
       - name: add mamba data for linux
         if: ${{ runner.os == 'Linux' }}
