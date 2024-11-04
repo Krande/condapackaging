@@ -7,7 +7,7 @@ on:
         description: 'Which builds'
         required: true
         type: string
-        default: "all,!mlir,!lld,!clangdev,!compiler_rt"
+        default: "flang-activation"
   push:
     paths:
       - .github/workflows/ci-flang.yml
