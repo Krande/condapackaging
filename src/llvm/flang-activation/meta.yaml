@@ -15,7 +15,7 @@ outputs:
     # we don't cross-compile on windows -> no symlinks
     requirements:
       - flang ={{ version }}
-      - lld                     # [win]
+      - lld ={{ version }}                     # [win]
       - compiler-rt_{{ cross_target_platform }} ={{ version }}
     test:
       commands:
