@@ -1,7 +1,7 @@
 {% set name = 'code-aster' %}
 {% set version = '17.1.12' %}
-{% set win_build = '4' %}
-{% set build = 0 %}
+{% set win_build = 4 %}
+{% set build = win_build %}
 
 {% if mpi == 'nompi' %}
 # prioritize nompi variant via build number
