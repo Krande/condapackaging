@@ -68,12 +68,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Save variants details to json
-        shell: bash
-        run: |
-          mkdir -p ${{ github.workspace }}/ctest
-          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json
-
       - uses: mamba-org/setup-micromamba@v2 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
