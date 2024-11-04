@@ -67,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: mamba-org/setup-micromamba@v1 # https://github.com/mamba-org/setup-micromamba
+      - uses: mamba-org/setup-micromamba@v2 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
           init-shell: >-
@@ -84,7 +84,7 @@ jobs:
           create-args: >-
             python=${{ matrix.pyver }}
             colorama
-            code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*
+            code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}
             
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
@@ -135,12 +135,12 @@ jobs:
 
       - name: update env vars
         run: |
-          echo "PKG_TAR=ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_channel }}-${{ inputs.suffix }}-${{ matrix.pyver }}-${{ matrix.variants.value }}.tar.gz" >> $GITHUB_ENV
+          echo "PKG_TAR=ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_channel }}-${{ matrix.pyver }}-${{ matrix.variants.value }}.tar.gz" >> $GITHUB_ENV
 
       - name: Upload ctest for packaging
         uses: actions/upload-artifact@v3
         with:
-          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}-${{ inputs.suffix }}
+          name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}-${{ github.run_id }}
           path: ${{ github.workspace }}/ctest
 
   upload_test_results:
@@ -155,7 +155,7 @@ jobs:
 
       - name: Package ctest directories
         run: |
-          tar czf ${{ env.PKG_TAR }} ctest-*-${{ inputs.suffix }}
+          tar czf ${{ env.PKG_TAR }} ctest-code_aster-*-${{ github.run_id }}
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
