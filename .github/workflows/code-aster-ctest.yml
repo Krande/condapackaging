@@ -68,6 +68,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Save variants details to json
+        shell: bash
+        run: |
+          mkdir -p ${{ github.workspace }}/ctest
+          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json
+
       - uses: mamba-org/setup-micromamba@v2 # https://github.com/mamba-org/setup-micromamba
         with:
           environment-name: test-env
@@ -86,10 +92,6 @@ jobs:
             python=${{ matrix.pyver }}
             colorama
             code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}*
-
-      - name: Save variants details to json
-        run: |
-          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json
 
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
@@ -110,6 +112,13 @@ jobs:
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
+      - name: Save variants details to json
+        shell: bash
+        run: |
+          mkdir -p ${{ github.workspace }}/ctest
+          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json
+      
+
       - name: add mamba data for linux
         if: ${{ runner.os == 'Linux' }}
         continue-on-error: true
@@ -125,7 +134,7 @@ jobs:
           REM change backslashes to forward slashes
           set wspace=%wspace:\=/%
 
-          micromamba list > %wspace%/ctest/conda.txt
+          micromamba list > %wspace%/ctest/mamba.txt
 
       - name: Print and save debug logs
         continue-on-error: true
