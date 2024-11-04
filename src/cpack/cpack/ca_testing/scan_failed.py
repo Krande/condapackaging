@@ -5,6 +5,9 @@ from dataclasses import dataclass
 import xml.etree.ElementTree as ET
 from colorama import Fore
 
+from cpack.ca_testing.error_messages import unclassified_fail_messages, missing_packages, numpy_failures, \
+    failed_termination_msg, abnormal_termination_msg, not_ok_result
+
 logger = logging.getLogger(__name__)
 
 
@@ -19,6 +22,8 @@ class FailedJobsSummary:
     num_failed: int
     jobs_failed: list[str]
 
+def get_failed_from_log_str(log_str: str) -> list[str]:
+    return [line.split()[-1].strip().split('_')[-1] for line in log_str.split("\n") if line.strip() != ""]
 
 def get_last_failed(test_dir: pathlib.Path, aster_ver):
     last_failed = test_dir / "Testing/Temporary/LastTestsFailed.log"
@@ -188,6 +193,29 @@ class TestStats:
 
         self.print_summary()
 
+@dataclass
+class ScanResult:
+    fail_map: dict[tuple[str], FailedJobsSummary]
+    is_identified: bool
+    has_failed: bool
+
+def check_test_file(mess_name: str, data: str, fail_map: dict) -> ScanResult:
+    is_identified = False
+    has_failed = False
+    for fail_msg in unclassified_fail_messages + missing_packages + numpy_failures:
+        if failed_termination_msg in data or abnormal_termination_msg in data or not_ok_result in data:
+            has_failed = True
+
+        if all([msg in data for msg in fail_msg]):
+            is_identified = True
+            if fail_msg not in fail_map:
+                fail_map[fail_msg] = FailedJobsSummary(1, [mess_name])
+            else:
+                fail_map[fail_msg].num_failed += 1
+                fail_map[fail_msg].jobs_failed.append(mess_name)
+
+
+    return ScanResult(fail_map=fail_map, is_identified=is_identified, has_failed=has_failed)
 
 def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
     test_dir = pathlib.Path(test_dir).resolve()
@@ -200,100 +228,6 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
 
     xml_log_stats = get_xml_log_stats(test_dir / "run_testcases.xml")
 
-    missing_packages = [
-        ("Le fichier xmgrace n'existe pas",),
-        ("ModuleNotFoundError: No module named 'scipy'",),
-        ("run_miss3d: not found",),
-        ("No module named 'asrun'",),
-        ("No module named 'petsc4py'",),
-        ("Le fichier homard est inconnu.",),  # 18 tests!
-    ]
-
-    numpy_failures = [
-        (
-            "AttributeError: module 'numpy' has no attribute 'float'.",
-            'MacroCommands/post_endo_fiss_ops.py", line 831',
-        ),
-        (
-            "AttributeError: module 'numpy' has no attribute 'complex'.",
-            'zzzz313a.comm.changed.py", line 44',
-        ),
-    ]
-    unclassified_fail_messages = [
-        # Uncategorized
-        # mpi-related
-        ("<F> <DVP_97>", "Erreur signalée dans la bibliothèque MED", "nom de l'utilitaire : mfiope"),
-        (
-            "<stdout>:cannot remove",
-            "Operation not permitted[1,0]<stdout>",
-            "No such file or directory: 'pick.code_aster.objects'",
-        ),
-        (
-            "<stdout>:cannot remove",
-            'File : "mesh_1.med" has been detected as NOT EXISTING : impossible to read anything !',
-        ),
-        ("sysmalloc: Assertion `(old_top == initial_top (av)",),
-        ("malloc(): invalid size (unsorted)", "=134", "<F>_ABNORMAL_ABORT"),
-        ("malloc(): mismatching next->prev_size (unsorted)",),
-        ("PETSC ERROR", "Caught signal number 11 SEGV: Segmentation Violation"),
-        ("munmap_chunk(): invalid pointer", "LinearSolver.cxx"),
-        ("munmap_chunk(): invalid pointer", "Avancement du calcul"),
-        ("<EXCEPTION> <FACTOR_10>", "la matrice est singulière ou presque singulière"),
-        ("malloc.c:4302: _int_malloc: Assertion `(unsigned long) (size) >= (unsigned long) (nb)'",),
-        ("free(): invalid next size (fast)", "Fatal Python error: Aborted"),
-        ("python3: malloc.c:4105: _int_malloc: Assertion `chunk_main_arena (bck->bk)' failed.",),
-        ("ImportError: cannot import name 'ImportPETSc' from 'petsc4py.lib' (unknown location)",),
-        (
-            "<F> <FACTOR_55>",
-            "PARMETIS ERROR: Poor initial vertex distribution. Processor 0 has no vertices assigned to it!",
-        ),
-        # ("PARTITIONNEUR='METIS'", "=139", "<F>_ABNORMAL_ABORT"),
-        ("malloc(): unaligned tcache chunk detected",),
-        ("corrupted size vs. prev_size", "<F>_ABNORMAL_ABORT", "=134"),
-        ("<F> <ALGORITH9_17>", "Le nombre de pas est négatif"),
-        ("double free or corruption (!prev)", "<F>_ABNORMAL_ABORT"),
-        # non-mpi (likely)
-        (
-            "<F> <DVP_1>",
-            "La commande CALC_ERC_DYN ne peut fonctionner que sur des maillages ne contenant que des SEG2",
-        ),
-        ("<F> <DVP_1>", "dmax .gt. 0.d0"),
-        ("<EXCEPTION> <DVP_1>", "dmax .gt. 0.d0"),
-        ("<F> <DVP_1>", "ier .eq. 0"),
-        (
-            "<F> <HHO1_4>",
-            "Échec de la factorisation de Cholesky: la matrice n'est pas symétrique définie positive",
-        ),
-        ("<F> <DVP_2>", "Erreur numérique (floating point exception)"),
-        ("<EXCEPTION> <DVP_2>", "Erreur numérique (floating point exception)"),
-        ("Fortran runtime error: Unit number in I/O statement too large", "acearp.F90"),
-        ("<F> <UTILITAI6_77>",),
-        ("<F> <ELEMENTS2_57>", "La modélisation T3G ne permet pas de bien"),
-        ("<F> <FACTOR_11>", "la matrice est singulière ou presque singulière"),
-        ("AttributeError: 'libaster.Function' object has no attribute 'getMaterialNames'",),
-        ("TypeError: 'float' object cannot be interpreted as an integer",),
-        ("<F> <FERMETUR_13>", "libumat.so: cannot open shared object file"),
-        ("Fatal Python error: Segmentation fault", "=139"),
-        ("JeveuxCollection.h", "ABORT - exit code 17", "seems empty"),
-        ("Killed", "137"),
-        ("NOOK_TEST_RESU",),
-        (
-            "<F> <MED_18>",
-            "Vous essayer de partitionner le maillage alors que le calcul est séquentiel",
-            "Pour enlever cette alarme, utiliser le mot-clé SANS dans PARTITIONNEUR",
-        ),
-        (
-            "<F> <FACTOR_48>",
-            "Une option d'accélération non disponible avec cette version de MUMPS a été activée",
-            "Pour continuer malgré tout le calcul, on lui a substitué l'option F",
-        ),
-        ("<F> <FACTOR_90>", "Vous avez paramétré le solveur linéaire MUMPS avec le renuméroteur 'PARMETIS'"),
-    ]
-
-    failed_termination_msg = "_ERROR"
-    abnormal_termination_msg = "_ABNORMAL_ABORT"
-    not_ok_result = "NOOK_TEST_RESU"
-
     num_identified_failed = 0
 
     num_failed_tot = 0
@@ -305,28 +239,16 @@ def fail_checker(test_dir, aster_ver, mpi, print=True) -> TestStats:
         if not failed_mess.exists():
             continue
         mess_name = failed_mess.name.split(".")[0].strip()
-        has_failed = False
-        is_identified = False
         try:
             data = failed_mess.read_text(encoding="utf-8")
         except UnicodeDecodeError as e:
             logger.error(f"Unable to read '{mess_name}' due to {e}")
             continue
-        for fail_msg in unclassified_fail_messages + missing_packages + numpy_failures:
-            if failed_termination_msg in data or abnormal_termination_msg in data or not_ok_result in data:
-                has_failed = True
+        scan_result = check_test_file(mess_name, data, fail_map)
 
-            if all([msg in data for msg in fail_msg]):
-                is_identified = True
-                if fail_msg not in fail_map:
-                    fail_map[fail_msg] = FailedJobsSummary(1, [mess_name])
-                else:
-                    fail_map[fail_msg].num_failed += 1
-                    fail_map[fail_msg].jobs_failed.append(mess_name)
-
-        if has_failed is True:
+        if scan_result.has_failed is True:
             num_failed_tot += 1
-            if is_identified:
+            if scan_result.is_identified:
                 num_identified_failed += 1
             else:
                 unidentified_failures.append(mess_name)

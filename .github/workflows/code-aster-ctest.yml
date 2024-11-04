@@ -36,6 +36,7 @@ env:
   PKG_TAR: ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_channel }}.tar.gz
   CONDA_CHANNEL: ""
   DEV_CHANNEL: ""
+  CTEST_DIR: ${{github.workspace}}\\ctest
 
 jobs:
   build_matrix:
@@ -85,7 +86,11 @@ jobs:
             python=${{ matrix.pyver }}
             colorama
             code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}*
-            
+
+      - name: Save variants details to json
+        run: |
+          echo "${{ toJson(matrix) }}" > ${{ github.workspace }}/ctest/variants.json
+
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
         continue-on-error: true
@@ -138,7 +143,7 @@ jobs:
           echo "PKG_TAR=ctest-results-${{ inputs.code_aster_version }}-${{ inputs.conda_channel }}-${{ matrix.pyver }}-${{ matrix.variants.value }}.tar.gz" >> $GITHUB_ENV
 
       - name: Upload ctest for packaging
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}-${{ github.run_id }}
           path: ${{ github.workspace }}/ctest
@@ -150,12 +155,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: prefix-dev/setup-pixi@v0.8.0
+        with:
+          pixi-version: v0.34.0
+          environments: "cpack"
+          cache: true
+
       - name: Download all ctest artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ctest-code_aster-*-${{ github.run_id }}
+          merge-multiple: 'true'
+          path: ${{ github.workspace }}/ctest
+
+      - name: Process ctest results
+        run: |
+          pixi run -e cpack cpack-ctest-md-gen --cache-dir ${{ github.workspace }}/ctest --output-md ${{ github.workspace }}/ctest/summary.md
 
       - name: Package ctest directories
         run: |
-          tar czf ${{ env.PKG_TAR }} ctest-code_aster-*-${{ github.run_id }}
+          tar czf ${{ env.PKG_TAR }} ${{ github.workspace }}/ctest/ctest-code_aster-*-${{ github.run_id }}
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v1
@@ -164,9 +183,8 @@ jobs:
           name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_channel }}]
           body: |
             Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_channel }}.
-            
-            Notes:
-            * ${{ inputs.test_description }}
+
+          body_path: ${{ github.workspace }}/ctest/summary.md
           draft: false
           prerelease: false
           files: ${{ env.PKG_TAR }}

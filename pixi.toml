@@ -39,6 +39,7 @@ cpack = { path = "./src/cpack", editable = true }
 cpack-actions = { cmd = ["cpack-actions"] }
 cpack-quetz = { cmd = ["cpack-quetz"] }
 ca-batch-prep = { cmd = ["python", ".github/actions/ca-batch-prep/set_vars.py"] }
+cpack-ctest-md-gen = { cmd = ["cpack-md-gen"] }
 
 [feature.rattler.tasks]
 flang = { cmd = ["rattler-build", "build","-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
