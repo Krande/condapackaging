@@ -177,7 +177,7 @@ jobs:
           tar czf ${{ env.PKG_TAR }} ${{ github.workspace }}/ctest/ctest-code_aster-*-${{ github.run_id }}
 
       - name: Create Release and Upload Tarball
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_channel }}
           name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_channel }}]
