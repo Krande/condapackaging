@@ -84,7 +84,7 @@ jobs:
           create-args: >-
             python=${{ matrix.pyver }}
             colorama
-            code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}
+            code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}*
             
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}

@@ -1,3 +1,6 @@
+from cpack.ca_testing.check_failed_test import fail_checker
+from cpack.ca_testing.scan_failed import Test
+
 def main():
 
     test_stats = fail_checker(res_dir, ca_version, mpi_str, print=False)
