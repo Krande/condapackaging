@@ -61,8 +61,8 @@ def scan_cache_dirs(cache_temp_dir: str):
 
 def cli_md_gen():
     parser = argparse.ArgumentParser(description="Run ctest_md_gen")
-    parser.add_argument("--cache-dir", type=str, help="The directory containing the zipped test results from the GA cache")
-    parser.add_argument("--output-md", type=str, help="The output markdown file")
+    parser.add_argument("--cache-dir", type=str, help="The directory containing the zipped test results from the GA cache", required=True)
+    parser.add_argument("--output-md", type=str, help="The output markdown file", required=True)
     args = parser.parse_args()
 
     md_str = scan_cache_dirs(args.cache_dir)

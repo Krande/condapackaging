@@ -31,6 +31,7 @@ python-libarchive-c = "*"
 "ruamel.yaml.jinja2" = "*"
 typer = "*"
 toposort = "*"
+colorama = "*"
 
 [feature.cpack.pypi-dependencies]
 cpack = { path = "./src/cpack", editable = true }
