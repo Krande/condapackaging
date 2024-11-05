@@ -177,11 +177,11 @@ jobs:
 
       - name: Process ctest results
         run: |
-          pixi run -e cpack cpack-ctest-md-gen --cache-dir ${{ github.workspace }}/ctest --output-md ${{ github.workspace }}/ctest/summary.md
+          pixi run -e cpack cpack-ctest-md-gen --cache-dir ${{ github.workspace }}/ctest --output-md ${{ github.workspace }}/ctest/summary.md --intro "Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_channel }}."
 
       - name: Package ctest directories
         run: |
-          tar czf ${{ env.PKG_TAR }} ctest-code_aster-*-${{ github.run_id }}
+          tar czf ${{ github.workspace }}/${{ env.PKG_TAR }} ctest-code_aster-*-${{ github.run_id }}
         working-directory: ${{ github.workspace }}/ctest
 
       - name: Create Release and Upload Tarball
@@ -189,9 +189,6 @@ jobs:
         with:
           tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_channel }}
           name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_channel }}]
-          body: |
-            Automated release created on ${{ github.sha }}. Contains ctest results from ${{ inputs.conda_channel }}.
-
           body_path: ${{ github.workspace }}/ctest/summary.md
           draft: false
           prerelease: false

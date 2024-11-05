@@ -103,8 +103,9 @@ class TestIterator:
 
         self.test_data = [TestDataSet(d.name, d) for d in contents]
 
-    def generate_md_str(self) -> str:
+    def generate_md_str(self, intro_str: str = "") -> str:
         md_str = "# Test Results\n\n"
+        md_str += intro_str + "\n\n"
         for test_data in self.test_data:
             failed_jobs = test_data.get_failed_jobs()
             variants = test_data.get_variant_matrix()
@@ -130,7 +131,7 @@ class TestIterator:
 
         return md_str
 
-def scan_cache_dirs(cache_temp_dir: str):
+def scan_cache_dirs(cache_temp_dir: str, intro: str) -> str:
     cache_temp_dir = pathlib.Path(cache_temp_dir).resolve().absolute()
     test_iter = TestIterator(cache_temp_dir)
     md_str = test_iter.generate_md_str()
@@ -142,9 +143,10 @@ def cli_md_gen():
     parser.add_argument("--cache-dir", type=str,
                         help="The directory containing the zipped test results from the GA cache", required=True)
     parser.add_argument("--output-md", type=str, help="The output markdown file", required=True)
+    parser.add_argument("--intro", type=str, help="The introduction string", required=False)
     args = parser.parse_args()
 
-    md_str = scan_cache_dirs(args.cache_dir)
+    md_str = scan_cache_dirs(args.cache_dir, args.intro)
     with open(args.output_md, 'w') as f:
         f.write(md_str)
 
