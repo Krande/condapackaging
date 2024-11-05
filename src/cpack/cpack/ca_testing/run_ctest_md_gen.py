@@ -134,7 +134,7 @@ class TestIterator:
 def scan_cache_dirs(cache_temp_dir: str, intro: str) -> str:
     cache_temp_dir = pathlib.Path(cache_temp_dir).resolve().absolute()
     test_iter = TestIterator(cache_temp_dir)
-    md_str = test_iter.generate_md_str()
+    md_str = test_iter.generate_md_str(intro)
     return md_str
 
 
