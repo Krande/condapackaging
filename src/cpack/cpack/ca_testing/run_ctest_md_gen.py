@@ -44,8 +44,10 @@ class TestDataSet:
             with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
 
-    def get_failed_jobs(self):
+    def get_failed_jobs(self) -> list[str]:
         data = self.read_file_contents("Testing/Temporary/LastTestsFailed.log")
+        if data is None:
+            return []
         return get_failed_from_log_str(data)
 
     def get_variant_matrix(self):
@@ -102,7 +104,6 @@ class TestIterator:
         self.test_data = [TestDataSet(d.name, d) for d in contents]
 
     def generate_md_str(self) -> str:
-
         md_str = "# Test Results\n\n"
         for test_data in self.test_data:
             failed_jobs = test_data.get_failed_jobs()
