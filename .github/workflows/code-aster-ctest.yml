@@ -101,6 +101,14 @@ jobs:
             colorama
             code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}*
 
+      - name: Save variants details to json
+        shell: bash
+        env:
+          MATRIX: ${{ toJSON(matrix) }}
+        run: |
+          mkdir -p ${{ github.workspace }}/ctest
+          echo "$MATRIX" | jq '.' > ${{ github.workspace }}/ctest/variants.json
+
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
         continue-on-error: true
@@ -119,6 +127,11 @@ jobs:
         continue-on-error: true
         run: |
           run_ctest --resutest=${{github.workspace}}/ctest -L submit -LE need_data --timefactor=8.0 --only-failed-results -j 2
+
+      - name: Save variants details to json
+        shell: bash
+        run: |
+          echo "${{ matrix }}" > ${{ github.workspace }}/ctest/variants.json      
 
       - name: add mamba data for linux
         if: ${{ runner.os == 'Linux' }}
