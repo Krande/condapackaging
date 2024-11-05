@@ -176,7 +176,8 @@ jobs:
 
       - name: Package ctest directories
         run: |
-          tar czf ${{ env.PKG_TAR }} ${{ github.workspace }}/ctest/ctest-code_aster-*-${{ github.run_id }}
+          tar czf ${{ env.PKG_TAR }} ctest-code_aster-*-${{ github.run_id }}
+        working-directory: ${{ github.workspace }}/ctest
 
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v2

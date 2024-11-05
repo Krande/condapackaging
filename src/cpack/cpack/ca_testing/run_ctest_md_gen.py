@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+import json
 import re
 import argparse
 import pathlib
@@ -25,18 +25,46 @@ def examine_xml_data(xml_data: str) -> TestResult:
     failures = int(root.attrib["failures"])
     return TestResult(tests, time, failures)
 
+def get_failed_jobs(zip_ref: zipfile.ZipFile) -> list[str]:
+    failed_log = "Testing/Temporary/LastTestsFailed.log"
+
+    try:
+        zip_ref.getinfo(failed_log)
+    except KeyError:
+        failed_jobs = []
+    else:
+        failed_jobs = get_failed_from_log_str(zip_ref.read(failed_log).decode('utf-8'))
+
+    return failed_jobs
+
+def get_variants_matrix(zip_ref: zipfile.ZipFile) -> dict:
+    variants_json = "variants.json"
+    try:
+        zip_ref.getinfo(variants_json)
+    except KeyError:
+        return {}
+
+    return json.loads(zip_ref.read(variants_json).decode('utf-8'))
 
 def scan_cache_dirs(cache_temp_dir: str):
-    md_str = "# Test Results\n"
+    md_str = "# Test Results\n\n"
     cache_temp_dir = pathlib.Path(cache_temp_dir).resolve().absolute()
-    failed_log = "Testing/Temporary/LastTestsFailed.log"
+
     run_testcases = "run_testcases.xml"
+
+
     for zip_file in cache_temp_dir.glob("*.zip"):
         not_identified = []
         num_identified = 0
         fail_map = {}
         with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-            failed_jobs = get_failed_from_log_str(zip_ref.read(failed_log).decode('utf-8'))
+            failed_jobs = get_failed_jobs(zip_ref)
+            variants = get_variants_matrix(zip_ref)
+            os = variants.get('platform', {}).get('os', 'n/a')
+            pyver = variants.get('pyver', 'n/a')
+            mpi = variants.get('variants',{}).get('mpi', 'n/a')
+            build_type = variants.get('variants',{}).get('build_type', 'n/a')
+
             xml_data = examine_xml_data(zip_ref.read(run_testcases).decode('utf-8'))
             for file_name in zip_ref.namelist():
                 if file_name.endswith('.mess'):  # Replace '.suffix' with the desired file suffix
@@ -51,10 +79,10 @@ def scan_cache_dirs(cache_temp_dir: str):
                     else:
                         not_identified.append(mess_name)
 
-        md_str += f"## {zip_file.name}\n\n"
+        md_str += f"## CTest OS: {os}, Python: {pyver}, mpi: {mpi}, build_type: {build_type}\n"
         md_str += f"* Failed Jobs: {xml_data.failures} of {xml_data.tests} [{100*(xml_data.tests-xml_data.failures)/xml_data.tests:.2f}%]\n"
         md_str += f"* Identified: {num_identified}\n"
-        md_str += f"* Not Identified: {len(not_identified)}\n"
+        md_str += f"* Not Identified: {len(not_identified)}\n\n"
 
     return md_str
 
