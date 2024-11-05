@@ -90,9 +90,10 @@ jobs:
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
         continue-on-error: true
+        CTEST_DIR: ${{ github.workspace }}/ctest
         shell: cmd /E:on /C call {0}
         run: |
-          run_ctest --resutest=${{github.workspace}}\\ctest -R 'adlv100e|sdld102a' --timefactor=12.0 --only-failed-results -j 2
+          run_ctest --resutest=${{env.CTEST_DIR}} -R "adlv100e|sdld102a" --timefactor=12.0 --only-failed-results -j 2
 #          run_ctest --resutest=${{github.workspace}}\\ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
 
       - name: run ctest [seq] [Linux]
