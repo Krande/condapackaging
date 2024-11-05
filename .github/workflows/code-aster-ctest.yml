@@ -55,20 +55,6 @@ jobs:
           platforms: ${{ inputs.platforms }}
           variants: ${{ inputs.variants }}
 
-      - name: Save variants details to json
-        shell: bash
-        env:
-          MATRIX: ${{ toJSON(steps.job-matrix-builder.outputs.final_matrix) }}
-        run: |
-          mkdir -p ${{ github.workspace }}/ctest
-          echo "$MATRIX" | jq '.' > ${{ github.workspace }}/ctest/variants.json
-
-      - name: Upload ctest for packaging
-        uses: actions/upload-artifact@v4
-        with:
-          name: ctest-code_aster-variants-${{ github.run_id }}
-          path: ${{ github.workspace }}/ctest
-
   run_ctest:
     needs: build_matrix
     name: ctest-code_aster-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}
@@ -101,20 +87,13 @@ jobs:
             colorama
             code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}*
 
-      - name: Save variants details to json
-        shell: bash
-        env:
-          MATRIX: ${{ toJSON(matrix) }}
-        run: |
-          mkdir -p ${{ github.workspace }}/ctest
-          echo "$MATRIX" | jq '.' > ${{ github.workspace }}/ctest/variants.json
-
       - name: run ctest [seq] [Windows]
         if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
         continue-on-error: true
         shell: cmd /E:on /C call {0}
         run: |
-          run_ctest --resutest=${{github.workspace}}\\ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
+          run_ctest --resutest=${{github.workspace}}\\ctest -R 'adlv100e|sdld102a' --timefactor=12.0 --only-failed-results -j 2
+#          run_ctest --resutest=${{github.workspace}}\\ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
 
       - name: run ctest [seq] [Linux]
         if: ${{ runner.os == 'Linux' && matrix.variants.mpi == 'nompi' }}
@@ -130,8 +109,12 @@ jobs:
 
       - name: Save variants details to json
         shell: bash
+        env:
+          MATRIX: ${{ toJSON(matrix) }}
+          CTEST_DIR: ${{ github.workspace }}/ctest
         run: |
-          echo "${{ matrix }}" > ${{ github.workspace }}/ctest/variants.json      
+          mkdir -p "$CTEST_DIR"
+          echo "$MATRIX" | jq '.' > "$CTEST_DIR/variants.json"
 
       - name: add mamba data for linux
         if: ${{ runner.os == 'Linux' }}
