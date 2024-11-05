@@ -30,6 +30,11 @@ on:
         type: string
         required: false
         default: ""
+      release_suffix:
+        description: 'Custom Suffix for release'
+        type: string
+        required: false
+        default: ""
 
 env:
   VARIANT_FLAG: "*nompi*"

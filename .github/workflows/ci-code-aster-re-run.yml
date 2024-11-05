@@ -45,6 +45,7 @@ jobs:
       platforms: ${{ inputs.platforms || 'windows-latest' }}
       variants: ${{ inputs.mpi_variants || 'mpi=nompi;build_type=debug,mpi=nompi;build_type=release' }}
       upload_conda: "True"
+      release_suffix: "-no-openmp"
 
     steps:
       - name: dummy step
@@ -62,7 +63,7 @@ jobs:
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
       extra_build_args: ${{ needs.env.outputs.extra_build_args }}
-      build_selection: None
+      build_selection: code_aster
       use_intel_fortran: True
       activate_intel_fortran: false
       use_devtools: True
@@ -78,4 +79,5 @@ jobs:
       python_versions: ${{ needs.env.outputs.python_versions }}
       platforms: ${{ needs.env.outputs.platforms }}
       variants: ${{ needs.env.outputs.variants }}
+      release_suffix: ${{ needs.env.outputs.release_suffix }}
     secrets: inherit

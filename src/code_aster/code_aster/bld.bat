@@ -118,6 +118,7 @@ waf configure ^
   --enable-metis ^
   --enable-scotch ^
   --disable-mpi ^
+  --disable-openmp ^
   --disable-petsc ^
   --install-tests ^
   --maths-libs=auto ^
