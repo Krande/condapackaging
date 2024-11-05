@@ -192,8 +192,8 @@ jobs:
       - name: Create Release and Upload Tarball
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_channel }}
-          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_channel }}]
+          tag_name: code-aster-${{ inputs.code_aster_version }}-ctest-${{ inputs.conda_channel }}${{ inputs.release_suffix }}
+          name: CTest Results code-aster-${{ inputs.code_aster_version }} [${{ inputs.conda_channel }}${{ inputs.release_suffix }}]
           body_path: ${{ github.workspace }}/ctest/summary.md
           draft: false
           prerelease: false
