@@ -95,7 +95,7 @@ jobs:
         shell: cmd /E:on /C call {0}
         run: |
           run_ctest --resutest=${{ env.CTEST_DIR }} -R "adlv100e|sdld102a" --timefactor=12.0 --only-failed-results -j 2
-#          run_ctest --resutest=${{github.workspace}}\\ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
+      #          run_ctest --resutest=${{github.workspace}}\\ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
 
       - name: run ctest [mpi] [Linux]
         if: ${{ runner.os == 'Linux' && matrix.variants.mpi == 'openmpi' }}
@@ -131,14 +131,16 @@ jobs:
 
       - name: Print and save debug logs
         continue-on-error: true
+        env:
+          CTEST_DIR: ${{ github.workspace }}/ctest
         run: |
           add_str=""
           if [[ ${{ matrix.variants.mpi }} == 'openmpi' ]]; then
             echo "MPI variant"
             add_str=" --mpi"
           fi
-          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str
-          python src/code_aster/.tests/scan_failed.py --test-dir=${{github.workspace}}/ctest --aster-ver=${{ inputs.code_aster_version }}$add_str > ${{ github.workspace }}/ctest/summary.txt
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{ env.CTEST_DIR }} --aster-ver=${{ inputs.code_aster_version }}$add_str
+          python src/code_aster/.tests/scan_failed.py --test-dir=${{ env.CTEST_DIR }} --aster-ver=${{ inputs.code_aster_version }}$add_str > ${{ env.CTEST_DIR }}/summary.txt
 
       - name: update env vars
         run: |
@@ -169,6 +171,10 @@ jobs:
           pattern: ctest-code_aster-*-${{ github.run_id }}
           merge-multiple: 'true'
           path: ${{ github.workspace }}/ctest
+
+      - name: list files in ctest dir
+        run: |
+          ls -l ${{ github.workspace }}/ctest
 
       - name: Process ctest results
         run: |

@@ -58,6 +58,7 @@ def scan_cache_dirs(cache_temp_dir: str):
         num_identified = 0
         fail_map = {}
         with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+            print(f'processing {zip_file.name}')
             failed_jobs = get_failed_jobs(zip_ref)
             variants = get_variants_matrix(zip_ref)
             os = variants.get('platform', {}).get('os', 'n/a')
