@@ -88,19 +88,14 @@ jobs:
             code-aster=${{ inputs.code_aster_version }}=*${{ matrix.variants.mpi }}*${{ matrix.variants.build_type }}*
 
       - name: run ctest [seq] [Windows]
-        if: ${{ runner.os == 'Windows' && matrix.variants.mpi == 'nompi' }}
+        if: ${{ matrix.variants.mpi == 'nompi' }}
         continue-on-error: true
-        CTEST_DIR: ${{ github.workspace }}/ctest
+        env:
+          CTEST_DIR: ${{ github.workspace }}/ctest
         shell: cmd /E:on /C call {0}
         run: |
           run_ctest --resutest=${{env.CTEST_DIR}} -R "adlv100e|sdld102a" --timefactor=12.0 --only-failed-results -j 2
 #          run_ctest --resutest=${{github.workspace}}\\ctest -L submit -L sequential -LE need_data --timefactor=12.0 --only-failed-results -j 2
-
-      - name: run ctest [seq] [Linux]
-        if: ${{ runner.os == 'Linux' && matrix.variants.mpi == 'nompi' }}
-        continue-on-error: true
-        run: |
-          run_ctest --resutest=${{github.workspace}}/ctest -L submit -L sequential -LE need_data --timefactor=8.0 --only-failed-results -j 2
 
       - name: run ctest [mpi] [Linux]
         if: ${{ runner.os == 'Linux' && matrix.variants.mpi == 'openmpi' }}
