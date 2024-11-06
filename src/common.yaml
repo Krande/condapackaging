@@ -92,7 +92,7 @@ zlib:
   - '1'
 
 intel_fortran_rt:
-  - '2024.2'
+  - '2025'
 
 mpi:
   - nompi
