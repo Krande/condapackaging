@@ -14,6 +14,6 @@ jobs:
     with:
       package_name: intelfortranrt
       platforms: "windows-latest"
-      conda_channel: devtools
+      conda_channel: devtools2
       upload_conda: 'True'
     secrets: inherit
