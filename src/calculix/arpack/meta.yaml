@@ -1,0 +1,79 @@
+{% set version = "3.9.1" %}
+{% set build = 2 %}
+
+# ensure mpi is defined (needed for conda-smithy recipe-lint)
+{% set mpi = mpi or 'nompi' %}
+
+{% if mpi == 'nompi' %}
+# prioritize nompi variant via build number
+{% set build = build + 100 %}
+{% endif %}
+
+package:
+  name: arpack
+  version: {{ version }}
+
+source:
+  fn: arpack-{{ version }}.tar.gz
+  url: https://github.com/opencollab/arpack-ng/archive/{{ version }}.tar.gz
+  sha256: f6641deb07fa69165b7815de9008af3ea47eb39b2bb97521fbf74c97aba6e844
+
+build:
+  number: {{ build }}
+  # Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi
+  # add build string so packages can depend on
+  # mpi or nompi variants explicitly:
+  # `pkg * mpi_mpich_*` for mpich
+  # `pkg * mpi_*` for any mpi
+  # `pkg * nompi_*` for no mpi
+
+  {% if mpi != 'nompi' %}
+  {% set mpi_prefix = "mpi_" + mpi %}
+  {% else %}
+  {% set mpi_prefix = "nompi" %}
+  {% endif %}
+  string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
+  run_exports:
+    - {{ pin_subpackage('arpack', max_pin='x.x') }} {{ mpi_prefix }}_*
+  script_env:
+    - DMPI=ON  # [mpi != 'nompi']
+    - DMPI=OFF  # [mpi == 'nompi']
+
+requirements:
+  build:
+    - cmake
+    - make
+    - {{ compiler('fortran') }}  # [unix]
+    - {{ compiler('c') }}  # [unix]
+    - {{ stdlib('c') }}  # [unix]
+    - {{ compiler('cxx') }}  # [unix]
+    - {{ compiler('m2w64_fortran') }}  # [win]
+    - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('m2w64_cxx') }}  # [win]
+    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
+  host:
+    - libblas
+    - liblapack
+    - {{ mpi }}  # [mpi != 'nompi']
+  run:
+    - {{ mpi }}  # [mpi != 'nompi']
+
+test:
+  commands:
+    - test ! -f ${PREFIX}/lib/libarpack.a  # [unix]
+    - test -f ${PREFIX}/lib/libarpack${SHLIB_EXT}  # [unix]
+    - test -f ${PREFIX}/include/arpack/arpack.hpp  # [unix]
+    - if exist %PREFIX%\\Library\\mingw-w64\\lib\\libarpack.a exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\mingw-w64\\bin\\libarpack.dll exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\mingw-w64\\include\\arpack\\arpack.hpp exit 1  # [win]
+
+about:
+  home: https://github.com/opencollab/arpack-ng
+  license: BSD-3-Clause
+  license_file: COPYING
+  summary: Fortran77 subroutines designed to solve large scale eigenvalue problems
+
+extra:
+  recipe-maintainers:
+    - jschueller
+    - mrakitin

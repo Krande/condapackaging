@@ -23,15 +23,15 @@ requirements:
     - {{ compiler('c') }}  # [unix]
     - {{ compiler('m2w64_c') }}  # [win]
     - rsync  # [unix]
-    - make   # [not win]
-    - m2-make  # [win]
+    - make
+    #- m2-base  # [win]
     - perl
 
 test:
   commands:
     - test -f ${PREFIX}/lib/spoolesMT.a  # [unix]
 
-about:
+about:1
   home: http://www.netlib.org/linalg/spooles/spooles.2.2.html
   summary: 'library for solving sparse real and complex linear systems of equations'
   license: Public Domain

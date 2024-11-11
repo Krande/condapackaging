@@ -1,9 +1,10 @@
-REM CP %BUILD_PREFIX%\Library\usr\bin\mingw32-make %BUILD_PREFIX%\Library\mingw-w64\bin\make
-make lib
+@echo off
+
+make CC=x86_64-w64-mingw32-cc AR=x86_64-w64-mingw32-ar lib
 if errorlevel 1 exit 1
 
 cd MT\src\
-make
+make CC=x86_64-w64-mingw32-cc AR=x86_64-w64-mingw32-ar
 if errorlevel 1 exit 1
 
 mkdir -p %LIBRARY_PREFIX%\mingw-w64\lib

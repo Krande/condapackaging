@@ -1,0 +1,2 @@
+# The build is failing without rsh available.
+rsh

@@ -70,8 +70,9 @@ flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "
 flang-activation = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang-activation" }
 
 # Calculix
-calculix = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/calculix/calculix" }
-spooles = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/calculix/spooles" }
+calculix = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/calculix" }
+spooles = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/spooles" }
+arpack = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/arpack" }
 
 # Other
 mambabuild = { cmd = ["conda", "mambabuild"] }
