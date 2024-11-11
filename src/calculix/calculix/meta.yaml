@@ -11,8 +11,8 @@ source:
   fn: {{ name }}_{{ version }}.tar.bz2
   url: http://www.dhondt.de/ccx_{{ version }}.src.tar.bz2
   sha256: {{ sha256 }}
-#  patches:
-#    - patches/mingw_time.patch  # [win or osx]
+  patches:
+    - patches/mingw_time.patch  # [win or osx]
 
 build:
   number: 0
@@ -20,9 +20,11 @@ build:
 requirements:
   build:
     - {{ compiler("c") }}  # [unix]
-    - {{ stdlib("c") }}
+    - {{ stdlib("c") }}    # [unix]
+    - {{ compiler('m2w64_c') }}  # [win]
+    - {{ stdlib("m2w64_c") }}    # [win]
     - {{ compiler("fortran") }}  # [unix]
-    - flang
+    - {{ compiler('m2w64_fortran') }}  # [win]
     - m2-make   # [win]
     - make      # [not win]
     - perl

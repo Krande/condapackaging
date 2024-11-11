@@ -69,6 +69,10 @@ mlir = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "s
 flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang" }
 flang-activation = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang-activation" }
 
+# Calculix
+calculix = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/calculix/calculix" }
+spooles = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/calculix/spooles" }
+
 # Other
 mambabuild = { cmd = ["conda", "mambabuild"] }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
@@ -77,7 +81,7 @@ cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--conda
 intelfortranrt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/intelfortranrt" }
 
 # OCCT
-occt = { cmd = ["conda", "mambabuild", ".", "-m", "../ccommon.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
+occt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
 pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
 stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/stepcode" }
 
