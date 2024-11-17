@@ -27,6 +27,7 @@ requirements:
     - cmake
     - ninja
     - pybind11
+    - python
   host:
     - occt
     - scipy
