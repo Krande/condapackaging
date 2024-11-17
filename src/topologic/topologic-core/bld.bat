@@ -22,7 +22,7 @@ cmake -B "build" -G "Ninja" ^
  -D PYTHON_INCLUDE_DIR=%PREFIX%\include ^
  -D PYTHON_EXECUTABLE:FILEPATH=%PREFIX%\python.exe ^
  -D PYTHON_LIBRARY:FILEPATH="%PREFIX%"\libs/python%MY_PY_VER%.lib ^
- ../TopologicCore
+ .
 
 if errorlevel 1 exit 1
 
