@@ -1,4 +1,4 @@
-Subject: [PATCH] do not use pybind11 subdir
+Subject: [PATCH] minor changes
 ---
 Index: TopologicPythonBindings/CMakeLists.txt
 IDEA additional info:
@@ -7,20 +7,18 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/TopologicPythonBindings/CMakeLists.txt b/TopologicPythonBindings/CMakeLists.txt
 --- a/TopologicPythonBindings/CMakeLists.txt	(revision a7169281189d3cd03ab6369462742e4ba3e71ad5)
-+++ b/TopologicPythonBindings/CMakeLists.txt	(date 1731830659295)
-@@ -2,12 +2,18 @@
- 
++++ b/TopologicPythonBindings/CMakeLists.txt	(date 1731934277261)
+@@ -3,11 +3,17 @@
  project(TopologicPythonBindings CXX)
  set(PROJECT_NAMESPACE Topologic)
+ 
 +option(USE_CONDA_PYBIND11 "Use pybind11 installed via conda" OFF)
  
--
 -# Import pybind11
 -set(PYBIND11_FINDPYTHON ON)
 -add_subdirectory(pybind11)
 -
 +if(USE_CONDA_PYBIND11)
-+    set(CMAKE_PREFIX_PATH ${CONDA_PREFIX})
 +    # Find pybind11 package installed via conda
 +    set(PYBIND11_FINDPYTHON ON) # Make sure pybind11 uses Python
 +    find_package(pybind11 REQUIRED) # This will look for pybind11 installed via conda

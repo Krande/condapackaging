@@ -37,8 +37,17 @@ requirements:
   run:
     - numpy
     - python
+    - if: linux
+      then:
+        - libuuid
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x.x') }}
+
+tests:
+  - python:
+      imports:
+        - topologic_core
+
 
 about:
   license: AGPL-3.0-or-later
