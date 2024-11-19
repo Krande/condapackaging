@@ -12,11 +12,9 @@ package:
   version: ${{ version }}
 
 source:
+  file_name: TFEL-${{ version }}.tar.gz
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-${{ version }}.tar.gz
   sha256: ${{ sha256 }}
-  patches:
-    - if: win
-      then: patches/support_llvm-flang.patch
 
 build:
   number: ${{ build }}
@@ -31,11 +29,11 @@ requirements:
     - if: not win
       then: make
     - if: win
-      then: clang
-    - if: win
-      then: lld
-    - if: win
-      then: ninja
+      then:
+        - clang
+        - lld
+        - ninja
+        - 7zip
     - if: linux
       then: libgomp
     - if: osx
@@ -50,9 +48,9 @@ requirements:
     - if: win
       then: intel-openmp
     - if: linux
-      then: libstdcxx-ng
-    - if: linux
-      then: libgcc-ng
+      then:
+        - libstdcxx-ng
+        - libgcc-ng
   run_exports:
     - ${{ name }}
 

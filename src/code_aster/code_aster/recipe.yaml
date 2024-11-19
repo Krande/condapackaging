@@ -6,6 +6,7 @@ context:
   win_build: 1
   build: 200
   mpi_prefix: nompi
+  build_type: ${{ build_type if build_type else 'release' }}
 
 package:
   name: ${{ name|lower }}
@@ -46,7 +47,7 @@ requirements:
       then: openblas
     - libblas
     - liblapack
-    - metis *=*${{ build_type }}*
+    - metis=*=*${{ build_type }}*
     - mumps *=*${{ build_type }}*
     - mfront *=*${{ build_type }}*
     - mgis *=*${{ build_type }}*

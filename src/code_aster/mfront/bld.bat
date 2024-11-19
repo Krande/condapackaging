@@ -4,6 +4,16 @@ echo Build MFRONT/TFEL
 set FC=flang-new
 set TGT_BUILD_TYPE=Release
 
+REM check if file exists "TFEL-%version%.tar.gz"
+if exist "%SRC_DIR%\TFEL-%version%.tar.gz" (
+    echo "TFEL-%version%.tar.gz exists"
+   REM use 7zip to extract the tarball
+   7z x "%SRC_DIR%\TFEL-%version%.tar.gz" -o"%SRC_DIR%"
+) else (
+    echo "TFEL-%version%.tar.gz does not exist"
+)
+
+set "CXXFLAGS=%CXXFLAGS% -Wno-error=missing-template-arg-list-after-template-kw"
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set FCFLAGS=%FCFLAGS% -g -cpp

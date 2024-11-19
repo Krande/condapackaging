@@ -43,15 +43,15 @@ fortran_compiler_version:
   - if: linux
     then: 13
   - if: win
-    then: 18
+    then: 19
 
 clang:
   - if: win
-    then: 18
+    then: 19
 
 lld:
   - if: win
-    then: 18
+    then: 19
 
 channel_sources:
   - conda-forge

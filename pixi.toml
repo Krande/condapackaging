@@ -58,6 +58,9 @@ rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
 
 conv = { cmd = "conda-recipe-manager convert" }
 
+code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+
+
 [feature.boa.tasks]
 
 # Topologic
@@ -82,6 +85,7 @@ arpack = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/arpack" }
 # Other
 mambabuild = { cmd = ["conda", "mambabuild"] }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
+h5py = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/h5py" }
 
 # Intel LLVM Compiler
 intelfortranrt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/intelfortranrt" }
