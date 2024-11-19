@@ -22,7 +22,7 @@ boa = ">=0.17.0,<0.18"
 
 [feature.rattler.dependencies]
 conda-recipe-manager = ">=0.3.0,<0.4"
-rattler-build = { version=">=0.30.0,<0.31", build="*_0" }
+rattler-build = { version=">=0.31.0,<0.32" }
 
 [feature.cpack.dependencies]
 python-dotenv = ">=1.0.1,<1.1"
@@ -45,7 +45,7 @@ cpack-ctest-md-gen = { cmd = ["cpack-md-gen"] }
 [feature.rattler.tasks]
 flang = { cmd = ["rattler-build", "build","-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml", "--variant-config", "src/debug.yaml"] }
-mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml", "--output-dir", "output"] }
+mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
