@@ -28,13 +28,7 @@ work, build and test directories of your packages in your IDE. But keep the `tem
 
 ## Running locally using pixi and rattler-build (experimental)
 
-Assuming you have pixi installed.
-
-In the top level directory install the necessary pre-requisites by simply
-
-```bash
-pixi install
-```
+Assuming you have pixi installed. From the root directory;
 
 To compile a package using rattler-build  use
 
