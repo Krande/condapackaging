@@ -36,20 +36,14 @@ In the top level directory install the necessary pre-requisites by simply
 pixi install
 ```
 
-To compile a package using run using
+To compile a package using rattler-build  use
 
 ```bash
-pixi run rmumps
-```
+pixi run -e rattler mumps
+``` 
 
-This will try to first convert the meta.yaml to recipe.yaml (if it doesn't exist). Then try to run rattler-build on that recipe.yaml.
-From experience, it rarely manages to successfully convert the meta.yaml to recipe.yaml. So you will for the most part make manual modifications on the recipe.yaml files
-before trying to run rattler-build.
-
-You can also run regular conda build commands using pixi. For example
+You can also run regular conda mambabuild commands using pixi. For example
 
 ```bash
-pixi run mumps
+pixi run -e boa mumps
 ```
-
-Will run the regular `conda mambabuild .` command.
