@@ -30,8 +30,8 @@ on:
         type: string
         default: "mpi=nompi;build_type=debug,mpi=nompi;build_type=release"
   push:
-#    branches:
-#    - donotrun
+    branches:
+    - donotrun
 
 jobs:
   env:
