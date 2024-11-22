@@ -114,13 +114,5 @@ fontconfig:
 freetype:
   - '2'
 
-tbb:
-  - '2021'
-tbb_devel:
-  - '2021'
 libhwloc:
   - 2.11.2
-
-target_platform:
- - linux-64  # [linux]
- - win-64   # [win]
