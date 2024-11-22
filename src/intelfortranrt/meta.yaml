@@ -524,45 +524,6 @@ outputs:
       commands:
         - ls -A1 $PREFIX/lib/*  # [unix]
 
-  - name: umf
-    script: repack.sh   # [unix]
-    script: repack.bat  # [win]
-    build:
-      number: {{ umf_build_number|int + dst_build_number|int }}
-    requirements:
-      build:
-        - {{ compiler('c') }}
-        - {{ stdlib('c') }}
-      host:
-        - libhwloc
-        # intel-cmplr-lic-rt is a license file, please do not remove.
-        - {{ pin_subpackage('intel-cmplr-lic-rt', exact=True) }}
-      run:
-        # intel-cmplr-lic-rt is a license file, please do not remove.
-        - {{ pin_subpackage('intel-cmplr-lic-rt', exact=True) }}
-    about:
-      home: https://github.com/oneapi-src/unified-memory-framework
-      doc_url: https://oneapi-src.github.io/unified-memory-framework/
-      dev_url: https://github.com/oneapi-src/unified-memory-framework
-      summary: A library for constructing allocators and memory pools
-      license: LicenseRef-Proprietary-Intel-End-User-License-Agreement-for-Developer-Tools
-      license_family: Proprietary
-      license_file:
-        - umf/info/licenses/license.txt
-        - umf/info/licenses/tpp.txt
-      description: |
-        The Unified Memory Framework (UMF) is a library for constructing
-        allocators and memory pools. It also contains broadly useful
-        abstractions and utilities for memory management. UMF allows users to
-        manage multiple memory pools characterized by different attributes,
-        allowing certain allocation types to be isolated from others and
-        allocated using different hardware resources as required.
-    test:
-      commands:
-        - ls -A1 ${PREFIX}/licensing/compiler/*  # [unix]
-        - ls -A1 ${PREFIX}/lib/libumf.so*  # [unix]
-        - dir %PREFIX%\licensing\compiler\*  # [win]
-
 about:
   home: https://github.com/AnacondaRecipes/intel-compilers-repack-feedstock
   license: LicenseRef-Proprietary-Intel-End-User-License-Agreement-for-Developer-Tools
