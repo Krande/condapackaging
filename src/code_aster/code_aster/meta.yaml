@@ -1,6 +1,6 @@
 {% set name = 'code-aster' %}
-{% set version = '17.1.12' %}
-{% set win_build = 4 %}
+{% set version = '17.1.16' %}
+{% set win_build = 2 %}
 {% set build = win_build + 1 %}
 
 {% if mpi == 'nompi' %}
@@ -31,7 +31,7 @@ package:
 source:
   - fn: '{{ name }}_{{ version }}.{{ win_build }}_win.tar.gz'
     url: https://gitlab.com/krande/src/-/archive/{{ version }}.{{ win_build }}/src-{{ version }}.{{ win_build }}.tar.gz
-    sha256: 26b717be284d3d24067a56347e7a03019f43f218162be1f7d2c4d97579525631
+    sha256: 2afd07cc3605aebcc2a0d48c59c5fb8bdb68f96151c2c779c4f8c82779c60d15
 
 build:
   detect_binary_files_with_prefix: true
@@ -50,7 +50,7 @@ requirements:
     - pyyaml
     - waf 2.0.27
     - clang  # [win]
-
+    - setuptools
   host:
     - python
     - numpy
