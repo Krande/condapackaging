@@ -1,13 +1,10 @@
 @echo off
 
 patch -p1 < %RECIPE_DIR%/patches/no-vtk.patch
-cd OCP
 del IVtk* /Q
 
-for %%module in (IVtk IVtkOCC IVtkTools IVtkVTK) do (
-    powershell -Command "(Get-Content OCP/OCP.cpp) -notmatch '/register_IVtk/' | Set-Content OCP/OCP.cpp"
-)
-cd ..
+python %RECIPE_DIR%/update_ocp.py
+
 if errorlevel 1 exit 1
 
 cmake %CMAKE_ARGS% -B build -S "." ^
