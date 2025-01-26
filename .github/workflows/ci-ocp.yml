@@ -8,8 +8,7 @@ jobs:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
       package_name: ocp
-      conda_channel: "hdf5"
+      conda_channel: "dev"
       python_versions: "3.12"
       platforms: "windows-latest"
-      use_quetz: "True"
     secrets: inherit
