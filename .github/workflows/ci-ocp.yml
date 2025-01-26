@@ -4,46 +4,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_test:
-    name: ocp-${{ matrix.platform.name }}-${{ matrix.pyver.name }}-${{matrix.build.name}}
-    runs-on: ${{ matrix.platform.distver }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        build: [ { name: 'core' },{ name: 'vtk' } ]
-        pyver: [
-          { name: py311, distver: '3.11' },
-        ]
-        platform: [
-          { name: win, distver: windows-latest },
-          { name: linux, distver: ubuntu-latest },
-          { name: macOS, distver: macos-latest }
-        ]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: seanmiddleditch/gha-setup-ninja@master
-      - uses: mamba-org/provision-with-micromamba@main # https://github.com/mamba-org/provision-with-micromamba
-        with:
-          cache-env: true
-          environment-name: conda-build
-          channels: conda-forge
-          channel-priority: strict
-          environment-file: environment.conda.yml
-          extra-specs: |
-            python=${{ matrix.pyver.distver }}
-
-      - name: Create temp artifacts directory
-        run: |
-          mkdir artifacts
-
-      - name: build local packages
-        run: |
-          conda mambabuild . --variants "{'variant': '${{matrix.build.name}}'}" --python ${{ matrix.pyver.distver }} -c krande/label/dev -c conda-forge --token ${{ secrets.ANACONDA_TOKEN }} --user krande --label dev --output-folder ./artifacts
-        working-directory: src/ocp/conda
-
-      - name: Copy from temp artifacts directory to github workspace artifacts directory
-        run: |
-          cp -r artifacts/* $GITHUB_WORKSPACE/artifacts
+  build:
+    uses: ./.github/workflows/conda-build-basic.yml
+    with:
+      package_name: ocp
+      conda_channel: "hdf5"
+      python_versions: "3.12"
+      platforms: "windows-latest"
+      use_quetz: "True"
+    secrets: inherit

@@ -1,0 +1,87 @@
+schema_version: 1
+
+context:
+  name: ocp
+  version: 7.8.1.1
+  occt_ver: 7.8.1
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # currently only used for the license file
+  - url: https://raw.githubusercontent.com/CadQuery/OCP/${{ version }}/LICENSE
+    sha256: a13caea71627202ad33cc4cafafdd18e667e16716488f8d9c568127121fb89fd
+    file_name: ${{ name }}-${{ version }}-LICENSE.txt
+  # binding sources
+  - if: win
+    then:
+      - url: https://github.com/CadQuery/OCP/releases/download/${{ version }}/OCP_src_stubs_windows-2019.zip
+        sha256: ebeac2d48064e3d2ed7b8f96e89c222a4587efa228f94bc87f6443bff16c7edf
+  - if: osx
+    then:
+      - url: https://github.com/CadQuery/OCP/releases/download/${{ version }}/OCP_src_stubs_macOS-latest.zip
+        sha256: 68081173bd1103447933ab3a749e6d284a01f7fc4f7b87185a2af47a2c17a500
+  - if: linux
+    then:
+    - url: https://github.com/CadQuery/OCP/releases/download/${{ version }}/OCP_src_stubs_Ubuntu-20.04.zip
+      sha256: ba4e25550838417ef4ff4e81587987f15e0e8a1e0667173fe2b59ceb8a825676
+      target_directory: src
+
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - cmake
+    - m2-patch
+    - ninja
+    - if: win
+      then: lld
+  host:
+    - python
+    - pybind11
+    - pybind11-abi
+    - libboost-devel
+    - if: linux
+      then:
+        - libgl-devel
+        - xorg-xorgproto
+    - occt 7.8.1.*
+    - tbb-devel
+  run:
+    - python
+    - occt
+
+tests:
+  - python:
+      imports:
+        - OCP
+        - if: win
+          then: OCP.WNT
+        - if: linux
+          then: OCP.Xw
+        - if: osx
+          then: OCP.Cocoa
+
+about:
+  license: Apache-2.0
+  license_file: ${{ name }}-${{ version }}-LICENSE.txt
+  summary: Python wrapper for OCCT using auto-generated pybind11 bindings.
+  homepage: https://github.com/CadQuery/OCP/
+  repository: https://github.com/CadQuery/OCP/
+  documentation: https://github.com/CadQuery/OCP/blob/master/README.md
+
+extra:
+  recipe-maintainers:
+    - whophil
+    - adam-urbanczyk

@@ -60,6 +60,7 @@ conv = { cmd = "conda-recipe-manager convert" }
 
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
+ocp = { cmd = ["rattler-build", "build", "-r","src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 [feature.boa.tasks]
 

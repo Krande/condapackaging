@@ -1,7 +1,16 @@
-set CONDA_PREFIX=%PREFIX%
+@echo off
+
+patch -p1 < %RECIPE_DIR%/patches/no-vtk.patch
+cd OCP
+del IVtk* /Q
+
+for %%module in (IVtk IVtkOCC IVtkTools IVtkVTK) do (
+    powershell -Command "(Get-Content OCP/OCP.cpp) -notmatch '/register_IVtk/' | Set-Content OCP/OCP.cpp"
+)
+cd ..
 if errorlevel 1 exit 1
 
-cmake %CMAKE_ARGS% -B build -S "%SRC_DIR%\src" ^
+cmake %CMAKE_ARGS% -B build -S "." ^
 	-G Ninja ^
 	-DCMAKE_BUILD_TYPE=Release ^
 	-DPython3_FIND_STRATEGY=LOCATION ^
@@ -15,4 +24,7 @@ cmake --build build -v -j 1 -- -k 0
 if errorlevel 1 exit 1
 
 cmake --install build --prefix "%STDLIB_DIR%"
+if errorlevel 1 exit 1
+
+cmake -E copy_directory "%SRC_DIR%/src/OCP-stubs" "%SP_DIR%/OCP-stubs"
 if errorlevel 1 exit 1
