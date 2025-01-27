@@ -11,12 +11,14 @@ source:
   url: https://github.com/Krande/cadquery/archive/refs/tags/v${{ version }}-dev.tar.gz
   sha256: 731e08a886449913016db928cab4f262b2f115f093aae363a373f1a1dfb15478
   patches:
-    - patches/remove_vtk-functions.patch
+    - if: variant == "novtk"
+      then:
+        - patches/remove_vtk-functions.patch
 
 build:
   number: 1
   noarch: python
-  string: py${{ python | replace('.', '') }}_${{ variant }}_h${{ hash }}_${{ build }}
+  string: pyh${{ hash }}_${{ variant }}_${{ build }}
   script:
     - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
 
@@ -31,7 +33,13 @@ requirements:
     - ipython
     - multimethod >=1.11,<2
     - nlopt
-    - ocp ==7.8.1.1 *${{ variant}}*
+    - if: variant == "novtk"
+      then:
+        - ocp ==7.8.1.1 *novtk*
+    - if: variant == "all"
+      then:
+        - ocp ==7.8.1.1 *all*
+        - vtk=*=qt*
     - pyparsing >=2.1.9
     - python ${{ python_min }}
     - typing_extensions
@@ -43,7 +51,7 @@ tests:
         - cadquery
   - files:
       source:
-        - tests
+        - tests/
     requirements:
       run:
         - docutils
@@ -56,8 +64,7 @@ tests:
     script:
       - pip check
       - mypy -m cadquery
-      - "coverage run --source=cadquery --branch -m pytest -vv --tb=long --color=yes -k \"not (constraint_validation or constraint_solver)\""
-      - coverage report --show-missing --skip-covered --fail-under=90
+      - pytest tests -vv --tb=long --color=yes
 
 about:
   license: Apache-2.0

@@ -1,9 +1,11 @@
 @echo off
 
-patch -p1 < %RECIPE_DIR%/patches/no-vtk.patch
-del IVtk* /Q
+if %variant% == "novtk" (
+    patch -p1 < %RECIPE_DIR%/patches/no-vtk.patch
+    del IVtk* /Q
 
-python %RECIPE_DIR%/update_ocp_novtk.py
+    python %RECIPE_DIR%/update_ocp_novtk.py
+)
 
 if errorlevel 1 exit 1
 

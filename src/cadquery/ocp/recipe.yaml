@@ -45,10 +45,11 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ stdlib("c") }}
     - cmake
-    - m2-patch
     - ninja
     - if: win
-      then: lld
+      then:
+        - lld
+        - m2-patch
   host:
     - python
     - pybind11
