@@ -156,7 +156,7 @@ jobs:
       - name: build local packages using Rattler
         if: ${{ inputs.build_env == 'rattler' }}
         run: |
-          pixi run -e boa ${{ inputs.package_name }} ${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
+          pixi run -e rattler ${{ inputs.package_name }} ${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.upload_conda == 'True' }}
