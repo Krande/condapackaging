@@ -1,0 +1,160 @@
+Subject: [PATCH] remove vtk-functions
+---
+Index: cadquery/occ_impl/shapes.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/occ_impl/shapes.py b/cadquery/occ_impl/shapes.py
+--- a/cadquery/occ_impl/shapes.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/shapes.py	(date 1737985856123)
+@@ -17,8 +17,8 @@
+ 
+ from io import BytesIO
+ 
+-from vtkmodules.vtkCommonDataModel import vtkPolyData
+-from vtkmodules.vtkFiltersCore import vtkTriangleFilter, vtkPolyDataNormals
++# from vtkmodules.vtkCommonDataModel import vtkPolyData
++# from vtkmodules.vtkFiltersCore import vtkTriangleFilter, vtkPolyDataNormals
+ 
+ from .geom import Vector, VectorLike, BoundBox, Plane, Location, Matrix
+ from .shape_protocols import geom_LUT_FACE, geom_LUT_EDGE, Shapes, Geoms
+@@ -261,8 +261,8 @@
+ from OCP.BRepProj import BRepProj_Projection
+ from OCP.BRepExtrema import BRepExtrema_DistShapeShape
+ 
+-from OCP.IVtkOCC import IVtkOCC_Shape, IVtkOCC_ShapeMesher
+-from OCP.IVtkVTK import IVtkVTK_ShapeData
++# from OCP.IVtkOCC import IVtkOCC_Shape, IVtkOCC_ShapeMesher
++# from OCP.IVtkVTK import IVtkVTK_ShapeData
+ 
+ # for catching exceptions
+ from OCP.Standard import Standard_NoSuchObject, Standard_Failure
+@@ -1484,53 +1484,53 @@
+ 
+         return self.__class__(result)
+ 
+-    def toVtkPolyData(
+-        self,
+-        tolerance: Optional[float] = None,
+-        angularTolerance: Optional[float] = None,
+-        normals: bool = False,
+-    ) -> vtkPolyData:
+-        """
+-        Convert shape to vtkPolyData
+-        """
+-
+-        vtk_shape = IVtkOCC_Shape(self.wrapped)
+-        shape_data = IVtkVTK_ShapeData()
+-        shape_mesher = IVtkOCC_ShapeMesher()
+-
+-        drawer = vtk_shape.Attributes()
+-        drawer.SetUIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
+-        drawer.SetVIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
+-
+-        if tolerance:
+-            drawer.SetDeviationCoefficient(tolerance)
+-
+-        if angularTolerance:
+-            drawer.SetDeviationAngle(angularTolerance)
+-
+-        shape_mesher.Build(vtk_shape, shape_data)
+-
+-        rv = shape_data.getVtkPolyData()
+-
+-        # convert to triangles and split edges
+-        t_filter = vtkTriangleFilter()
+-        t_filter.SetInputData(rv)
+-        t_filter.Update()
+-
+-        rv = t_filter.GetOutput()
+-
+-        # compute normals
+-        if normals:
+-            n_filter = vtkPolyDataNormals()
+-            n_filter.SetComputePointNormals(True)
+-            n_filter.SetComputeCellNormals(True)
+-            n_filter.SetFeatureAngle(360)
+-            n_filter.SetInputData(rv)
+-            n_filter.Update()
+-
+-            rv = n_filter.GetOutput()
+-
+-        return rv
++    # def toVtkPolyData(
++    #     self,
++    #     tolerance: Optional[float] = None,
++    #     angularTolerance: Optional[float] = None,
++    #     normals: bool = False,
++    # ) -> vtkPolyData:
++    #     """
++    #     Convert shape to vtkPolyData
++    #     """
++    #
++    #     vtk_shape = IVtkOCC_Shape(self.wrapped)
++    #     shape_data = IVtkVTK_ShapeData()
++    #     shape_mesher = IVtkOCC_ShapeMesher()
++    #
++    #     drawer = vtk_shape.Attributes()
++    #     drawer.SetUIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
++    #     drawer.SetVIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
++    #
++    #     if tolerance:
++    #         drawer.SetDeviationCoefficient(tolerance)
++    #
++    #     if angularTolerance:
++    #         drawer.SetDeviationAngle(angularTolerance)
++    #
++    #     shape_mesher.Build(vtk_shape, shape_data)
++    #
++    #     rv = shape_data.getVtkPolyData()
++    #
++    #     # convert to triangles and split edges
++    #     t_filter = vtkTriangleFilter()
++    #     t_filter.SetInputData(rv)
++    #     t_filter.Update()
++    #
++    #     rv = t_filter.GetOutput()
++    #
++    #     # compute normals
++    #     if normals:
++    #         n_filter = vtkPolyDataNormals()
++    #         n_filter.SetComputePointNormals(True)
++    #         n_filter.SetComputeCellNormals(True)
++    #         n_filter.SetFeatureAngle(360)
++    #         n_filter.SetInputData(rv)
++    #         n_filter.Update()
++    #
++    #         rv = n_filter.GetOutput()
++    #
++    #     return rv
+ 
+     def _repr_javascript_(self):
+         """
+Index: cadquery/occ_impl/exporters/__init__.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/occ_impl/exporters/__init__.py b/cadquery/occ_impl/exporters/__init__.py
+--- a/cadquery/occ_impl/exporters/__init__.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/exporters/__init__.py	(date 1737985973518)
+@@ -15,7 +15,7 @@
+ from .amf import AmfWriter
+ from .threemf import ThreeMFWriter
+ from .dxf import exportDXF, DxfDocument
+-from .vtk import exportVTP
++# from .vtk import exportVTP
+ 
+ 
+ class ExportTypes:
+@@ -124,7 +124,8 @@
+         VrmlAPI.Write_s(shape.wrapped, fname)
+ 
+     elif exportType == ExportTypes.VTP:
+-        exportVTP(shape, fname, tolerance, angularTolerance)
++        # exportVTP(shape, fname, tolerance, angularTolerance)
++        raise NotImplementedError("You are using the cadquery NOVTK build, VTP export is not supported")
+ 
+     elif exportType == ExportTypes.BREP:
+         shape.exportBrep(fname)

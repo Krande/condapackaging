@@ -10,6 +10,8 @@ package:
 source:
   url: https://github.com/Krande/cadquery/archive/refs/tags/v${{ version }}-dev.tar.gz
   sha256: 731e08a886449913016db928cab4f262b2f115f093aae363a373f1a1dfb15478
+  patches:
+    - patches/remove_vtk-functions.patch
 
 build:
   number: 1
