@@ -148,9 +148,15 @@ jobs:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
 
-      - name: build local packages
+      - name: build local packages using Boa
+        if: ${{ inputs.build_env == 'boa' }}
         run: |
-          pixi run -e ${{ inputs.build_env }} ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
+          pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
+
+      - name: build local packages using Rattler
+        if: ${{ inputs.build_env == 'rattler' }}
+        run: |
+          pixi run -e boa ${{ inputs.package_name }} ${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.upload_conda == 'True' }}
