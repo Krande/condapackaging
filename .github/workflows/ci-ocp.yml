@@ -11,4 +11,5 @@ jobs:
       conda_channel: "dev"
       python_versions: "3.12"
       platforms: "windows-latest"
+      build_env: "rattler"
     secrets: inherit
