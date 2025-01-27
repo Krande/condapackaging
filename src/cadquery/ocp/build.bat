@@ -18,5 +18,5 @@ if errorlevel 1 exit 1
 
 ninja -C build -v
 
-cmake -E copy_directory "%SRC_DIR%/OCP-stubs" "%SP_DIR%/OCP"
-if errorlevel 1 exit 1
+cmake -E copy_directory "%SRC_DIR%/OCP-stubs" "%SP_DIR%/OCP-stubs"
+@REM if errorlevel 1 exit 1

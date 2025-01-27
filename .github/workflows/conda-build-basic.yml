@@ -61,6 +61,11 @@ on:
         type: string
         required: false
         default: False
+      build_env:
+        description: 'Build environment'
+        type: string
+        required: false
+        default: "boa"
 
 env:
   CLICOLOR_FORCE: "1"
@@ -129,7 +134,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.1
         with:
           pixi-version: v0.40.2
-          environments: "boa"
+          environments: ${{ inputs.build_env }}
           cache: true
 
       - name: Update condarc
@@ -138,19 +143,19 @@ jobs:
 
       - name: Add channel if not already exist
         run: |
-          pixi run -e boa cpack-quetz create-channel ${{ inputs.conda_channel }}
+          pixi run cpack-quetz create-channel ${{ inputs.conda_channel }}
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
 
       - name: build local packages
         run: |
-          pixi run -e boa ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
+          pixi run -e ${{ inputs.build_env }} ${{ inputs.package_name }} --python ${{ matrix.pyver }}${{ env.VARIANT_STR }}${{ env.EXTRA_BUILD_ARGS }} -c conda-forge
 
       - name: Upload packages to Quetz Server
         if: ${{ inputs.upload_conda == 'True' }}
         run: |
-          pixi run -e boa cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_channel }} --force --create-channel-if-not-exists
+          pixi run cpack-quetz upload ${{ env.ARTIFACTS_DIR }} ${{ inputs.conda_channel }} --force --create-channel-if-not-exists
         env:
           QUETZ_URL: ${{ secrets.QUETZ_URL }}
           QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
