@@ -7,7 +7,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/cadquery/occ_impl/shapes.py b/cadquery/occ_impl/shapes.py
 --- a/cadquery/occ_impl/shapes.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/shapes.py	(date 1737985856123)
++++ b/cadquery/occ_impl/shapes.py	(date 1737992305273)
 @@ -17,8 +17,8 @@
  
  from io import BytesIO
@@ -131,6 +131,387 @@ diff --git a/cadquery/occ_impl/shapes.py b/cadquery/occ_impl/shapes.py
  
      def _repr_javascript_(self):
          """
+Index: cadquery/occ_impl/exporters/assembly.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/occ_impl/exporters/assembly.py b/cadquery/occ_impl/exporters/assembly.py
+--- a/cadquery/occ_impl/exporters/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/exporters/assembly.py	(date 1737993661382)
+@@ -7,8 +7,8 @@
+ from typing import Optional
+ from typing_extensions import Literal
+ 
+-from vtkmodules.vtkIOExport import vtkJSONSceneExporter, vtkVRMLExporter
+-from vtkmodules.vtkRenderingCore import vtkRenderer, vtkRenderWindow
++# from vtkmodules.vtkIOExport import vtkJSONSceneExporter, vtkVRMLExporter
++# from vtkmodules.vtkRenderingCore import vtkRenderer, vtkRenderWindow
+ 
+ from OCP.XSControl import XSControl_WorkSession
+ from OCP.STEPCAFControl import STEPCAFControl_Writer
+@@ -26,7 +26,7 @@
+ from OCP.Message import Message_ProgressRange
+ from OCP.Interface import Interface_Static
+ 
+-from ..assembly import AssemblyProtocol, toCAF, toVTK, toFusedCAF
++from ..assembly import AssemblyProtocol, toCAF, toFusedCAF
+ from ..geom import Location
+ 
+ 
+@@ -134,53 +134,53 @@
+     return status == PCDM_StoreStatus.PCDM_SS_OK
+ 
+ 
+-def _vtkRenderWindow(
+-    assy: AssemblyProtocol, tolerance: float = 1e-3, angularTolerance: float = 0.1
+-) -> vtkRenderWindow:
+-    """
+-    Convert an assembly to a vtkRenderWindow. Used by vtk based exporters.
+-    """
+-
+-    renderer = toVTK(assy, tolerance=tolerance, angularTolerance=angularTolerance)
+-    renderWindow = vtkRenderWindow()
+-    renderWindow.AddRenderer(renderer)
+-
+-    renderer.ResetCamera()
+-    renderer.SetBackground(1, 1, 1)
+-
+-    return renderWindow
++# def _vtkRenderWindow(
++#     assy: AssemblyProtocol, tolerance: float = 1e-3, angularTolerance: float = 0.1
++# ) -> vtkRenderWindow:
++#     """
++#     Convert an assembly to a vtkRenderWindow. Used by vtk based exporters.
++#     """
++#
++#     renderer = toVTK(assy, tolerance=tolerance, angularTolerance=angularTolerance)
++#     renderWindow = vtkRenderWindow()
++#     renderWindow.AddRenderer(renderer)
++#
++#     renderer.ResetCamera()
++#     renderer.SetBackground(1, 1, 1)
++#
++#     return renderWindow
+ 
+ 
+-def exportVTKJS(assy: AssemblyProtocol, path: str):
+-    """
+-    Export an assembly to a zipped vtkjs. NB: .zip extensions is added to path.
+-    """
++# def exportVTKJS(assy: AssemblyProtocol, path: str):
++#     """
++#     Export an assembly to a zipped vtkjs. NB: .zip extensions is added to path.
++#     """
++#
++#     renderWindow = _vtkRenderWindow(assy)
++#
++#     with TemporaryDirectory() as tmpdir:
++#
++#         exporter = vtkJSONSceneExporter()
++#         exporter.SetFileName(tmpdir)
++#         exporter.SetRenderWindow(renderWindow)
++#         exporter.Write()
++#         make_archive(path, "zip", tmpdir)
+ 
+-    renderWindow = _vtkRenderWindow(assy)
+ 
+-    with TemporaryDirectory() as tmpdir:
+-
+-        exporter = vtkJSONSceneExporter()
+-        exporter.SetFileName(tmpdir)
+-        exporter.SetRenderWindow(renderWindow)
+-        exporter.Write()
+-        make_archive(path, "zip", tmpdir)
+-
+-
+-def exportVRML(
+-    assy: AssemblyProtocol,
+-    path: str,
+-    tolerance: float = 1e-3,
+-    angularTolerance: float = 0.1,
+-):
+-    """
+-    Export an assembly to a vrml file using vtk.
+-    """
+-
+-    exporter = vtkVRMLExporter()
+-    exporter.SetFileName(path)
+-    exporter.SetRenderWindow(_vtkRenderWindow(assy, tolerance, angularTolerance))
+-    exporter.Write()
++# def exportVRML(
++#     assy: AssemblyProtocol,
++#     path: str,
++#     tolerance: float = 1e-3,
++#     angularTolerance: float = 0.1,
++# ):
++#     """
++#     Export an assembly to a vrml file using vtk.
++#     """
++#
++#     exporter = vtkVRMLExporter()
++#     exporter.SetFileName(path)
++#     exporter.SetRenderWindow(_vtkRenderWindow(assy, tolerance, angularTolerance))
++#     exporter.Write()
+ 
+ 
+ def exportGLTF(
+Index: cadquery/occ_impl/assembly.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/occ_impl/assembly.py b/cadquery/occ_impl/assembly.py
+--- a/cadquery/occ_impl/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/assembly.py	(date 1737993508354)
+@@ -27,18 +27,18 @@
+ from OCP.TopoDS import TopoDS_Shape
+ from OCP.gp import gp_EulerSequence
+ 
+-from vtkmodules.vtkRenderingCore import (
+-    vtkActor,
+-    vtkPolyDataMapper as vtkMapper,
+-    vtkRenderer,
+-)
+-
+-from vtkmodules.vtkFiltersExtraction import vtkExtractCellsByType
+-from vtkmodules.vtkCommonDataModel import VTK_TRIANGLE, VTK_LINE, VTK_VERTEX
++# from vtkmodules.vtkRenderingCore import (
++#     vtkActor,
++#     vtkPolyDataMapper as vtkMapper,
++#     vtkRenderer,
++# )
++#
++# from vtkmodules.vtkFiltersExtraction import vtkExtractCellsByType
++# from vtkmodules.vtkCommonDataModel import VTK_TRIANGLE, VTK_LINE, VTK_VERTEX
+ 
+ from .geom import Location
+ from .shapes import Shape, Solid, Compound
+-from .exporters.vtk import toString
++# from .exporters.vtk import toString
+ from ..cq import Workplane
+ 
+ # type definitions
+@@ -278,97 +278,97 @@
+     return trans, (rot[1], rot[2], rot[0])
+ 
+ 
+-def toVTK(
+-    assy: AssemblyProtocol,
+-    color: Tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
+-    tolerance: float = 1e-3,
+-    angularTolerance: float = 0.1,
+-) -> vtkRenderer:
+-
+-    renderer = vtkRenderer()
+-
+-    for shape, _, loc, col_ in assy:
+-
+-        col = col_.toTuple() if col_ else color
+-
+-        trans, rot = _loc2vtk(loc)
+-
+-        data = shape.toVtkPolyData(tolerance, angularTolerance)
+-
+-        # extract faces
+-        extr = vtkExtractCellsByType()
+-        extr.SetInputDataObject(data)
+-
+-        extr.AddCellType(VTK_LINE)
+-        extr.AddCellType(VTK_VERTEX)
+-        extr.Update()
+-        data_edges = extr.GetOutput()
+-
+-        # extract edges
+-        extr = vtkExtractCellsByType()
+-        extr.SetInputDataObject(data)
+-
+-        extr.AddCellType(VTK_TRIANGLE)
+-        extr.Update()
+-        data_faces = extr.GetOutput()
+-
+-        # remove normals from edges
+-        data_edges.GetPointData().RemoveArray("Normals")
+-
+-        # add both to the renderer
+-        mapper = vtkMapper()
+-        mapper.AddInputDataObject(data_faces)
+-
+-        actor = vtkActor()
+-        actor.SetMapper(mapper)
+-        actor.SetPosition(*trans)
+-        actor.SetOrientation(*rot)
+-        actor.GetProperty().SetColor(*col[:3])
+-        actor.GetProperty().SetOpacity(col[3])
+-
+-        renderer.AddActor(actor)
+-
+-        mapper = vtkMapper()
+-        mapper.AddInputDataObject(data_edges)
+-
+-        actor = vtkActor()
+-        actor.SetMapper(mapper)
+-        actor.SetPosition(*trans)
+-        actor.SetOrientation(*rot)
+-        actor.GetProperty().SetColor(0, 0, 0)
+-        actor.GetProperty().SetLineWidth(2)
+-
+-        renderer.AddActor(actor)
+-
+-    return renderer
+-
+-
+-def toJSON(
+-    assy: AssemblyProtocol,
+-    color: Tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
+-    tolerance: float = 1e-3,
+-) -> List[Dict[str, Any]]:
+-    """
+-    Export an object to a structure suitable for converting to VTK.js JSON.
+-    """
+-
+-    rv = []
+-
+-    for shape, _, loc, col_ in assy:
+-
+-        val: Any = {}
++# def toVTK(
++#     assy: AssemblyProtocol,
++#     color: Tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
++#     tolerance: float = 1e-3,
++#     angularTolerance: float = 0.1,
++# ) -> vtkRenderer:
++#
++#     renderer = vtkRenderer()
++#
++#     for shape, _, loc, col_ in assy:
++#
++#         col = col_.toTuple() if col_ else color
++#
++#         trans, rot = _loc2vtk(loc)
++#
++#         data = shape.toVtkPolyData(tolerance, angularTolerance)
++#
++#         # extract faces
++#         extr = vtkExtractCellsByType()
++#         extr.SetInputDataObject(data)
++#
++#         extr.AddCellType(VTK_LINE)
++#         extr.AddCellType(VTK_VERTEX)
++#         extr.Update()
++#         data_edges = extr.GetOutput()
++#
++#         # extract edges
++#         extr = vtkExtractCellsByType()
++#         extr.SetInputDataObject(data)
++#
++#         extr.AddCellType(VTK_TRIANGLE)
++#         extr.Update()
++#         data_faces = extr.GetOutput()
++#
++#         # remove normals from edges
++#         data_edges.GetPointData().RemoveArray("Normals")
++#
++#         # add both to the renderer
++#         mapper = vtkMapper()
++#         mapper.AddInputDataObject(data_faces)
++#
++#         actor = vtkActor()
++#         actor.SetMapper(mapper)
++#         actor.SetPosition(*trans)
++#         actor.SetOrientation(*rot)
++#         actor.GetProperty().SetColor(*col[:3])
++#         actor.GetProperty().SetOpacity(col[3])
++#
++#         renderer.AddActor(actor)
++#
++#         mapper = vtkMapper()
++#         mapper.AddInputDataObject(data_edges)
++#
++#         actor = vtkActor()
++#         actor.SetMapper(mapper)
++#         actor.SetPosition(*trans)
++#         actor.SetOrientation(*rot)
++#         actor.GetProperty().SetColor(0, 0, 0)
++#         actor.GetProperty().SetLineWidth(2)
++#
++#         renderer.AddActor(actor)
++#
++#     return renderer
+ 
+-        data = toString(shape, tolerance)
+-        trans, rot = loc.toTuple()
+ 
+-        val["shape"] = data
+-        val["color"] = col_.toTuple() if col_ else color
+-        val["position"] = trans
+-        val["orientation"] = tuple(radians(r) for r in rot)
+-
+-        rv.append(val)
+-
+-    return rv
++# def toJSON(
++#     assy: AssemblyProtocol,
++#     color: Tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0),
++#     tolerance: float = 1e-3,
++# ) -> List[Dict[str, Any]]:
++#     """
++#     Export an object to a structure suitable for converting to VTK.js JSON.
++#     """
++#
++#     rv = []
++#
++#     for shape, _, loc, col_ in assy:
++#
++#         val: Any = {}
++#
++#         data = toString(shape, tolerance)
++#         trans, rot = loc.toTuple()
++#
++#         val["shape"] = data
++#         val["color"] = col_.toTuple() if col_ else color
++#         val["position"] = trans
++#         val["orientation"] = tuple(radians(r) for r in rot)
++#
++#         rv.append(val)
++#
++#     return rv
+ 
+ 
+ def toFusedCAF(
+Index: cadquery/assembly.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/assembly.py b/cadquery/assembly.py
+--- a/cadquery/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/assembly.py	(date 1737993792499)
+@@ -29,8 +29,6 @@
+ from .occ_impl.exporters.assembly import (
+     exportAssembly,
+     exportCAF,
+-    exportVTKJS,
+-    exportVRML,
+     exportGLTF,
+     STEPExportModeLiterals,
+ )
+@@ -491,11 +489,13 @@
+         elif exportType == "XML":
+             exportCAF(self, path)
+         elif exportType == "VRML":
+-            exportVRML(self, path, tolerance, angularTolerance)
++            # exportVRML(self, path, tolerance, angularTolerance)
++            raise Exception("You are running NOVTK. VRML export is not supported")
+         elif exportType == "GLTF" or exportType == "GLB":
+             exportGLTF(self, path, None, tolerance, angularTolerance)
+         elif exportType == "VTKJS":
+-            exportVTKJS(self, path)
++            # exportVTKJS(self, path)
++            raise Exception("You are running NOVTK. VRML export is not supported")
+         elif exportType == "STL":
+             # Handle the ascii setting for STL export
+             export_ascii = False
 Index: cadquery/occ_impl/exporters/__init__.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -138,7 +519,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/cadquery/occ_impl/exporters/__init__.py b/cadquery/occ_impl/exporters/__init__.py
 --- a/cadquery/occ_impl/exporters/__init__.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/exporters/__init__.py	(date 1737985973518)
++++ b/cadquery/occ_impl/exporters/__init__.py	(date 1737992305132)
 @@ -15,7 +15,7 @@
  from .amf import AmfWriter
  from .threemf import ThreeMFWriter
@@ -158,3 +539,36 @@ diff --git a/cadquery/occ_impl/exporters/__init__.py b/cadquery/occ_impl/exporte
  
      elif exportType == ExportTypes.BREP:
          shape.exportBrep(fname)
+Index: tests/test_cadquery.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tests/test_cadquery.py b/tests/test_cadquery.py
+--- a/tests/test_cadquery.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/tests/test_cadquery.py	(date 1737992632309)
+@@ -5731,15 +5731,15 @@
+         with raises(ValueError):
+             Face.makeNSidedSurface(outer_w, [[0, 0, 1]])
+ 
+-    def test_toVtk(self):
+-
+-        from vtkmodules.vtkCommonDataModel import vtkPolyData
+-
+-        f = Face.makePlane(2, 2)
+-        vtk = f.toVtkPolyData(normals=False)
+-
+-        assert isinstance(vtk, vtkPolyData)
+-        assert vtk.GetNumberOfPolys() == 2
++    # def test_toVtk(self):
++    #
++    #     from vtkmodules.vtkCommonDataModel import vtkPolyData
++    #
++    #     f = Face.makePlane(2, 2)
++    #     vtk = f.toVtkPolyData(normals=False)
++    #
++    #     assert isinstance(vtk, vtkPolyData)
++    #     assert vtk.GetNumberOfPolys() == 2
+ 
+     def test_iterators(self):
+ 

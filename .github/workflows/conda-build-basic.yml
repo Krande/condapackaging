@@ -62,7 +62,7 @@ on:
         required: false
         default: False
       build_env:
-        description: 'Build environment'
+        description: 'Build environment. Can be either boa or rattler'
         type: string
         required: false
         default: "boa"
