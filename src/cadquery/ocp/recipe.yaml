@@ -34,6 +34,9 @@ source:
 build:
   number: ${{ build }}
   string: py${{ python | replace('.', '') }}_${{ variant }}_h${{ hash }}_${{ build }}
+  script:
+      env:
+        VARIANT: ${{ variant }}
 
 requirements:
   build:

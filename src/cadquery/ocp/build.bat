@@ -1,6 +1,7 @@
 @echo off
 
-if %variant% == "novtk" (
+echo "VARIANT: %VARIANT%"
+if "%VARIANT%" == "novtk" (
     patch -p1 < %RECIPE_DIR%/patches/no-vtk.patch
     del IVtk* /Q
 
@@ -24,4 +25,4 @@ copy /Y build\OCP*.pyd "%SP_DIR%"
 copy /Y build\OCP*.lib "%LIBRARY_PREFIX%/lib"
 
 cmake -E copy_directory "%SRC_DIR%/OCP-stubs" "%SP_DIR%/OCP"
-@REM if errorlevel 1 exit 1
+if errorlevel 1 exit 1
