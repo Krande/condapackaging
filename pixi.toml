@@ -22,7 +22,7 @@ boa = ">=0.17.0,<0.18"
 
 [feature.rattler.dependencies]
 conda-recipe-manager = ">=0.3.0,<0.4"
-rattler-build = { version=">=0.31.0,<0.32" }
+rattler-build = { version=">=0.35.6,<0.36" }
 
 [feature.cpack.dependencies]
 python-dotenv = ">=1.0.1,<1.1"
@@ -61,6 +61,7 @@ conv = { cmd = "conda-recipe-manager convert" }
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 ocp = { cmd = ["rattler-build", "build", "-r","src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+cadquery = { cmd = ["rattler-build", "build", "-r","src/cadquery/cadquery/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 [feature.boa.tasks]
 

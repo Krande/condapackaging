@@ -1,19 +1,20 @@
 schema_version: 1
 
 context:
-  version: 2.5.2
+  version: 2.6.0
 
 package:
   name: cadquery
   version: ${{ version }}
 
 source:
-  url: https://github.com/CadQuery/cadquery/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 7503a18c411bf4ed7915f7bdb72bc01eec53ebe89fac358695dfc26053e0f99f
+  url: https://github.com/Krande/cadquery/archive/refs/tags/v${{ version }}-dev.tar.gz
+  sha256: 731e08a886449913016db928cab4f262b2f115f093aae363a373f1a1dfb15478
 
 build:
   number: 1
   noarch: python
+  string: py${{ python | replace('.', '') }}_${{ variant }}_h${{ hash }}_${{ build }}
   script:
     - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
 
@@ -28,7 +29,7 @@ requirements:
     - ipython
     - multimethod >=1.11,<2
     - nlopt
-    - ocp ==7.8.1.1
+    - ocp ==7.8.1.1 *${{ variant}}*
     - pyparsing >=2.1.9
     - python ${{ python_min }}
     - typing_extensions
