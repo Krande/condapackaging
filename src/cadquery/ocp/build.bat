@@ -16,7 +16,10 @@ cmake %CMAKE_ARGS% -B build -S "." ^
 	-DCMAKE_MODULE_LINKER_FLAGS="/machine:x64 /FORCE:MULTIPLE"
 if errorlevel 1 exit 1
 
-ninja -C build -v
+ninja -C build
 
-cmake -E copy_directory "%SRC_DIR%/OCP-stubs" "%SP_DIR%/OCP-stubs"
+copy /Y build\OCP*.pyd "%SP_DIR%"
+copy /Y build\OCP*.lib "%LIBRARY_PREFIX%/lib"
+
+cmake -E copy_directory "%SRC_DIR%/OCP-stubs" "%SP_DIR%/OCP"
 @REM if errorlevel 1 exit 1

@@ -10,7 +10,7 @@ cpack = ["cpack"]
 debug = ["debug"]
 release = ["release"]
 rattler = ["rattler"]
-boa = ["boa", "cpack"]
+boa = ["boa"]
 
 
 [dependencies]
