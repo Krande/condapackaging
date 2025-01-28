@@ -30,7 +30,7 @@ cd build
   --with-mumps \
   --with-mumps-cflags="-I${PREFIX}/include" \
   --with-mumps-lflags="${MUMPS_LFLAGS}" \
-  --with-lapack-lflags="mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib" \
+  --with-lapack-lflags="mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib" \
   --with-asl \
   --with-asl-cflags="-I${PREFIX}/include/asl" \
   --with-asl-lflags="-lasl" \

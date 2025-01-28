@@ -32,7 +32,6 @@ requirements:
     - if: win
       then:
         - autotools_clang_conda
-        - mkl-devel
     - if: not win
       then: make
     - if: not win
@@ -41,6 +40,8 @@ requirements:
   host:
     - libblas
     - liblapack
+    - if: win
+      then: mkl-devel
     - mumps
     - if: linux
       then: libspral
