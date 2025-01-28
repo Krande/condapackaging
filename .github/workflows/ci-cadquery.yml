@@ -2,6 +2,7 @@ name: ci-cadquery
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
 #  build-ocp:
