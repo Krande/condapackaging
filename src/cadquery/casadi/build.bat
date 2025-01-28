@@ -1,0 +1,64 @@
+set PKG_CONFIG_PATH=%LIBRARY_PREFIX%\lib\pkgconfig; 
+
+mkdir build
+cd build
+
+:: Add Math libs
+set LDFLAGS=%LDFLAGS% mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib
+
+REM This is required to use proxsuite with Visual Studio 2019
+REM As soon as we swich to VS2022, we can drop this
+set "CC=clang-cl.exe"
+set "CXX=clang-cl.exe"
+
+set SWIG_IMPORT=ON
+set SWIG_EXPORT=OFF
+if exist %PREFIX%\pypy.exe (
+  set SWIG_IMPORT=OFF
+  set SWIG_EXPORT=ON
+)
+echo "SWIG_IMPORT=%SWIG_IMPORT%"
+echo "SWIG_EXPORT=%SWIG_EXPORT%"
+
+cmake ../^
+    -GNinja^
+    -DCMAKE_BUILD_TYPE=Release^
+    -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%"^
+    -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%"^
+    -DINCLUDE_PREFIX:PATH=include^
+    -DCMAKE_PREFIX:PATH=lib/cmake/casadi^
+    -DLIB_PREFIX:PATH=lib^
+    -DBIN_PREFIX:PATH=bin^
+    -DWITH_SELFCONTAINED=OFF^
+    -DWITH_PYTHON=ON^
+    -DWITH_PYTHON3=ON^
+    -DWITH_LAPACK=ON^
+    -DWITH_IPOPT=ON^
+    -DWITH_THREAD=ON^
+    -DWITH_JSON=OFF^
+    -DWITH_OSQP=ON^
+    -DWITH_BUILD_OSQP=OFF^
+    -DWITH_QPOASES=ON^
+    -DWITH_PROXQP=ON^
+    -DWITH_BUILD_PROXQP=OFF^
+    -DWITH_TINYXML=ON^
+    -DWITH_BUILD_TINYXML=OFF^
+    -DWITH_KNITRO=OFF^
+    -DWITH_MOCKUP_KNITRO=OFF^
+    -DWITH_CPLEX=OFF^
+    -DWITH_MOCKUP_CPLEX=OFF^
+    -DWITH_GUROBI=OFF^
+    -DWITH_MOCKUP_GUROBI=OFF^
+    -DWITH_HSL=OFF^
+    -DWITH_MOCKUP_HSL=OFF^
+    -DWITH_WORHP=OFF^
+    -DWITH_MOCKUP_WORHP=OFF^
+    -DPYTHON_PREFIX=%SP_DIR%^
+    -DPython_EXECUTABLE=%PYTHON%^
+    -DWITH_COPYSIGN_UNDEF=ON^
+    -DCASADI_PYTHON_PIP_METADATA_INSTALL=ON^
+    -DCASADI_PYTHON_PIP_METADATA_INSTALLER:STRING="conda"^
+    -DSWIG_IMPORT=%SWIG_IMPORT%^
+    -DSWIG_EXPORT=%SWIG_EXPORT%
+
+ninja install

@@ -68,6 +68,12 @@ liblapack:
   - if: win
     then: ==3.9 *mkl
 
+blas_impl:
+    - if: not win
+      then: openblas
+    - if: win
+      then: mkl
+
 numpy:
   #- 1.22
   #- 1.23
@@ -106,9 +112,6 @@ libxml2:
 
 zlib:
   - 1
-
-intel_fortran_rt:
-  - 2024.2
 
 mpi:
   - "nompi"

@@ -1,0 +1,95 @@
+schema_version: 1
+
+context:
+  name: casadi
+  version: 3.6.7
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/casadi/casadi/releases/download/${{ version }}/casadi-source-v${{ version }}.zip
+  sha256: 63d2c752d819f1790636f2015990c83bade6dd425af91b4239518312f6f6a052
+  patches:
+    - patches/2965.patch
+    - patches/rtld_deepbind_null_environ_workaround.patch
+    - patches/0001-Modernize-Python-find_package.patch
+    - patches/0003-Bypass-CMake-crosscompiling-conda-forge-CI-issue.patch
+
+build:
+  number: 3
+  dynamic_linking:
+    rpaths:
+      - lib/
+      - lib/${{ name }}/
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+        - numpy
+    - pkg-config
+    - cmake
+    - ninja
+    - swig
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler('cxx') }}
+    - if: not win
+      then: ${{ compiler('fortran') }}
+    - if: win
+      then: clang
+  host:
+    - libblas
+    - libcblas
+    - liblapack
+    - python
+    - numpy
+    - libosqp
+    - proxsuite
+    - tinyxml2
+    - ipopt ==3.14.16
+    - if: win
+      then: mkl-devel
+    # libblasfeo is included as it is a public dependency of libfatrop
+    - if: unix
+      then: libblasfeo
+    - if: unix
+      then: libfatrop
+  run:
+    - python
+  run_exports:
+    - ${{ pin_subpackage('casadi', upper_bound='x.x') }}
+
+tests:
+  - python:
+      imports:
+        - casadi
+  - files:
+      recipe:
+        - ipopt_nl.py
+    requirements:
+      run:
+        - pip
+    script:
+      - python ipopt_nl.py
+      - if: linux
+        then: OMP_CANCELLATION=true OMP_PROC_BIND=true python ipopt_nl.py spral
+      - if: unix
+        then: "test $(pip list | grep casadi | tr -s \" \" | grep $PKG_VERSION | wc -l) -eq 1"
+
+about:
+  license: LGPL-3.0-or-later
+  license_file: LICENSE.txt
+  summary: CasADi is a symbolic framework for numeric optimization
+  homepage: http://casadi.org
+
+extra:
+  recipe-maintainers:
+    - agriyakhetarpal
+    - traversaro
+    - pstjohn
+    - pariterre

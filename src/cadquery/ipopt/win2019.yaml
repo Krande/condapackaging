@@ -1,0 +1,12 @@
+
+c_stdlib_version:
+  - if: win
+    then: 2019
+
+c_compiler:
+  - if: win
+    then: vs2019
+
+cxx_compiler:
+  - if: win
+    then: vs2019

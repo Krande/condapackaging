@@ -30,10 +30,11 @@ cd build
   --with-mumps \
   --with-mumps-cflags="-I${PREFIX}/include" \
   --with-mumps-lflags="${MUMPS_LFLAGS}" \
-  --with-lapack-lflags="mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib" \
+  --with-lapack-lflags="-lmkl_intel_ilp64_dll -lmkl_intel_thread_dll -lmkl_core_dll -llibiomp5md" \
   --with-asl \
   --with-asl-cflags="-I${PREFIX}/include/asl" \
   --with-asl-lflags="-lasl" \
+  --with-intsize=64 \
   --prefix=${PREFIX} || cat config.log
 
 # As documented in https://github.com/conda-forge/autotools_clang_conda-feedstock/blob/cb241060f5d8adcd105f3b2e8454a8ad4d70f08f/recipe/meta.yaml#L58C1-L58C60
