@@ -1,0 +1,79 @@
+schema_version: 1
+
+context:
+  name: Ipopt
+  version: 3.14.17
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/coin-or/Ipopt/archive/releases/${{ version }}.tar.gz
+    sha256: 17ab8e9a6059ab11172c184e5947e7a7dda9fed0764764779c27e5b8e46f3d75
+    patches:
+      - pkg-config-do-not-add-requires-private.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - if: unix
+      then: gnuconfig
+    # Do not depend on a fortran compiler on Windows,
+    # see https://github.com/conda-forge/ipopt-feedstock/pull/125#issuecomment-2543175086
+    # for more details
+    - if: not win
+      then: ${{ compiler('fortran') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler('cxx') }}
+    - if: win
+      then: autotools_clang_conda
+    - if: not win
+      then: make
+    - if: not win
+      then: wget
+    - pkg-config
+  host:
+    - libblas
+    - liblapack
+    - mumps
+    - if: linux
+      then: libspral
+    - ampl-asl
+  run_exports:
+    - ${{ pin_subpackage('ipopt', upper_bound='x.x.x') }}
+
+tests:
+  - script:
+      - if: win
+        then: run_test.bat
+        else: run_test.sh
+    files:
+      recipe:
+        - test
+        - mytoy.nl
+    requirements:
+      run:
+        - if: not win
+          then: ${{ compiler('fortran') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - pkg-config
+
+about:
+  license: EPL-1.0
+  license_file: LICENSE
+  summary: Software package for large-scale nonlinear optimization
+  homepage: https://projects.coin-or.org/Ipopt/
+
+extra:
+  recipe-maintainers:
+    - pstjohn
+    - bluescarni
+    - jschueller
+    - moorepants
+    - traversaro
+

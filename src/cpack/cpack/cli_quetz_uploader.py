@@ -12,6 +12,7 @@ import typer
 import zstandard as zstd
 from quetz_client import QuetzClient
 from ruamel.yaml import YAML
+
 yaml = YAML(typ='rt')
 from typing_extensions import Annotated
 
@@ -47,9 +48,9 @@ class QuetzManager:
         except requests.exceptions.HTTPError:
             logger.info(f"Package {package_file} already exists in channel {channel}")
 
-    def list_packages_for_channel(self, channel: str):
-        for channel in self.client.yield_packages(channel):
-            print(channel)
+    def list_packages_for_channel(self, package: str):
+        for package in self.client.yield_packages(package):
+            print(package.name, package.current_version, package.platforms)
 
     def get_package_metadata(self, channel: str, platform: str, package_file_name: str) -> dict:
         rfile = self.client.session.get(f"{self.client.url}/get/{channel}/{platform}/{package_file_name}", stream=True)
@@ -110,15 +111,23 @@ def create_channel(channel: str, channel_description: str = "", create_public_ch
     qm.add_channel(channel, private=not create_public_channel, description=channel_description)
 
 
+@app.command(name="list")
+def quetz_manager(channel: str, api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
+                  quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")]):
+    client = QuetzClient.from_token(quetz_url, api_key)
+    qm = QuetzManager(client=client)
+    qm.list_packages_for_channel(channel)
+
+
 @app.command(name="upload")
 def quetz_manager(
-    package_dir: str,
-    channel: str,
-    api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
-    quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")],
-    force: bool = False,
-    create_channel_if_not_exists: bool = False,
-    create_private_channel: bool = False,
+        package_dir: str,
+        channel: str,
+        api_key: Annotated[str, typer.Option(envvar="QUETZ_API_KEY")],
+        quetz_url: Annotated[str, typer.Option(envvar="QUETZ_URL")],
+        force: bool = False,
+        create_channel_if_not_exists: bool = False,
+        create_private_channel: bool = False,
 ):
     client = QuetzClient.from_token(quetz_url, api_key)
     qm = QuetzManager(client=client)

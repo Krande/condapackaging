@@ -135,28 +135,6 @@ deleted file mode 100644
 -
 -    # show a raw vtkProp
 -    show(vtkAxesActor(), [vtkAnnotatedCubeActor()])
-Index: environment.yml
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/environment.yml b/environment.yml
---- a/environment.yml	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/environment.yml	(date 1738001537689)
-@@ -1,11 +1,11 @@
- name: cadquery
- channels:
-+  - C:\Work\code\condapackaging\output
-   - conda-forge
- dependencies:
-   - python>=3.9,<=3.12
-   - ipython
--  - ocp=7.8.1
--  - vtk=*=qt*
-+  - ocp=7.8.1.1=*novtk*
-   - pyparsing>=2.1.9
-   - sphinx=8.1.3
-   - sphinx_rtd_theme
 Index: cadquery/cq_directive.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -164,7 +142,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/cadquery/cq_directive.py b/cadquery/cq_directive.py
 --- a/cadquery/cq_directive.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/cq_directive.py	(date 1738001997701)
++++ b/cadquery/cq_directive.py	(date 1738050751446)
 @@ -9,7 +9,6 @@
  
  from cadquery import exporters, Assembly, Compound, Color, Sketch
@@ -173,331 +151,6 @@ diff --git a/cadquery/cq_directive.py b/cadquery/cq_directive.py
  from cadquery.occ_impl.jupyter_tools import DEFAULT_COLOR
  from docutils.parsers.rst import directives, Directive
  
-Index: cadquery/occ_impl/shapes.py
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/cadquery/occ_impl/shapes.py b/cadquery/occ_impl/shapes.py
---- a/cadquery/occ_impl/shapes.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/shapes.py	(date 1738000682600)
-@@ -17,8 +17,8 @@
- 
- from io import BytesIO
- 
--from vtkmodules.vtkCommonDataModel import vtkPolyData
--from vtkmodules.vtkFiltersCore import vtkTriangleFilter, vtkPolyDataNormals
-+# from vtkmodules.vtkCommonDataModel import vtkPolyData
-+# from vtkmodules.vtkFiltersCore import vtkTriangleFilter, vtkPolyDataNormals
- 
- from .geom import Vector, VectorLike, BoundBox, Plane, Location, Matrix
- from .shape_protocols import geom_LUT_FACE, geom_LUT_EDGE, Shapes, Geoms
-@@ -261,8 +261,8 @@
- from OCP.BRepProj import BRepProj_Projection
- from OCP.BRepExtrema import BRepExtrema_DistShapeShape
- 
--from OCP.IVtkOCC import IVtkOCC_Shape, IVtkOCC_ShapeMesher
--from OCP.IVtkVTK import IVtkVTK_ShapeData
-+# from OCP.IVtkOCC import IVtkOCC_Shape, IVtkOCC_ShapeMesher
-+# from OCP.IVtkVTK import IVtkVTK_ShapeData
- 
- # for catching exceptions
- from OCP.Standard import Standard_NoSuchObject, Standard_Failure
-@@ -1484,53 +1484,53 @@
- 
-         return self.__class__(result)
- 
--    def toVtkPolyData(
--        self,
--        tolerance: Optional[float] = None,
--        angularTolerance: Optional[float] = None,
--        normals: bool = False,
--    ) -> vtkPolyData:
--        """
--        Convert shape to vtkPolyData
--        """
--
--        vtk_shape = IVtkOCC_Shape(self.wrapped)
--        shape_data = IVtkVTK_ShapeData()
--        shape_mesher = IVtkOCC_ShapeMesher()
--
--        drawer = vtk_shape.Attributes()
--        drawer.SetUIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
--        drawer.SetVIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
--
--        if tolerance:
--            drawer.SetDeviationCoefficient(tolerance)
--
--        if angularTolerance:
--            drawer.SetDeviationAngle(angularTolerance)
--
--        shape_mesher.Build(vtk_shape, shape_data)
--
--        rv = shape_data.getVtkPolyData()
--
--        # convert to triangles and split edges
--        t_filter = vtkTriangleFilter()
--        t_filter.SetInputData(rv)
--        t_filter.Update()
--
--        rv = t_filter.GetOutput()
--
--        # compute normals
--        if normals:
--            n_filter = vtkPolyDataNormals()
--            n_filter.SetComputePointNormals(True)
--            n_filter.SetComputeCellNormals(True)
--            n_filter.SetFeatureAngle(360)
--            n_filter.SetInputData(rv)
--            n_filter.Update()
--
--            rv = n_filter.GetOutput()
--
--        return rv
-+    # def toVtkPolyData(
-+    #     self,
-+    #     tolerance: Optional[float] = None,
-+    #     angularTolerance: Optional[float] = None,
-+    #     normals: bool = False,
-+    # ) -> vtkPolyData:
-+    #     """
-+    #     Convert shape to vtkPolyData
-+    #     """
-+    #
-+    #     vtk_shape = IVtkOCC_Shape(self.wrapped)
-+    #     shape_data = IVtkVTK_ShapeData()
-+    #     shape_mesher = IVtkOCC_ShapeMesher()
-+    #
-+    #     drawer = vtk_shape.Attributes()
-+    #     drawer.SetUIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
-+    #     drawer.SetVIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
-+    #
-+    #     if tolerance:
-+    #         drawer.SetDeviationCoefficient(tolerance)
-+    #
-+    #     if angularTolerance:
-+    #         drawer.SetDeviationAngle(angularTolerance)
-+    #
-+    #     shape_mesher.Build(vtk_shape, shape_data)
-+    #
-+    #     rv = shape_data.getVtkPolyData()
-+    #
-+    #     # convert to triangles and split edges
-+    #     t_filter = vtkTriangleFilter()
-+    #     t_filter.SetInputData(rv)
-+    #     t_filter.Update()
-+    #
-+    #     rv = t_filter.GetOutput()
-+    #
-+    #     # compute normals
-+    #     if normals:
-+    #         n_filter = vtkPolyDataNormals()
-+    #         n_filter.SetComputePointNormals(True)
-+    #         n_filter.SetComputeCellNormals(True)
-+    #         n_filter.SetFeatureAngle(360)
-+    #         n_filter.SetInputData(rv)
-+    #         n_filter.Update()
-+    #
-+    #         rv = n_filter.GetOutput()
-+    #
-+    #     return rv
- 
-     def _repr_javascript_(self):
-         """
-Index: tests/test_exporters.py
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/tests/test_exporters.py b/tests/test_exporters.py
---- a/tests/test_exporters.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/tests/test_exporters.py	(date 1738002145028)
-@@ -629,27 +629,6 @@
- 
-         exporters.export(self._box(), "out.tjs")
- 
--    def testVRML(self):
--
--        exporters.export(self._box(), "out.vrml")
--
--        with open("out.vrml") as f:
--            res = f.read(10)
--
--        assert res.startswith("#VRML V2.0")
--
--        # export again to trigger all paths in the code
--        exporters.export(self._box(), "out.vrml")
--
--    def testVTP(self):
--
--        exporters.export(self._box(), "out.vtp")
--
--        with open("out.vtp") as f:
--            res = f.read(100)
--
--        assert res.startswith('<?xml version="1.0"?>\n<VTKFile')
--
-     def testDXF(self):
- 
-         exporters.export(self._box().section(), "out.dxf")
-@@ -823,32 +802,6 @@
-         r = f.read(len(matchval))
-         assert r == matchval
- 
--
--def test_assy_vtk_rotation(tmpdir):
--
--    v0 = Vertex.makeVertex(1, 0, 0)
--
--    assy = Assembly()
--    assy.add(
--        v0, name="v0", loc=Location(Vector(0, 0, 0), Vector(1, 0, 0), 90),
--    )
--
--    fwrl = Path(tmpdir) / "v0.wrl"
--    assert not fwrl.exists()
--    assy.save(str(fwrl), "VRML")
--    assert fwrl.exists()
--
--    matched_rot = False
--    with open(fwrl) as f:
--        pat_rot = re.compile("""rotation 1 0 0 1.5707963267""")
--        for line in f:
--            if m := re.search(pat_rot, line):
--                matched_rot = True
--                break
--
--    assert matched_rot
--
--
- def test_tessellate(box123):
- 
-     verts, triangles = box123.val().tessellate(1e-6)
-Index: cadquery/occ_impl/exporters/assembly.py
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/cadquery/occ_impl/exporters/assembly.py b/cadquery/occ_impl/exporters/assembly.py
---- a/cadquery/occ_impl/exporters/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/exporters/assembly.py	(date 1738000682574)
-@@ -7,8 +7,8 @@
- from typing import Optional
- from typing_extensions import Literal
- 
--from vtkmodules.vtkIOExport import vtkJSONSceneExporter, vtkVRMLExporter
--from vtkmodules.vtkRenderingCore import vtkRenderer, vtkRenderWindow
-+# from vtkmodules.vtkIOExport import vtkJSONSceneExporter, vtkVRMLExporter
-+# from vtkmodules.vtkRenderingCore import vtkRenderer, vtkRenderWindow
- 
- from OCP.XSControl import XSControl_WorkSession
- from OCP.STEPCAFControl import STEPCAFControl_Writer
-@@ -26,7 +26,7 @@
- from OCP.Message import Message_ProgressRange
- from OCP.Interface import Interface_Static
- 
--from ..assembly import AssemblyProtocol, toCAF, toVTK, toFusedCAF
-+from ..assembly import AssemblyProtocol, toCAF, toFusedCAF
- from ..geom import Location
- 
- 
-@@ -134,53 +134,53 @@
-     return status == PCDM_StoreStatus.PCDM_SS_OK
- 
- 
--def _vtkRenderWindow(
--    assy: AssemblyProtocol, tolerance: float = 1e-3, angularTolerance: float = 0.1
--) -> vtkRenderWindow:
--    """
--    Convert an assembly to a vtkRenderWindow. Used by vtk based exporters.
--    """
--
--    renderer = toVTK(assy, tolerance=tolerance, angularTolerance=angularTolerance)
--    renderWindow = vtkRenderWindow()
--    renderWindow.AddRenderer(renderer)
--
--    renderer.ResetCamera()
--    renderer.SetBackground(1, 1, 1)
--
--    return renderWindow
-+# def _vtkRenderWindow(
-+#     assy: AssemblyProtocol, tolerance: float = 1e-3, angularTolerance: float = 0.1
-+# ) -> vtkRenderWindow:
-+#     """
-+#     Convert an assembly to a vtkRenderWindow. Used by vtk based exporters.
-+#     """
-+#
-+#     renderer = toVTK(assy, tolerance=tolerance, angularTolerance=angularTolerance)
-+#     renderWindow = vtkRenderWindow()
-+#     renderWindow.AddRenderer(renderer)
-+#
-+#     renderer.ResetCamera()
-+#     renderer.SetBackground(1, 1, 1)
-+#
-+#     return renderWindow
- 
- 
--def exportVTKJS(assy: AssemblyProtocol, path: str):
--    """
--    Export an assembly to a zipped vtkjs. NB: .zip extensions is added to path.
--    """
-+# def exportVTKJS(assy: AssemblyProtocol, path: str):
-+#     """
-+#     Export an assembly to a zipped vtkjs. NB: .zip extensions is added to path.
-+#     """
-+#
-+#     renderWindow = _vtkRenderWindow(assy)
-+#
-+#     with TemporaryDirectory() as tmpdir:
-+#
-+#         exporter = vtkJSONSceneExporter()
-+#         exporter.SetFileName(tmpdir)
-+#         exporter.SetRenderWindow(renderWindow)
-+#         exporter.Write()
-+#         make_archive(path, "zip", tmpdir)
- 
--    renderWindow = _vtkRenderWindow(assy)
- 
--    with TemporaryDirectory() as tmpdir:
--
--        exporter = vtkJSONSceneExporter()
--        exporter.SetFileName(tmpdir)
--        exporter.SetRenderWindow(renderWindow)
--        exporter.Write()
--        make_archive(path, "zip", tmpdir)
--
--
--def exportVRML(
--    assy: AssemblyProtocol,
--    path: str,
--    tolerance: float = 1e-3,
--    angularTolerance: float = 0.1,
--):
--    """
--    Export an assembly to a vrml file using vtk.
--    """
--
--    exporter = vtkVRMLExporter()
--    exporter.SetFileName(path)
--    exporter.SetRenderWindow(_vtkRenderWindow(assy, tolerance, angularTolerance))
--    exporter.Write()
-+# def exportVRML(
-+#     assy: AssemblyProtocol,
-+#     path: str,
-+#     tolerance: float = 1e-3,
-+#     angularTolerance: float = 0.1,
-+# ):
-+#     """
-+#     Export an assembly to a vrml file using vtk.
-+#     """
-+#
-+#     exporter = vtkVRMLExporter()
-+#     exporter.SetFileName(path)
-+#     exporter.SetRenderWindow(_vtkRenderWindow(assy, tolerance, angularTolerance))
-+#     exporter.Write()
- 
- 
- def exportGLTF(
 Index: tests/test_assembly.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -505,7 +158,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/tests/test_assembly.py b/tests/test_assembly.py
 --- a/tests/test_assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/tests/test_assembly.py	(date 1738001248334)
++++ b/tests/test_assembly.py	(date 1738050751462)
 @@ -12,10 +12,8 @@
  from cadquery.occ_impl.exporters.assembly import (
      exportAssembly,
@@ -609,7 +262,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/cadquery/occ_impl/assembly.py b/cadquery/occ_impl/assembly.py
 --- a/cadquery/occ_impl/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/assembly.py	(date 1738000682581)
++++ b/cadquery/occ_impl/assembly.py	(date 1738050751383)
 @@ -27,18 +27,18 @@
  from OCP.TopoDS import TopoDS_Shape
  from OCP.gp import gp_EulerSequence
@@ -825,66 +478,331 @@ diff --git a/cadquery/occ_impl/assembly.py b/cadquery/occ_impl/assembly.py
  
  
  def toFusedCAF(
-Index: cadquery/assembly.py
+Index: cadquery/occ_impl/shapes.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-diff --git a/cadquery/assembly.py b/cadquery/assembly.py
---- a/cadquery/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/assembly.py	(date 1738000682608)
-@@ -29,8 +29,6 @@
- from .occ_impl.exporters.assembly import (
-     exportAssembly,
-     exportCAF,
--    exportVTKJS,
--    exportVRML,
-     exportGLTF,
-     STEPExportModeLiterals,
- )
-@@ -491,11 +489,13 @@
-         elif exportType == "XML":
-             exportCAF(self, path)
-         elif exportType == "VRML":
--            exportVRML(self, path, tolerance, angularTolerance)
-+            # exportVRML(self, path, tolerance, angularTolerance)
-+            raise Exception("You are running NOVTK. VRML export is not supported")
-         elif exportType == "GLTF" or exportType == "GLB":
-             exportGLTF(self, path, None, tolerance, angularTolerance)
-         elif exportType == "VTKJS":
--            exportVTKJS(self, path)
-+            # exportVTKJS(self, path)
-+            raise Exception("You are running NOVTK. VRML export is not supported")
-         elif exportType == "STL":
-             # Handle the ascii setting for STL export
-             export_ascii = False
-Index: cadquery/occ_impl/exporters/__init__.py
+diff --git a/cadquery/occ_impl/shapes.py b/cadquery/occ_impl/shapes.py
+--- a/cadquery/occ_impl/shapes.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/shapes.py	(date 1738050751432)
+@@ -17,8 +17,8 @@
+ 
+ from io import BytesIO
+ 
+-from vtkmodules.vtkCommonDataModel import vtkPolyData
+-from vtkmodules.vtkFiltersCore import vtkTriangleFilter, vtkPolyDataNormals
++# from vtkmodules.vtkCommonDataModel import vtkPolyData
++# from vtkmodules.vtkFiltersCore import vtkTriangleFilter, vtkPolyDataNormals
+ 
+ from .geom import Vector, VectorLike, BoundBox, Plane, Location, Matrix
+ from .shape_protocols import geom_LUT_FACE, geom_LUT_EDGE, Shapes, Geoms
+@@ -261,8 +261,8 @@
+ from OCP.BRepProj import BRepProj_Projection
+ from OCP.BRepExtrema import BRepExtrema_DistShapeShape
+ 
+-from OCP.IVtkOCC import IVtkOCC_Shape, IVtkOCC_ShapeMesher
+-from OCP.IVtkVTK import IVtkVTK_ShapeData
++# from OCP.IVtkOCC import IVtkOCC_Shape, IVtkOCC_ShapeMesher
++# from OCP.IVtkVTK import IVtkVTK_ShapeData
+ 
+ # for catching exceptions
+ from OCP.Standard import Standard_NoSuchObject, Standard_Failure
+@@ -1484,53 +1484,53 @@
+ 
+         return self.__class__(result)
+ 
+-    def toVtkPolyData(
+-        self,
+-        tolerance: Optional[float] = None,
+-        angularTolerance: Optional[float] = None,
+-        normals: bool = False,
+-    ) -> vtkPolyData:
+-        """
+-        Convert shape to vtkPolyData
+-        """
+-
+-        vtk_shape = IVtkOCC_Shape(self.wrapped)
+-        shape_data = IVtkVTK_ShapeData()
+-        shape_mesher = IVtkOCC_ShapeMesher()
+-
+-        drawer = vtk_shape.Attributes()
+-        drawer.SetUIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
+-        drawer.SetVIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
+-
+-        if tolerance:
+-            drawer.SetDeviationCoefficient(tolerance)
+-
+-        if angularTolerance:
+-            drawer.SetDeviationAngle(angularTolerance)
+-
+-        shape_mesher.Build(vtk_shape, shape_data)
+-
+-        rv = shape_data.getVtkPolyData()
+-
+-        # convert to triangles and split edges
+-        t_filter = vtkTriangleFilter()
+-        t_filter.SetInputData(rv)
+-        t_filter.Update()
+-
+-        rv = t_filter.GetOutput()
+-
+-        # compute normals
+-        if normals:
+-            n_filter = vtkPolyDataNormals()
+-            n_filter.SetComputePointNormals(True)
+-            n_filter.SetComputeCellNormals(True)
+-            n_filter.SetFeatureAngle(360)
+-            n_filter.SetInputData(rv)
+-            n_filter.Update()
+-
+-            rv = n_filter.GetOutput()
+-
+-        return rv
++    # def toVtkPolyData(
++    #     self,
++    #     tolerance: Optional[float] = None,
++    #     angularTolerance: Optional[float] = None,
++    #     normals: bool = False,
++    # ) -> vtkPolyData:
++    #     """
++    #     Convert shape to vtkPolyData
++    #     """
++    #
++    #     vtk_shape = IVtkOCC_Shape(self.wrapped)
++    #     shape_data = IVtkVTK_ShapeData()
++    #     shape_mesher = IVtkOCC_ShapeMesher()
++    #
++    #     drawer = vtk_shape.Attributes()
++    #     drawer.SetUIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
++    #     drawer.SetVIsoAspect(Prs3d_IsoAspect(Quantity_Color(), Aspect_TOL_SOLID, 1, 0))
++    #
++    #     if tolerance:
++    #         drawer.SetDeviationCoefficient(tolerance)
++    #
++    #     if angularTolerance:
++    #         drawer.SetDeviationAngle(angularTolerance)
++    #
++    #     shape_mesher.Build(vtk_shape, shape_data)
++    #
++    #     rv = shape_data.getVtkPolyData()
++    #
++    #     # convert to triangles and split edges
++    #     t_filter = vtkTriangleFilter()
++    #     t_filter.SetInputData(rv)
++    #     t_filter.Update()
++    #
++    #     rv = t_filter.GetOutput()
++    #
++    #     # compute normals
++    #     if normals:
++    #         n_filter = vtkPolyDataNormals()
++    #         n_filter.SetComputePointNormals(True)
++    #         n_filter.SetComputeCellNormals(True)
++    #         n_filter.SetFeatureAngle(360)
++    #         n_filter.SetInputData(rv)
++    #         n_filter.Update()
++    #
++    #         rv = n_filter.GetOutput()
++    #
++    #     return rv
+ 
+     def _repr_javascript_(self):
+         """
+Index: tests/test_exporters.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-diff --git a/cadquery/occ_impl/exporters/__init__.py b/cadquery/occ_impl/exporters/__init__.py
---- a/cadquery/occ_impl/exporters/__init__.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/exporters/__init__.py	(date 1738000682566)
-@@ -15,7 +15,7 @@
- from .amf import AmfWriter
- from .threemf import ThreeMFWriter
- from .dxf import exportDXF, DxfDocument
--from .vtk import exportVTP
-+# from .vtk import exportVTP
+diff --git a/tests/test_exporters.py b/tests/test_exporters.py
+--- a/tests/test_exporters.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/tests/test_exporters.py	(date 1738050751493)
+@@ -629,27 +629,6 @@
+ 
+         exporters.export(self._box(), "out.tjs")
+ 
+-    def testVRML(self):
+-
+-        exporters.export(self._box(), "out.vrml")
+-
+-        with open("out.vrml") as f:
+-            res = f.read(10)
+-
+-        assert res.startswith("#VRML V2.0")
+-
+-        # export again to trigger all paths in the code
+-        exporters.export(self._box(), "out.vrml")
+-
+-    def testVTP(self):
+-
+-        exporters.export(self._box(), "out.vtp")
+-
+-        with open("out.vtp") as f:
+-            res = f.read(100)
+-
+-        assert res.startswith('<?xml version="1.0"?>\n<VTKFile')
+-
+     def testDXF(self):
+ 
+         exporters.export(self._box().section(), "out.dxf")
+@@ -823,32 +802,6 @@
+         r = f.read(len(matchval))
+         assert r == matchval
+ 
+-
+-def test_assy_vtk_rotation(tmpdir):
+-
+-    v0 = Vertex.makeVertex(1, 0, 0)
+-
+-    assy = Assembly()
+-    assy.add(
+-        v0, name="v0", loc=Location(Vector(0, 0, 0), Vector(1, 0, 0), 90),
+-    )
+-
+-    fwrl = Path(tmpdir) / "v0.wrl"
+-    assert not fwrl.exists()
+-    assy.save(str(fwrl), "VRML")
+-    assert fwrl.exists()
+-
+-    matched_rot = False
+-    with open(fwrl) as f:
+-        pat_rot = re.compile("""rotation 1 0 0 1.5707963267""")
+-        for line in f:
+-            if m := re.search(pat_rot, line):
+-                matched_rot = True
+-                break
+-
+-    assert matched_rot
+-
+-
+ def test_tessellate(box123):
+ 
+     verts, triangles = box123.val().tessellate(1e-6)
+Index: cadquery/occ_impl/exporters/assembly.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/occ_impl/exporters/assembly.py b/cadquery/occ_impl/exporters/assembly.py
+--- a/cadquery/occ_impl/exporters/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/exporters/assembly.py	(date 1738050751383)
+@@ -7,8 +7,8 @@
+ from typing import Optional
+ from typing_extensions import Literal
+ 
+-from vtkmodules.vtkIOExport import vtkJSONSceneExporter, vtkVRMLExporter
+-from vtkmodules.vtkRenderingCore import vtkRenderer, vtkRenderWindow
++# from vtkmodules.vtkIOExport import vtkJSONSceneExporter, vtkVRMLExporter
++# from vtkmodules.vtkRenderingCore import vtkRenderer, vtkRenderWindow
+ 
+ from OCP.XSControl import XSControl_WorkSession
+ from OCP.STEPCAFControl import STEPCAFControl_Writer
+@@ -26,7 +26,7 @@
+ from OCP.Message import Message_ProgressRange
+ from OCP.Interface import Interface_Static
+ 
+-from ..assembly import AssemblyProtocol, toCAF, toVTK, toFusedCAF
++from ..assembly import AssemblyProtocol, toCAF, toFusedCAF
+ from ..geom import Location
  
  
- class ExportTypes:
-@@ -124,7 +124,8 @@
-         VrmlAPI.Write_s(shape.wrapped, fname)
+@@ -134,53 +134,53 @@
+     return status == PCDM_StoreStatus.PCDM_SS_OK
  
-     elif exportType == ExportTypes.VTP:
--        exportVTP(shape, fname, tolerance, angularTolerance)
-+        # exportVTP(shape, fname, tolerance, angularTolerance)
-+        raise NotImplementedError("You are using the cadquery NOVTK build, VTP export is not supported")
  
-     elif exportType == ExportTypes.BREP:
-         shape.exportBrep(fname)
+-def _vtkRenderWindow(
+-    assy: AssemblyProtocol, tolerance: float = 1e-3, angularTolerance: float = 0.1
+-) -> vtkRenderWindow:
+-    """
+-    Convert an assembly to a vtkRenderWindow. Used by vtk based exporters.
+-    """
+-
+-    renderer = toVTK(assy, tolerance=tolerance, angularTolerance=angularTolerance)
+-    renderWindow = vtkRenderWindow()
+-    renderWindow.AddRenderer(renderer)
+-
+-    renderer.ResetCamera()
+-    renderer.SetBackground(1, 1, 1)
+-
+-    return renderWindow
++# def _vtkRenderWindow(
++#     assy: AssemblyProtocol, tolerance: float = 1e-3, angularTolerance: float = 0.1
++# ) -> vtkRenderWindow:
++#     """
++#     Convert an assembly to a vtkRenderWindow. Used by vtk based exporters.
++#     """
++#
++#     renderer = toVTK(assy, tolerance=tolerance, angularTolerance=angularTolerance)
++#     renderWindow = vtkRenderWindow()
++#     renderWindow.AddRenderer(renderer)
++#
++#     renderer.ResetCamera()
++#     renderer.SetBackground(1, 1, 1)
++#
++#     return renderWindow
+ 
+ 
+-def exportVTKJS(assy: AssemblyProtocol, path: str):
+-    """
+-    Export an assembly to a zipped vtkjs. NB: .zip extensions is added to path.
+-    """
++# def exportVTKJS(assy: AssemblyProtocol, path: str):
++#     """
++#     Export an assembly to a zipped vtkjs. NB: .zip extensions is added to path.
++#     """
++#
++#     renderWindow = _vtkRenderWindow(assy)
++#
++#     with TemporaryDirectory() as tmpdir:
++#
++#         exporter = vtkJSONSceneExporter()
++#         exporter.SetFileName(tmpdir)
++#         exporter.SetRenderWindow(renderWindow)
++#         exporter.Write()
++#         make_archive(path, "zip", tmpdir)
+ 
+-    renderWindow = _vtkRenderWindow(assy)
+ 
+-    with TemporaryDirectory() as tmpdir:
+-
+-        exporter = vtkJSONSceneExporter()
+-        exporter.SetFileName(tmpdir)
+-        exporter.SetRenderWindow(renderWindow)
+-        exporter.Write()
+-        make_archive(path, "zip", tmpdir)
+-
+-
+-def exportVRML(
+-    assy: AssemblyProtocol,
+-    path: str,
+-    tolerance: float = 1e-3,
+-    angularTolerance: float = 0.1,
+-):
+-    """
+-    Export an assembly to a vrml file using vtk.
+-    """
+-
+-    exporter = vtkVRMLExporter()
+-    exporter.SetFileName(path)
+-    exporter.SetRenderWindow(_vtkRenderWindow(assy, tolerance, angularTolerance))
+-    exporter.Write()
++# def exportVRML(
++#     assy: AssemblyProtocol,
++#     path: str,
++#     tolerance: float = 1e-3,
++#     angularTolerance: float = 0.1,
++# ):
++#     """
++#     Export an assembly to a vrml file using vtk.
++#     """
++#
++#     exporter = vtkVRMLExporter()
++#     exporter.SetFileName(path)
++#     exporter.SetRenderWindow(_vtkRenderWindow(assy, tolerance, angularTolerance))
++#     exporter.Write()
+ 
+ 
+ def exportGLTF(
 Index: tests/test_cadquery.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -892,7 +810,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/tests/test_cadquery.py b/tests/test_cadquery.py
 --- a/tests/test_cadquery.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/tests/test_cadquery.py	(date 1738000682623)
++++ b/tests/test_cadquery.py	(date 1738050751478)
 @@ -5731,15 +5731,15 @@
          with raises(ValueError):
              Face.makeNSidedSurface(outer_w, [[0, 0, 1]])
@@ -925,7 +843,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/cadquery/occ_impl/jupyter_tools.py b/cadquery/occ_impl/jupyter_tools.py
 --- a/cadquery/occ_impl/jupyter_tools.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/cadquery/occ_impl/jupyter_tools.py	(date 1738002067363)
++++ b/cadquery/occ_impl/jupyter_tools.py	(date 1738050751399)
 @@ -4,11 +4,11 @@
  from IPython.display import Javascript
  
@@ -949,23 +867,66 @@ diff --git a/cadquery/occ_impl/jupyter_tools.py b/cadquery/occ_impl/jupyter_tool
      payload: List[Dict[str, Any]] = []
  
      if isinstance(shape, Shape):
-Index: .coveragerc
+Index: cadquery/assembly.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-diff --git a/.coveragerc b/.coveragerc
---- a/.coveragerc	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/.coveragerc	(date 1738002450666)
-@@ -3,6 +3,8 @@
- omit = 
-     cadquery/utils.py
-     cadquery/cq_directive.py
-+    cadquery/vis.py
-+    cadquery/occ_impl/exporters/vtk.py
-     tests/*
+diff --git a/cadquery/assembly.py b/cadquery/assembly.py
+--- a/cadquery/assembly.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/assembly.py	(date 1738050751432)
+@@ -29,8 +29,6 @@
+ from .occ_impl.exporters.assembly import (
+     exportAssembly,
+     exportCAF,
+-    exportVTKJS,
+-    exportVRML,
+     exportGLTF,
+     STEPExportModeLiterals,
+ )
+@@ -491,11 +489,13 @@
+         elif exportType == "XML":
+             exportCAF(self, path)
+         elif exportType == "VRML":
+-            exportVRML(self, path, tolerance, angularTolerance)
++            # exportVRML(self, path, tolerance, angularTolerance)
++            raise Exception("You are running NOVTK. VRML export is not supported")
+         elif exportType == "GLTF" or exportType == "GLB":
+             exportGLTF(self, path, None, tolerance, angularTolerance)
+         elif exportType == "VTKJS":
+-            exportVTKJS(self, path)
++            # exportVTKJS(self, path)
++            raise Exception("You are running NOVTK. VRML export is not supported")
+         elif exportType == "STL":
+             # Handle the ascii setting for STL export
+             export_ascii = False
+Index: cadquery/occ_impl/exporters/__init__.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cadquery/occ_impl/exporters/__init__.py b/cadquery/occ_impl/exporters/__init__.py
+--- a/cadquery/occ_impl/exporters/__init__.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
++++ b/cadquery/occ_impl/exporters/__init__.py	(date 1738050751368)
+@@ -15,7 +15,7 @@
+ from .amf import AmfWriter
+ from .threemf import ThreeMFWriter
+ from .dxf import exportDXF, DxfDocument
+-from .vtk import exportVTP
++# from .vtk import exportVTP
  
- [report]
+ 
+ class ExportTypes:
+@@ -124,7 +124,8 @@
+         VrmlAPI.Write_s(shape.wrapped, fname)
+ 
+     elif exportType == ExportTypes.VTP:
+-        exportVTP(shape, fname, tolerance, angularTolerance)
++        # exportVTP(shape, fname, tolerance, angularTolerance)
++        raise NotImplementedError("You are using the cadquery NOVTK build, VTP export is not supported")
+ 
+     elif exportType == ExportTypes.BREP:
+         shape.exportBrep(fname)
 Index: tests/test_examples.py
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -973,7 +934,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/tests/test_examples.py b/tests/test_examples.py
 --- a/tests/test_examples.py	(revision f13f60735ff0593524097eb6ed47f97ef1ee722a)
-+++ b/tests/test_examples.py	(date 1738002081791)
++++ b/tests/test_examples.py	(date 1738050751493)
 @@ -11,7 +11,7 @@
  
  import cadquery as cq

@@ -60,8 +60,11 @@ conv = { cmd = "conda-recipe-manager convert" }
 
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
+# Cadquery
 ocp = { cmd = ["rattler-build", "build", "-r","src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 cadquery = { cmd = ["rattler-build", "build", "-r","src/cadquery/cadquery/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+ipopt = { cmd = ["rattler-build", "build", "-r","src/cadquery/ipopt/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
+
 
 [feature.boa.tasks]
 

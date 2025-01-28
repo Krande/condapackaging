@@ -58,15 +58,15 @@ channel_sources:
 
 libblas:
   - if: not win
-    then: 3.9 *netlib
+    then: ==3.9 *netlib
   - if: win
-    then: 3.9 *mkl
+    then: ==3.9 *mkl
 
 liblapack:
   - if: not win
-    then: 3.9 *netlib
+    then: ==3.9 *netlib
   - if: win
-    then: 3.9 *mkl
+    then: ==3.9 *mkl
 
 numpy:
   #- 1.22
