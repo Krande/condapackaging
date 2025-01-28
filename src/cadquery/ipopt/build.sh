@@ -28,8 +28,9 @@ cd build
   --without-hsl $SPRAL_OPTIONS \
   --disable-java \
   --with-mumps \
-  --with-mumps-cflags="-I${PREFIX}/include/mumps_seq" \
+  --with-mumps-cflags="-I${PREFIX}/include" \
   --with-mumps-lflags="${MUMPS_LFLAGS}" \
+  --with-lapack-lflags="-L${PREFIX}/lib -Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lm" \
   --with-asl \
   --with-asl-cflags="-I${PREFIX}/include/asl" \
   --with-asl-lflags="-lasl" \

@@ -30,7 +30,9 @@ requirements:
     - ${{ stdlib("c") }}
     - ${{ compiler('cxx') }}
     - if: win
-      then: autotools_clang_conda
+      then:
+        - autotools_clang_conda
+        - mkl-devel
     - if: not win
       then: make
     - if: not win
