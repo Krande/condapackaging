@@ -125,6 +125,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
       use_devtools: True
+      build_env: 'rattler'
     secrets: inherit
 
   build_batch_libmed:

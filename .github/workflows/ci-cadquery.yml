@@ -23,6 +23,7 @@ jobs:
       python_versions: "3.12"
       platforms: "windows-latest"
       build_env: "rattler"
+      use_intel_fortran: True
       upload_conda: True
     secrets: inherit
 #  build-cadquery:

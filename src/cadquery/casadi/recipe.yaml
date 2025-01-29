@@ -18,7 +18,7 @@ source:
     - patches/0003-Bypass-CMake-crosscompiling-conda-forge-CI-issue.patch
 
 build:
-  number: 3
+  number: 4
   dynamic_linking:
     rpaths:
       - lib/
@@ -51,7 +51,7 @@ requirements:
     - libosqp
     - proxsuite
     - tinyxml2
-    - ipopt ==3.14.16
+    - ipopt ==3.14.17
     - if: win
       then: mkl-devel
     # libblasfeo is included as it is a public dependency of libfatrop

@@ -54,7 +54,7 @@ convert = { cmd = "conda-recipe-manager convert", cwd = "src/code_aster" }
 rscotch = { cmd = ["src/code_aster/rattler-wrap.bat", "scotch"] }
 rmetis = { cmd = ["src/code_aster/rattler-wrap.bat", "metis"] }
 rlibmed = { cmd = ["src/code_aster/rattler-wrap.bat", "libmed"] }
-rmumps = { cmd = ["src/code_aster/rattler-wrap.bat", "mumps"] }
+mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
 
 conv = { cmd = "conda-recipe-manager convert" }
 
@@ -107,7 +107,7 @@ parmetis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd 
 hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
 metis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/metis" }
-mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mumps" }
+#mumps = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mumps" }
 petsc = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/petsc" }
 libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/libmed" }
 medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/medcoupling" }

@@ -16,7 +16,7 @@ fi
 
 if [[ "$target_platform" == "win-64" ]]; then
   # On windows there are no dmumps_seq pkg-config, see https://github.com/conda-forge/mumps-feedstock/issues/129, so we manually specify how to link dmumps
-  export MUMPS_LFLAGS="-ldmumps"
+  export MUMPS_LFLAGS="-lmpiseq -ldmumps -lesmumps -lmumps_common -lsmumps -lzmumps -lscotch -lscotcherr -lscotcherrexit"
 else
   export MUMPS_LFLAGS="$(pkg-config --libs dmumps_seq)"
 fi
@@ -27,6 +27,7 @@ cd build
 ../configure \
   --without-hsl $SPRAL_OPTIONS \
   --disable-java \
+  --disable-f77 \
   --with-mumps \
   --with-mumps-cflags="-I${PREFIX}/include" \
   --with-mumps-lflags="${MUMPS_LFLAGS}" \
@@ -40,7 +41,7 @@ cd build
 # As documented in https://github.com/conda-forge/autotools_clang_conda-feedstock/blob/cb241060f5d8adcd105f3b2e8454a8ad4d70f08f/recipe/meta.yaml#L58C1-L58C60
 [[ "$target_platform" == "win-64" ]] && patch_libtool
 
-make -j${CPU_COUNT}
+make -j${CPU_COUNT} -v
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
   # Environment variables needed by spral
   # See https://github.com/ralna/spral#usage-at-a-glance

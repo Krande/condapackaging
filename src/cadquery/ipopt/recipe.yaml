@@ -29,10 +29,8 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ stdlib("c") }}
     - ${{ compiler('cxx') }}
-
     - if: win
       then:
-        - intel-fortran-rt
         - autotools_clang_conda
     - if: not win
       then: make
@@ -42,7 +40,6 @@ requirements:
   host:
     - libblas
     - liblapack
-
     - if: win
       then: mkl-devel
     - mumps
