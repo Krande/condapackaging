@@ -148,4 +148,4 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       shell: bash
       run: |
-        python $GITHUB_ACTION_PATH/set_extra_build_vars.py
+        python $GITHUB_ACTION_PATH/env_cleaner.py
