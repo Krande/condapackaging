@@ -1,7 +1,5 @@
 #!/bin/bash
-
 # Get an updated config.sub and config.guess
-env | xargs -n1 echo
 
 if [[ "$target_platform" != "win-64" ]]; then
   cp $BUILD_PREFIX/share/gnuconfig/config.* .
@@ -26,7 +24,7 @@ fi
 mkdir build
 cd build
 
-../configure -j1 -v \
+../configure \
   --without-hsl $SPRAL_OPTIONS \
   --disable-java \
   --disable-f77 \

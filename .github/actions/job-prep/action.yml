@@ -30,7 +30,6 @@ inputs:
     required: false
     default: ""
 
-
 runs:
   using: "composite"
   steps:
@@ -144,3 +143,9 @@ runs:
       shell: bash
       run: |
         sudo chmod -R +x ${{ env.WORK_DIR }}
+
+    - name: Clean up PATH on windows
+      if: ${{ runner.os == 'Windows' }}
+      shell: bash
+      run: |
+        python $GITHUB_ACTION_PATH/set_extra_build_vars.py
