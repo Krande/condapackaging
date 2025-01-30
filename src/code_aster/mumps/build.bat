@@ -24,8 +24,17 @@ if "%build_type%" == "debug" (
 
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
-set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY -DPORD_INTSIZE64
-set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64 /integer-size:64 /4I8
+set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
+set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3
+
+set INTSIZE_BOOL=OFF
+set MKL_VENDOR=MKL
+if %int_type% == 64 (
+    set CFLAGS=%CFLAGS% -DPORD_INTSIZE64
+    set FCFLAGS=%FCFLAGS% -DPORD_INTSIZE64 /integer-size:64 /4I8
+    set INTSIZE_BOOL=ON
+    set MKL_VENDOR=MKL64
+)
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
@@ -35,8 +44,8 @@ cmake -G "Ninja" ^
       -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.7.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
-      -D LAPACK_VENDOR:STRING=MKL64 ^
-      -D intsize64:BOOL=ON ^
+      -D LAPACK_VENDOR:STRING=%MKL_VENDOR% ^
+      -D intsize64:BOOL=%INTSIZE_BOOL% ^
       -D gemmt:BOOL=ON ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^

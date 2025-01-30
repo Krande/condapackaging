@@ -1,5 +1,6 @@
 @echo off
-setlocal
+
+setlocal enabledelayedexpansion
 
 set CLICOLOR_FORCE=1
 

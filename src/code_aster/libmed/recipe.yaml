@@ -41,7 +41,7 @@ source:
 build:
   number: ${{ build }}
   script: bld.bat
-  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type }}_h${{ PKG_HASH }}_${{ build }}
+  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type }}_h${{ hash }}_${{ build }}
 requirements:
   build:
     - ${{ compiler('c') }}

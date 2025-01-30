@@ -21,6 +21,9 @@
 {% set mpi_prefix = "nompi" %}
 {% endif %}
 
+{% set build = build|int + int_type|int %}
+
+
 package:
   name: {{ name }}-pkgs
   version: {{ version }}
@@ -54,9 +57,9 @@ outputs:
     build:
       script: ${RECIPE_DIR}/build-scotch.sh  # [unix]
       script: "%RECIPE_DIR%\\bld-scotch.bat"  # [win]
-      string: aster_{{ mpi_prefix }}_{{build_type}}_h{{ PKG_HASH }}_{{ build }}
+      string: aster_{{ mpi_prefix }}_{{build_type}}_INT{{ int_type }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
-        - {{ pin_subpackage('libscotch', max_pin='x.x.x') }} *{{ build_type}}*
+        - {{ pin_subpackage('libscotch', max_pin='x.x.x') }} *{{ build_type}}*{{ int_type }}*
       ignore_run_exports:
         - {{ mpi }}       # [mpi != 'nompi']
         - llvm-openmp  # [win]
@@ -113,7 +116,7 @@ outputs:
   - name: libptscotch
     build:
       skip: True  # [mpi == 'nompi']
-      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+      string: aster_{{ mpi_prefix }}_INT{{ int_type }}_h{{ PKG_HASH }}_{{ build }}
       script:
         - cmake --install ./build --component=libptscotch
       run_exports:
@@ -160,9 +163,9 @@ outputs:
   - name: scotch
     build:
       script: cmake --install ./build --component=scotch
-      string: aster_{{ mpi_prefix }}_{{build_type}}_h{{ PKG_HASH }}_{{ build }}
+      string: aster_{{ mpi_prefix }}_{{build_type}}_INT{{ int_type }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
-        - {{ pin_subpackage('scotch', max_pin='x.x.x') }} *{{ build_type}}*
+        - {{ pin_subpackage('scotch', max_pin='x.x.x') }} *{{ build_type}}*{{ int_type }}*
       ignore_run_exports:
         - {{ mpi }}       # [mpi != 'nompi']
     requirements:
@@ -184,7 +187,7 @@ outputs:
     build:
       skip: True  # [mpi == 'nompi']
       script: cmake --install ./build --component=ptscotch
-      string: aster_{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+      string: aster_{{ mpi_prefix }}_INT{{ int_type }}_h{{ PKG_HASH }}_{{ build }}
       run_exports:
         - {{ pin_subpackage('ptscotch', max_pin='x.x.x') }}
     requirements:

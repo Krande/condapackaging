@@ -4,3 +4,7 @@ mpi:
 build_type:
   - release
   - debug
+
+int_type:
+  - 32
+  - 64

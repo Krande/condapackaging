@@ -7,7 +7,7 @@ context:
   parmetis_ver: 4.0.3
   scalapack_ver: 2.1.0
   scotch_ver: 7.0.4
-  build: 101
+  build: ${{ ((build | int + 200) if build_type == 'release' else build|int) + int_type|int }}
   mpi_prefix: nompi
 
 package:
@@ -20,7 +20,7 @@ source:
 
 build:
   number: ${{ build }}
-  string: aster_py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_h${{ hash }}_${{ build }}
+  string: aster_py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
   prefix_detection:
     ignore_binary_files: true
 
@@ -44,8 +44,8 @@ requirements:
     - liblapack
     - if: win
       then: mkl-devel
-    - metis ${{ metis_ver }}.* *${{ build_type }}*
-    - scotch ==${{ scotch_ver }} *aster*${{ build_type }}*
+    - metis ${{ metis_ver }}.* *${{ build_type }}*${{ int_type }}*
+    - scotch ==${{ scotch_ver }} *aster*${{ build_type }}*${{ int_type }}*
   run:
     - ${{ pin_compatible('numpy') }}
   ignore_run_exports:

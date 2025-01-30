@@ -13,3 +13,7 @@ fortran_compiler_version:   # [win]
 build_type:
   - release
   - debug
+
+int_type:
+  - 32
+  - 64

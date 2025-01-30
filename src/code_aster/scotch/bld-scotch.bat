@@ -1,3 +1,7 @@
+@echo off
+
+setlocal enabledelayedexpansion
+
 set BISON_PKGDATADIR=%BUILD_PREFIX%\Library\share\winflexbison\data\
 
 :: MSVC is preferred.
@@ -23,18 +27,28 @@ if "%build_type%" == "debug" (
 
 set CFLAGS=%CFLAGS% /nologo
 if "%FC%" == "flang-new" (
-    set FCFLAGS=%FCFLAGS% -cpp -fdefault-integer-8
+    set FCFLAGS=%FCFLAGS% -cpp
+    if "%int_type%" == "64" (
+        set FCFLAGS=%FCFLAGS% -fdefault-real-8
+    )
 ) else (
-    set FCFLAGS=%FCFLAGS% /nologo /integer-size:64 /4I8 /fpp /TP
+    set FCFLAGS=%FCFLAGS% /nologo /fpp /TP
+    if "%int_type%" == "64" (
+        set FCFLAGS=%FCFLAGS% /integer-size:64 /4I8
+    )
 )
 
+echo "Build type: %TGT_BUILD_TYPE%, INT_TYPE: %int_type%"
+echo "CFLAGS: %CFLAGS%"
+echo "FCFLAGS: %FCFLAGS%"
+echo "LDFLAGS: %LDFLAGS%"
 
 cmake ^
   -G "Ninja" ^
   -D CMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^
   -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
   -D BUILD_SHARED_LIBS=OFF ^
-  -D INTSIZE=64 ^
+  -D INTSIZE=%int_type% ^
   -D CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
   -D MPI_THREAD_MULTIPLE=%USE_MPI% ^
   -D BUILD_PTSCOTCH=%USE_MPI% ^

@@ -1,4 +1,7 @@
 @echo off
+
+setlocal enabledelayedexpansion
+
 echo Build MFRONT/TFEL
 
 set FC=flang-new

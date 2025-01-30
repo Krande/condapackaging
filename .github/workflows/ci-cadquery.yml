@@ -2,7 +2,6 @@ name: ci-cadquery
 
 on:
   workflow_dispatch:
-  push:
 
 jobs:
 #  build-ocp:
@@ -15,10 +14,21 @@ jobs:
 #      build_env: "rattler"
 #      upload_conda: True
 #    secrets: inherit
-  build-ipopt:
+#  build-ipopt:
+#    uses: ./.github/workflows/conda-build-basic.yml
+#    with:
+#      package_name: ipopt
+#      conda_channel: "dev"
+#      python_versions: "3.12"
+#      platforms: "windows-latest"
+#      build_env: "rattler"
+#      use_intel_fortran: True
+#      upload_conda: True
+#    secrets: inherit
+  build-casadi:
     uses: ./.github/workflows/conda-build-basic.yml
     with:
-      package_name: ipopt
+      package_name: casadi
       conda_channel: "dev"
       python_versions: "3.12"
       platforms: "windows-latest"
