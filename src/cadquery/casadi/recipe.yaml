@@ -51,6 +51,7 @@ requirements:
     - libosqp
     - proxsuite
     - tinyxml2
+    - mumps * *aster*
     - ipopt ==3.14.17
     - if: win
       then: mkl-devel

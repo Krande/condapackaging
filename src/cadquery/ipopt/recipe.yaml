@@ -15,7 +15,7 @@ source:
       - pkg-config-do-not-add-requires-private.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
