@@ -30,7 +30,13 @@ if "%build_type%" == "debug" (
 :: This updates the symbols to lowercase and adds an underscore
 xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
-set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /real-size:64 /integer-size:64 /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
+set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
+
+set MED_INT_TYPE="int"
+if %int_type% == 64 (
+    set FFLAGS=%FFLAGS% /integer-size:64 /4I8
+    set MED_INT_TYPE="long long"
+)
 
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"
@@ -55,7 +61,7 @@ cmake -G "Ninja" ^
   -D MEDFILE_BUILD_SHARED_LIBS=ON ^
   -D MEDFILE_BUILD_STATIC_LIBS=OFF ^
   -D MEDFILE_USE_UNICODE=OFF ^
-  -D MED_MEDINT_TYPE="long long" ^
+  -D MED_MEDINT_TYPE="%MED_INT_TYPE%" ^
   -Wno-dev ^
   ..
 

@@ -49,16 +49,11 @@ mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
-# Convert a meta.yaml to a recipe.yaml
-convert = { cmd = "conda-recipe-manager convert", cwd = "src/code_aster" }
-rscotch = { cmd = ["src/code_aster/rattler-wrap.bat", "scotch"] }
-rlibmed = { cmd = ["src/code_aster/rattler-wrap.bat", "libmed"] }
-
-metis = { cmd = ["rattler-build", "build", "-r","src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
-mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
-
-conv = { cmd = "conda-recipe-manager convert" }
-
+# Code Aster
+libmed = { cmd = ["rattler-build", "build", "-r","src/code_aster/libmed/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+medcoupling = { cmd = ["rattler-build", "build", "-r","src/code_aster/medcoupling/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+metis = { cmd = ["rattler-build", "build", "-r","src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 # Cadquery
@@ -104,11 +99,11 @@ stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "
 # Code Aster Packages
 homard = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/homard" }
 parmetis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/parmetis" }
-hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
+#hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
 scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
 petsc = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/petsc" }
-libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/libmed" }
-medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/medcoupling" }
+#libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/libmed" }
+#medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/medcoupling" }
 mfront = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mfront" }
 mgis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/mgis" }
 code_aster = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/code_aster" }

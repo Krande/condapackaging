@@ -3,7 +3,8 @@ schema_version: 1
 context:
   version: 1.14.5
   build_base: 0
-  build: ${{ 200+build_base|int if build_type == 'release' else build_base|int }}
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
   mpi_prefix: nompi
 
 package:

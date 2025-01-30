@@ -78,10 +78,10 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, use_intel_fortran: True },
-          { name: metis, use_intel_fortran: False },
-          { name: homard, use_intel_fortran: False },
-          { name: hdf5, use_intel_fortran: True }
+          { name: scotch, use_intel_fortran: True, build_env: "boa" },
+          { name: metis, use_intel_fortran: False, build_env: "rattler" },
+          { name: homard, use_intel_fortran: False, build_env: "boa" },
+          { name: hdf5, use_intel_fortran: True, build_env: "boa" }
         ]
     with:
       package_name: ${{ matrix.package.name }}
@@ -94,6 +94,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: ${{ matrix.package.use_intel_fortran }}
       use_devtools: ${{ matrix.package.use_intel_fortran }}
+      build_env: ${{ matrix.package.build_env }}
     secrets: inherit
 
   build_mpi_parmetis:
@@ -142,6 +143,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
       use_devtools: True
+      build_env: 'rattler'
     secrets: inherit
 
   build_batch_petsc:
@@ -172,6 +174,7 @@ jobs:
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: False
+      build_env: 'rattler'
     secrets: inherit
 
   build_batch_mfront:

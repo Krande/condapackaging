@@ -1,20 +1,12 @@
-# ensure mpi is defined (needed for conda-smithy recipe-lint)
-# prioritize nompi variant via build number
-# prioritize release over debug
-# Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi
-# add build string so packages can depend on
-# mpi or nompi variants explicitly:
-# `pkg * mpi_mpich_*` for mpich
-# `pkg * mpi_*` for any mpi
-# `pkg * nompi_*` for no mpi
 schema_version: 1
 
 context:
   name: libmed
   version: 4.1.1
-  build: 200
+  build_base: 0
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
   sha256: fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0
-  mpi: "mpi or 'nompi'"
   mpi_prefix: nompi
 
 package:
@@ -34,21 +26,22 @@ source:
     - patches/do-not-make-symlinks-on-windows.patch
     - patches/link-privately.patch
     - if: win
-      then: patches/fix_flang_fortran.patch
-    - if: win
-      then: patches/fix_medfwrap_symbols.patch
+      then:
+        - patches/fix_flang_fortran.patch
+        - patches/fix_medfwrap_symbols.patch
 
 build:
   number: ${{ build }}
   script: bld.bat
-  string: py${{ CONDA_PY }}_${{ mpi_prefix }}_${{ build_type }}_h${{ hash }}_${{ build }}
+  string: py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
+
 requirements:
   build:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
     - if: not win
       then: ${{ compiler('fortran') }}
-    - swig >=4.0.2
+    - swig ==4.2.1  # SWIG 4.3 is not ABI compatible. See https://github.com/conda-forge/libmed-feedstock/issues/74
     - cmake
     - if: win
       then: ninja
@@ -68,9 +61,9 @@ requirements:
     - python
     - if: "mpi != \"nompi\""
       then: ${{ mpi }}
-    - ${{ pin_compatible('hdf5', max_pin='x.x') }}
+    - ${{ pin_compatible('hdf5', upper_bound='x.x') }}
   run_exports:
-    - ${{ pin_subpackage(name, max_pin='x.x') }}
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
 
 tests:
   - python:
@@ -80,7 +73,7 @@ tests:
   - files:
       recipe:
         - if: win
-          then: test_symbols.bat
+          then: tests/
     requirements:
       run:
         - ${{ compiler('c') }}
@@ -91,7 +84,7 @@ tests:
       - if: linux
         then: nm ${PREFIX}/lib/libmedC.so | grep MEDlibraryNumVersion
       - if: win
-        then: test_symbols.bat
+        then: tests/test_symbols.bat
 
 about:
   license: LGPL-3.0-only
