@@ -56,7 +56,7 @@ tests:
         else: run_test.sh
     files:
       recipe:
-        - test
+        - test/
         - mytoy.nl
     requirements:
       run:
