@@ -16,7 +16,7 @@ fi
 
 if [[ "$target_platform" == "win-64" ]]; then
   # On windows there are no dmumps_seq pkg-config, see https://github.com/conda-forge/mumps-feedstock/issues/129, so we manually specify how to link dmumps
-  export MUMPS_LFLAGS="-lmpiseq -ldmumps -lesmumps -lmumps_common -lsmumps -lzmumps -lscotch -lscotcherr -lscotcherrexit"
+  export MUMPS_LFLAGS="-lmpiseq -ldmumps -lesmumps -lmumps_common -lsmumps -lzmumps -lscotch -lscotcherr -lscotcherrexit -lmetis -lpthread"
 else
   export MUMPS_LFLAGS="$(pkg-config --libs dmumps_seq)"
 fi
