@@ -9,7 +9,8 @@ echo "INTEL_VARS_PATH: %INTEL_VARS_PATH%"
 if "%FC%" == "ifx" (
     echo "Already using Intel LLVM Fortran compiler"
 ) else (
+    echo "Setting compiler env vars"
     call "%INTEL_VARS_PATH%\vars.bat" -arch intel64
 )
 
-set FC=ifx
+set FC=ifx.exe
