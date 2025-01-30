@@ -38,7 +38,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ env.ONEAPI_ROOT }}
-        key: ${{ runner.os }}-intel-fortran-${{ inputs.version }}-${{ steps.get-date.outputs.date }}
+        key: ${{ runner.os }}-intel-fortran-${{ inputs.version }}
 
 
     # Set up the selected toolchain or compiler
