@@ -34,6 +34,7 @@ typer = "*"
 toposort = "*"
 colorama = "*"
 boa = "*"
+rattler-build = "*"
 py-rattler-build = "*"
 
 [feature.cpacktest.dependencies]
