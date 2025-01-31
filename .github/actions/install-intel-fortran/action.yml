@@ -87,8 +87,8 @@ runs:
         fi
 
         # set env vars
-        echo FC=$FC>>$GITHUB_ENV
-        echo "INTEL_FORTRAN_VERSION=${VERSION}.1162" >> $GITHUB_ENV
+        #echo FC=$FC>>$GITHUB_ENV
+        #echo "INTEL_FORTRAN_VERSION=${VERSION}.1162" >> $GITHUB_ENV
 
         # set action outputs
-        echo fc=$FC>>$GITHUB_OUTPUT
+        #echo fc=$FC>>$GITHUB_OUTPUT
