@@ -1,0 +1,87 @@
+schema_version: 1
+
+context:
+  name: medcoupling
+  version: 9.13.0
+  build_base: 0
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
+  mpi_prefix: ${{ mpi }}
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/SalomePlatform/medcoupling/archive/refs/tags/V${{ version | replace('.', '_') }}.tar.gz
+    sha256: 54d010df0d8a66c7cf7b39a40e28aac16bc0bc20faf97c5190d0a2df4941e15e
+    patches:
+      - patches/add_a_python_no_debug_conditional.patch
+  - url: https://github.com/SalomePlatform/configuration/archive/refs/tags/V${{ version | replace('.', '_') }}.tar.gz
+    sha256: b0bb296536cefb3b5e063a57fab8b66b510ff76d766fbd462ee10dedac3c4872
+    target_directory: deps/config
+
+build:
+  number: ${{ build }}
+  string: py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
+  skip: osx
+  prefix_detection:
+    ignore_binary_files: true
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler('cxx') }}
+    - if: not win
+      then: make
+    - if: win
+      then:
+        - clang
+        - ninja
+    - cmake
+    - swig
+  host:
+    - python
+    - numpy
+    - libboost-devel
+    - libxml2
+    - libmed * *${{ mpi_prefix }}*${{ build_type }}*INT${{ int_type }}*
+    - if: "mpi != 'nompi'"
+      then:
+        - petsc
+        - ${{ mpi }}
+  run:
+    - python
+    - ${{ pin_compatible('numpy') }}
+    - if: "mpi != 'nompi'"
+      then: ${{ mpi }}
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
+
+tests:
+  - python:
+      imports:
+        - medcoupling
+        - MEDRenumber
+        - MEDCouplingRemapper
+        - MEDLoader
+        - MEDPartitioner
+        - if: linux
+          then: MEDCoupling
+        - if: win or osx
+          then: MEDCouplingCompat
+
+about:
+  license: LGPL-2.1-or-later
+  license_file: COPYING
+  summary: The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)
+  description: |
+    The MEDCoupling tool gathers several powerful functionalities around the input and output data of simulation codes (meshes and fields mainly)
+  homepage: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git
+  repository: https://git.salome-platform.org/gitweb/?p=tools/medcoupling.git;a=summary
+  documentation: https://docs.salome-platform.org/latest/dev/MEDCoupling/developer/index.html
+
+extra:
+  recipe-maintainers:
+    - Krande

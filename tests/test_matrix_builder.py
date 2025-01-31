@@ -115,3 +115,22 @@ def test_matrix_builder_zip_keys_config_file(root_dir):
 
     decoded_str = convert_from_bytes_str(matrix["variants"][1]["var_str"])
     assert decoded_str == " --variants=\"{'hdf5': '1.10.6=*nompi*'}\""
+
+
+def test_matrix_v1(root_dir):
+    pyver = "3.12"
+    platforms = "windows-latest"
+    variants = ""
+    recipe_file = root_dir / "files" / "recipe_v1/recipe.yaml"
+    extra_recipe_config = ""
+    matrix = matrix_builder_main(pyver, platforms, variants, recipe_file=recipe_file.as_posix(), extra_config=extra_recipe_config)
+    print(matrix)
+
+def test_matrix_v0(root_dir):
+    pyver = "3.12"
+    platforms = "windows-latest"
+    variants = ""
+    recipe_file = root_dir / "files" / "recipe_v1/recipe.yaml"
+    extra_recipe_config = ""
+    matrix = matrix_builder_main(pyver, platforms, variants, recipe_file=recipe_file.as_posix(), extra_config=extra_recipe_config)
+    print(matrix)

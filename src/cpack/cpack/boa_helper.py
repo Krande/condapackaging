@@ -1,10 +1,8 @@
 import itertools
 import json
 import os
-import pathlib
 
 from boa.core.utils import get_config
-from conda_build.api import render
 
 
 def set_output(name, value):
@@ -14,7 +12,7 @@ def set_output(name, value):
 
 def get_conda_variants(recipe_dir):
     combined_spec, config = get_config(recipe_dir)
-    rendered_recipe = render(recipe_dir, config=config)
+    # rendered_recipe = render(recipe_dir, config=config)
     variants = []
     for key, value in combined_spec.items():
         if not isinstance(value, list):

@@ -11,6 +11,7 @@ debug = ["debug"]
 release = ["release"]
 rattler = ["rattler"]
 boa = ["boa"]
+cpacktest = ["cpack", "cpacktest"]
 
 
 [dependencies]
@@ -32,7 +33,11 @@ python-libarchive-c = "*"
 typer = "*"
 toposort = "*"
 colorama = "*"
+boa = "*"
 py-rattler-build = "*"
+
+[feature.cpacktest.dependencies]
+pytest = "*"
 
 [feature.cpack.pypi-dependencies]
 cpack = { path = "./src/cpack", editable = true }

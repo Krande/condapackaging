@@ -3,6 +3,8 @@ import pathlib
 import json
 
 import subprocess
+
+from cpack.boa_helper import get_conda_variants
 from cpack.variant_str_builder import main as variant_str_builder_main
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent.parent.parent
@@ -22,13 +24,16 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> li
 
     matrix_str = result.stdout.decode()
     json_matrix = json.loads(matrix_str)
-    variants = []
+    variants_out = []
     for variant_build in json_matrix:
         variant_dict = variant_build["build_configuration"]['variant']
         variant_dict.pop("target_platform")
-        variants.append(variant_dict)
 
-    return variants
+        for key, value in variant_dict.items():
+            var_str = variant_str_builder_main(f"{key}={value}")
+            var_bytes_str = convert_to_byte_str(var_str)
+            variants_out.append({"key": key, "value": value, "var_str": var_bytes_str})
+    return variants_out
 
 
 def get_variants_from_variant_in_str(variants: list[str]) -> list[dict]:
@@ -56,7 +61,7 @@ def get_variants_from_variant_in_str(variants: list[str]) -> list[dict]:
     return variant_list_of_dicts
 
 
-def create_actions_matrix(python_versions, platforms, variants_in, recipe_input=None, extra_config=None):
+def create_actions_matrix(python_versions, platforms, variants_in, recipe_file=None, extra_config=None):
     python_versions = python_versions.split(',') if python_versions else []
     platforms = platforms.split(',') if platforms else []
 
@@ -82,8 +87,13 @@ def create_actions_matrix(python_versions, platforms, variants_in, recipe_input=
     if len(variants) > 0:
         matrix["variants"].extend(get_variants_from_variant_in_str(variants))
 
-    if recipe_input: # This should always replace the variants
-        result = get_variant_matrix_for_rattler(recipe_input, extra_config)
+    if recipe_file: # This should always replace the variants
+        if 'meta.yaml' in recipe_file:
+            result = get_conda_variants(recipe_file)
+        elif "recipe.yaml" in recipe_file:
+            result = get_variant_matrix_for_rattler(recipe_file, extra_config)
+        else:
+            raise ValueError(f"Unknown recipe file {recipe_file}")
         if result is not None:
             matrix["variants"] = result
 
