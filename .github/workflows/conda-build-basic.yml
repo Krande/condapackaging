@@ -91,6 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
+      should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
       - uses: actions/checkout@v4
         with:
