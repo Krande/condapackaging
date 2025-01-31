@@ -33,6 +33,10 @@ inputs:
     description: "Quetz URL"
     required: false
     default: ""
+  clean_env:
+    description: "Clean environment"
+    required: false
+    default: 'false'
 
 
 outputs:
@@ -178,7 +182,7 @@ runs:
         sudo chmod -R +x ${{ env.WORK_DIR }}
 
     - name: Clean up PATH on windows
-      if: ${{ runner.os == 'Windows' }}
+      if: ${{ runner.os == 'Windows' && inputs.clean_env == 'true' }}
       shell: bash
       run: |
         python $GITHUB_ACTION_PATH/env_cleaner.py

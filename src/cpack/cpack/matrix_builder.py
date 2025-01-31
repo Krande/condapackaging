@@ -1,5 +1,6 @@
 import base64
 import pathlib
+import itertools
 import json
 import yaml
 import subprocess
@@ -18,24 +19,29 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> li
     extra_args = []
     if extra_config_in and len(extra_config_in) > 0:
         extra_args = extra_config_in.split(' ')
+    variant_builds = []
+    for os_name in ["win-64", "linux-64", "osx-64"]:
+        result = subprocess.run(["rattler-build", "build", "-r", recipe_fp.as_posix(), *extra_args, "--render-only", "--target-platform",os_name],
+                                capture_output=True)
+        if result.returncode != 0:
+            print(result.stderr.decode())
+            return None
 
-    result = subprocess.run(["rattler-build", "build", "-r", recipe_fp.as_posix(), *extra_args, "--render-only"],
-                            capture_output=True)
-    if result.returncode != 0:
-        print(result.stderr.decode())
-        return None
+        matrix_str = result.stdout.decode()
+        json_matrix = json.loads(matrix_str)
+        variant_builds.extend(json_matrix)
 
-    matrix_str = result.stdout.decode()
-    json_matrix = json.loads(matrix_str)
     variants_out = []
-    for variant_build in json_matrix:
+    for variant_build in variant_builds:
         variant_dict = variant_build["build_configuration"]['variant']
-        variant_dict.pop("target_platform")
+        build = variant_build["recipe"]['build']["string"]
+        target_platform = variant_dict.pop("target_platform")
         key_str = ','.join(variant_dict.keys())
         var_str = ';'.join([f"{key}={value}" for key, value in variant_dict.items()])
         var_bytes_str = convert_to_byte_str(var_str)
         yaml_bytes_str = yaml_to_base64(variant_dict)
-        variants_out.append({"key": key_str, "value": var_str, "var_str": var_bytes_str, "yaml_str": yaml_bytes_str})
+        variants_out.append({"key": key_str, "value": var_str, "os": target_platform, "build": build, "var_str": var_bytes_str, "yaml_str": yaml_bytes_str})
+
     return variants_out
 
 def yaml_to_base64(yaml_data: dict) -> str:
@@ -76,11 +82,11 @@ def create_actions_matrix(python_versions, platforms, variants_in, recipe_file=N
     platforms_dicts = []
     for platform in platforms:
         if platform.startswith('windows'):
-            platforms_dicts.append({"os": platform, "short": "win"})
+            platforms_dicts.append({"os": platform, "short": "win-64"})
         elif platform.startswith('ubuntu'):
-            platforms_dicts.append({"os": platform, "short": "linux"})
+            platforms_dicts.append({"os": platform, "short": "linux-64"})
         elif platform.startswith('macos'):
-            platforms_dicts.append({"os": platform, "short": "macos"})
+            platforms_dicts.append({"os": platform, "short": "osx-64"})
         else:
             raise ValueError(f"Unknown platform {platform}")
 
@@ -102,11 +108,22 @@ def create_actions_matrix(python_versions, platforms, variants_in, recipe_file=N
             result = get_variant_matrix_for_rattler(recipe_file, extra_config)
         else:
             raise ValueError(f"Unknown recipe file {recipe_file}")
+
         if result is not None:
             matrix["variants"] = result
+            matrix["variants"] = create_list_product_from_matrix(matrix)
 
     return matrix
 
+def create_list_product_from_matrix(matrix: dict) -> list[dict]:
+    final_outputs = []
+    for platform in matrix["platform"]:
+        for variant in matrix["variants"]:
+            if variant["os"] != platform["short"]:
+                continue
+            final_outputs.append({**platform, **variant})
+
+    return final_outputs
 
 def convert_to_byte_str(var_str: str) -> str:
     encoded_bytes = base64.b64encode(var_str.encode("utf-8"))
