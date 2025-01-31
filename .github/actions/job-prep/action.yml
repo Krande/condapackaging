@@ -38,7 +38,7 @@ inputs:
 outputs:
   yaml_file_path:
     description: "Path to the yaml file"
-    value: "${{ github.workspace }}/ci_ga_conda_build.yaml"
+    value: ${{ steps.set-yaml-file.outputs.yaml_file_path }}
 
 runs:
   using: "composite"
@@ -90,17 +90,24 @@ runs:
 
     - name: Create yaml file for conda build
       if: ${{ inputs.variant_yaml_base64_str }}
+      id: set-yaml-file
       shell: bash
       run: |
         python3 <<EOF
         import base64
+        import pathlib
         import os
 
         decoded_bytes = base64.b64decode("${{ inputs.variant_yaml_base64_str }}")
         decoded_str = decoded_bytes.decode("utf-8")
-
-        with open(r"${{ github.workspace }}/ci_ga_conda_build.yaml", "w") as my_file:
+        
+        yaml_path = pathlib.Path(os.environ["GITHUB_WORKSPACE"]) / "ci_ga_conda_build.yaml"
+        
+        with open(yaml_path, "w") as my_file:
           my_file.write(decoded_str)
+        
+        with open(os.environ["GITHUB_OUTPUT"], "a") as my_file:
+          my_file.write(f"yaml_file_path={yaml_path.as_posix()}\n")
 
         EOF
 
