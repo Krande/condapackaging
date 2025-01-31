@@ -109,7 +109,7 @@ jobs:
           python_versions: ${{ inputs.python_versions }}
           platforms: ${{ inputs.platforms }}
           variants: ${{ inputs.variants }}
-          recipe_file: ${{ inputs.recipe_path }}
+          recipe_file: ${{ inputs.recipe_file }}
           extra_recipe_config: ${{ inputs.extra_recipe_config }}
 
   build_conda:
