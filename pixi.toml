@@ -6,12 +6,12 @@ channels = ["conda-forge"]
 platforms = ["win-64", "linux-64"]
 
 [environments]
-cpack = ["cpack"]
-debug = ["debug"]
-release = ["release"]
-rattler = ["rattler"]
-boa = ["boa"]
-cpacktest = ["cpack", "cpacktest"]
+cpack = { features=["cpack"], solve-group="cpack", no-default-feature=true }
+debug = { features=["debug"], no-default-feature=true }
+release = { features=["release"], no-default-feature=true }
+rattler = { features=["rattler"], no-default-feature=true }
+boa = { features=["boa"], no-default-feature=true }
+cpacktest = { features=["cpacktest"], solve-group="cpack", no-default-feature=true }
 
 
 [dependencies]
