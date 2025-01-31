@@ -91,7 +91,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       final_matrix: ${{ steps.job-matrix-builder.outputs.final_matrix }}
-      ci_yaml_file: ${{ steps.jo
     steps:
       - uses: actions/checkout@v4
         with:
