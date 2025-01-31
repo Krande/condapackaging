@@ -17,10 +17,9 @@ source:
     sha256: 54d010df0d8a66c7cf7b39a40e28aac16bc0bc20faf97c5190d0a2df4941e15e
     patches:
       - patches/add_a_python_no_debug_conditional.patch
-  - url: https://github.com/Krande/medcoupling-config-copy/archive/refs/tags/V9_10_0.tar.gz
-    sha256: ba87a3f1d58bf9804a92171d7551f4d62b1f395b0af85f907ee2b23aa3f7b659
+  - url: https://github.com/SalomePlatform/configuration/archive/refs/tags/V${{ version | replace('.', '_') }}.tar.gz
+    sha256: b0bb296536cefb3b5e063a57fab8b66b510ff76d766fbd462ee10dedac3c4872
     target_directory: deps/config
-    file_name: config_${{ version }}.tar.gz
 
 build:
   number: ${{ build }}
@@ -47,7 +46,7 @@ requirements:
     - numpy
     - libboost-devel
     - libxml2
-    - libmed * *${{ mpi_prefix }}*${{ build_type }}*
+    - libmed * *${{ mpi_prefix }}*${{ build_type }}*INT${{ int_type }}*
     - if: "mpi != 'nompi'"
       then:
         - petsc

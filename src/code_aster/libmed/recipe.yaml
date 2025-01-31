@@ -2,11 +2,10 @@ schema_version: 1
 
 context:
   name: libmed
-  version: 4.1.1
+  version: 4.1.1.6
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
-  sha256: fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0
   mpi_prefix: nompi
 
 package:
@@ -15,20 +14,7 @@ package:
 
 source:
   url: https://github.com/Krande/med-copy/archive/refs/tags/${{ version }}.tar.gz
-  sha256: ${{ sha256 }}
-  patches:
-    - patches/ignore-hdf5-bounds-check-cmake.patch
-    - patches/ignore-hdf5-bounds-check-source.patch
-    - patches/do_not_modify_windows_path.patch
-    - patches/install-in-runtime-and_archive.patch
-    - if: win
-      then: patches/cmake-modern-python.patch
-    - patches/do-not-make-symlinks-on-windows.patch
-    - patches/link-privately.patch
-    - if: win
-      then:
-        - patches/fix_flang_fortran.patch
-        - patches/fix_medfwrap_symbols.patch
+  sha256: d22900603b69947553afe17416569edc41a95e69f989552e44c5143e4bb6025a
 
 build:
   number: ${{ build }}

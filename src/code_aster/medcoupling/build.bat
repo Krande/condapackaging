@@ -19,6 +19,13 @@ if "%build_type%" == "debug" (
     )
 )
 
+set MED_INT_IS_LONG=OFF
+if %int_type% == 64 (
+    set MED_INT_IS_LONG=ON
+    set FFLAGS=%FFLAGS% /integer-size:64 /4I8
+)
+echo "Building as BUILD_TYPE: %build_type%, INT_TYPE: %int_type%, MED_INT_IS_LONG: %MED_INT_IS_LONG%"
+
 cmake -G "Ninja" .. ^
     -Wno-dev ^
     -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
@@ -33,8 +40,8 @@ cmake -G "Ninja" .. ^
     -D MEDCOUPLING_BUILD_STATIC=OFF ^
     -D MEDCOUPLING_BUILD_TESTS=OFF ^
     -D MEDCOUPLING_BUILD_DOC=OFF ^
-    -D MED_INT_IS_LONG=ON ^
-    -D MEDCOUPLING_USE_64BIT_IDS=ON ^
+    -D MED_INT_IS_LONG:BOOL=%MED_INT_IS_LONG% ^
+    -D MEDCOUPLING_USE_64BIT_IDS:BOOL=%MED_INT_IS_LONG% ^
     -D MEDCOUPLING_USE_MPI=OFF ^
     -D MEDCOUPLING_MEDLOADER_USE_XDR=OFF ^
     -D MEDCOUPLING_INSTALL_PYTHON=%SP_DIR% ^
