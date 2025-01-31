@@ -99,7 +99,7 @@ runs:
         decoded_bytes = base64.b64decode("${{ inputs.variant_yaml_base64_str }}")
         decoded_str = decoded_bytes.decode("utf-8")
 
-        with open("${{ github.workspace }}/ci_ga_conda_build.yaml", "a") as my_file:
+        with open(r"${{ github.workspace }}/ci_ga_conda_build.yaml", "w") as my_file:
           my_file.write(decoded_str)
 
         EOF
