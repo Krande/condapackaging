@@ -57,6 +57,7 @@ topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-co
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 # Code Aster
+scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 libmed = { cmd = ["rattler-build", "build", "-r","src/code_aster/libmed/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 medcoupling = { cmd = ["rattler-build", "build", "-r","src/code_aster/medcoupling/recipe.yaml", "-m", "src/common_rattler.yaml"] }
@@ -108,7 +109,7 @@ stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "
 homard = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/homard" }
 parmetis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/parmetis" }
 #hdf5 = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/hdf5" }
-scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
+#scotch = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/scotch" }
 petsc = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/petsc" }
 #libmed = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/libmed" }
 #medcoupling = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/medcoupling" }

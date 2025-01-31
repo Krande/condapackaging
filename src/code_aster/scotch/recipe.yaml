@@ -6,8 +6,7 @@ context:
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
-  mpi: "mpi or 'nompi'"
-  mpi_prefix: nompi
+  mpi_prefix: ${{ mpi or 'nompi' }}
 
 recipe:
   name: ${{ name }}-pkgs
@@ -16,7 +15,6 @@ recipe:
 source:
   url: https://gitlab.inria.fr/scotch/scotch/-/archive/v${{ version }}/scotch-v${{ version }}.tar.gz
   sha256: 8ef4719d6a3356e9c4ca7fefd7e2ac40deb69779a5c116f44da75d13b3d2c2c3
-  file_name: ${{ name }}-v${{ version }}.tar.gz
   patches:
     - patches/0001-Remove-unconditional-testing.patch
     - patches/0002-add-COMPONENT-labels-for-easier-split-installation.patch
@@ -42,7 +40,7 @@ outputs:
   - package:
       name: libscotch
     build:
-      string: aster_${{ mpi_prefix }}_${{build_type}}_INT${{ int_type }}_h${{ PKG_HASH }}_${{ build }}
+      string: aster_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
       script:
         - if: unix
           then: build-scotch.sh
@@ -52,29 +50,27 @@ outputs:
       build:
         - ${{ compiler('c') }}
         - ${{ stdlib("c") }}
+        - cmake
         - if: not win
           then: ${{ compiler('fortran') }}
         - if: win
-          then: clang
-        - cmake
+          then:
+            - clang
+            - ninja
+            - winflexbison
         - if: unix
-          then: make
-        - if: win
-          then: ninja
-        - if: "build_platform != target_platform and mpi != 'nompi' or build_platform != target_platform and mpi != 'nompi'"
-          then: "mpi or 'nompi'.*"
-        - if: unix
-          then: bison <3.8
-        - if: unix
-          then: flex
-        - if: win
-          then: winflexbison
+          then:
+            - make
+            - bison <3.8
+            - flex
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
       host:
         - zlib
         - bzip2
         - xz
-        - if: "mpi != 'nompi' or mpi != 'nompi'"
-          then: "mpi or 'nompi'.*"
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
         - if: win
           then: pthreads-win32
       run:
@@ -82,49 +78,55 @@ outputs:
         - if: win
           then: pthreads-win32
       run_exports:
-        - ${{ pin_subpackage('libscotch', upper_bound='x.x.x') }} *${{ build_type}}*${{ int_type }}*
-      ignore_run_exports:
-        - if: "mpi != 'nompi'"
-          then: ${{ mpi }}
-        - if: win
-          then: llvm-openmp
+        - ${{ pin_subpackage('libscotch', upper_bound='x.x.x') }}
+    tests:
+      - script:
+          - if: win
+            then: run_test_libscotch.bat
+          - if: unix
+            then: run_test_libscotch.sh
+        requirements:
+            run:
+              - ${{ compiler('c') }}
+
   - package:
       name: libptscotch
     build:
-      string: aster_${{ mpi_prefix }}_INT${{ int_type }}_h${{ PKG_HASH }}_${{ build }}
+      string: aster_${{ mpi_prefix }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
       skip: "mpi == 'nompi'"
       script:
         - cmake --install ./build --component=libptscotch
     requirements:
       build:
         - cmake
-        - if: "mpi == 'openmpi' and build_platform != target_platform and mpi != 'nompi' or mpi == 'openmpi' and build_platform != target_platform and mpi != 'nompi'"
-          then: "mpi or 'nompi'.*"
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
       host:
-        - if: "mpi != 'nompi' or mpi != 'nompi'"
-          then: "mpi or 'nompi'.*"
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
       run:
         - ${{ pin_subpackage("libscotch", exact=True) }}
       run_exports:
         - ${{ pin_subpackage('libptscotch', upper_bound='x.x.x') }}
     about:
       summary: PT-SCOTCH - (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package
+
   - package:
       name: scotch
     build:
-      string: aster_${{ mpi_prefix }}_${{build_type}}_INT${{ int_type }}_h${{ PKG_HASH }}_${{ build }}
+      string: aster_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
       script: cmake --install ./build --component=scotch
     requirements:
       build:
         - cmake
       host:
         # This is needed to get the correct package hash
-        - if: "mpi != 'nompi' or mpi != 'nompi'"
-          then: "mpi or 'nompi'.*"
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
       run:
         - ${{ pin_subpackage('libscotch', exact=True) }}
       run_exports:
-        - ${{ pin_subpackage('scotch', upper_bound='x.x.x') }} *${{ build_type}}*${{ int_type }}*
+        - ${{ pin_subpackage('scotch', upper_bound='x.x.x') }}
       ignore_run_exports:
         - if: "mpi != 'nompi'"
           then: ${{ mpi }}
@@ -149,8 +151,8 @@ outputs:
         - cmake
       host:
         # This is needed to get the correct package hash
-        - if: "mpi != 'nompi' or mpi != 'nompi'"
-          then: "mpi or 'nompi'.*"
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
       run:
         - ${{ pin_subpackage('libptscotch', exact=True) }}
         - ${{ pin_subpackage('scotch', exact=True) }}
