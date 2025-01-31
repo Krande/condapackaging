@@ -14,6 +14,14 @@ inputs:
     description: "Conda package variants in key=value pairs, separated by commas."
     required: false
     default: ""
+  recipe_file:
+    description: "Path to the recipe file."
+    required: false
+    default: ""
+  extra_recipe_config:
+    description: "Extra configuration for the recipe."
+    required: false
+    default: ""
 
 outputs:
   final_matrix:
@@ -33,7 +41,7 @@ runs:
       id: set-matrix
       shell: bash
       run: |
-        pixi run -e cpack cpack-actions matrix-builder --python-versions="${{ inputs.python_versions }}" --platforms="${{ inputs.platforms }}" --variants="${{ inputs.variants }}"
+        pixi run -e cpack cpack-actions matrix-builder --python-versions="${{ inputs.python_versions }}" --platforms="${{ inputs.platforms }}" --variants="${{ inputs.variants }}" --recipe-file="${{ inputs.recipe_file }}" --extra-recipe-config="${{ inputs.extra_recipe_config }}"
       env:
         GITHUB_OUTPUT: ${{ steps.set-matrix.outputs.final_matrix }}
 

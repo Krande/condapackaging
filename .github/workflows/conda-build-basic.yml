@@ -66,6 +66,18 @@ on:
         type: string
         required: false
         default: "boa"
+      recipe_file:
+        description: 'Path to a rattler recipe'
+        type: string
+        required: false
+        default: ""
+      extra_recipe_config:
+        description: 'Extra recipe config'
+        type: string
+        required: false
+        default: ""
+
+
 
 env:
   CLICOLOR_FORCE: "1"
@@ -97,6 +109,8 @@ jobs:
           python_versions: ${{ inputs.python_versions }}
           platforms: ${{ inputs.platforms }}
           variants: ${{ inputs.variants }}
+          recipe_file: ${{ inputs.recipe_path }}
+          extra_recipe_config: ${{ inputs.extra_recipe_config }}
 
   build_conda:
     needs: [ build_prep ]

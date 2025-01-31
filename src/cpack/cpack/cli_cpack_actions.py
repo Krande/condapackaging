@@ -13,8 +13,8 @@ app = typer.Typer()
 
 
 @app.command(name="matrix-builder")
-def matrix_builder(python_versions: str = "", platforms: str = "", variants: str = ""):
-    matrix = create_actions_matrix(python_versions, platforms, variants)
+def matrix_builder(python_versions: str = "", platforms: str = "", variants: str = "", recipe_file: str = None, extra_recipe_config: str = None):
+    matrix = create_actions_matrix(python_versions, platforms, variants, recipe_file, extra_recipe_config)
 
     print(f"final_matrix={matrix}")
     with open(output_file, "a") as my_file:

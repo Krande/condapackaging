@@ -32,6 +32,7 @@ python-libarchive-c = "*"
 typer = "*"
 toposort = "*"
 colorama = "*"
+py-rattler-build = "*"
 
 [feature.cpack.pypi-dependencies]
 cpack = { path = "./src/cpack", editable = true }
