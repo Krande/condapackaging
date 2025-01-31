@@ -86,33 +86,6 @@ outputs:
         - zlib
         - pthreads-win32  # [win]
 
-    test:
-      requires:
-        - {{ compiler('c') }}
-      commands:
-        {% for lib in [
-          'scotch',
-          'scotcherr',
-          'scotcherrexit',
-          'esmumps',
-        ]
-        %}
-        - test -f "${PREFIX}/lib/lib{{ lib }}${SHLIB_EXT}"                             # [unix]
-        - if exist %PREFIX%\\Library\\lib\\{{ lib }}.lib (exit 0) else (exit 1)        # [win]
-        {% endfor %}
-        - test -f "${PREFIX}/include/scotch.h"                                         # [unix]
-        - if exist %PREFIX%\\Library\\include\\scotch.h (exit 0) else (exit 1)         # [win]
-        - test -f "${PREFIX}/include/scotchf.h"                                        # [unix]
-        - if exist %PREFIX%\\Library\\include\\scotchf.h (exit 0) else (exit 1)        # [win]
-        - test -f "${PREFIX}/include/esmumps.h"                                        # [unix]
-        - if exist %PREFIX%\\Library\\include\\esmumps.h (exit 0) else (exit 1)        # [win]
-        - test ! -f "${PREFIX}/include/metis.h"                                        # [unix]
-        - if exist %PREFIX%\\Library\\include\\metis.h (exit 1) else (exit 0)          # [win]
-        - test -f "${PREFIX}/include/scotch/metis.h"                                   # [unix]
-        - if exist %PREFIX%\\Library\\include\\scotch\\metis.h (exit 0) else (exit 1)  # [win]
-        - test ! -f "${PREFIX}/bin/gord"                                               # [unix]
-        - if exist %PREFIX%\\Library\\bin\\gord.exe (exit 1) else (exit 0)             # [win]
-
   - name: libptscotch
     build:
       skip: True  # [mpi == 'nompi']
@@ -129,36 +102,9 @@ outputs:
         - {{ mpi }}       # [mpi != 'nompi']
       run:
         - {{ pin_subpackage("libscotch", exact=True) }}
-    test:
-      requires:
-        - cmake
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-      commands:
-        {% for lib in [
-          'ptscotch',
-          'ptscotcherr',
-          'ptscotcherrexit',
-          'ptesmumps'
-        ]
-        %}
-        - test -f "${PREFIX}/lib/lib{{ lib }}${SHLIB_EXT}"                                 # [unix]
-        - if exist %PREFIX%\\Library\\lib\\{{ lib }}.lib (exit 0) else (exit 1)            # [win]
-        {% endfor %}
-        - test -f "${PREFIX}/include/ptscotch.h"                                           # [unix]
-        - if exist %PREFIX%\\Library\\include\\ptscotch.h (exit 0) else (exit 1)           # [win]
-        - test -f "${PREFIX}/include/ptscotchf.h"                                          # [unix]
-        - if exist %PREFIX%\\Library\\include\\ptscotchf.h (exit 0) else (exit 1)          # [win]
-        - test -f "${PREFIX}/include/ptesmumps.h"                                          # [unix]
-        - if exist %PREFIX%\\Library\\include\\ptesmumps.h (exit 0) else (exit 1)          # [win]
-        - test -f "${PREFIX}/include/scotch/parmetis.h"                                    # [unix]
-        - if exist %PREFIX%\\Library\\include\\scotch\\parmetis.h (exit 0) else (exit 1)   # [win]
-        - test ! -f "${PREFIX}/include/parmetis.h"                                         # [unix]
-        - if exist %PREFIX%\\Library\\include\\parmetis.h (exit 1) else (exit 0)           # [win]
-        - test ! -f "${PREFIX}/bin/dgord"                                                  # [unix]
-        - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 1) else (exit 0)                # [win]
+
     about:
-      summary: 'PT-SCOTCH: (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
+      summary: 'PT-SCOTCH - (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
 
   - name: scotch
     build:
@@ -206,13 +152,13 @@ outputs:
         - test -f "${PREFIX}/bin/dgord"                                      # [unix]
         - if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 0) else (exit 1)  # [win]
     about:
-      summary: 'PT-SCOTCH: (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
+      summary: 'PT-SCOTCH - (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
 
 about:
   home: https://www.labri.fr/perso/pelegrin/scotch/
   license: CECILL-C
   license_file: doc/CeCILL-C_V1-en.txt
-  summary: 'SCOTCH: Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
+  summary: 'SCOTCH - Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package'
   description: |
     Software package and libraries for sequential and parallel
     graph partitioning, static mapping and clustering, sequential

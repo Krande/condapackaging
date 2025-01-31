@@ -125,6 +125,8 @@ def test_matrix_v1(root_dir):
     extra_recipe_config = ""
     matrix = matrix_builder_main(pyver, platforms, variants, recipe_file=recipe_file.as_posix(), extra_config=extra_recipe_config)
     print(matrix)
+    decoded_str = convert_from_bytes_str(matrix["variants"][0]["yaml_str"])
+    print(decoded_str)
 
 def test_matrix_v0(root_dir):
     pyver = "3.12"
@@ -134,3 +136,5 @@ def test_matrix_v0(root_dir):
     extra_recipe_config = ""
     matrix = matrix_builder_main(pyver, platforms, variants, recipe_file=recipe_file.as_posix(), extra_config=extra_recipe_config)
     print(matrix)
+    decoded_str = convert_from_bytes_str(matrix["variants"][0]["var_str"])
+    print(decoded_str)

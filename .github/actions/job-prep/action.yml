@@ -17,6 +17,10 @@ inputs:
     description: "Base64 encoded string of the variants"
     required: false
     default: ""
+  variant_yaml_base64_str:
+    description: "Base64 encoded string of the variant yaml"
+    required: false
+    default: ""
   env_vars:
     description: "Environment variables in key=value pairs, separated by commas"
     required: false
@@ -29,6 +33,12 @@ inputs:
     description: "Quetz URL"
     required: false
     default: ""
+
+
+outputs:
+  yaml_file_path:
+    description: "Path to the yaml file"
+    value: ${{ github.workspace }}/ci_ga_conda_build.yaml
 
 runs:
   using: "composite"
@@ -76,6 +86,23 @@ runs:
               env_var_value = env_var_value.replace("__root__", os.environ["GITHUB_WORKSPACE"])
               with open(env_file, "a") as my_file:
                 my_file.write(f"{env_var_name}={env_var_value}\n")
+        EOF
+
+    - name: Create yaml file for conda build
+      if: ${{ inputs.variant_yaml_base64_str }}
+      shell: bash
+      run: |
+        python3 <<EOF
+        import base64
+        import os
+        import yaml
+
+        decoded_bytes = base64.b64decode("${{ inputs.variant_yaml_base64_str }}")
+        decoded_str = decoded_bytes.decode("utf-8")
+
+        with open("${{ github.workspace }}/ci_ga_conda_build.yaml", "a") as my_file:
+          my_file.write(decoded_str)
+
         EOF
 
     - name: Evaluate Extra Build Args

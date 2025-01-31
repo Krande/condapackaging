@@ -1,13 +1,16 @@
 import base64
 import pathlib
 import json
-
+import yaml
 import subprocess
 
 from cpack.boa_helper import get_conda_variants
 from cpack.variant_str_builder import main as variant_str_builder_main
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent.parent.parent
+
+def yaml_str_from_dict(variant_dict: dict) -> str:
+    return yaml.dump(variant_dict, default_flow_style=False)
 
 def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> list[dict] | None:
     recipe_file = recipe_file.replace('__root__', ROOT_DIR.as_posix())
@@ -28,13 +31,18 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> li
     for variant_build in json_matrix:
         variant_dict = variant_build["build_configuration"]['variant']
         variant_dict.pop("target_platform")
-
-        for key, value in variant_dict.items():
-            var_str = variant_str_builder_main(f"{key}={value}")
-            var_bytes_str = convert_to_byte_str(var_str)
-            variants_out.append({"key": key, "value": value, "var_str": var_bytes_str})
+        key_str = ','.join(variant_dict.keys())
+        var_str = ';'.join([f"{key}={value}" for key, value in variant_dict.items()])
+        var_bytes_str = convert_to_byte_str(var_str)
+        yaml_bytes_str = yaml_to_base64(variant_dict)
+        variants_out.append({"key": key_str, "value": var_str, "var_str": var_bytes_str, "yaml_str": yaml_bytes_str})
     return variants_out
 
+def yaml_to_base64(yaml_data: dict) -> str:
+    yaml_str = yaml.dump(yaml_data, default_flow_style=False)
+    yaml_bytes = yaml_str.encode("utf-8")  # Convert YAML string to bytes
+    encoded_str = base64.b64encode(yaml_bytes).decode("utf-8")  # Encode and return string
+    return encoded_str
 
 def get_variants_from_variant_in_str(variants: list[str]) -> list[dict]:
     variant_list_of_dicts = []

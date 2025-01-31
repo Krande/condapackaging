@@ -78,16 +78,16 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, use_intel_fortran: True, build_env: "boa", recipe_file: "" },
+          { name: scotch, use_intel_fortran: True, build_env: "boa", recipe_file: "", variants: "int_type=32;build_type=debug,int_type=32;build_type=release" },
           { name: metis, use_intel_fortran: False, build_env: "rattler", recipe_file: "__root__/src/code_aster/metis/recipe.yaml" },
-          { name: homard, use_intel_fortran: False, build_env: "boa", recipe_file: "" },
-          { name: hdf5, use_intel_fortran: True, build_env: "boa", recipe_file: "" }
+          { name: homard, use_intel_fortran: False, build_env: "boa", recipe_file: "", variants: ${{ inputs.variants }} },
+          { name: hdf5, use_intel_fortran: True, build_env: "boa", recipe_file: "", variants: ${{ inputs.variants }} }
 
         ]
     with:
       package_name: ${{ matrix.package.name }}
       conda_channel: ${{ needs.env.outputs.conda_channel }}
-      variants: ${{ inputs.variants }}
+      variants: ${{ matrix.package.variants }}
       python_versions: ${{ inputs.python_versions }}
       platforms: ${{ inputs.platforms }}
       extra_build_args: ${{ inputs.extra_build_args }}
