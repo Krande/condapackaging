@@ -56,6 +56,8 @@ runs:
     - name: Configure pagefile
       if: runner.os == 'Windows'
       uses: al-cheb/configure-pagefile-action@v1.2
+      with:
+        disk-root: "C:"
 
     - name: Set up pagefile
       if: runner.os == 'Windows'

@@ -33,7 +33,7 @@ runs:
   steps:
     - uses: prefix-dev/setup-pixi@v0.8.1
       with:
-        pixi-version: v0.40.2
+        pixi-version: v0.40.3
         environments: "cpack"
         cache: true
 
