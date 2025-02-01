@@ -196,6 +196,8 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
       use_devtools: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/code_aster/mfront/recipe.yaml"
     secrets: inherit
 
   build_batch_mgis:
@@ -212,6 +214,8 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
       use_devtools: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/code_aster/mgis/recipe.yaml"
     secrets: inherit
 
   build_batch_code_aster:
@@ -228,6 +232,8 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       use_intel_fortran: True
       use_devtools: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/code_aster/code_aster/recipe.yaml"
     secrets: inherit
 
   test:
