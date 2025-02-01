@@ -10,10 +10,12 @@ from cpack.variant_str_builder import main as variant_str_builder_main
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent.parent.parent
 
+
 def yaml_str_from_dict(variant_dict: dict) -> str:
     return yaml.dump(variant_dict, default_flow_style=False)
 
-def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> list[dict] | None:
+
+def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str, platforms_short=list[str]) -> list[dict] | None:
     recipe_file = recipe_file.replace('__root__', ROOT_DIR.as_posix())
     recipe_fp = pathlib.Path(recipe_file).resolve().absolute()
     extra_args = []
@@ -21,8 +23,12 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> li
         extra_args = extra_config_in.split(' ')
     variant_builds = []
     for os_name in ["win-64", "linux-64", "osx-64"]:
-        result = subprocess.run(["rattler-build", "build", "-r", recipe_fp.as_posix(), *extra_args, "--render-only", "--target-platform",os_name],
-                                capture_output=True)
+        if os_name not in platforms_short:
+            continue
+        args = ["rattler-build", "build", "-r", recipe_fp.as_posix(), *extra_args, "--render-only", "--target-platform",
+                os_name]
+        print(' '.join(args))
+        result = subprocess.run(args, capture_output=True)
         if result.returncode != 0:
             print(result.stderr.decode())
             return None
@@ -40,15 +46,19 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str) -> li
         var_str = ';'.join([f"{key}={value}" for key, value in variant_dict.items()])
         var_bytes_str = convert_to_byte_str(var_str)
         yaml_bytes_str = yaml_to_base64(variant_dict)
-        variants_out.append({"key": key_str, "value": var_str, "os": target_platform, "build": build, "var_str": var_bytes_str, "yaml_str": yaml_bytes_str})
+        variants_out.append(
+            {"key": key_str, "value": var_str, "os": target_platform, "build": build, "var_str": var_bytes_str,
+             "yaml_str": yaml_bytes_str})
 
     return variants_out
+
 
 def yaml_to_base64(yaml_data: dict) -> str:
     yaml_str = yaml.dump(yaml_data, default_flow_style=False)
     yaml_bytes = yaml_str.encode("utf-8")  # Convert YAML string to bytes
     encoded_str = base64.b64encode(yaml_bytes).decode("utf-8")  # Encode and return string
     return encoded_str
+
 
 def get_variants_from_variant_in_str(variants: list[str]) -> list[dict]:
     variant_list_of_dicts = []
@@ -101,11 +111,12 @@ def create_actions_matrix(python_versions, platforms, variants_in, recipe_file=N
     if len(variants) > 0:
         matrix["variants"].extend(get_variants_from_variant_in_str(variants))
 
-    if recipe_file: # This should always replace the variants
+    if recipe_file:  # This should always replace the variants
         if 'meta.yaml' in recipe_file:
             result = get_conda_variants(recipe_file)
         elif "recipe.yaml" in recipe_file:
-            result = get_variant_matrix_for_rattler(recipe_file, extra_config)
+            platforms_short = [x["short"] for x in platforms_dicts]
+            result = get_variant_matrix_for_rattler(recipe_file, extra_config, platforms_short)
         else:
             raise ValueError(f"Unknown recipe file {recipe_file}")
 
@@ -114,6 +125,7 @@ def create_actions_matrix(python_versions, platforms, variants_in, recipe_file=N
             matrix["variants"] = create_list_product_from_matrix(matrix)
 
     return matrix
+
 
 def create_list_product_from_matrix(matrix: dict) -> list[dict]:
     final_outputs = []
@@ -124,6 +136,7 @@ def create_list_product_from_matrix(matrix: dict) -> list[dict]:
             final_outputs.append({**platform, **variant})
 
     return final_outputs
+
 
 def convert_to_byte_str(var_str: str) -> str:
     encoded_bytes = base64.b64encode(var_str.encode("utf-8"))
