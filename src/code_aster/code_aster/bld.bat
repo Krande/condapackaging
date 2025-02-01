@@ -2,6 +2,26 @@
 
 setlocal enabledelayedexpansion
 
+
+REM handling tars here is needed as long as rattler is unable to handle symbolic links in the tarball
+set tgz_file_name=%SRC_DIR%/code_aster_%PKG_VERSION%
+set tgz_file=%tgz_file_name%.tar.gz
+
+REM check if file exists "TFEL-%version%.tar.gz"
+if exist "%tgz_file%" (
+    echo "%tgz_file% exists"
+    REM use 7zip to extract the tarball
+    7z x "%tgz_file%" -aoa -o.
+    7z x "%tgz_file_name%.tar" -aoa -o.
+    REM move content to the root directory
+    xcopy /E /Y /Q "tfel-TFEL-%PKG_VERSION%" .
+    REM remove the extracted directory
+    rmdir /S /Q "tfel-TFEL-%PKG_VERSION%"
+    patch -p1 < "%RECIPE_DIR%\patches/support_llvm-flang.patch"
+) else (
+    echo "%tgz_file% does not exist"
+)
+
 echo "Setting compiler env vars"
 
 :: set FC=flang-new.exe
@@ -35,7 +55,7 @@ set LIBPATH_METIS=%LIB_PATH_ROOT%/lib
 set INCLUDES_METIS=%LIB_PATH_ROOT%/include
 
 set LIBPATH_MUMPS=%LIB_PATH_ROOT%/lib
-set "INCLUDES_MUMPS=%LIB_PATH_ROOT%/include %LIB_PATH_ROOT%/include/mumps_seq"
+set "INCLUDES_MUMPS=%LIB_PATH_ROOT%/include"
 
 set LIBPATH_SCOTCH=%LIB_PATH_ROOT%/lib
 set INCLUDES_SCOTCH=%LIB_PATH_ROOT%/include
@@ -56,15 +76,22 @@ set CXXFLAGS=%CXXFLAGS% /MD
 if "%FC%" == "ifx.exe" (
     echo "Using Intel Fortran LLVM IFX compiler"
     set FC_SEARCH=ifort
-    set FCFLAGS=%FCFLAGS% /fpp /MD /4I8 /4R8 /names:lowercase /assume:underscore /assume:nobscc /fpe:0
+    set FCFLAGS=%FCFLAGS% /fpp /MD /names:lowercase /assume:underscore /assume:nobscc /fpe:0
     :: Add lib paths
     set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
+
+    if "%int_type%" == "64" (
+        set FFLAGS=%FFLAGS% /4I8 /4R8
+    )
 ) else (
     echo "Using LLVM Flang Fortran compiler"
     set FC_SEARCH=flang
-    set FCFLAGS=%FCFLAGS% -cpp --dependent-lib=msvcrt -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8 -funderscoring
+    set FCFLAGS=%FCFLAGS% -cpp --dependent-lib=msvcrt -funderscoring
     :: Add lib paths
     set LDFLAGS=%LDFLAGS% -L %LIB_PATH_ROOT%/lib -L %LIB_PATH_ROOT%/bin -L %PREF_ROOT%/libs
+        if "%int_type%" == "64" (
+        set FFLAGS=%FFLAGS% -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+    )
 )
 if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
 

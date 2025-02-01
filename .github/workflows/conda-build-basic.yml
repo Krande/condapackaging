@@ -114,7 +114,7 @@ jobs:
 
   build_conda:
     needs: [ build_prep ]
-    name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.value }}
+    name: ${{ inputs.package_name }}-${{ matrix.platform.short }}-${{ matrix.pyver }}-${{ matrix.variants.build || matrix.variants.value }}
     if: ${{ needs.build_prep.outputs.should_run == 'true' }}
     runs-on: ${{ matrix.platform.os }}
     defaults:

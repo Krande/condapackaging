@@ -4,7 +4,8 @@ schema_version: 1
 context:
   name: mfront
   version: 4.2.2
-  build: 1
+  build_base: 0
+  build: ${{ (200 if build_type == 'release' else 0) + build_base|int }}
 
 package:
   name: ${{ name|lower }}
@@ -18,6 +19,7 @@ source:
 build:
   number: ${{ build }}
   skip: osx
+  string: py${{ python | replace('.', '') }}_${{ build_type }}_h${{ hash }}_${{ build }}
 
 requirements:
   build:

@@ -15,10 +15,26 @@ package:
 source:
   url: https://github.com/Krande/med-copy/archive/refs/tags/${{ version }}.tar.gz
   sha256: d22900603b69947553afe17416569edc41a95e69f989552e44c5143e4bb6025a
+#  sha256: fe1e80c836150ff27049b291fe2f9a11eda9ef9831311df9e39ba16a63c392a0
+#  patches:
+#    # Part of this patch is required to add a few system definitions which
+#    # should indicate that they are using the 1.10 API not the 1.6 API
+#    # https://github.com/HDFGroup/hdf5/issues/3797
+#    - patches/ignore-hdf5-bounds-check-cmake.patch
+#    - patches/ignore-hdf5-bounds-check-source.patch
+#    - patches/disable-fortran.patch  # [win]
+#    - patches/do_not_modify_windows_path.patch
+#    - patches/install-in-runtime-and_archive.patch
+#    # without this patch, OSX finds the system python since it is a newer version
+#    # I (hmaarrfk) am about 90% sure it is because SWIG + CMake 3.12 FindPython + OSX
+#    # has some bugs... so for OSX (and linux), we just fallback to the standard
+#    # build process
+#    - patches/cmake-modern-python.patch  # [win]
+#    - patches/do-not-make-symlinks-on-windows.patch
+#    - patches/link-privately.patch
 
 build:
   number: ${{ build }}
-  script: bld.bat
   string: py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
 
 requirements:

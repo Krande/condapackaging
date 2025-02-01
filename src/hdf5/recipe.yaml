@@ -22,7 +22,7 @@ build:
     - if: not win
       then: build.sh
   number: ${{ build }}
-  string: ${{ mpi_prefix }}_${{ build_type }}_h${{ PKG_HASH }}_${{ build }}
+  string: ${{ mpi_prefix }}_${{ build_type }}_h${{ hash }}_${{ build }}
 
 requirements:
   build:

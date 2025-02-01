@@ -29,13 +29,17 @@ set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3
 
 set INTSIZE_BOOL=OFF
 set MKL_VENDOR=MKL
-if %int_type% == 64 (
+
+if "%int_type%" == "64" (
     set CFLAGS=%CFLAGS% -DPORD_INTSIZE64
     set FCFLAGS=%FCFLAGS% -DPORD_INTSIZE64 /integer-size:64 /4I8
     set INTSIZE_BOOL=ON
     set MKL_VENDOR=MKL64
 )
-
+echo "Build type: %TGT_BUILD_TYPE%, int size: %int_type%, MKL vendor: %MKL_VENDOR%"
+echo "FFLAGS: %FFLAGS%"
+echo "CFLAGS: %CFLAGS%"
+echo "LDFLAGS: %LDFLAGS%"
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^

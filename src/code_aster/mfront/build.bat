@@ -6,13 +6,22 @@ echo Build MFRONT/TFEL
 
 set FC=flang-new
 set TGT_BUILD_TYPE=Release
-set tgz_file=%SRC_DIR%/mfront_%version%.tar.gz
+
+REM handling tars here is needed as long as rattler is unable to handle symbolic links in the tarball
+set tgz_file_name=%SRC_DIR%/mfront_%PKG_VERSION%
+set tgz_file=%tgz_file_name%.tar.gz
+
 REM check if file exists "TFEL-%version%.tar.gz"
 if exist "%tgz_file%" (
     echo "%tgz_file% exists"
-   REM use 7zip to extract the tarball
-   7z x "%tgz_file%" -o"%SRC_DIR%"
-   patch -p1 < "%RECIPE_DIR%\patches/support_llvm-flang.patch"
+    REM use 7zip to extract the tarball
+    7z x "%tgz_file%" -aoa -o.
+    7z x "%tgz_file_name%.tar" -aoa -o.
+    REM move content to the root directory
+    xcopy /E /Y /Q "tfel-TFEL-%PKG_VERSION%" .
+    REM remove the extracted directory
+    rmdir /S /Q "tfel-TFEL-%PKG_VERSION%"
+    patch -p1 < "%RECIPE_DIR%\patches/support_llvm-flang.patch"
 ) else (
     echo "%tgz_file% does not exist"
 )
@@ -24,6 +33,8 @@ if "%build_type%" == "debug" (
     set CFLAGS=%CFLAGS% /Od /Zi
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
+REM create new env var with removed . in PY_VER
+set PY_VER_CLEAN=%PY_VER:.=%
 
 cmake -B build . -G "Ninja" -Wno-dev ^
     %CMAKE_ARGS% ^
@@ -38,10 +49,10 @@ cmake -B build . -G "Ninja" -Wno-dev ^
     -D enable-aster=ON ^
     -D disable-website=ON ^
     -D enable-portable-build=ON ^
-    -D Python_ADDITIONAL_VERSIONS=%CONDA_PY% ^
+    -D Python_ADDITIONAL_VERSIONS=%PY_VER% ^
     -D enable-python=ON ^
     -D PYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
-    -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
+    -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%PY_VER_CLEAN%.lib ^
     -D PYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^
     -D TFEL_PYTHON_SITE_PACKAGES_DIR:PATH=%SP_DIR% ^
     -D USE_EXTERNAL_COMPILER_FLAGS=ON

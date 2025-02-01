@@ -20,11 +20,13 @@ if "%build_type%" == "debug" (
 )
 
 set MED_INT_IS_LONG=OFF
-if %int_type% == 64 (
+
+if "%int_type%" == "64" (
     set MED_INT_IS_LONG=ON
-    set FFLAGS=%FFLAGS% /integer-size:64 /4I8
 )
+
 echo "Building as BUILD_TYPE: %build_type%, INT_TYPE: %int_type%, MED_INT_IS_LONG: %MED_INT_IS_LONG%"
+echo "FFLAGS: %FFLAGS%"
 
 cmake -G "Ninja" .. ^
     -Wno-dev ^
@@ -35,7 +37,7 @@ cmake -G "Ninja" .. ^
     -D CMAKE_CXX_FLAGS="/bigobj /EHs" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PYTHON%" ^
     -D CONFIGURATION_ROOT_DIR="%SRC_DIR%/deps/config" ^
-    -D SALOME_CMAKE_DEBUG=ON ^
+    -D SALOME_CMAKE_DEBUG=OFF ^
     -D SALOME_USE_MPI=OFF ^
     -D MEDCOUPLING_BUILD_STATIC=OFF ^
     -D MEDCOUPLING_BUILD_TESTS=OFF ^
