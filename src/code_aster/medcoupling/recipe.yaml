@@ -15,10 +15,12 @@ package:
 source:
   - url: https://github.com/SalomePlatform/medcoupling/archive/refs/tags/V${{ version | replace('.', '_') }}.tar.gz
     sha256: 54d010df0d8a66c7cf7b39a40e28aac16bc0bc20faf97c5190d0a2df4941e15e
+#    sha256: b668b9b2883b456e3edf6f9f1ef3749f8c8cc5279ae212c388e53f69eed66db7
     patches:
       - patches/add_a_python_no_debug_conditional.patch
   - url: https://github.com/SalomePlatform/configuration/archive/refs/tags/V${{ version | replace('.', '_') }}.tar.gz
     sha256: b0bb296536cefb3b5e063a57fab8b66b510ff76d766fbd462ee10dedac3c4872
+#    sha256: 81841371edfcf03a5099900f4205a37c56bfd9390f88dd9024e966bfb2e20f86
     target_directory: deps/config
 
 build:

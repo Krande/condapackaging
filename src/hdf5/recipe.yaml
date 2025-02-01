@@ -53,7 +53,7 @@ requirements:
 tests:
   - files:
       recipe:
-        - test
+        - test/
         - run_test.sh
         - run_test.bat
     requirements:
@@ -61,13 +61,11 @@ tests:
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
         - if: not win
-          then: ${{ compiler('fortran') }}
-        - if: not win
-          then: pkg-config
-        - if: not win
-          then: cmake
-        - if: not win
-          then: make
+          then:
+            - ${{ compiler('fortran') }}
+            - pkg-config
+            - cmake
+            - make
         - zlib
     script:
       - if: not win
