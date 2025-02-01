@@ -133,3 +133,6 @@ tbb_devel:
 
 swig:
   - 4.2.1
+
+intel_fortran_rt:
+  - '2025'
