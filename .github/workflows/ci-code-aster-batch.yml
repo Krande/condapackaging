@@ -78,7 +78,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, use_intel_fortran: True, build_env: "boa", recipe_file: "", variants: "int_type=32;build_type=debug,int_type=32;build_type=release" },
+          { name: scotch, use_intel_fortran: True, build_env: "rattler", recipe_file: "__root__/src/code_aster/scotch/recipe.yaml", variants: "" },
           { name: metis, use_intel_fortran: False, build_env: "rattler", recipe_file: "__root__/src/code_aster/metis/recipe.yaml", variants: "" },
           { name: homard, use_intel_fortran: False, build_env: "boa", recipe_file: "", variants: "" },
           { name: hdf5, use_intel_fortran: True, build_env: "rattler", recipe_file: "__root__/src/hdf5/recipe.yaml", variants: "" }
