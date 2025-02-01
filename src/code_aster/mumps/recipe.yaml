@@ -54,22 +54,18 @@ requirements:
 
 tests:
   - script:
-      - if: linux
-        then: test -f $PREFIX/lib/libcmumps.so
-      - if: linux
-        then: test -f $PREFIX/lib/libdmumps.so
-      - if: linux
-        then: test -f $PREFIX/lib/libmumps_common.so
-      - if: linux
-        then: test -f $PREFIX/lib/libpord.so
-      - if: linux
-        then: test -f $PREFIX/lib/libsmumps.so
-      - if: linux
-        then: test -f $PREFIX/lib/libzmumps.so
-      - if: win
-        then: test_files_exists.bat
-      - if: win
-        then: test -f %LIBRARY_PREFIX%/include/cmumps_c.h
+    - if: linux
+      then:
+        - test -f $PREFIX/lib/libcmumps.so
+        - test -f $PREFIX/lib/libdmumps.so
+        - test -f $PREFIX/lib/libmumps_common.so
+        - test -f $PREFIX/lib/libpord.so
+        - test -f $PREFIX/lib/libsmumps.so
+        - test -f $PREFIX/lib/libzmumps.so
+    - if: win
+      then:
+        - test_files_exists.bat
+        - test -f %LIBRARY_PREFIX%/include/cmumps_c.h
     files:
       recipe:
         - test_files_exists.bat

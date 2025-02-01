@@ -3,7 +3,7 @@ schema_version: 1
 
 context:
   name: mfront
-  version: 4.2.1
+  version: 4.2.2
   build: 1
 
 package:
@@ -12,7 +12,8 @@ package:
 
 source:
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-${{ version }}.tar.gz
-  sha256: 14f27257014a992a4e511f35390e4b9a086f6a5ed74087f891f8c00306f1758f
+  sha256: 021864ad5b27ffce1915bcacc8f39f3e8a72ce6bd32e80a61ea0998a060180e5
+  file_name: ${{ name }}_${{ version }}.tar.gz
 
 build:
   number: ${{ build }}
@@ -32,6 +33,7 @@ requirements:
         - lld
         - ninja
         - 7zip
+        - m2-patch
     - if: linux
       then: libgomp
     - if: osx
@@ -50,7 +52,7 @@ requirements:
         - libstdcxx-ng
         - libgcc-ng
   run_exports:
-    - ${{ name }}
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
 
 tests:
   - python:
@@ -61,25 +63,20 @@ tests:
       pip_check: false
   - script:
       - tfel-config --version
-      - if: linux
-        then: tfel-doc --version
-      - if: linux
-        then: tfel-check --version
       - mtest --version
       - mfront --list-stress-criteria
       - mfront-doc --version
       - mfront-query --version
       - mfm --version
       - if: linux
-        then: test -f $PREFIX/lib/libTFELConfig.so
-      - if: linux
-        then: test -f $PREFIX/lib/libTFELUnicodeSupport.so
-      - if: linux
-        then: test -f $PREFIX/lib/libTFELGlossary.so
-      - if: linux
-        then: test -f $PREFIX/lib/libTFELException.so
-      - if: linux
-        then: test -f $PREFIX/lib/libTFELUtilities.so
+        then:
+          - tfel-doc --version
+          - tfel-check --version
+          - test -f $PREFIX/lib/libTFELConfig.so
+          - test -f $PREFIX/lib/libTFELUnicodeSupport.so
+          - test -f $PREFIX/lib/libTFELGlossary.so
+          - test -f $PREFIX/lib/libTFELException.so
+          - test -f $PREFIX/lib/libTFELUtilities.so
 
 about:
   license: GPL-3.0-only

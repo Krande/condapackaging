@@ -6,14 +6,15 @@ echo Build MFRONT/TFEL
 
 set FC=flang-new
 set TGT_BUILD_TYPE=Release
-
+set tgz_file=%SRC_DIR%/mfront_%version%.tar.gz
 REM check if file exists "TFEL-%version%.tar.gz"
-if exist "%SRC_DIR%\TFEL-%version%.tar.gz" (
-    echo "TFEL-%version%.tar.gz exists"
+if exist "%tgz_file%" (
+    echo "%tgz_file% exists"
    REM use 7zip to extract the tarball
-   7z x "%SRC_DIR%\TFEL-%version%.tar.gz" -o"%SRC_DIR%"
+   7z x "%tgz_file%" -o"%SRC_DIR%"
+   patch -p1 < "%RECIPE_DIR%\patches/support_llvm-flang.patch"
 ) else (
-    echo "TFEL-%version%.tar.gz does not exist"
+    echo "%tgz_file% does not exist"
 )
 
 set "CXXFLAGS=%CXXFLAGS% -Wno-error=missing-template-arg-list-after-template-kw"
