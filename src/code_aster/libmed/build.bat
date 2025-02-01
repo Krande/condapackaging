@@ -32,11 +32,12 @@ xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
 set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
 
-set MED_INT_TYPE="int"
+set MED_INT_TYPE=int
 if "%int_type%" == "64" (
     set FFLAGS=%FFLAGS% /real-size:64 /integer-size:64
-    set MED_INT_TYPE="long long"
+    set MED_INT_TYPE=long long
 )
+
 echo "Build type: %TGT_BUILD_TYPE%, int size: %int_type%"
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"

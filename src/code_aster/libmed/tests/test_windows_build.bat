@@ -1,4 +1,7 @@
 @echo off
+
+setlocal enabledelayedexpansion
+
 SET DLL_PATH="%LIBRARY_PREFIX%\bin\medfwrap.dll"
 if "%LIBRARY_PREFIX%"=="" (
     echo Error: LIBRARY_PREFIX is not set.
@@ -8,9 +11,12 @@ if "%LIBRARY_PREFIX%"=="" (
 SET SYMBOL=MSEIPW
 
 dumpbin /EXPORTS %DLL_PATH% | findstr %SYMBOL%
+
 IF ERRORLEVEL 1 (
     echo Error: Symbol %SYMBOL% not found in %DLL_PATH%.
     exit /b 1
 ) ELSE (
     echo Success: Symbol %SYMBOL% found in %DLL_PATH%.
 )
+
+endlocal
