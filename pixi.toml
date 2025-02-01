@@ -57,7 +57,7 @@ topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-co
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 # Code Aster
-scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml", "--experimental"] }
 mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 libmed = { cmd = ["rattler-build", "build", "-r","src/code_aster/libmed/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 medcoupling = { cmd = ["rattler-build", "build", "-r","src/code_aster/medcoupling/recipe.yaml", "-m", "src/common_rattler.yaml"] }
