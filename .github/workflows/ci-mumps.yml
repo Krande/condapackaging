@@ -14,5 +14,9 @@ jobs:
     with:
       package_name: mumps
       platforms: "windows-latest"
-      use_intel_fortran: 'True'
+      conda_channel: "test"
+      use_intel_fortran: True
+      use_devtools: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/code_aster/mumps/recipe.yaml"
     secrets: inherit
