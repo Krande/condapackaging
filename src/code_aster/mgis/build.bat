@@ -16,6 +16,8 @@ if "%build_type%" == "debug" (
     set CFLAGS=%CFLAGS%/Od /debug:full /Zi
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
+REM create new env var with removed . in PY_VER
+set PY_VER_CLEAN=%PY_VER:.=%
 
 cmake -B build . -G "Ninja" ^
     -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
@@ -28,10 +30,10 @@ cmake -B build . -G "Ninja" ^
     -D enable-julia-bindings=OFF ^
     -D enable-website=OFF ^
     -D enable-broken-boost-python-module-visibility-handling=ON ^
-    -D PYTHONLIBS_VERSION_STRING="%CONDA_PY%" ^
+    -D PYTHONLIBS_VERSION_STRING="%PY_VER_CLEAN%" ^
     -D Python_ADDITIONAL_VERSIONS="%python_version%" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PREFIX%/python.exe" ^
-    -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%CONDA_PY%.lib ^
+    -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%PY_VER_CLEAN%.lib ^
     -D PYTHON_LIBRARY_PATH:PATH="%PREFIX%/libs" ^
     -D PYTHON_INCLUDE_DIRS:PATH="%PREFIX%/include" ^
     -D USE_EXTERNAL_COMPILER_FLAGS=ON ^

@@ -13,7 +13,7 @@ package:
 
 source:
   - url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-${{ version }}.tar.gz
-    file_name: ${{ name }}_${{ version }}.tar.gz
+    sha256: b3776d7b3a534ca626525a42b97665f7660ae2b28ea57b3f53fd7e8538da1ceb
     patches:
       - patches/relocate_sp_dir.patch
 
@@ -47,9 +47,6 @@ requirements:
     - ${{ pin_compatible('numpy') }}
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
-  ignore_run_exports:
-    - if: win
-      then: llvm-openmp
 
 about:
   license: Apache-2.0

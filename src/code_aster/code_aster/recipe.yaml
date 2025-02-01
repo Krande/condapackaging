@@ -2,8 +2,9 @@ schema_version: 1
 
 context:
   name: code-aster
-  version: 17.1.12
+  source_version: 17.1.12
   win_build: 1
+  version: ${{ source_version + "." + win_build }}
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
@@ -14,7 +15,7 @@ package:
   version: ${{ version }}
 
 source:
-  - url: https://gitlab.com/krande/src/-/archive/${{ version }}.${{ win_build }}/src-${{ version }}.${{ win_build }}.tar.gz
+  - url: https://gitlab.com/krande/src/-/archive/${{ version }}/src-${{ version }}.tar.gz
     sha256: b110bf8c06a036bbb9d7871bcaf8ad1be27b5846706b4a5c154231add3d1aa41
     file_name: ${{ name }}_${{ version }}.tar.gz
 
@@ -22,7 +23,7 @@ build:
   number: ${{ build }}
   script:
     file: bld.bat
-  string: py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_h${{ hash }}_${{ build }}
+  string: py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
   prefix_detection:
     ignore_binary_files: true
 

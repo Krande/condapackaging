@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 
 
 REM handling tars here is needed as long as rattler is unable to handle symbolic links in the tarball
-set tgz_file_name=%SRC_DIR%/code_aster_%PKG_VERSION%
+set tgz_file_name=%SRC_DIR%/code-aster_%PKG_VERSION%
 set tgz_file=%tgz_file_name%.tar.gz
 
 REM check if file exists "TFEL-%version%.tar.gz"
@@ -14,10 +14,9 @@ if exist "%tgz_file%" (
     7z x "%tgz_file%" -aoa -o.
     7z x "%tgz_file_name%.tar" -aoa -o.
     REM move content to the root directory
-    xcopy /E /Y /Q "tfel-TFEL-%PKG_VERSION%" .
+    xcopy /E /Y /Q "src-%PKG_VERSION%" .
     REM remove the extracted directory
-    rmdir /S /Q "tfel-TFEL-%PKG_VERSION%"
-    patch -p1 < "%RECIPE_DIR%\patches/support_llvm-flang.patch"
+    rmdir /S /Q "src-%PKG_VERSION%"
 ) else (
     echo "%tgz_file% does not exist"
 )
@@ -127,9 +126,9 @@ set INCLUDES_BIBC=%PREF_ROOT%/include %SRC_DIR%/bibfor/include %INCLUDES_BIBC%
 
 set DEFINES=H5_BUILT_AS_DYNAMIC_LIB _CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS WIN32_LEAN_AND_MEAN
 
-python conda\scripts\update_version.py
+python "%SRC_DIR%\conda\scripts\update_version.py"
 
-python %RECIPE_DIR%\config\set_env_var.py %SRC_DIR%
+python "%RECIPE_DIR%\config\set_env_var.py" "%SRC_DIR%"
 
 REM Install for standard sequential
 waf configure ^

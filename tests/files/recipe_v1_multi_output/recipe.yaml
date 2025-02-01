@@ -1,0 +1,250 @@
+schema_version: 1
+
+context:
+  name: scotch
+  version: 7.0.4
+  build_base: 0
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
+  mpi_prefix: ${{ mpi or 'nompi' }}
+
+recipe:
+  name: ${{ name }}-pkgs
+  version: ${{ version }}
+
+cache:
+  source:
+    url: https://gitlab.inria.fr/scotch/scotch/-/archive/v${{ version }}/scotch-v${{ version }}.tar.gz
+    sha256: 8ef4719d6a3356e9c4ca7fefd7e2ac40deb69779a5c116f44da75d13b3d2c2c3
+    patches:
+      - patches/0001-Remove-unconditional-testing.patch
+      - patches/0002-add-COMPONENT-labels-for-easier-split-installation.patch
+      - patches/0003-put-metis-headers-in-include-scotch.patch
+      - patches/0004-fix-language-requirement.patch
+      - patches/0005-use-external-dummysizes.patch
+      - patches/0006-fix-ptesmumps.h.patch
+      - patches/0007-fix-empty-union.patch
+      - patches/0008-win-fix-ssize_t.patch
+      - if: win
+        then: patches/0009-win-fix-context.c.patch
+      - patches/0010-win-fix-flex.patch
+      - patches/0011-win-do-not-link-m.patch
+      - patches/0012-win-fix-threads.patch
+      - patches/0013-win-fix-graph-match-scan.patch
+      - patches/0014-win-disable-fortran-test.patch
+      - patches/0015-win-fix-unistd-time-include.patch
+  requirements:
+    build:
+      - ${{ compiler('c') }}
+      - ${{ stdlib("c") }}
+      - cmake
+      - if: not win
+        then: ${{ compiler('fortran') }}
+      - if: win
+        then:
+          - clang
+          - ninja
+          - winflexbison
+      - if: unix
+        then:
+          - make
+          - bison <3.8
+          - flex
+      - if: "mpi != 'nompi'"
+        then: ${{ mpi }}
+    host:
+      - zlib
+      - bzip2
+      - xz
+      - if: "mpi != 'nompi'"
+        then: ${{ mpi }}
+      - if: win
+        then: pthreads-win32
+    run:
+      - zlib
+      - if: win
+        then: pthreads-win32
+    run_exports:
+      - ${{ pin_subpackage('libscotch', upper_bound='x.x.x') }}
+  build:
+    script:
+      - if: unix
+        then: build-scotch.sh
+      - if: win
+        then: bld-scotch.bat
+build:
+  number: ${{ build }}
+
+outputs:
+  - package:
+      name: libscotch
+    build:
+      string: aster_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
+      script:
+        - if: unix
+          then: build-scotch.sh
+        - if: win
+          then: bld-scotch.bat
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib("c") }}
+        - cmake
+        - if: not win
+          then: ${{ compiler('fortran') }}
+        - if: win
+          then:
+            - clang
+            - ninja
+            - winflexbison
+        - if: unix
+          then:
+            - make
+            - bison <3.8
+            - flex
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+      host:
+        - zlib
+        - bzip2
+        - xz
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+        - if: win
+          then: pthreads-win32
+      run:
+        - zlib
+        - if: win
+          then: pthreads-win32
+      run_exports:
+        - ${{ pin_subpackage('libscotch', upper_bound='x.x.x') }}
+    tests:
+      - script:
+          - if: win
+            then: run_test_libscotch.bat
+          - if: unix
+            then: run_test_libscotch.sh
+        requirements:
+            run:
+              - ${{ compiler('c') }}
+        files:
+          recipe:
+            - run_test_libscotch.bat
+            - run_test_libscotch.sh
+
+  - package:
+      name: libptscotch
+    build:
+      string: aster_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
+      skip: "mpi == 'nompi'"
+      script:
+        - cmake --install ./build --component=libptscotch
+    requirements:
+      build:
+        - cmake
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+      host:
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+      run:
+        - ${{ pin_subpackage("libscotch", exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage('libptscotch', upper_bound='x.x.x') }}
+    about:
+      summary: PT-SCOTCH - (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package
+    tests:
+      - script:
+          - if: win
+            then: run_test_ptlibscotch.bat
+          - if: unix
+            then: run_test_ptlibscotch.sh
+        requirements:
+            run:
+              - ${{ compiler('c') }}
+        files:
+          recipe:
+            - run_test_ptlibscotch.bat
+            - run_test_ptlibscotch.sh
+  - package:
+      name: scotch
+    build:
+      string: aster_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
+      script: cmake --install ./build --component=scotch
+    requirements:
+      build:
+        - cmake
+      host:
+        # This is needed to get the correct package hash
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+      run:
+        - ${{ pin_subpackage('libscotch', exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage('scotch', upper_bound='x.x.x') }}
+      ignore_run_exports:
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+    tests:
+      - script:
+          - if: unix
+            then: "test -f \"${PREFIX}/bin/gord\""
+          - if: win
+            then: if exist %PREFIX%\\Library\\bin\\gord.exe (exit 0) else (exit 1)
+          - if: unix
+            then: "test ! -f \"${PREFIX}/bin/dgord\""
+          - if: win
+            then: if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 1) else (exit 0)
+  - package:
+      name: ptscotch
+    build:
+      string: aster_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ PKG_HASH }}_${{ build }}
+      skip: "mpi == 'nompi'"
+      script: cmake --install ./build --component=ptscotch
+    requirements:
+      build:
+        - cmake
+      host:
+        # This is needed to get the correct package hash
+        - if: "mpi != 'nompi'"
+          then: ${{ mpi }}
+      run:
+        - ${{ pin_subpackage('libptscotch', exact=True) }}
+        - ${{ pin_subpackage('scotch', exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage('ptscotch', upper_bound='x.x.x') }}
+    tests:
+      - script:
+          - if: unix
+            then: "test -f \"${PREFIX}/bin/gord\""
+          - if: win
+            then: if exist %PREFIX%\\Library\\bin\\gord.exe (exit 0) else (exit 1)
+          - if: unix
+            then: "test -f \"${PREFIX}/bin/dgord\""
+          - if: win
+            then: if exist %PREFIX%\\Library\\bin\\dgord.exe (exit 0) else (exit 1)
+    about:
+      summary: PT-SCOTCH - (Parallel) Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package
+
+about:
+  license: CECILL-C
+  license_file: doc/CeCILL-C_V1-en.txt
+  summary: SCOTCH - Static Mapping, Graph, Mesh and Hypergraph Partitioning, and Parallel and Sequential Sparse Matrix Ordering Package
+  description: |
+    Software package and libraries for sequential and parallel
+    graph partitioning, static mapping and clustering, sequential
+    mesh and hypergraph partitioning, and sequential and parallel
+    sparse matrix block ordering.
+  homepage: https://www.labri.fr/perso/pelegrin/scotch/
+  repository: https://gitlab.inria.fr/scotch/scotch
+  documentation: http://gforge.inria.fr/docman/?group_id=248&dirid=326
+
+extra:
+  recipe-maintainers:
+    - basnijholt
+    - dalcinl
+    - minrk
+    - davidbrochart
+    - SylvainCorlay
+    - Tobias-Fischer
+    - matthiasdiener

@@ -38,9 +38,15 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str, platf
         variant_builds.extend(json_matrix)
 
     variants_out = []
+    builds = []
     for variant_build in variant_builds:
         variant_dict = variant_build["build_configuration"]['variant']
         build = variant_build["recipe"]['build']["string"]
+        sub_packages = variant_build["build_configuration"]['subpackages']
+        package_name = variant_build["recipe"]['package']['name']
+        if len(sub_packages) > 1:
+            # it's a subpackage, skip. We only want the main package (subpackages are automatically built)
+            continue
         target_platform = variant_dict.pop("target_platform")
         key_str = ','.join(variant_dict.keys())
         var_str = ';'.join([f"{key}={value}" for key, value in variant_dict.items()])
