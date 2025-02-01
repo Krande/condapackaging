@@ -30,13 +30,13 @@ requirements:
     - ${{ compiler('fortran') }}
     - cmake >=3.26.4
     - if: win
-      then: ninja
-    - if: win
-      then: clang
+      then:
+        - ninja
+        - clang
     - if: not win
-      then: make
-    - if: not win
-      then: autoconf
+      then:
+        - make
+        - autoconf
   host:
     - python
     - numpy
@@ -46,7 +46,7 @@ requirements:
     - python
     - ${{ pin_compatible('numpy') }}
   run_exports:
-    - ${{ pin_subpackage(name, 'x.x') }}
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
   ignore_run_exports:
     - if: win
       then: llvm-openmp

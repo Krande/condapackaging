@@ -72,27 +72,25 @@ tests:
       imports:
         - med
       pip_check: false
-  - files:
+  - script:
+      file: run_win_test.bat
+      env:
+        INT_TYPE: ${{ int_type }}
+    files:
       recipe:
-        - if: win
-          then:
-            - tests/
-            - run_win_test.bat
+        - tests/
+        - run_win_test.bat
     requirements:
       run:
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
         - python
-    script:
+  - script:
       - if: unix
         then: test -f ${PREFIX}/lib/libmed${SHLIB_EXT}
       - if: linux
         then: nm ${PREFIX}/lib/libmedC.so | grep MEDlibraryNumVersion
-      - if: win
-        then:
-          file: run_win_test.bat
-          env:
-            INT_TYPE: ${{ int_type }}
+
 
 about:
   license: LGPL-3.0-only
