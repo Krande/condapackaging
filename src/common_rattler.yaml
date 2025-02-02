@@ -122,15 +122,6 @@ fontconfig:
 freetype:
   - 2
 
-vtk:
-  - 9.3.0
-
-tbb:
-  - 2021
-
-tbb_devel:
-  - 2021
-
 swig:
   - 4.2.1
 
