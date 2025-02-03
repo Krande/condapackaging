@@ -2,6 +2,9 @@
 
 setlocal enabledelayedexpansion
 
+call activate_ifx.bat
+if errorlevel 1  exit 1
+
 echo "Running test_med_int"
 echo "CONDA_PREFIX: %CONDA_PREFIX%"
 REM Set paths based on CONDA_PREFIX environment variable.
