@@ -53,22 +53,30 @@ requirements:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
 
 tests:
-  - script:
-      - if: linux
-        then:
+  - if: win
+    then:
+      - script:
+          file: run_win_test.bat
+          env:
+            INT_TYPE: ${{ int_type }}
+        files:
+          recipe:
+            - activate_ifx.bat
+            - run_win_test.bat
+            - tests/
+        requirements:
+          run:
+            - ${{ compiler('fortran') }}
+            - python
+  - if: linux
+    then:
+      - script:
           - test -f $PREFIX/lib/libcmumps.so
           - test -f $PREFIX/lib/libdmumps.so
           - test -f $PREFIX/lib/libmumps_common.so
           - test -f $PREFIX/lib/libpord.so
           - test -f $PREFIX/lib/libsmumps.so
           - test -f $PREFIX/lib/libzmumps.so
-      - if: win
-        then:
-          - test_files_exists.bat
-          - test -f %LIBRARY_PREFIX%/include/cmumps_c.h
-    files:
-      recipe:
-        - test_files_exists.bat
 
 about:
   license: CECILL-C

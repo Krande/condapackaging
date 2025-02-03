@@ -15,6 +15,15 @@ for %%f in (%files%) do (
     )
 )
 
+set header_files=cmumps_c.h
+
+for %%f in (%header_files%) do (
+    if not exist "%LIBRARY_PREFIX%\include\%%f" (
+        echo File not found: %LIBRARY_PREFIX%\include\%%f
+        set "missing_files=1"
+    )
+)
+
 if defined missing_files (
     echo One or more files are missing.
     exit /b 1
