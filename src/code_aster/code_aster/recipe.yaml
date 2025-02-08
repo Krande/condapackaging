@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: code-aster
-  source_version: 17.1.12
+  source_version: 17.2.7
   win_build: 1
   version: ${{ source_version + "." + win_build }}
   build_base: 0
@@ -16,7 +16,7 @@ package:
 
 source:
   - url: https://gitlab.com/krande/src/-/archive/${{ version }}/src-${{ version }}.tar.gz
-    sha256: b110bf8c06a036bbb9d7871bcaf8ad1be27b5846706b4a5c154231add3d1aa41
+    sha256: fbcc62bcf08dd78c7f9dbde73f779e693c1900f32bad388ed90762105b144a16
     file_name: ${{ name }}_${{ version }}.tar.gz
 
 build:
