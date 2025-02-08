@@ -6,23 +6,7 @@ import re
 
 print("Running test python file for mumps.")
 
-def main():
-    print("Running test batch file for mumps.")
-
-    parser = argparse.ArgumentParser(description="Run the test batch.")
-    parser.add_argument("--int-type", type=str, default="med_int", help="The integer type to test.")
-    args = parser.parse_args()
-
-    size_map = {
-        "64": "8",
-        "32": "4",
-    }
-    int_size = size_map[args.int_type]
-
-    # Get the absolute path of this script's directory.
-    this_dir = pathlib.Path(__file__).parent.absolute()
-    test_bat = this_dir / "test_int/run_test.bat"
-
+def run_test(test_bat, int_size):
     if not test_bat.exists():
         print(f"Error: Test batch file not found at {test_bat}", file=sys.stderr)
         sys.exit(1)
@@ -46,6 +30,28 @@ def main():
         sys.exit(1)
 
     print(f"Test result '{test_result}' matches expected value.")
+
+
+def main():
+    print("Running test batch file for mumps.")
+
+    parser = argparse.ArgumentParser(description="Run the test batch.")
+    parser.add_argument("--int-type", type=str, default="med_int", help="The integer type to test.")
+    args = parser.parse_args()
+
+    size_map = {
+        "64": "8",
+        "32": "4",
+    }
+
+    int_size = size_map[args.int_type]
+
+    #int_size = "4"  # Force 4-byte integers for now.
+    # Get the absolute path of this script's directory.
+    this_dir = pathlib.Path(__file__).parent.absolute()
+    test_bat = this_dir / "test_int/run_test.bat"
+
+    run_test(test_bat, int_size)
 
 
 if __name__ == "__main__":

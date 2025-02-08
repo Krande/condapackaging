@@ -13,7 +13,7 @@ set LIB_DIR=%CONDA_PREFIX%\Library\lib
 set this_dir=%~dp0
 
 REM Compile test.f90 using cl with include and library directories.
-ifx.exe /fpp /nologo /I"%INCLUDE_DIR%" /I"%LIB_DIR%" /o %~dp0test_med_int.exe %~dp0test.f90
+ifx.exe /fpp /nologo /I"%INCLUDE_DIR%" /I"%LIB_DIR%" /4I8 /o %~dp0test_med_int.exe %~dp0test.f90
 REM flang-new.exe -cpp -fuse-ld=lld -I%INCLUDE_DIR% -L%LIB_DIR% -o %~dp0test_med_int.exe %~dp0test.f90
 if errorlevel 1 (
     echo Compilation failed.

@@ -65,8 +65,8 @@ medcoupling = { cmd = ["rattler-build", "build", "-r","src/code_aster/medcouplin
 metis = { cmd = ["rattler-build", "build", "-r","src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-
-code-aster-all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
+# "scotch", "metis", "mumps",
+code-aster-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 
 # Cadquery
 ocp = { cmd = ["rattler-build", "build", "-r","src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }

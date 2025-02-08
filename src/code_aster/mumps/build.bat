@@ -69,4 +69,10 @@ cmake --build . --config %TGT_BUILD_TYPE% --target install
 
 if errorlevel 1 exit 1
 
+if "%int_type%" == "32" (
+    python %RECIPE_DIR%/make_integers_explicit.py
+)
+
+if errorlevel 1 exit 1
+
 endlocal
