@@ -81,6 +81,8 @@ if "%FC%" == "ifx.exe" (
 
     if "%int_type%" == "64" (
         set FFLAGS=%FFLAGS% /4I8 /4R8
+    ) else (
+        set FFLAGS=%FFLAGS% /4I8 /4R8
     )
 ) else (
     echo "Using LLVM Flang Fortran compiler"
@@ -88,8 +90,10 @@ if "%FC%" == "ifx.exe" (
     set FCFLAGS=%FCFLAGS% -cpp --dependent-lib=msvcrt -funderscoring
     :: Add lib paths
     set LDFLAGS=%LDFLAGS% -L %LIB_PATH_ROOT%/lib -L %LIB_PATH_ROOT%/bin -L %PREF_ROOT%/libs
-        if "%int_type%" == "64" (
-        set FFLAGS=%FFLAGS% -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+    if "%int_type%" == "64" (
+            set FFLAGS=%FFLAGS% -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+    )   else (
+            set FFLAGS=%FFLAGS% -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
     )
 )
 if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
@@ -126,8 +130,10 @@ set INCLUDES_BIBC=%PREF_ROOT%/include %SRC_DIR%/bibfor/include %INCLUDES_BIBC%
 
 set DEFINES=H5_BUILT_AS_DYNAMIC_LIB _CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS WIN32_LEAN_AND_MEAN
 
-python "%SRC_DIR%\conda\scripts\update_version.py"
+echo "Setting version"
+python "%RECIPE_DIR%/config/update_version.py"
 
+echo "Setting environment variables"
 python "%RECIPE_DIR%\config\set_env_var.py" "%SRC_DIR%"
 
 REM Install for standard sequential
@@ -158,9 +164,9 @@ if errorlevel 1 (
 )
 
 if "%build_type%" == "debug" (
-    waf install_debug -v
+    waf install_debug
 ) else (
-    waf install -v
+    waf install
 )
 
 if errorlevel 1 exit 1
