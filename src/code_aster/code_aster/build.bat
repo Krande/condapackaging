@@ -153,9 +153,9 @@ if errorlevel 1 (
 )
 
 if "%build_type%" == "debug" (
-    waf install_debug -v
+    waf install_debug
 ) else (
-    waf install -v
+    waf install
 )
 
 if errorlevel 1 exit 1
