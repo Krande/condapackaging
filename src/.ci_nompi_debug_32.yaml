@@ -1,0 +1,8 @@
+mpi:
+  - nompi
+
+build_type:
+  - debug
+
+int_type:
+  - 32

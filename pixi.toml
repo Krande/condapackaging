@@ -65,6 +65,8 @@ medcoupling = { cmd = ["rattler-build", "build", "-r","src/code_aster/medcouplin
 metis = { cmd = ["rattler-build", "build", "-r","src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+code_aster32d = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml',"-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
+
 # "scotch", "metis", "mumps",
 code-aster-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
 

@@ -75,26 +75,15 @@ set CXXFLAGS=%CXXFLAGS% /MD
 if "%FC%" == "ifx.exe" (
     echo "Using Intel Fortran LLVM IFX compiler"
     set FC_SEARCH=ifort
-    set FCFLAGS=%FCFLAGS% /fpp /MD /names:lowercase /assume:underscore /assume:nobscc /fpe:0
+    set FCFLAGS=%FCFLAGS% /fpp /4R8 /MD /names:lowercase /assume:underscore /assume:nobscc /fpe:0 /4I8
     :: Add lib paths
     set LDFLAGS=%LDFLAGS% /LIBPATH:%LIB_PATH_ROOT%/lib /LIBPATH:%LIB_PATH_ROOT%/bin /LIBPATH:%PREF_ROOT%/libs
-
-    if "%int_type%" == "64" (
-        set FFLAGS=%FFLAGS% /4I8 /4R8
-    ) else (
-        set FFLAGS=%FFLAGS% /4I8 /4R8
-    )
 ) else (
     echo "Using LLVM Flang Fortran compiler"
     set FC_SEARCH=flang
-    set FCFLAGS=%FCFLAGS% -cpp --dependent-lib=msvcrt -funderscoring
+    set FFLAGS=%FFLAGS% -cpp --dependent-lib=msvcrt -funderscoring -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
     :: Add lib paths
     set LDFLAGS=%LDFLAGS% -L %LIB_PATH_ROOT%/lib -L %LIB_PATH_ROOT%/bin -L %PREF_ROOT%/libs
-    if "%int_type%" == "64" (
-            set FFLAGS=%FFLAGS% -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
-    )   else (
-            set FFLAGS=%FFLAGS% -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
-    )
 )
 if %CC% == "cl.exe" set CFLAGS=%CFLAGS% /sourceDependencies %OUTPUT_DIR%
 
@@ -164,9 +153,9 @@ if errorlevel 1 (
 )
 
 if "%build_type%" == "debug" (
-    waf install_debug
+    waf install_debug -v
 ) else (
-    waf install
+    waf install -v
 )
 
 if errorlevel 1 exit 1

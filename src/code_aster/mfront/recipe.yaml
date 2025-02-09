@@ -47,8 +47,6 @@ requirements:
       then: zlib
   run:
     - python
-    - if: win
-      then: intel-openmp
     - if: linux
       then:
         - libstdcxx-ng
