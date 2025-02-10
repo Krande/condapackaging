@@ -61,6 +61,6 @@ cmake -G "Ninja" ^
 
 if errorlevel 1 exit 1
 
-ninja install -j 2
+ninja install -j%NUMBER_OF_PROCESSORS%
 
 if errorlevel 1 exit 1

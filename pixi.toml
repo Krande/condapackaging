@@ -76,6 +76,9 @@ cadquery = { cmd = ["rattler-build", "build", "-r","src/cadquery/cadquery/recipe
 ipopt = { cmd = ["rattler-build", "build", "-r","src/cadquery/ipopt/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
 casadi = { cmd = ["rattler-build", "build", "-r","src/cadquery/casadi/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml",  "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
 
+# Adapy deps
+ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+
 
 [feature.boa.tasks]
 

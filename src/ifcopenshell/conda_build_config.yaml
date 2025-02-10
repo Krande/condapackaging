@@ -1,10 +1,6 @@
 occt_version:
   - 7.8.1
 
-pin_run_as_build:
-  occt: x.x.x
-  cgal-cpp: x.x.x
-
 build_type:
   - debug
   - release

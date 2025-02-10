@@ -1,0 +1,78 @@
+schema_version: 1
+
+context:
+  name: ifcopenshell
+  version: 0.8.1.240902
+  build_base: 0
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  git: https://github.com/IfcOpenShell/ifcopenshell.git
+  tag: "ifcopenshell-python-0.8.1"
+
+build:
+  number: ${{ build }}
+  string: py${{ python | replace('.', '') }}_${{ mpi }}_${{ build_type }}_h${{ hash }}_${{ build }}
+  dynamic_linking:
+    binary_relocation: ${{ false if osx else true }}
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+    - cmake
+    - ninja
+    - swig >=4.1.1
+    - ${{ stdlib("c") }}
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+  host:
+    - python
+    - libboost-devel
+    - occt
+    - libxml2
+    - cgal-cpp
+    - numpy
+    - lark
+    - hdf5 * *${{ build_type }}*
+    - eigen
+    - mpfr
+    - nlohmann_json
+    - gmp
+    - zlib
+  run:
+    - python
+    - ${{ pin_compatible('cgal-cpp', upper_bound='x.x') }}
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
+
+tests:
+  - python:
+      imports:
+        - ifcopenshell
+  - files:
+      recipe:
+        - tests/test_basic_ifc_ops.py
+    requirements:
+      run:
+        - pytest
+    script:
+      - pytest tests
+
+about:
+  license: LGPL-3.0-or-later
+  license_file: COPYING
+  summary: IfcOpenShell is a library to support the IFC file format
+  description: |
+    IfcOpenShell is an open source (LGPL) software library for
+    working with the Industry Foundation Classes (IFC) file format.
+  homepage: https://ifcopenshell.org
+  repository: https://github.com/IfcOpenShell/IfcOpenShell
+  documentation: https://ifcopenshell.org/'
