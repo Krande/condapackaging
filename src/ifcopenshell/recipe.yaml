@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: ifcopenshell
-  version: 0.8.1.240902
+  version: 0.8.1
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
@@ -63,6 +63,7 @@ tests:
     requirements:
       run:
         - pytest
+        - typing_extensions
     script:
       - pytest tests
 

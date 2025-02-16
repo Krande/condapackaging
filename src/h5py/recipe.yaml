@@ -1,0 +1,93 @@
+schema_version: 1
+
+context:
+  version: 3.12.1
+  mpi_prefix: ${{ mpi or 'nompi'}}
+  build_base: 0
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
+
+package:
+  name: h5py
+  version: ${{ version }}
+
+source:
+  url: https://github.com/h5py/h5py/archive/${{ version }}.tar.gz
+  sha256: ee8d25e6cc6275779a2727258bcce9f2296a58b6e5ccf4cdc467a3c3a97b56b2
+  patches:
+    # Disable complex256 for arm64
+    # follow https://github.com/conda-forge/cross-python-feedstock/issues/92
+    - if: osx and arm64
+      then: bad-numpy-patch.patch
+
+build:
+  number: ${{ build }}
+  string: ${{ mpi_prefix }}_py${{ py }}h${{ PKG_HASH }}_${{ build }}
+  skip: match(python, "<=3.7")
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+        - cython >=0.29.31,<4
+        - hdf5
+        - hdf5 * ${{ mpi_prefix }}_*
+        - numpy
+    - ${{ compiler("c") }}
+    - ${{ stdlib("c") }}
+    - if: "mpi == 'openmpi' and build_platform != target_platform or mpi == 'openmpi' and build_platform != target_platform"
+      then: "mpi or 'nompi'.*"
+  host:
+    - python
+    - pip
+    - setuptools
+    - numpy
+    - if: "mpi != 'nompi' or mpi != 'nompi'"
+      then: "mpi or 'nompi'.*"
+    - if: "mpi != 'nompi'"
+      then: mpi4py >=3.0
+    # need to list hdf5 twice to get version pinning from conda_build_config
+    # and build pinning from {{ mpi_prefix }}
+    - hdf5
+    - hdf5 * ${{ mpi_prefix }}_*
+    - cython >=0.29.31,<4
+    - pkgconfig
+  run:
+    - python
+    - cached-property
+    - if: "mpi != 'nompi'"
+      then: ${{ mpi }}
+    - if: "mpi != 'nompi'"
+      then: mpi4py >=3.0
+    # hdf5 >=1.10.4 has run_exports
+    - hdf5
+
+tests:
+  - python:
+      imports:
+        - h5py
+  - requirements:
+      run:
+        - pip
+        - pytest
+        - pytest-mpi
+    script:
+      - pip check
+
+about:
+  license: BSD-3-Clause
+  license_file: licenses/license.txt
+  summary: Read and write HDF5 files from Python
+  homepage: https://www.h5py.org/
+  repository: https://github.com/h5py/h5py
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
+    - jakirkham
+    - tacaswell
+    - ocefpaf
+    - minrk
+    - scopatz

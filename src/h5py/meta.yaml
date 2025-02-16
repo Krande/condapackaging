@@ -1,6 +1,5 @@
-{% set name = "h5py" %}
-{% set version = "3.11.1" %}
-{% set build = 0 %}
+{% set version = "3.12.1" %}
+{% set build = 3 %}
 
 # mpi must be defined for conda-smithy lint
 {% set mpi = mpi or 'nompi' %}
@@ -9,59 +8,42 @@
 # prefer nompi builds via a build number offset
 {% set build = build + 100 %}
 {% endif %}
-
-{% set build = build + 10 %}   # [build_type == "release"]
-
-package:
-  name: {{ name }}
-  version: {{ version }}
-
-source:
-#  url: https://github.com/h5py/h5py/archive/{{ version }}.tar.gz'
-#  sha256: 034ec21f28f2f2edc4542515a9ae45356a25bb459048acf9622e6b1143b3fae7
-# Will use git_url until a tag contains https://github.com/h5py/h5py/pull/2422
-  git_url: https://github.com/h5py/h5py.git
-#  git_rev: 44ba349e5ecd21ecbc75b1314063e96d30aec872
-  git_depth: 1
-
-
+{% if mpi != 'nompi' %}
+{% set mpi_prefix = "mpi_" + mpi %}
+{% else %}
+{% set mpi_prefix = "nompi" %}
+{% endif %}
 # add build string so packages can depend on
 # mpi or nompi variants
 # dependencies:
 # `pkg * mpi_mpich_*` for mpich
 # `hdf5 * mpi_*` for any mpi
 # `hdf5 * nompi_*` for no mpi
-{% if mpi != 'nompi' %}
-{% set mpi_prefix = "mpi_" + mpi %}
-{% else %}
-{% set mpi_prefix = "nompi" %}
-{% endif %}
+
+package:
+  name: h5py
+  version: {{ version }}
+
+source:
+  url: https://github.com/h5py/h5py/archive/{{ version }}.tar.gz
+  sha256: ee8d25e6cc6275779a2727258bcce9f2296a58b6e5ccf4cdc467a3c3a97b56b2
+  patches:
+    # Disable complex256 for arm64
+    # follow https://github.com/conda-forge/cross-python-feedstock/issues/92
+    - bad-numpy-patch.patch   # [osx and arm64]
 
 build:
-  skip: true  # [py<=39]
+  skip: true  # [py<=37]
   number: {{ build }}
-  {% if mpi != 'nompi' %}
-  {% set mpi_prefix = "mpi_" + mpi %}
-  {% else %}
-  {% set mpi_prefix = "nompi" %}
-  {% endif %}
-  # add build string so packages can depend on
-  # mpi or nompi variants
-  # dependencies:
-  # `pkg * mpi_mpich_*` for mpich
-  # `hdf5 * mpi_*` for any mpi
-  # `hdf5 * nompi_*` for no mpi
-  string: {{ mpi_prefix }}_{{ build_type }}_py{{ py }}h{{ PKG_HASH }}_{{ build }}
+  string: {{ mpi_prefix }}_py{{ py }}h{{ PKG_HASH }}_{{ build }}
   script_env:
     - HDF5_HAS_ROS3=1  # [build_platform != target_platform]
-  run_exports:
-    - {{ pin_subpackage(name, 'x.x') }} {{ mpi_prefix }}
 
 requirements:
   build:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - cython >=0.29.31,<1                    # [build_platform != target_platform]
+    - cython >=0.29.31,<4                    # [build_platform != target_platform]
     - hdf5                                   # [build_platform != target_platform]
     - hdf5 * {{ mpi_prefix }}_*              # [build_platform != target_platform]
     - numpy                                  # [build_platform != target_platform]
@@ -71,21 +53,21 @@ requirements:
   host:
     - python
     - pip
+    - setuptools
     - numpy
     - {{ mpi }}  # [mpi != 'nompi']
     - mpi4py >=3.0  # [mpi != 'nompi']
     # need to list hdf5 twice to get version pinning from conda_build_config
     # and build pinning from {{ mpi_prefix }}
-    - hdf5 * {{ mpi_prefix }}*{{ build_type }}*
-    - cython >=0.29.31,<1
+    - hdf5
+    - hdf5 * {{ mpi_prefix }}_*
+    - cython >=0.29.31,<4
     - pkgconfig
   run:
     - python
     - cached-property
     - {{ mpi }}  # [mpi != 'nompi']
     - mpi4py >=3.0  # [mpi != 'nompi']
-    # hdf5 >=1.10.4 has run_exports
-    - hdf5
 
 test:
   imports:

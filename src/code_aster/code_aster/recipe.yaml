@@ -25,7 +25,6 @@ build:
   prefix_detection:
     ignore_binary_files: true
 
-
 requirements:
   build:
     - ${{ compiler('c') }}
@@ -69,6 +68,8 @@ requirements:
   ignore_run_exports:
     by_name:
       - llvm-openmp
+    from_package:
+      - intel-fortran-rt
 
 tests:
   - python:

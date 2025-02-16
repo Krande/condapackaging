@@ -1,6 +1,7 @@
 schema_version: 1
 
 context:
+  name: hdf5
   version: 1.14.6
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
@@ -8,7 +9,7 @@ context:
   mpi_prefix: ${{ mpi or 'nompi' }}
 
 package:
-  name: hdf5
+  name: ${{ name }}
   version: ${{ version }}
 
 source:
@@ -47,8 +48,9 @@ requirements:
     - libcurl
     - openssl
   run:
-    - if: win
-      then: intel-fortran-rt
+    - zlib
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
 
 tests:
   - files:
