@@ -56,6 +56,9 @@ hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "sr
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
+# Intel LLVM Compiler
+intelfortranrt = { cmd = ["rattler-build", "build", "-r", "src/intelfortranrt/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+
 # Code Aster
 scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml", "--experimental"] }
 mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml"] }
@@ -102,8 +105,7 @@ arpack = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/arpack" }
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
 #h5py = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/h5py" }
 
-# Intel LLVM Compiler
-intelfortranrt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/intelfortranrt" }
+
 
 # OCCT
 occt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }

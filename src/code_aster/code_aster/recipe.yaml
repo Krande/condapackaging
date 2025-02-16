@@ -2,8 +2,8 @@ schema_version: 1
 
 context:
   name: code-aster
-  source_version: 17.2.7
-  win_build: 1
+  source_version: 17.2.8
+  win_build: 0
   version: ${{ source_version + "." + win_build }}
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
@@ -16,14 +16,12 @@ package:
 
 source:
   - url: https://gitlab.com/krande/src/-/archive/${{ version }}/src-${{ version }}.tar.gz
-    sha256: fbcc62bcf08dd78c7f9dbde73f779e693c1900f32bad388ed90762105b144a16
+    sha256: 19e8f288a882506f00ac77e5b596980113cad9ee061af5e562e944506ccaefe8
     file_name: ${{ name }}_${{ version }}.tar.gz
 
 build:
   number: ${{ build }}
   string: py${{ python | replace('.', '') }}_${{ mpi_prefix }}_${{ build_type }}_INT${{ int_type }}_h${{ hash }}_${{ build }}
-  prefix_detection:
-    ignore_binary_files: true
 
 requirements:
   build:
@@ -57,19 +55,21 @@ requirements:
     - medcoupling * *${{ build_type }}*${{ int_type }}*
     - psutil
   run:
-    - python
     - if: win
-      then: intel-fortran-rt
+      then:
+        - intel-fortran-rt 2024.1.0
+        - "libblas * *mkl"
+        - "liblapack * *mkl"
     - ${{ pin_compatible('numpy', upper_bound='x.x') }}
     - if: not win
-      then: libxcrypt
+      then:
+        - libxcrypt
+        - ${{ pin_compatible('mgis', upper_bound='x.x') }}  # this is not given a run_export in conda-forge
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
   ignore_run_exports:
     by_name:
       - llvm-openmp
-    from_package:
-      - intel-fortran-rt
 
 tests:
   - python:
@@ -88,7 +88,9 @@ about:
   license: GPL-3.0-only AND CECILL-C AND Apache-2.0 AND LGPL-3.0-only
   summary: Code_Aster - a finite element solver
   description: |
-    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, fatigue, stochastic dynamics, etc..
+    Code_Aster offers a full range of multiphysical analysis and modelling methods that go well beyond the 
+    standard functions of a thermomechanical calculation code: from seismic analysis to porous media via acoustics, 
+    fatigue, stochastic dynamics, etc..
   homepage: https://www.code-aster.org
   repository: https://sourceforge.net/projects/codeaster/
   documentation: https://www.code-aster.org/V2/doc/default/en/index.php?man=commande

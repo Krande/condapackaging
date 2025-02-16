@@ -32,8 +32,8 @@ def main():
     if quetz_url and conda_channel:
         extra_args_str += f" -c {quetz_url}/get/{conda_channel}"
 
-    #if isinstance(use_devtools, str) and use_devtools.lower() == "true":
-    #    extra_args_str += f" -c {quetz_url}/get/devtools"
+    if isinstance(use_devtools, str) and use_devtools.lower() == "true":
+       extra_args_str += f" -c https://repo.prefix.dev/code-aster-compilers"
 
     set_env('EXTRA_BUILD_ARGS', extra_args_str)
 

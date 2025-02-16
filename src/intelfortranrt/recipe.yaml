@@ -1,0 +1,173 @@
+# work-around for https://github.com/conda/conda-build/issues/5443
+# use this if our build script changes and we need to increment beyond intel's version
+schema_version: 1
+
+context:
+  version: 2025.0.4
+  intel_build_number: 1521
+  oneccl_version: 2021.14.0
+  oneccl_build_number: 505
+  tbb_version_major: 2022
+  umf_version: 0.9.1
+  intel_ch: https://software.repos.intel.com/python/conda
+  dst_build_number: 0
+  build_number: ${{intel_build_number|int + dst_build_number|int}}
+
+recipe:
+  name: intel-compiler-repack
+  version: ${{ version }}
+
+source:
+  # Is there a better way to specify skipping the source if it does not exist? (so it matches 'skip: True' selectors)
+  - url: ${{ intel_ch }}/${{ target_platform }}/intel-cmplr-lic-rt-${{ version }}-intel_${{ intel_build_number }}.tar.bz2
+    sha256: 62eb01221047f8dfd95bfa32713396a486c935c2eae7c2987ffff1493a238dd4
+    target_directory: intel-cmplr-lic-rt
+  - url: ${{ intel_ch }}/${{ target_platform }}/intel-cmplr-lib-rt-${{ version }}-intel_${{ intel_build_number }}.tar.bz2
+    sha256: 5cbb519a226737baf3bb657ea4e18708a7c9189f97fac28f8d483d241f33c76b
+    target_directory: intel-cmplr-lib-rt
+  - url: ${{ intel_ch }}/${{ target_platform }}/intel-fortran-rt-${{ version }}-intel_${{ intel_build_number }}.tar.bz2
+    sha256: a8d08dedf5ea88ad169b278f7b0a10134c2a1f0139b64dea8beb9403913974a6
+    target_directory: intel-fortran-rt
+
+build:
+  number: ${{ build_number }}
+  skip: not (linux64 or win)
+  prefix_detection:
+    ignore_binary_files: false
+  dynamic_linking:
+    binary_relocation: false
+
+outputs:
+  - package:
+      name: intel-cmplr-lic-rt
+    build:
+      script:
+        - if: unix
+          then: repack.sh
+        - if: win
+          then: repack.bat
+    requirements:
+      run_exports:
+        - ${{ pin_subpackage("intel-cmplr-lic-rt", exact=True) }}
+    tests:
+      - script:
+          - if: unix
+            then: ls -A1 ${PREFIX}/licensing/compiler/*
+          - if: win
+            then: dir %PREFIX%\licensing\compiler\*
+    about:
+      summary: Intel End User License Agreement for Developer Tools
+      license: LicenseRef-Proprietary-Intel-End-User-License-Agreement-for-Developer-Tools
+      license_file:
+        - intel-cmplr-lic-rt/info/licenses/license.txt
+        - intel-cmplr-lic-rt/info/licenses/tpp.txt
+      description: |
+        Intel End User License Agreement for Developer Tools.
+        This package is a repackaged set of binaries obtained directly from Intel's Anaconda.org channel.
+      homepage: https://software.intel.com/content/www/us/en/develop/tools.html
+      repository: https://software.intel.com/content/www/us/en/develop/articles/end-user-license-agreement.html
+      documentation: https://software.intel.com/content/www/us/en/develop/articles/end-user-license-agreement.html
+
+  - package:
+      name: intel-cmplr-lib-rt
+    build:
+      script:
+        - if: unix
+          then: repack.sh
+        - if: win
+          then: repack.bat
+    requirements:
+      # Since it is repack, we do not need these packages in the build and host
+      # sections. However it is limitation of conda-build to check for library
+      # linking only for the packages that are presented in build and host and
+      # have run_export section.
+      build:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - ${{ stdlib('c') }}
+      host:
+        - zlib
+        # intel-cmplr-lic-rt is a license file, please do not remove.
+        - ${{ pin_subpackage('intel-cmplr-lic-rt', exact=True) }}
+      run:
+        # intel-cmplr-lic-rt is a license file, please do not remove.
+        - ${{ pin_subpackage('intel-cmplr-lic-rt', exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage("intel-cmplr-lib-rt", upper_bound="x") }}
+    tests:
+      - script:
+          - if: unix
+            then: ls -A1 ${PREFIX}/lib/*
+          - if: win
+            then: dir %PREFIX%\Library\bin\*
+    about:
+      summary: Runtime for Intel� C++ Compiler Classic
+      license: LicenseRef-Proprietary-Intel-End-User-License-Agreement-for-Developer-Tools
+      license_file:
+        - intel-cmplr-lib-rt/info/licenses/license.txt
+        - intel-cmplr-lib-rt/info/licenses/tpp.txt
+      description: |
+        Runtime for Intel� C++ Compiler Classic.
+        This package is a repackaged set of binaries obtained directly from Intel's Anaconda.org channel.
+      homepage: https://software.intel.com/content/www/us/en/develop/tools.html
+      repository: https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top.html
+      documentation: https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html
+
+  - package:
+      name: intel-fortran-rt
+    build:
+      script:
+        - if: unix
+          then: repack.sh
+        - if: win
+          then: repack.bat
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - if: linux
+          then: patchelf
+      host:
+        - if: linux
+          then: mpich
+        - ${{ pin_subpackage('intel-cmplr-lib-rt', exact=True) }}
+      run:
+        - if: linux
+          then: _openmp_mutex * *_llvm
+        - if: win
+          then: intel-openmp
+        - if: osx
+          then: llvm-openmp
+        - ${{ pin_subpackage('intel-cmplr-lib-rt', exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage("intel-fortran-rt", upper_bound="x") }}
+    tests:
+      - script:
+          - if: unix
+            then: ls -A1 ${PREFIX}/lib/*
+          - if: win
+            then: dir %PREFIX%\Library\bin\*
+    about:
+      summary: Runtime for Intel� Fortran Compiler Classic and Intel� Fortran Compiler (Beta)
+      license: LicenseRef-Proprietary-Intel-End-User-License-Agreement-for-Developer-Tools
+      license_file:
+        - intel-fortran-rt/info/licenses/license.txt
+        - intel-fortran-rt/info/licenses/tpp.txt
+      description: |
+        Runtime for Intel� Fortran Compiler Classic and Intel� Fortran Compiler (Beta).
+        This package is a repackaged set of binaries obtained directly from Intel's Anaconda.org channel.
+      homepage: https://software.intel.com/content/www/us/en/develop/tools.html
+      repository: https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top.html
+      documentation: https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/fortran-compiler.html
+
+about:
+  license: LicenseRef-Proprietary-Intel-End-User-License-Agreement-for-Developer-Tools
+  summary: Repackaged Intel� compilers and runtimes.
+  homepage: https://github.com/AnacondaRecipes/intel-compilers-repack-feedstock
+
+extra:
+  recipe-maintainers:
+    - napetrov
+    - tomashek
+    - oleksandr-pavlyk
+    - ZzEeKkAa
