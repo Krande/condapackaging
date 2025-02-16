@@ -83,7 +83,7 @@ casadi = { cmd = ["rattler-build", "build", "-r","src/cadquery/casadi/recipe.yam
 ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/ifcopenshell*.conda"] }
 h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/h5py*.conda"] }
 
-adapy-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "ifcopenshell", "code-aster-all"] }
+adapy-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "h5py", "ifcopenshell", "code-aster-all"] }
 
 [feature.boa.tasks]
 
