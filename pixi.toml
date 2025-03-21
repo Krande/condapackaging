@@ -82,6 +82,8 @@ casadi = { cmd = ["rattler-build", "build", "-r","src/cadquery/casadi/recipe.yam
 # Adapy deps
 ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/ifcopenshell*.conda"] }
 h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/h5py*.conda"] }
+libnetcdf4 = { cmd = ["rattler-build", "build", "-r", "src/libnetcdf4/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/libnetcdf4*.conda"] }
+netcdf4 = { cmd = ["rattler-build", "build", "-r", "src/netcdf4/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/netcdf4*.conda"], depends-on=["libnetcdf4"] }
 
 adapy-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "h5py", "ifcopenshell", "code-aster-all"] }
 

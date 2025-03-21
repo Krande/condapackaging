@@ -1,71 +1,86 @@
-{% set version = "4.9.2" %}
-{% set build = 14 %}
+schema_version: 1
+
+context:
+  version: 4.9.2
+  build_base: 0
+  mpi_prefix: ${{ mpi or 'nompi' }}
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
 
 package:
   name: libnetcdf
-  version: {{ version }}
+  version: ${{ version }}
 
 source:
-  url: https://github.com/Unidata/netcdf-c/archive/refs/tags/v{{ version }}.tar.gz
+  url: https://github.com/Unidata/netcdf-c/archive/refs/tags/v${{ version }}.tar.gz
   sha256: bc104d101278c68b303359b3dc4192f81592ae8640f1aee486921138f7f88cb7
   patches:
     - patches/0004-Prefer-getenv-TOPSRCDIR-over-STRINGIFY-TOPSRCDIR.patch
     - patches/0009-topsrcdir.patch
-    - patches/prevent_MS_runtime_libs_being_installed_again.patch  # [win]
-    - patches/do_not_use_16_processes_in_tests.patch  # [ppc64le]
+    - if: win
+      then: patches/prevent_MS_runtime_libs_being_installed_again.patch
+    - if: ppc64le
+      then: patches/do_not_use_16_processes_in_tests.patch
     - patches/0001-Fix-issue-2674.patch
     - patches/0001-Switch-custom-Bzip2-cmake-module-to-standard.patch
     # removeme once 4.9.3 is released
     - patches/update_ftp_refs.patch
 
 build:
-  number: {{ build }}
-  skip: true  # [win and vc<14]
   # add build string so packages can depend on
   # mpi or nompi variants
   # dependencies:
   # `PKG_NAME * mpi_mpich_*` for mpich
   # `PKG_NAME * mpi_*` for any mpi
   # `PKG_NAME * nompi_*` for no mpi
-  string: {{ mpi_prefix }}_{{ build_type }}_h{{ PKG_HASH }}_{{ build }}
-
   # mpi builds require the right mpi
   # non-mpi builds *do not* appear to require non-mpi builds
   # at least not always
-
-  run_exports:
-    #   https://abi-laboratory.pro/tracker/timeline/netcdf/
-    - {{ pin_subpackage('libnetcdf', max_pin='x.x.x') }} {{ build_pin }}
+  number: ${{ build }}
+  string: ${{ mpi }}_${{ build_type }}_h${{ hash }}_${{ build }}
+  skip: win and vc<14
 
 requirements:
   build:
     - cmake
-    - make  # [not win]
-    - pkg-config  # [not win]
-    - gnuconfig  # [unix]
-    - {{ compiler('c') }}
-    - {{ stdlib('c') }}
-    - {{ compiler('cxx') }}
-    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
-    - unzip  # [not win]
-    - m2-unzip  # [win]
-    - m4  # [not win]
-    - m2-m4  # [win]
-    - wget  # [not win]
+    - if: not win
+      then: make
+    - if: not win
+      then: pkg-config
+    - if: unix
+      then: gnuconfig
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
+    - ${{ compiler('cxx') }}
+    - if: "mpi == 'openmpi' and build_platform != target_platform"
+      then: ${{ mpi }}
+    - if: not win
+      then: unzip
+    - if: win
+      then: m2-unzip
+    - if: not win
+      then: m4
+    - if: win
+      then: m2-m4
+    - if: not win
+      then: wget
   host:
-    - {{ mpi }}  # [mpi != 'nompi']
+    - if: "mpi != 'nompi'"
+      then: ${{ mpi }}
     - blosc
     - bzip2
     - hdf4
-    - hdf5 * {{ mpi_prefix }}_*{{ build_type }}_*
+    - hdf5 * ${{ mpi_prefix }}_*${{ build_type }}_*
     - libaec
     - libcurl
-    - libpnetcdf  # [mpi != 'nompi']
+    - if: "mpi != 'nompi'"
+      then: libpnetcdf
     - libxml2
     - libzip
     # Openssl provides libcrypto which is needed via libcurl, but doesn't get
     # to the run reqs through run_exports because it is twice removed
-    - openssl  # [unix]
+    - if: unix
+      then: openssl
     - zlib
     - zstd
   run:
@@ -78,19 +93,24 @@ requirements:
     # https://github.com/conda-forge/libnetcdf-feedstock/issues/173
     # https://github.com/Unidata/netcdf-c/issues/2713
     - zlib
+  run_exports:
+    - ${{ pin_subpackage('libnetcdf', upper_bound='x.x.x') }} ${{ build_pin }}
 
-test:
-  commands:
-    - test ! -f ${PREFIX}/lib/libnetcdf.a          # [not win]
-    - test -f ${PREFIX}/lib/libnetcdf${SHLIB_EXT}  # [not win]
-    - nc-config --all  # [not win]
+tests:
+  - script:
+      - if: not win
+        then: test ! -f ${PREFIX}/lib/libnetcdf.a
+      - if: not win
+        then: test -f ${PREFIX}/lib/libnetcdf${SHLIB_EXT}
+      - if: not win
+        then: nc-config --all
 
 about:
-  home: http://www.unidata.ucar.edu/software/netcdf/
   license: MIT
   license_file: COPYRIGHT
   summary: Libraries and data formats that support array-oriented scientific data
-  dev_url: https://github.com/Unidata/netcdf-c
+  homepage: http://www.unidata.ucar.edu/software/netcdf/
+  repository: https://github.com/Unidata/netcdf-c
 
 extra:
   recipe-maintainers:
