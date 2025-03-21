@@ -39,12 +39,12 @@ on:
         description: 'Build variants'
         required: false
         type: string
-        default: "build_type=debug;variant=novtk,build_type=release;variant=novtk"
+        default: ""
       extra_build_args:
         description: 'Extra build arguments'
         required: true
         type: string
-        default: " -m __root__/src/code_aster/common.yaml"
+        default: " -m __root__/src/common_rattler.yaml"
       use_devtools:
         description: 'Use devtools from prefix.dev'
         required: false
@@ -206,6 +206,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      upload_conda: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/ifcopenshell/recipe.yaml"
     secrets: inherit
 
   libnetcdf4:
