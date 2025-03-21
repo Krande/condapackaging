@@ -61,7 +61,6 @@ jobs:
   env:
     runs-on: ubuntu-latest
     outputs:
-      conda_user: krandedev
       pkg_dir: src
       use_quetz: "True"
       # This is where the conda user and label should be set
