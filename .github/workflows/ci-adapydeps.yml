@@ -37,7 +37,7 @@ on:
         default: "windows-latest"
       variants:
         description: 'Build variants'
-        required: true
+        required: false
         type: string
         default: "build_type=debug;variant=novtk,build_type=release;variant=novtk"
       extra_build_args:
@@ -48,8 +48,8 @@ on:
       use_devtools:
         description: 'Use devtools from prefix.dev'
         required: false
-        type: string
-        default: "False"
+        type: boolean
+        default: false
 
   push:
     paths:
