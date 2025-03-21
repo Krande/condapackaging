@@ -65,7 +65,7 @@ on:
         description: 'Build environment. Can be either boa or rattler'
         type: string
         required: false
-        default: "boa"
+        default: "rattler"
       recipe_file:
         description: 'Path to a rattler recipe'
         type: string
