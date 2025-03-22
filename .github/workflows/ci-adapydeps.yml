@@ -223,6 +223,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      upload_conda: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/libnetcdf4/recipe.yaml"
     secrets: inherit
 
   netcdf4:
@@ -236,6 +239,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      upload_conda: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/netcdf4/recipe.yaml"
     secrets: inherit
 
   test_adapy_win:

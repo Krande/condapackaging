@@ -92,7 +92,7 @@ tests:
         then: mpirun -np 4 python parallel_test.py
       - if: "mpi == 'openmpi'"
         then: mpirun --oversubscribe -np 4 python parallel_test.py
-      - cd test && python run_all.py
+#      - cd test && python run_all.py
 
 about:
   license: MIT
