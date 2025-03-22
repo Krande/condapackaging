@@ -23,7 +23,7 @@ boa = ">=0.17.0,<0.18"
 
 [feature.rattler.dependencies]
 conda-recipe-manager = ">=0.3.0,<0.4"
-rattler-build = { version=">=0.35.6,<0.36" }
+rattler-build = { version=">=0.39.0,<0.40" }
 
 [feature.cpack.dependencies]
 python-dotenv = ">=1.0.1,<1.1"
@@ -82,7 +82,7 @@ casadi = { cmd = ["rattler-build", "build", "-r","src/cadquery/casadi/recipe.yam
 # Adapy deps
 ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/ifcopenshell*.conda"] }
 h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/h5py*.conda"] }
-
+gmsh = { cmd = ["rattler-build", "build", "-r", "src/gmsh/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/gmsh*.conda"] }
 libnetcdf4 = { cmd = ["rattler-build", "build", "-r", "src/libnetcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/libnetcdf*.conda"] }
 netcdf4 = { cmd = ["rattler-build", "build", "-r", "src/netcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/netcdf*.conda"], depends-on=["libnetcdf4"] }
 

@@ -1,0 +1,152 @@
+schema_version: 1
+
+context:
+  name: gmsh
+  version: 4.13.1
+  sha256: 77972145f431726026d50596a6a44fb3c1c95c21255218d66955806b86edbe8d
+  build_pin: build_type
+  mpi_prefix: ${{ mpi or 'nompi' }}
+  mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
+  build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
+
+recipe:
+  name: gmsh-packages
+  version: ${{ version }}
+
+source:
+  url: https://gmsh.info/src/${{ name }}-${{ version }}-source.tgz
+  sha256: ${{ sha256 }}
+  patches:
+    - patches/fltk_nominmax.patch
+    - patches/disable_wmain.patch
+
+outputs:
+  - package:
+      name: gmsh
+    build:
+      number: ${{ build }}
+      string: py${{ python | replace('.', '') }}_${{ mpi }}_${{ build_type }}_h${{ hash }}_${{ build }}
+      script:
+        - if: not win
+          then: build_gmsh.sh
+        - if: win
+          then: bld_gmsh.bat
+    requirements:
+      build:
+        - cmake
+        - if: unix
+          then: make
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - ${{ stdlib("c") }}
+        - if: linux
+          then: ${{ cdt('libselinux') }}
+        - if: linux
+          then: ${{ cdt('libxcb') }}
+        - if: linux
+          then: ${{ cdt('libxau') }}
+        - if: linux
+          then: ${{ cdt('libxdamage') }}
+        - if: linux
+          then: ${{ cdt('libxxf86vm') }}
+        - if: linux
+          then: ${{ cdt('mesa-libgl-devel') }}
+        - if: linux
+          then: ${{ cdt('mesa-dri-drivers') }}
+        - python *
+      host:
+        - libblas
+        - liblapack
+        - if: not win
+          then: gmp
+        - occt
+        - fltk
+        - hdf5 * *${{ build_type }}*
+        - libpng
+        - libjpeg-turbo
+        - if: linux
+          then: libglu
+        - zlib
+        - if: linux
+          then: xorg-libxfixes
+        - if: linux
+          then: xorg-libxext
+        - if: linux
+          then: xorg-libxrender
+        - if: linux
+          then: xorg-libx11
+        - if: linux
+          then: xorg-libxmu
+        - cairo
+      run:
+        - if: not win
+          then: gmp
+        - libpng
+        - libjpeg-turbo
+        - zlib
+        - if: linux
+          then: libglu
+        - if: linux
+          then: xorg-libxfixes
+        - if: linux
+          then: xorg-libxext
+        - if: linux
+          then: xorg-libxrender
+        - if: linux
+          then: xorg-libx11
+        - if: linux
+          then: xorg-libxmu
+      run_exports:
+        - ${{ pin_subpackage(name, upper_bound='x.x') }}
+    tests:
+      - script:
+          - gmsh -help
+          - if: unix
+            then: test "$(gmsh --version 2>&1)" == "${{ version }}"
+
+  - package:
+      name: python-gmsh
+    build:
+      number: ${{ build }}
+      string: py${{ CONDA_PY }}_${{ build_pin }}_h${{ PKG_HASH }}_${{ build }}
+      skip: build_platform != target_platform
+      noarch: python
+      script:
+        - if: not win
+          then: install_python.sh
+        - if: win
+          then: install_python.bat
+    requirements:
+      run:
+        - ${{ pin_subpackage("gmsh", upper_bound='x.x.x') }}
+        - numpy
+        - python
+    tests:
+      - python:
+          imports:
+            - gmsh
+
+
+about:
+  license: GPL-2.0-or-later
+  summary: A three-dimensional finite element mesh generator with built-in pre- and post-processing facilities
+  description: |
+    Gmsh is a free 3D finite element grid generator with a build-in CAD
+    engine and post-processor. Its design goal is to provide a fast, light
+    and user-friendly meshing tool with parametric input and advanced
+    visualization capabilities. Gmsh is built around four modules:
+    geometry, mesh, solver and post-processing. The specification of any
+    input to these modules is done either interactively using the graphical
+    user interface or in ASCII text files using Gmsh's own scripting
+    language.
+  homepage: https://gmsh.info/
+  repository: https://gitlab.onelab.info/gmsh/gmsh/
+  documentation: https://gmsh.info/doc/texinfo/gmsh.html
+
+extra:
+  recipe-maintainers:
+    - guyer
+    - isuruf
+    - xywei
+    - looooo
+    - matthiasdiener

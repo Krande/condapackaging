@@ -1,15 +1,3 @@
-variant:
-  - novtk
-#  - all
 build_type:
     - debug
     - release
-
-pin_run_as_build:
-  occt: x.x.x
-
-
-cairo:
-  - '1'
-cdt_name:
-  - cos7

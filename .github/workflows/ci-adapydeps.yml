@@ -192,6 +192,9 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      upload_conda: True
+      build_env: 'rattler'
+      recipe_file: "__root__/src/gmsh/recipe.yaml"
     secrets: inherit
 
   ifcopenshell:
