@@ -4,7 +4,6 @@ context:
   name: gmsh
   version: 4.13.1
   sha256: 77972145f431726026d50596a6a44fb3c1c95c21255218d66955806b86edbe8d
-  build_pin: build_type
   mpi_prefix: ${{ mpi or 'nompi' }}
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
@@ -25,7 +24,7 @@ outputs:
       name: gmsh
     build:
       number: ${{ build }}
-      string: py${{ python | replace('.', '') }}_${{ mpi }}_${{ build_type }}_h${{ hash }}_${{ build }}
+      string: ${{ mpi }}_${{ build_type }}_h${{ hash }}_${{ build }}
       script:
         - if: not win
           then: build_gmsh.sh
@@ -108,7 +107,7 @@ outputs:
       name: python-gmsh
     build:
       number: ${{ build }}
-      string: py${{ CONDA_PY }}_${{ build_pin }}_h${{ PKG_HASH }}_${{ build }}
+      string: py${{ python | replace('.', '') }}_${{ mpi }}_${{ build_type }}_h${{ hash }}_${{ build }}
       skip: build_platform != target_platform
       noarch: python
       script:
@@ -117,6 +116,10 @@ outputs:
         - if: win
           then: install_python.bat
     requirements:
+      host:
+        - gmsh
+        - python
+        - numpy
       run:
         - ${{ pin_subpackage("gmsh", upper_bound='x.x.x') }}
         - numpy
