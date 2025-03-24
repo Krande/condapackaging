@@ -70,6 +70,7 @@ jobs:
       variants: ${{ inputs.variants }}
       description: ${{ inputs.description }}
       extra_build_args: ${{ inputs.extra_build_args }}
+      extra_recipe_config: "__root__/src/common_rattler.yaml"
 
     steps:
       - uses: actions/checkout@v4
@@ -119,6 +120,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   pythonoocc_core:
@@ -133,6 +135,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
 
     secrets: inherit
 
@@ -148,6 +151,7 @@ jobs:
       build_selection: ${{ inputs.build_selection }}
       extra_build_args: ${{ inputs.extra_build_args }}
       use_devtools: ${{ inputs.use_devtools }}
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   hdf5:
@@ -163,6 +167,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       use_intel_fortran: "True"
       use_devtools: ${{ inputs.use_devtools }}
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   h5py:
@@ -178,6 +183,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       use_intel_fortran: "True"
       use_devtools: ${{ inputs.use_devtools }}
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   gmsh:
@@ -195,6 +201,7 @@ jobs:
       upload_conda: True
       build_env: 'rattler'
       recipe_file: "__root__/src/gmsh/recipe.yaml"
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   ifcopenshell:
@@ -212,6 +219,7 @@ jobs:
       upload_conda: True
       build_env: 'rattler'
       recipe_file: "__root__/src/ifcopenshell/recipe.yaml"
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   libnetcdf4:
@@ -229,6 +237,7 @@ jobs:
       upload_conda: True
       build_env: 'rattler'
       recipe_file: "__root__/src/libnetcdf4/recipe.yaml"
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   netcdf4:
@@ -245,6 +254,7 @@ jobs:
       upload_conda: True
       build_env: 'rattler'
       recipe_file: "__root__/src/netcdf4/recipe.yaml"
+      extra_recipe_config: ${{ needs.env.outputs.extra_recipe_config }}
     secrets: inherit
 
   test_adapy_win:

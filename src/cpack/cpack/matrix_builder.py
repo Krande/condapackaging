@@ -17,6 +17,8 @@ def yaml_str_from_dict(variant_dict: dict) -> str:
 
 def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str, platforms_short=list[str]) -> list[dict] | None:
     recipe_file = recipe_file.replace('__root__', ROOT_DIR.as_posix())
+    extra_config_in = extra_config_in.replace('__root__', ROOT_DIR.as_posix())
+
     recipe_fp = pathlib.Path(recipe_file).resolve().absolute()
     extra_args = []
     if extra_config_in and len(extra_config_in) > 0:
