@@ -80,8 +80,8 @@ ipopt = { cmd = ["rattler-build", "build", "-r","src/cadquery/ipopt/recipe.yaml"
 casadi = { cmd = ["rattler-build", "build", "-r","src/cadquery/casadi/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml",  "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
 
 # Adapy deps
-ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/ifcopenshell*.conda"] }
-h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/h5py*.conda"] }
+ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml",  "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/ifcopenshell*.conda"] }
+h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/h5py*.conda"] }
 gmsh = { cmd = ["rattler-build", "build", "-r", "src/gmsh/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/gmsh*.conda"] }
 libnetcdf4 = { cmd = ["rattler-build", "build", "-r", "src/libnetcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/libnetcdf*.conda"] }
 netcdf4 = { cmd = ["rattler-build", "build", "-r", "src/netcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/netcdf*.conda"], depends-on=["libnetcdf4"] }

@@ -13,7 +13,8 @@ package:
 
 source:
   git: https://github.com/IfcOpenShell/ifcopenshell.git
-  tag: "ifcopenshell-python-0.8.1"
+  rev: "eec8c88e6f8909081705609d38d52210715410cc"
+#  tag: "ifcopenshell-python-0.8.1"
 
 build:
   number: ${{ build }}
