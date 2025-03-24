@@ -50,6 +50,7 @@ requirements:
     - zlib
   run:
     - python
+    - shapely
     - ${{ pin_compatible('cgal-cpp', upper_bound='x.x') }}
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
