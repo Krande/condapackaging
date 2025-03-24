@@ -22,7 +22,7 @@ def get_variant_matrix_for_rattler(recipe_file: str, extra_config_in: str, platf
     recipe_fp = pathlib.Path(recipe_file).resolve().absolute()
     extra_args = []
     if extra_config_in and len(extra_config_in) > 0:
-        extra_args = extra_config_in.split(' ')
+        extra_args = [x.strip() for x in extra_config_in.split(' ')]
     variant_builds = []
     for os_name in ["win-64", "linux-64", "osx-64"]:
         if os_name not in platforms_short:
