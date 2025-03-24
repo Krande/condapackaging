@@ -60,7 +60,7 @@ outputs:
           then: gmp
         - occt
         - fltk
-        - hdf5 * *${{ build_type }}*
+        - hdf5 ==${{ hdf5 }} *${{ build_type }}*
         - libpng
         - libjpeg-turbo
         - if: linux
