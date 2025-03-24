@@ -21,6 +21,7 @@ on:
         description: 'Release Description'
         required: true
         type: string
+        default: "Development build"
       conda_label:
         description: 'Conda channel name'
         required: false
