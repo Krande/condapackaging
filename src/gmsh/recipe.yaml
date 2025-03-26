@@ -7,7 +7,7 @@ context:
   build_base: 1
   mpi_prefix: ${{ mpi or 'nompi' }}
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
-  build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
+  build: ${{ (200 if build_type == 'release' else 0) + build_base|int + int_type|int + mpi_num|int }}
 
 recipe:
   name: gmsh-packages
