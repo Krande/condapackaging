@@ -36,10 +36,9 @@ cache:
   requirements:
     build:
       - ${{ compiler('c') }}
+      - ${{ compiler('fortran') }}
       - ${{ stdlib("c") }}
       - cmake
-      - if: not win
-        then: ${{ compiler('fortran') }}
       - if: win
         then:
           - clang
@@ -90,8 +89,7 @@ outputs:
         - ${{ compiler('c') }}
         - ${{ stdlib("c") }}
         - cmake
-        - if: not win
-          then: ${{ compiler('fortran') }}
+        - ${{ compiler('fortran') }}
         - if: win
           then:
             - clang

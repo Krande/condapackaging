@@ -1,0 +1,12 @@
+diff --git a/FL/mac.H b/FL/mac.H
+index cc752fc64..e9b2464b9 100644
+--- a/FL/mac.H
++++ b/FL/mac.H
+@@ -29,6 +29,7 @@
+ @class FLWindow; // a subclass of the NSWindow Cocoa class
+ typedef FLWindow *Window;
+ #else
++#define Window Foo // 'undef' the Window symbol to avoid conflicts with X11's Window
+ typedef class FLWindow *Window; // pointer to the FLWindow objective-c class
+ #endif // __OBJC__
+ 
