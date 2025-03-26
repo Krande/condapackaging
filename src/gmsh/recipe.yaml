@@ -4,6 +4,7 @@ context:
   name: gmsh
   version: 4.13.1
   sha256: 77972145f431726026d50596a6a44fb3c1c95c21255218d66955806b86edbe8d
+  build_base: 1
   mpi_prefix: ${{ mpi or 'nompi' }}
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
@@ -39,19 +40,14 @@ outputs:
         - ${{ compiler('cxx') }}
         - ${{ stdlib("c") }}
         - if: linux
-          then: ${{ cdt('libselinux') }}
-        - if: linux
-          then: ${{ cdt('libxcb') }}
-        - if: linux
-          then: ${{ cdt('libxau') }}
-        - if: linux
-          then: ${{ cdt('libxdamage') }}
-        - if: linux
-          then: ${{ cdt('libxxf86vm') }}
-        - if: linux
-          then: ${{ cdt('mesa-libgl-devel') }}
-        - if: linux
-          then: ${{ cdt('mesa-dri-drivers') }}
+          then:
+            - ${{ cdt('libselinux') }}
+            - ${{ cdt('libxcb') }}
+            - ${{ cdt('libxau') }}
+            - ${{ cdt('libxdamage') }}
+            - ${{ cdt('libxxf86vm') }}
+            - ${{ cdt('mesa-libgl-devel') }}
+            - ${{ cdt('mesa-dri-drivers') }}
         - python *
       host:
         - libblas
@@ -63,19 +59,15 @@ outputs:
         - hdf5 ==${{ hdf5 }} *${{ build_type }}*
         - libpng
         - libjpeg-turbo
-        - if: linux
-          then: libglu
         - zlib
         - if: linux
-          then: xorg-libxfixes
-        - if: linux
-          then: xorg-libxext
-        - if: linux
-          then: xorg-libxrender
-        - if: linux
-          then: xorg-libx11
-        - if: linux
-          then: xorg-libxmu
+          then:
+            - xorg-libxfixes
+            - xorg-libxext
+            - xorg-libxrender
+            - xorg-libx11
+            - xorg-libxmu
+            - libglu
         - cairo
       run:
         - if: not win
@@ -84,17 +76,13 @@ outputs:
         - libjpeg-turbo
         - zlib
         - if: linux
-          then: libglu
-        - if: linux
-          then: xorg-libxfixes
-        - if: linux
-          then: xorg-libxext
-        - if: linux
-          then: xorg-libxrender
-        - if: linux
-          then: xorg-libx11
-        - if: linux
-          then: xorg-libxmu
+          then:
+            - libglu
+            - xorg-libxfixes
+            - xorg-libxext
+            - xorg-libxrender
+            - xorg-libx11
+            - xorg-libxmu
       run_exports:
         - ${{ pin_subpackage(name, upper_bound='x.x') }}
     tests:
