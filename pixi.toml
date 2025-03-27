@@ -89,6 +89,9 @@ netcdf4 = { cmd = ["rattler-build", "build", "-r", "src/netcdf4/recipe.yaml", "-
 
 adapy-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "h5py", "ifcopenshell", "code-aster-all"] }
 
+# Calculix
+arpack = { cmd = ["rattler-build", "build", "-r", "src/calculix/arpack/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/arpack*.conda"] }
+
 [feature.boa.tasks]
 
 # Flang
@@ -101,9 +104,9 @@ flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "
 flang-activation = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang-activation" }
 
 # Calculix
-calculix = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/calculix" }
-spooles = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/spooles" }
-arpack = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/arpack" }
+#calculix = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/calculix" }
+#spooles = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/spooles" }
+#arpack = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/arpack" }
 
 # Other
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}

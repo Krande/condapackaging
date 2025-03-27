@@ -1,0 +1,66 @@
+schema_version: 1
+
+context:
+  version: 3.9.1
+  build: 100
+  mpi: "mpi or 'nompi'"
+
+package:
+  name: arpack
+  version: ${{ version }}
+
+source:
+  url: https://github.com/opencollab/arpack-ng/archive/${{ version }}.tar.gz
+  sha256: f6641deb07fa69165b7815de9008af3ea47eb39b2bb97521fbf74c97aba6e844
+
+build:
+  number: ${{ build }}
+  string: ${{ mpi }}_h${{ hash }}_${{ build }}
+
+requirements:
+  build:
+    - cmake
+    - make
+
+    - if: unix
+      then:
+        - ${{ compiler('fortran') }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+    - if: win
+      then:
+        - ninja
+        - mkl-devel
+        - clang
+  host:
+    - libblas
+    - liblapack
+  run_exports:
+    - ${{ pin_subpackage('arpack', upper_bound='x.x') }}
+
+tests:
+  - script:
+      - if: unix
+        then: test ! -f ${PREFIX}/lib/libarpack.a
+      - if: unix
+        then: test -f ${PREFIX}/lib/libarpack${SHLIB_EXT}
+      - if: unix
+        then: test -f ${PREFIX}/include/arpack/arpack.hpp
+      - if: win
+        then: if exist %PREFIX%\\Library\\mingw-w64\\lib\\libarpack.a exit 1
+      - if: win
+        then: if not exist %PREFIX%\\Library\\mingw-w64\\bin\\libarpack.dll exit 1
+      - if: win
+        then: if not exist %PREFIX%\\Library\\mingw-w64\\include\\arpack\\arpack.hpp exit 1
+
+about:
+  license: BSD-3-Clause
+  license_file: COPYING
+  summary: Fortran77 subroutines designed to solve large scale eigenvalue problems
+  homepage: https://github.com/opencollab/arpack-ng
+
+extra:
+  recipe-maintainers:
+    - jschueller
+    - mrakitin

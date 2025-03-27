@@ -20,18 +20,6 @@ source:
 
 build:
   number: {{ build }}
-  # Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi
-  # add build string so packages can depend on
-  # mpi or nompi variants explicitly:
-  # `pkg * mpi_mpich_*` for mpich
-  # `pkg * mpi_*` for any mpi
-  # `pkg * nompi_*` for no mpi
-
-  {% if mpi != 'nompi' %}
-  {% set mpi_prefix = "mpi_" + mpi %}
-  {% else %}
-  {% set mpi_prefix = "nompi" %}
-  {% endif %}
   string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
   run_exports:
     - {{ pin_subpackage('arpack', max_pin='x.x') }} {{ mpi_prefix }}_*

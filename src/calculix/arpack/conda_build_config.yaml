@@ -4,26 +4,12 @@ mpi:
   - openmpi  # [not win]
 
 libblas:
-- 3.9 *netlib
+- 3.9 *mkl
 liblapack:
-- 3.9 *netlib
-m2w64_c_compiler:
-- gcc
-m2w64_c_compiler_version:
-- '13'
-m2w64_cxx_compiler:
-- gxx
-m2w64_cxx_compiler_version:
-- '13'
-m2w64_fortran_compiler:
-- gfortran
-m2w64_fortran_compiler_version:
-- '13'
-m2w64_c_stdlib:
-- m2w64-sysroot
-m2w64_c_stdlib_version:
-- '12'
-mpich:
-- '4'
-openmpi:
-- '5'
+- 3.9 *mkl
+
+c_compiler:
+  - clang  # [win]
+
+cxx_compiler:
+  - clang  # [win]

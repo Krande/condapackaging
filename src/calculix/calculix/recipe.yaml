@@ -1,0 +1,63 @@
+schema_version: 1
+
+context:
+  name: calculix
+  version: 2.22
+  sha256: 3a94dcc775a31f570229734b341d6b06301ebdc759863df901c8b9bf1854c0bc
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: http://www.dhondt.de/ccx_${{ version }}.src.tar.bz2
+  sha256: ${{ sha256 }}
+  file_name: ${{ name }}_${{ version }}.tar.bz2
+  patches:
+    - if: win or osx
+      then: patches/mingw_time.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler("c") }}
+    - if: unix
+      then:
+        - ${{ stdlib("c") }}
+        - ${{ compiler("fortran") }}
+    - make
+    - if: osx
+      then: llvm-openmp
+  host:
+    - libblas
+    - liblapack
+    - arpack
+    - spooles
+    - if: osx
+      then: llvm-openmp
+  run:
+    - arpack
+    - if: osx
+      then: llvm-openmp
+
+tests:
+  - script:
+      - if: unix
+        then: test -f ${PREFIX}/bin/ccx
+      - if: win
+        then: test -f %LIBRARY_PREFIX%\bin\ccx.exe
+
+about:
+  license: GPL-2.0-or-later
+  license_file: ${{ env.get("RECIPE_DIR") }}/LICENSE
+  summary: 3D Structural Finite Element Program
+  description: A Free Software Three-Dimensional Structural Finite Element Program
+  homepage: http://www.dhondt.de/
+  repository: http://www.dhondt.de/
+  documentation: http://www.dhondt.de/ccx_${{ version }}.pdf
+
+extra:
+  recipe-maintainers:
+    - looooo
