@@ -23,7 +23,7 @@ if "%build_type%" == "debug" (
 )
 
 :: Needed for the pthread library when linking with scotch
-set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB% pthread.lib
+set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB%
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
 set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3
 

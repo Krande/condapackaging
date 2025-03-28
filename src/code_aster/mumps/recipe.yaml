@@ -4,7 +4,6 @@ context:
   name: mumps
   version: 5.7.2
   metis_ver: 5.1.0
-  scotch_ver: 7.0.4
   build: ${{ ((build | int + 200) if build_type == 'release' else build|int) + int_type|int }}
   mpi_prefix: nompi
 
@@ -42,8 +41,8 @@ requirements:
     - liblapack
     - if: win
       then: mkl-devel
-    - metis ${{ metis_ver }}.* *${{ build_type }}*INT${{ int_type }}*
-    - scotch ==${{ scotch_ver }} *aster*${{ build_type }}*INT${{ int_type }}*
+    - metis * *${{ build_type }}*INT${{ int_type }}*
+    - scotch * *aster*${{ build_type }}*INT${{ int_type }}*
   run:
     - ${{ pin_compatible('numpy') }}
   ignore_run_exports:
