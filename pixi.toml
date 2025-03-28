@@ -60,7 +60,7 @@ topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-
 intelfortranrt = { cmd = ["rattler-build", "build", "-r", "src/intelfortranrt/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 # Code Aster
-scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml", "--experimental"] }
+scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml", "--experimental"], outputs=["output/*/libscotch*.conda", "output/*/scotch*.conda"] }
 mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 mgis = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mgis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 libmed = { cmd = ["rattler-build", "build", "-r","src/code_aster/libmed/recipe.yaml", "-m", "src/common_rattler.yaml"] }
@@ -70,8 +70,8 @@ mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yam
 code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 code_aster32d = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml',"-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
 
-# "hdf5",
-code-aster-all = { cmd = ["echo", "success"], depends-on = ["scotch", "metis", "mumps",  "libmed", "medcoupling", "mfront", "mgis", "code_aster"] }
+# "hdf5","scotch","metis",  "libmed", "medcoupling", "mfront", "mgis",
+code-aster-all = { cmd = ["echo", "success"], depends-on = [ "mumps",  "code_aster"] }
 
 # Cadquery
 ocp = { cmd = ["rattler-build", "build", "-r","src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
