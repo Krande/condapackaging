@@ -10,10 +10,6 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
-if not "%FC%" == "flang-new" (
-    call %RECIPE_DIR%\activate_ifx.bat
-)
-
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
@@ -24,6 +20,8 @@ if "%build_type%" == "debug" (
 )
 
 set FFLAGS=%FCFLAGS% /fpp /MD
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"
