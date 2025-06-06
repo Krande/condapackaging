@@ -8,6 +8,10 @@ set BISON_PKGDATADIR=%BUILD_PREFIX%\Library\share\winflexbison\data\
 set CC=clang-cl.exe
 set CXX=clang-cl.exe
 @REM set FC=flang-new
+:: Needed by IFX
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
+set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (

@@ -9,10 +9,11 @@ cd build
 set CC=cl
 set CXX=cl
 :: set FC=flang-new
+:: Needed by IFX
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
+set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
-if not "%FC%" == "flang-new" (
-    call %RECIPE_DIR%\activate_ifx.bat
-)
 
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (

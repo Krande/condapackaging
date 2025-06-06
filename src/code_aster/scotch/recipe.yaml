@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: scotch
-  version: 7.0.4
+  version: 7.0.7
   build_base: 0
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
@@ -15,24 +15,10 @@ recipe:
 cache:
   source:
     url: https://gitlab.inria.fr/scotch/scotch/-/archive/v${{ version }}/scotch-v${{ version }}.tar.gz
-    sha256: 8ef4719d6a3356e9c4ca7fefd7e2ac40deb69779a5c116f44da75d13b3d2c2c3
+    sha256: 02084471d2ca525f8a59b4bb8c607eb5cca452d6a38cf5c89f5f92f7edc1a5b5
     patches:
-      - patches/0001-Remove-unconditional-testing.patch
-      - patches/0002-add-COMPONENT-labels-for-easier-split-installation.patch
-      - patches/0003-put-metis-headers-in-include-scotch.patch
-      - patches/0004-fix-language-requirement.patch
-      - patches/0005-use-external-dummysizes.patch
-      - patches/0006-fix-ptesmumps.h.patch
-      - patches/0007-fix-empty-union.patch
-      - patches/0008-win-fix-ssize_t.patch
-      - if: win
-        then: patches/0009-win-fix-context.c.patch
-      - patches/0010-win-fix-flex.patch
-      - patches/0011-win-do-not-link-m.patch
-      - patches/0012-win-fix-threads.patch
-      - patches/0013-win-fix-graph-match-scan.patch
-      - patches/0014-win-disable-fortran-test.patch
-      - patches/0015-win-fix-unistd-time-include.patch
+      - patches/0001-put-metis-headers-in-include-scotch.patch
+
   requirements:
     build:
       - ${{ compiler('c') }}
@@ -84,7 +70,7 @@ outputs:
       build:
         - ${{ compiler('c') }}
         - ${{ stdlib("c") }}
-        - cmake<4
+        - cmake
         - ${{ compiler('fortran') }}
         - if: win
           then:

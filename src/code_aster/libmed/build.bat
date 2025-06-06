@@ -5,6 +5,10 @@ setlocal ENABLEDELAYEDEXPANSION
 mkdir build
 cd build
 :: LLVM Flang support will have to be patched into libmed source code
+:: Needed by IFX
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
+set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 set TGT_BUILD_TYPE=Release
 set CFLAGS=%CFLAGS% /nologo /MD

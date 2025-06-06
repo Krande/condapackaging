@@ -5,6 +5,11 @@ setlocal enabledelayedexpansion
 mkdir build
 cd build
 
+:: Needed by IFX
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
+set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
+
 REM currently fails with debug build
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
