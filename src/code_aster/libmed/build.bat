@@ -5,11 +5,6 @@ setlocal ENABLEDELAYEDEXPANSION
 mkdir build
 cd build
 :: LLVM Flang support will have to be patched into libmed source code
-:: set FC=flang-new
-
-if not "%FC%" == "flang-new" (
-    call %RECIPE_DIR%\activate_ifx.bat
-)
 
 set TGT_BUILD_TYPE=Release
 set CFLAGS=%CFLAGS% /nologo /MD

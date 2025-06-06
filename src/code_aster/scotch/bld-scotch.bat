@@ -9,10 +9,6 @@ set CC=clang-cl.exe
 set CXX=clang-cl.exe
 @REM set FC=flang-new
 
-if not "%FC%" == "flang-new" (
-    call %RECIPE_DIR%\activate_ifx.bat
-)
-
 set TGT_BUILD_TYPE=Release
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug

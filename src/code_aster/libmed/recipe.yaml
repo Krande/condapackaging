@@ -41,8 +41,7 @@ requirements:
   build:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
-    - if: not win
-      then: ${{ compiler('fortran') }}
+    - ${{ compiler('fortran') }}
     - swig ==4.2.1  # SWIG 4.3 is not ABI compatible. See https://github.com/conda-forge/libmed-feedstock/issues/74
     - cmake
     - if: win

@@ -29,7 +29,7 @@ fortran_compiler:
   - if: linux
     then: gfortran
   - if: win
-    then: flang
+    then: ifx
 
 c_compiler_version:
   - if: linux
@@ -43,7 +43,7 @@ fortran_compiler_version:
   - if: linux
     then: 13
   - if: win
-    then: 19
+    then: '2025.*'
 
 clang:
   - if: win
@@ -75,8 +75,6 @@ blas_impl:
       then: mkl
 
 numpy:
-  #- 1.22
-  #- 1.23
   - 1.26
 
 vc:
@@ -84,8 +82,6 @@ vc:
     then: 14
 
 python:
-  #- 3.10
-  #- 3.11
   - 3.12
 
 zip_keys:
@@ -126,4 +122,4 @@ swig:
   - 4.2.1
 
 intel_fortran_rt:
-  - '2025'
+  - '2025.*'

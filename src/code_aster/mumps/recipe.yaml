@@ -60,7 +60,6 @@ tests:
             INT_TYPE: ${{ int_type }}
         files:
           recipe:
-            - activate_ifx.bat
             - run_win_test.bat
             - tests/
         requirements:

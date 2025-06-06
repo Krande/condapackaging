@@ -26,7 +26,7 @@ requirements:
     - ${{ compiler('fortran') }}
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
-    - cmake
+    - cmake <4
     - if: not win
       then: make
     - if: win

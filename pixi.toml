@@ -6,12 +6,12 @@ channels = ["conda-forge"]
 platforms = ["win-64", "linux-64"]
 
 [environments]
-cpack = { features=["cpack"], solve-group="cpack", no-default-feature=true }
-debug = { features=["debug"], no-default-feature=true }
-release = { features=["release"], no-default-feature=true }
-rattler = { features=["rattler"], no-default-feature=true }
-boa = { features=["boa"], no-default-feature=true }
-cpacktest = { features=["cpacktest"], solve-group="cpack", no-default-feature=true }
+cpack = { features = ["cpack"], solve-group = "cpack", no-default-feature = true }
+debug = { features = ["debug"], no-default-feature = true }
+release = { features = ["release"], no-default-feature = true }
+rattler = { features = ["rattler"], no-default-feature = true }
+boa = { features = ["boa"], no-default-feature = true }
+cpacktest = { features = ["cpacktest"], solve-group = "cpack", no-default-feature = true }
 
 
 [dependencies]
@@ -23,7 +23,7 @@ boa = ">=0.17.0,<0.18"
 
 [feature.rattler.dependencies]
 conda-recipe-manager = ">=0.3.0,<0.4"
-rattler-build = { version=">=0.39.0,<0.40" }
+rattler-build = { version = "<0.41" }
 
 [feature.cpack.dependencies]
 python-dotenv = ">=1.0.1,<1.1"
@@ -50,8 +50,8 @@ ca-batch-prep = { cmd = ["python", ".github/actions/ca-batch-prep/set_vars.py"] 
 cpack-ctest-md-gen = { cmd = ["cpack-md-gen"] }
 
 [feature.rattler.tasks]
-flang = { cmd = ["rattler-build", "build","-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-hdf5 = { cmd = ["rattler-build", "build","-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/win-64/hdf5*.conda"] }
+flang = { cmd = ["rattler-build", "build", "-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+hdf5 = { cmd = ["rattler-build", "build", "-r", "src/hdf5/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs = ["output/win-64/hdf5*.conda"] }
 
 topologic = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-core/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-py/recipe.yaml", "-m", "src/common_rattler.yaml"] }
@@ -60,56 +60,40 @@ topologicpy = { cmd = ["rattler-build", "build", "-r", "src/topologic/topologic-
 intelfortranrt = { cmd = ["rattler-build", "build", "-r", "src/intelfortranrt/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
 # Code Aster
-scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml", "--experimental"], outputs=["output/*/libscotch*.conda", "output/*/scotch*.conda"] }
-mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-mgis = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mgis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-libmed = { cmd = ["rattler-build", "build", "-r","src/code_aster/libmed/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-medcoupling = { cmd = ["rattler-build", "build", "-r","src/code_aster/medcoupling/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-metis = { cmd = ["rattler-build", "build", "-r","src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-mumps = { cmd = ["rattler-build", "build", "-r","src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-code_aster = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-code_aster32d = { cmd = ["rattler-build", "build", "-r","src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml',"-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
+scotch = { cmd = ["rattler-build", "build", "-r", "src/code_aster/scotch/recipe.yaml", "-m", "src/common_rattler.yaml", "--experimental"], outputs = ["output/*/libscotch*.conda", "output/*/scotch*.conda"] }
+mfront = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mfront/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/code_aster/mfront/compiler_override.yaml"] }
+mgis = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mgis/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/code_aster/mfront/compiler_override.yaml"] }
+libmed = { cmd = ["rattler-build", "build", "-r", "src/code_aster/libmed/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+medcoupling = { cmd = ["rattler-build", "build", "-r", "src/code_aster/medcoupling/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+metis = { cmd = ["rattler-build", "build", "-r", "src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+mumps = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+code_aster = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+code_aster32d = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml', "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"] }
 
-# "hdf5","scotch","metis",  "libmed", "medcoupling", "mfront", "mgis",
-code-aster-all = { cmd = ["echo", "success"], depends-on = [ "mumps",  "code_aster"] }
+# "hdf5","scotch","metis", "libmed", "medcoupling", "mfront", "mgis",
+code-aster-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "scotch", "metis", "libmed", "medcoupling", "mfront", "mgis", "mumps", "code_aster"] }
 
 # Cadquery
-ocp = { cmd = ["rattler-build", "build", "-r","src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-cadquery = { cmd = ["rattler-build", "build", "-r","src/cadquery/cadquery/recipe.yaml", "-m", "src/common_rattler.yaml"] }
-ipopt = { cmd = ["rattler-build", "build", "-r","src/cadquery/ipopt/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
-casadi = { cmd = ["rattler-build", "build", "-r","src/cadquery/casadi/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml",  "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"] }
+ocp = { cmd = ["rattler-build", "build", "-r", "src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+cadquery = { cmd = ["rattler-build", "build", "-r", "src/cadquery/cadquery/recipe.yaml", "-m", "src/common_rattler.yaml"] }
+ipopt = { cmd = ["rattler-build", "build", "-r", "src/cadquery/ipopt/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"] }
+casadi = { cmd = ["rattler-build", "build", "-r", "src/cadquery/casadi/recipe.yaml", "-m", "src/common_rattler.yaml", "-m", "src/cadquery/ipopt/win2019.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"] }
 
 # Adapy deps
-ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml",  "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/ifcopenshell*.conda"] }
-h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/h5py*.conda"] }
-fltk = { cmd = ["rattler-build", "build", "-r", "src/fltk/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/fltk*.conda"] }
-gmsh = { cmd = ["rattler-build", "build", "-r", "src/gmsh/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/gmsh*.conda"] }
-libnetcdf4 = { cmd = ["rattler-build", "build", "-r", "src/libnetcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/libnetcdf*.conda"] }
-netcdf4 = { cmd = ["rattler-build", "build", "-r", "src/netcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster","-c", "conda-forge"], outputs=["output/*/netcdf*.conda"], depends-on=["libnetcdf4"] }
+ifcopenshell = { cmd = ["rattler-build", "build", "-r", "src/ifcopenshell/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"], outputs = ["output/*/ifcopenshell*.conda"] }
+h5py = { cmd = ["rattler-build", "build", "-r", "src/h5py/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"], outputs = ["output/*/h5py*.conda"] }
+fltk = { cmd = ["rattler-build", "build", "-r", "src/fltk/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"], outputs = ["output/*/fltk*.conda"] }
+gmsh = { cmd = ["rattler-build", "build", "-r", "src/gmsh/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"], outputs = ["output/*/gmsh*.conda"] }
+libnetcdf4 = { cmd = ["rattler-build", "build", "-r", "src/libnetcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"], outputs = ["output/*/libnetcdf*.conda"] }
+netcdf4 = { cmd = ["rattler-build", "build", "-r", "src/netcdf4/recipe.yaml", "-m", "src/common_rattler.yaml", "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"], outputs = ["output/*/netcdf*.conda"], depends-on = ["libnetcdf4"] }
 
 adapy-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "h5py", "ifcopenshell", "code-aster-all"] }
 
 # Calculix
-arpack = { cmd = ["rattler-build", "build", "-r", "src/calculix/arpack/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs=["output/*/arpack*.conda"] }
-
-[feature.boa.tasks]
-
-# Flang
-llvmdev = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/llvmdev" }
-lld = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/lld" }
-clangdev = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/clangdev" }
-compiler-rt = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/compiler-rt" }
-mlir = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/mlir" }
-flang = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang" }
-flang-activation = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/llvm/flang-activation" }
-
-# Calculix
-#calculix = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/calculix" }
-#spooles = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/spooles" }
-#arpack = { cmd = ["conda", "mambabuild", "."], cwd = "src/calculix/arpack" }
+arpack = { cmd = ["rattler-build", "build", "-r", "src/calculix/arpack/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs = ["output/*/arpack*.conda"] }
 
 # Other
-cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"]}
+cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"] }
 #h5py = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/h5py" }
 
 

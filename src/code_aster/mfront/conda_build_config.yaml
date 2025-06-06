@@ -1,3 +1,20 @@
 build_type:
   - release
   - debug
+
+
+c_compiler_version:
+  - if: linux
+    then: 13
+
+cxx_compiler_version:
+  - if: linux
+    then: 13
+
+fortran_compiler:
+  - if: win
+    then: flang
+
+fortran_compiler_version:
+  - if: win
+    then: 19

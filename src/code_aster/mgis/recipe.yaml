@@ -14,8 +14,8 @@ package:
 source:
   - url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-${{ version }}.tar.gz
     sha256: b3776d7b3a534ca626525a42b97665f7660ae2b28ea57b3f53fd7e8538da1ceb
-    patches:
-      - patches/relocate_sp_dir.patch
+    #patches:
+    #  - patches/relocate_sp_dir.patch
 
 build:
   number: ${{ build }}
@@ -28,7 +28,7 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
     - ${{ compiler('fortran') }}
-    - cmake >=3.26.4
+    - cmake <4
     - if: win
       then:
         - ninja

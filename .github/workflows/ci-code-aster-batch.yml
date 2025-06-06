@@ -78,10 +78,10 @@ jobs:
       fail-fast: false
       matrix:
         package: [
-          { name: scotch, use_intel_fortran: True, build_env: "rattler", recipe_file: "__root__/src/code_aster/scotch/recipe.yaml", variants: "", extra: "--experimental" },
+          { name: scotch, use_intel_fortran: False, build_env: "rattler", recipe_file: "__root__/src/code_aster/scotch/recipe.yaml", variants: "", extra: "--experimental" },
           { name: metis, use_intel_fortran: False, build_env: "rattler", recipe_file: "__root__/src/code_aster/metis/recipe.yaml", variants: "", extra: "" },
           { name: homard, use_intel_fortran: False, build_env: "boa", recipe_file: "", variants: "", extra: "" },
-          { name: hdf5, use_intel_fortran: True, build_env: "rattler", recipe_file: "__root__/src/hdf5/recipe.yaml", variants: "", extra: "" }
+          { name: hdf5, use_intel_fortran: False, build_env: "rattler", recipe_file: "__root__/src/hdf5/recipe.yaml", variants: "", extra: "" }
         ]
     with:
       package_name: ${{ matrix.package.name }}
@@ -126,7 +126,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: True
+      use_intel_fortran: False
       use_devtools: True
       build_env: 'rattler'
       recipe_file: "__root__/src/code_aster/mumps/recipe.yaml"
@@ -144,7 +144,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: True
+      use_intel_fortran: False
       use_devtools: True
       build_env: 'rattler'
       recipe_file: "__root__/src/code_aster/libmed/recipe.yaml"
@@ -194,7 +194,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: True
+      use_intel_fortran: False
       use_devtools: True
       build_env: 'rattler'
       recipe_file: "__root__/src/code_aster/mfront/recipe.yaml"
@@ -212,7 +212,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: True
+      use_intel_fortran: False
       use_devtools: True
       build_env: 'rattler'
       recipe_file: "__root__/src/code_aster/mgis/recipe.yaml"
@@ -230,7 +230,7 @@ jobs:
       extra_build_args: ${{ inputs.extra_build_args }}
       upload_conda: True
       build_selection: ${{ inputs.build_selection }}
-      use_intel_fortran: True
+      use_intel_fortran: False
       use_devtools: True
       build_env: 'rattler'
       recipe_file: "__root__/src/code_aster/code_aster/recipe.yaml"

@@ -29,9 +29,9 @@ requirements:
   build:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
+    - ${{ compiler('fortran') }}
     - if: not win
       then:
-        - ${{ compiler('fortran') }}
         - gnuconfig
         - automake
         - autoconf
@@ -40,7 +40,6 @@ requirements:
     - if: win
       then:
         - ninja
-        - ifx_win-64
         - cmake
     - openssl
   host:
