@@ -41,7 +41,7 @@ requirements:
       then:
         - clang
         - ninja
-    - cmake
+    - cmake<4
     - swig
   host:
     - python

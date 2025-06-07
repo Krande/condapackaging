@@ -10,16 +10,12 @@ cpack = { features = ["cpack"], solve-group = "cpack", no-default-feature = true
 debug = { features = ["debug"], no-default-feature = true }
 release = { features = ["release"], no-default-feature = true }
 rattler = { features = ["rattler"], no-default-feature = true }
-boa = { features = ["boa"], no-default-feature = true }
 cpacktest = { features = ["cpacktest"], solve-group = "cpack", no-default-feature = true }
 
 
 [dependencies]
 python-dotenv = ">=1.0.1,<1.1"
 pixi-pycharm = ">=0.0.8,<0.0.9"
-
-[feature.boa.dependencies]
-boa = ">=0.17.0,<0.18"
 
 [feature.rattler.dependencies]
 conda-recipe-manager = ">=0.3.0,<0.4"
@@ -71,7 +67,7 @@ code_aster = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster
 code_aster32d = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml', "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"] }
 
 # "hdf5","scotch","metis", "libmed", "medcoupling", "mfront", "mgis",
-code-aster-all = { cmd = ["echo", "success"], depends-on = ["hdf5", "scotch", "metis", "libmed", "medcoupling", "mfront", "mgis", "mumps", "code_aster"] }
+code-aster-all = { cmd = ["echo", "success"], depends-on = ["mumps", "code_aster"] }
 
 # Cadquery
 ocp = { cmd = ["rattler-build", "build", "-r", "src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }

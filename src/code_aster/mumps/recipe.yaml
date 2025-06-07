@@ -26,9 +26,9 @@ requirements:
   build:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
+    - ${{ compiler('fortran') }}
     - if: not win
       then:
-       - ${{ compiler('fortran') }}
        - waf
        - make
     - if: win
