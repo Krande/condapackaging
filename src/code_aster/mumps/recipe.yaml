@@ -45,9 +45,6 @@ requirements:
     - scotch * *aster*${{ build_type }}*INT${{ int_type }}*
   run:
     - ${{ pin_compatible('numpy') }}
-  ignore_run_exports:
-    by_name:
-      - llvm-openmp
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
 
