@@ -53,9 +53,6 @@ lld:
   - if: win
     then: 19
 
-channel_sources:
-  - conda-forge
-
 libblas:
   - if: not win
     then: ==3.9 *netlib
