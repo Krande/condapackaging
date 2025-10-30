@@ -47,7 +47,7 @@ requirements:
     - ${{ pin_compatible('numpy') }}
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
-
+    - intel-openmp
 tests:
   - if: win
     then:

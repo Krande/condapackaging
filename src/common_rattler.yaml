@@ -81,10 +81,6 @@ vc:
 python:
   - 3.12
 
-zip_keys:
-  - numpy
-  - python
-
 hdf5:
   - 1.14.6
 
@@ -119,4 +115,10 @@ swig:
   - 4.2.1
 
 intel_fortran_rt:
+  - '2025.*'
+
+mkl-devel:
+  - '2025.*'
+
+intel-openmp:
   - '2025.*'

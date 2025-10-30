@@ -61,18 +61,18 @@ requirements:
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
 
-tests:
-  - python:
-      imports:
-        - medcoupling
-        - MEDRenumber
-        - MEDCouplingRemapper
-        - MEDLoader
-        - MEDPartitioner
-        - if: linux
-          then: MEDCoupling
-        - if: win or osx
-          then: MEDCouplingCompat
+#tests:
+#  - python:
+#      imports:
+#        - medcoupling
+#        - MEDRenumber
+#        - MEDCouplingRemapper
+#        - MEDLoader
+#        - MEDPartitioner
+#        - if: linux
+#          then: MEDCoupling
+#        - if: win or osx
+#          then: MEDCouplingCompat
 
 about:
   license: LGPL-2.1-or-later

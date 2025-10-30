@@ -5,6 +5,7 @@ setlocal enabledelayedexpansion
 mkdir build
 cd build
 
+
 :: Set compilers
 set CC=cl
 set CXX=cl
@@ -26,7 +27,7 @@ if "%build_type%" == "debug" (
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB%
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
-set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3
+set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DHAVE_STDATOMIC_H=0 -DHAVE_GCC_ATOMIC_BUILTINS=0
 
 set INTSIZE_BOOL=OFF
 set MKL_VENDOR=MKL
@@ -42,6 +43,15 @@ echo "Build type: %TGT_BUILD_TYPE%, int size: %int_type%, MKL vendor: %MKL_VENDO
 echo "FFLAGS: %FFLAGS%"
 echo "CFLAGS: %CFLAGS%"
 echo "LDFLAGS: %LDFLAGS%"
+echo "FCFLAGS: %FCFLAGS%"
+
+:: Compile atomic stub to provide missing GNU atomic symbols
+cl /c /nologo /O2 %RECIPE_DIR%\atomic_stub.c
+lib /nologo /out:atomic_stub.lib atomic_stub.obj
+
+:: Add atomic stub to linker flags for CMake
+set "CMAKE_EXE_LINKER_FLAGS=%cd%\atomic_stub.lib"
+set "CMAKE_STATIC_LINKER_FLAGS=%cd%\atomic_stub.lib"
 
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
@@ -49,15 +59,18 @@ cmake -G "Ninja" ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
+      -D "CMAKE_EXE_LINKER_FLAGS=%CMAKE_EXE_LINKER_FLAGS%" ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.7.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=%MKL_VENDOR% ^
       -D intsize64:BOOL=%INTSIZE_BOOL% ^
       -D gemmt:BOOL=ON ^
+      -D CMAKE_TLS_VERIFY:BOOL=OFF ^
       -D metis:BOOL=ON ^
       -D scotch:BOOL=ON ^
       -D openmp:BOOL=OFF ^
       -D parallel:BOOL=OFF ^
+      -D autobuild:BOOL=OFF ^
       -D BUILD_SHARED_LIBS:BOOL=OFF ^
       -D BUILD_SINGLE:BOOL=ON ^
       -D BUILD_DOUBLE:BOOL=ON ^
