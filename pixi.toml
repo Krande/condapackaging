@@ -67,7 +67,7 @@ code_aster = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster
 code_aster32d = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml', "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"] }
 
 # "hdf5","scotch","metis", "libmed", "medcoupling", "mfront", "mgis",
-code-aster-all = { cmd = ["echo", "success"], depends-on = ["scotch","mumps", "code_aster"] }
+code-aster-all = { cmd = ["echo", "success"], depends-on = ["mumps", "code_aster"] }
 
 # Cadquery
 ocp = { cmd = ["rattler-build", "build", "-r", "src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }
