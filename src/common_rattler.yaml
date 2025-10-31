@@ -120,5 +120,8 @@ intel_fortran_rt:
 mkl-devel:
   - '2025.*'
 
+mkl:
+  - '2025.*'
+
 intel-openmp:
   - '2025.*'

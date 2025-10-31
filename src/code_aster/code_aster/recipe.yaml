@@ -27,8 +27,7 @@ requirements:
   build:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
-    - if: not win
-      then: ${{ compiler('fortran') }}
+    - ${{ compiler('fortran') }}
     - pyyaml
     - waf ==2.0.27
     - if: win

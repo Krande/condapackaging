@@ -23,11 +23,23 @@ if exist "%tgz_file%" (
 
 echo "Setting compiler env vars"
 
+:: Copy our modified ifort.py to replace the source version
+echo "Copying modified ifort.py to source config directory"
+copy /Y "%RECIPE_DIR%\config\ifort.py" "%SRC_DIR%\config\ifort.py"
+
+:: Set up paths for Intel Fortran compiler in conda environment
+set "PATH=%BUILD_PREFIX%\Library\bin;%BUILD_PREFIX%\Scripts;%PATH%"
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%BUILD_PREFIX%\Library\include;%INCLUDE%"
+
+:: Signal to ifort.py that we're using conda-based Intel Fortran
+set "INTEL_FORTRAN_VERSION=2025.1162"
+set "CONDA_BUILD_INTEL_FORTRAN=1"
+
+echo "Intel Fortran compiler paths configured for conda environment"
+
 :: set FC=flang-new.exe
 set FC=ifx.exe
-:: Needed by IFX
-set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
-set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 

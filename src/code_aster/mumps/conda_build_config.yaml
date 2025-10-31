@@ -6,5 +6,4 @@ build_type:
   - debug
 
 int_type:
-  - 32
   - 64
