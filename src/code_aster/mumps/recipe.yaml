@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: mumps
   version: 5.7.2
-  build_base: 1
+  build_base: 2
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + build_base|int }}
   mpi_prefix: nompi
 
@@ -14,6 +14,8 @@ package:
 source:
   - url: https://github.com/Krande/mumps/archive/refs/tags/v5.7.2.2.tar.gz
     sha256: 5810cd68efadb99675a92a08a0e50eb7eae24ca35d4d6ddc9537dfc09f144f6f
+    patches:
+      - patches/0001-Respect-openmp-option-for-IntelLLVM-and-MSVC-guard-OpenMP-flags.patch
 
 build:
   number: ${{ build }}
@@ -27,6 +29,7 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
     - ${{ compiler('fortran') }}
+    - ${{ stdlib("c") }}
     - if: not win
       then:
        - waf
@@ -40,7 +43,8 @@ requirements:
     - libblas
     - liblapack
     - if: win
-      then: mkl-devel
+      then:
+        - mkl-devel
     - metis * *${{ build_type }}*INT${{ int_type }}*
     - scotch * *aster*${{ build_type }}*INT${{ int_type }}*
   run:

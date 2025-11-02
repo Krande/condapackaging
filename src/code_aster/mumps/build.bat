@@ -45,14 +45,6 @@ echo "CFLAGS: %CFLAGS%"
 echo "LDFLAGS: %LDFLAGS%"
 echo "FCFLAGS: %FCFLAGS%"
 
-:: Compile atomic stub to provide missing GNU atomic symbols
-cl /c /nologo /O2 %RECIPE_DIR%\atomic_stub.c
-lib /nologo /out:atomic_stub.lib atomic_stub.obj
-
-:: Add atomic stub to linker flags for CMake
-set "CMAKE_EXE_LINKER_FLAGS=%cd%\atomic_stub.lib"
-set "CMAKE_STATIC_LINKER_FLAGS=%cd%\atomic_stub.lib"
-
 :: Configure using the CMakeFiles
 cmake -G "Ninja" ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^

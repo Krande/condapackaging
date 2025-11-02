@@ -1,0 +1,47 @@
+From 4d1a6a7c3b3d7e6b9f2b1a4e1234567890abcdef Mon Sep 17 00:00:00 2001
+From: Code Aster Packaging <maintainers@example.com>
+Date: Sun, 2 Nov 2025 19:55:00 +0100
+Subject: [PATCH] Respect `openmp` option for IntelLLVM and MSVC: guard
+ OpenMP flags
+
+On Windows (ifx/icx) the build injected `/Qopenmp` unconditionally via
+`cmake/compilers.cmake`, regardless of the `-D openmp:BOOL=OFF` option.
+This causes the compiler to honor OpenMP directives and emit calls to
+GNU-style `__atomic_*` builtins, which are unresolved on MSVC link.
+
+This patch gates the OpenMP compiler flags behind the `openmp` CMake
+option for both IntelLLVM (ifx/icx) and MSVC (C language), so that when
+`openmp=OFF` no OpenMP flags are added and OpenMP directives are ignored.
+
+Files:
+- cmake/compilers.cmake
+
+--- a/cmake/compilers.cmake
++++ b/cmake/compilers.cmake
+@@ -22,12 +22,12 @@ if(CMAKE_C_COMPILER_ID MATCHES "^Intel")
+   endif()
+ 
+-  add_compile_options($<$<COMPILE_LANG_AND_ID:C,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>)
++  add_compile_options($<$<AND:$<COMPILE_LANG_AND_ID:C,IntelLLVM>,$<BOOL:${openmp}>>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>)
+ elseif(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
+   add_compile_options("$<$<COMPILE_LANGUAGE:C>:-Werror-implicit-function-declaration;-fno-strict-aliasing>")
+ elseif(CMAKE_C_COMPILER_ID MATCHES "MSVC")
+-  add_compile_options($<$<COMPILE_LANGUAGE:C>:/openmp>)
++  add_compile_options($<$<AND:$<COMPILE_LANGUAGE:C>,$<BOOL:${openmp}>>:/openmp>)
+ endif()
+ 
+ 
+ if(CMAKE_Fortran_COMPILER_ID MATCHES "^Intel")
+   add_compile_options(
+@@ -41,7 +41,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "^Intel")
+   endif()
+ 
+-  add_compile_options($<$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>)
++  add_compile_options($<$<AND:$<COMPILE_LANG_AND_ID:Fortran,IntelLLVM>,$<BOOL:${openmp}>>:$<IF:$<BOOL:${WIN32}>,/Qopenmp,-fiopenmp>>)
+ 
+   if(intsize64)
+     add_compile_definitions($<$<COMPILE_LANGUAGE:Fortran>:WORKAROUNDINTELILP64MPI2INTEGER>)
+   endif()
+ 
+-- 
+2.46.0
