@@ -14,8 +14,8 @@ package:
 source:
   - url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-${{ version }}.tar.gz
     sha256: a0e6af65f5fd2237f39306354ef786eadb0c6bc6868c23e2681e04a83e629ad2
-    #patches:
-    #  - patches/relocate_sp_dir.patch
+    patches:
+      - patches/relocate_sp_dir.patch
 
 build:
   number: ${{ build }}
@@ -47,6 +47,26 @@ requirements:
     - ${{ pin_compatible('numpy') }}
   run_exports:
     - ${{ pin_subpackage(name, upper_bound='x.x') }}
+
+tests:
+  - python:
+      imports:
+        - mgis
+  - requirements:
+      run:
+        - pip
+    script:
+      - pip check
+      - if: linux
+        then:
+          - test -f $PREFIX/lib/libMFrontGenericInterface.so
+      - if: osx
+        then:
+          - test -f $PREFIX/lib/libMFrontGenericInterface.dylib
+      - if: not win
+        then:
+          - test -f $PREFIX/include/MGIS/Config.hxx
+          - test -f $PREFIX/share/mgis/cmake/MFrontGenericInterfaceConfig.cmake
 
 about:
   license: Apache-2.0

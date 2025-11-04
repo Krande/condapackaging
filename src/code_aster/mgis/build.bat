@@ -19,7 +19,15 @@ if "%build_type%" == "debug" (
 REM create new env var with removed . in PY_VER
 set PY_VER_CLEAN=%PY_VER:.=%
 
+rem Normalize SP_DIR to forward slashes for CMake
+set "SP_DIR_FWD=%SP_DIR:\=/%"
+
+REM Suppress MSVC STL export warnings in MGIS build (Windows only)
+set "CXXFLAGS=%CXXFLAGS% /wd4251 /wd4275 /EHsc"
+set "CFLAGS=%CFLAGS% /wd4251 /wd4275"
+
 cmake -B build . -G "Ninja" ^
+    %CMAKE_ARGS% ^
     -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
     -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
     -D CMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^
@@ -37,14 +45,13 @@ cmake -B build . -G "Ninja" ^
     -D PYTHON_LIBRARY_PATH:PATH="%PREFIX%/libs" ^
     -D PYTHON_INCLUDE_DIRS:PATH="%PREFIX%/include" ^
     -D USE_EXTERNAL_COMPILER_FLAGS=ON ^
-    -D MGIS_PYTHON_SITE_PACKAGES_DIRECTORY:PATH=%SP_DIR%
+    -D MGIS_APPEND_SUFFIX=OFF ^
+    -D MGIS_PYTHON_SITE_PACKAGES_DIRECTORY:PATH=%SP_DIR% ^
+    -D SITE_PACKAGES_DIR:PATH="%SP_DIR_FWD%"
 
 cmake --build build --target install
 
-IF ERRORLEVEL 1 (
-  type configure.log
-  exit /b 1
-)
+if errorlevel 1 exit 1
 
 echo "Moving lib files to %LIBRARY_BIN%"
 for %%f in ("%LIBRARY_BIN%\*.lib") do move "%%f" "%LIBRARY_LIB%"
