@@ -36,12 +36,23 @@ if "%build_type%" == "debug" (
 REM create new env var with removed . in PY_VER
 set PY_VER_CLEAN=%PY_VER:.=%
 
+REM NumPy include directory (Conda/Rattler)
+set "NP_INCLUDE=%SP_DIR%\numpy\core\include"
+
+REM Ensure the compiler always sees NumPy headers (clang-cl accepts -I)
+set "CPPFLAGS=%CPPFLAGS% -I%NP_INCLUDE%"
+set "CFLAGS=%CFLAGS% -I%NP_INCLUDE%"
+set "CXXFLAGS=%CXXFLAGS% -I%NP_INCLUDE%"
+set "LDFLAGS=%LDFLAGS% /LIBPATH:%PREFIX%\libs"
+
 cmake -B build . -G "Ninja" -Wno-dev ^
     %CMAKE_ARGS% ^
     -D CMAKE_CXX_COMPILER=clang-cl ^
     -D CMAKE_C_COMPILER=clang-cl ^
     -D CMAKE_LINKER=lld-link ^
     -D CMAKE_NM=llvm-nm ^
+    -D CMAKE_SHARED_LINKER_FLAGS="/LIBPATH:%PREFIX%/libs" ^
+    -D CMAKE_MODULE_LINKER_FLAGS="/LIBPATH:%PREFIX%/libs" ^
     -D CMAKE_BUILD_TYPE=%TGT_BUILD_TYPE% ^
     -D enable-fortran=ON ^
     -D enable-python-bindings=ON ^
@@ -52,9 +63,14 @@ cmake -B build . -G "Ninja" -Wno-dev ^
     -D Python_ADDITIONAL_VERSIONS=%PY_VER% ^
     -D enable-python=ON ^
     -D PYTHON_EXECUTABLE:FILEPATH=%PYTHON% ^
+    -D Python3_EXECUTABLE:FILEPATH=%PYTHON% ^
+    -D Python3_LIBRARY:FILEPATH=%PREFIX%\libs\python%PY_VER_CLEAN%.lib ^
     -D PYTHON_LIBRARY:FILEPATH=%PREFIX%\libs\python%PY_VER_CLEAN%.lib ^
-    -D PYTHON_INCLUDE_DIRS:PATH=%LIBRARY_PREFIX%\include ^
+    -D PYTHON_INCLUDE_DIRS:PATH="%LIBRARY_PREFIX%\include" ^
+    -D Python3_NumPy_INCLUDE_DIRS:PATH="%NP_INCLUDE%" ^
+    -D NUMPY_INCLUDE_DIR:PATH="%NP_INCLUDE%" ^
     -D TFEL_PYTHON_SITE_PACKAGES_DIR:PATH=%SP_DIR% ^
+    -D TFEL_PYTHON_INCLUDES:STRING="-I%LIBRARY_PREFIX%/include -I%SP_DIR%/numpy/core/include" ^
     -D USE_EXTERNAL_COMPILER_FLAGS=ON
 
 REM Adjust the parallel build command as needed; for example, you can replace $(nproc) with the number of cores on your machine

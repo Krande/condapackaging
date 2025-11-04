@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: mgis
-  version: 2.2
+  version: 2.2.1
   build_base: 0
   build: ${{ (200 if build_type == 'release' else 0) + build_base|int }}
 
@@ -13,7 +13,7 @@ package:
 
 source:
   - url: https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-${{ version }}.tar.gz
-    sha256: b3776d7b3a534ca626525a42b97665f7660ae2b28ea57b3f53fd7e8538da1ceb
+    sha256: a0e6af65f5fd2237f39306354ef786eadb0c6bc6868c23e2681e04a83e629ad2
     #patches:
     #  - patches/relocate_sp_dir.patch
 

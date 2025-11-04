@@ -3,7 +3,7 @@ schema_version: 1
 
 context:
   name: mfront
-  version: 4.2.2
+  version: 4.2.3
   build_base: 0
   build: ${{ (200 if build_type == 'release' else 0) + build_base|int }}
 
@@ -13,7 +13,7 @@ package:
 
 source:
   url: https://github.com/thelfer/tfel/archive/refs/tags/TFEL-${{ version }}.tar.gz
-  sha256: 021864ad5b27ffce1915bcacc8f39f3e8a72ce6bd32e80a61ea0998a060180e5
+  sha256: a4f636ff9aeb6146a2d4f4bfd261092d6aa6c89be1ca725cefa8c02a5ec5183a
   file_name: ${{ name }}_${{ version }}.tar.gz
 
 build:
@@ -43,6 +43,7 @@ requirements:
   host:
     - libboost-python-devel
     - python
+    - numpy
     - if: linux
       then: zlib
   run:
