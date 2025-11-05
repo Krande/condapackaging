@@ -18,6 +18,7 @@ cache:
     sha256: 02084471d2ca525f8a59b4bb8c607eb5cca452d6a38cf5c89f5f92f7edc1a5b5
     patches:
       - patches/0001-put-metis-headers-in-include-scotch.patch
+      - patches/0016-fix-fortify-source-detection.patch
 
   requirements:
     build:

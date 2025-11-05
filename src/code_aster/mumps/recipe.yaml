@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: mumps
   version: 5.7.2
-  build_base: 2
+  build_base: 3
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + build_base|int }}
   mpi_prefix: nompi
 
@@ -16,6 +16,7 @@ source:
     sha256: 5810cd68efadb99675a92a08a0e50eb7eae24ca35d4d6ddc9537dfc09f144f6f
     patches:
       - patches/0001-Respect-openmp-option-for-IntelLLVM-and-MSVC-guard-OpenMP-flags.patch
+      - patches/0002-Suppress-argument-mismatch-warnings-for-gfortran.patch
 
 build:
   number: ${{ build }}
@@ -30,12 +31,8 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ compiler('fortran') }}
     - ${{ stdlib("c") }}
-    - if: not win
-      then:
-       - waf
-       - make
-    - if: win
-      then: cmake
+    - cmake
+    - ninja
   host:
     - python
     - numpy

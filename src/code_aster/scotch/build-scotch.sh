@@ -10,7 +10,7 @@ else
   shared_flags="-Wl,-shared"
 fi
 
-if [[ "$mpi" == "nompi" ]]; then
+if [[ "$mpi" == "nompi" ]] || [[ -z "$mpi" ]]; then
   USE_MPI=OFF
 else
   USE_MPI=ON
@@ -24,7 +24,7 @@ else
   echo "Debugging Disabled"
 fi
 
-if [[ "${mpi}" == "nompi" ]]; then
+if [[ "${mpi}" == "nompi" ]] || [[ -z "${mpi}" ]]; then
   echo "Building Scotch without MPI support"
 fi
 BUILD_DUMMYSIZES=ON

@@ -5,6 +5,15 @@ description = "A project for developing conda packages"
 channels = ["conda-forge"]
 platforms = ["win-64", "linux-64"]
 
+[feature.debug]
+platforms = ["win-64", "linux-64"]
+channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
+
+[feature.release]
+platforms = ["win-64", "linux-64"]
+channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
+
+
 [environments]
 cpack = { features = ["cpack"], solve-group = "cpack", no-default-feature = true }
 debug = { features = ["debug"], no-default-feature = true }
@@ -12,29 +21,45 @@ release = { features = ["release"], no-default-feature = true }
 rattler = { features = ["rattler"], no-default-feature = true }
 cpacktest = { features = ["cpacktest"], solve-group = "cpack", no-default-feature = true }
 
-
 [dependencies]
-python-dotenv = ">=1.0.1,<1.1"
-pixi-pycharm = ">=0.0.8,<0.0.9"
+python-dotenv = ">=1.2.1,<2"
+pixi-pycharm = ">=0.0.9,<0.0.10"
 
 [feature.rattler.dependencies]
-conda-recipe-manager = ">=0.3.0,<0.4"
-rattler-build = { version = "*" }
+conda-recipe-manager = ">=0.8.0,<0.9"
+rattler-build = ">=0.49.0,<0.50"
 
 [feature.cpack.dependencies]
-python-dotenv = ">=1.0.1,<1.1"
+python-dotenv = ">=1.2.1,<2"
 quetz-client = ">=0.5.0,<0.6"
-python-libarchive-c = "*"
-"ruamel.yaml.jinja2" = "*"
-typer = "*"
-toposort = "*"
-colorama = "*"
-boa = "*"
-rattler-build = "*"
-py-rattler-build = "*"
+python-libarchive-c = ">=5.3,<6"
+"ruamel.yaml.jinja2" = ">=0.2.7,<0.3"
+typer = ">=0.20.0,<0.21"
+toposort = ">=1.10,<2"
+colorama = ">=0.4.6,<0.5"
+boa = ">=0.17.0,<0.18"
+rattler-build = ">=0.49.0,<0.50"
+py-rattler-build = ">=0.47.0,<0.48"
 
 [feature.cpacktest.dependencies]
-pytest = "*"
+pytest = ">=8.4.2,<9"
+
+[feature.debug.dependencies]
+hdf5 = { version = ">=1.14.4.3,<2", build = "*debug*" }
+libmed = { version = ">=4.1.1.6,<5", build = "*debug*" }
+medcoupling = { version = ">=9.12.0,<10", build = "*debug*" }
+mfront = { version = ">=4.2.0,<5", build = "*debug*" }
+mgis = { version = ">=2.2,<3", build = "*debug*" }
+scotch = { version = ">=7.0.4,<8", build = "*debug*" }
+
+[feature.release.dependencies]
+hdf5 = { version = ">=1.14.4.3,<2", build = "*release*" }
+libmed = { version = ">=4.1.1.6,<5", build = "*release*" }
+medcoupling = { version = ">=9.12.0,<10", build = "*release*" }
+mfront = { version = ">=4.2.0,<5", build = "*release*" }
+mgis = { version = ">=2.2,<3", build = "*release*" }
+scotch = { version = ">=7.0.4,<8", build = "*release*" }
+#code_aster = { build = "*release*" }
 
 [feature.cpack.pypi-dependencies]
 cpack = { path = "./src/cpack", editable = true }
@@ -92,8 +117,6 @@ arpack = { cmd = ["rattler-build", "build", "-r", "src/calculix/arpack/recipe.ya
 cpack-config = { cmd = ["python", "src/cpack/cpack/condarc_builder.py", "--condarc-filepath=$CONDA_PREFIX/.condarc"] }
 #h5py = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "src/h5py" }
 
-
-
 # OCCT
 occt = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/occt" }
 pyocc = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml", "--python", "3.12", "--variants", "\"{'build_type':'debug','variant':'novtk'}\""], cwd = "src/pythonocc-core" }
@@ -103,31 +126,6 @@ stepcode = { cmd = ["conda", "mambabuild", ".", "-m", "../common.yaml"], cwd = "
 homard = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/homard" }
 parmetis = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/parmetis" }
 petsc = { cmd = ["conda", "mambabuild", ".", "-m", "../../common.yaml"], cwd = "src/code_aster/petsc" }
-
-[feature.debug]
-platforms = ["win-64", "linux-64"]
-channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
-
-[feature.debug.dependencies]
-hdf5 = { build = "*debug*" }
-libmed = { build = "*debug*" }
-medcoupling = { build = "*debug*" }
-mfront = { build = "*debug*" }
-mgis = { build = "*debug*" }
-scotch = { build = "*debug*" }
-
-[feature.release]
-platforms = ["win-64", "linux-64"]
-channels = ["https://repo.prefix.dev/code-aster", "conda-forge"]
-
-[feature.release.dependencies]
-hdf5 = { build = "*release*" }
-libmed = { build = "*release*" }
-medcoupling = { build = "*release*" }
-mfront = { build = "*release*" }
-mgis = { build = "*release*" }
-scotch = { build = "*release*" }
-#code_aster = { build = "*release*" }
 
 
 [feature.release.tasks]

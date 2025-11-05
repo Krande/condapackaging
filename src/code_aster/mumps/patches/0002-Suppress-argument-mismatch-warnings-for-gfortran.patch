@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Code Aster Packaging <maintainers@example.com>
+Date: Tue, 5 Nov 2025 10:00:00 +0100
+Subject: [PATCH] Suppress argument mismatch warnings for gfortran 10+
+
+Add -Wno-argument-mismatch flag to suppress type/rank mismatch warnings
+in MPI calls. The -fallow-argument-mismatch flag (already present) allows
+compilation despite these mismatches, but still emits warnings. Adding
+-Wno-argument-mismatch suppresses the warning output for cleaner builds.
+
+These mismatches are intentional when using MUMPS with -fdefault-integer-8
+as the interface uses explicit INTEGER(4) types.
+
+Files:
+- cmake/compilers.cmake
+
+--- a/cmake/compilers.cmake
++++ b/cmake/compilers.cmake
+@@ -49,7 +49,7 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+   add_compile_options(
+   $<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
+-  "$<$<AND:$<VERSION_GREATER_EQUAL:${CMAKE_Fortran_COMPILER_VERSION},10>,$<COMPILE_LANGUAGE:Fortran>>:-fallow-argument-mismatch;-fallow-invalid-boz;-fno-strict-aliasing>"
++  "$<$<AND:$<VERSION_GREATER_EQUAL:${CMAKE_Fortran_COMPILER_VERSION},10>,$<COMPILE_LANGUAGE:Fortran>>:-fallow-argument-mismatch;-Wno-argument-mismatch;-fallow-invalid-boz;-fno-strict-aliasing>"
+   )
+
+   if(NOT CMAKE_CROSSCOMPILING AND NOT CRAY)
+

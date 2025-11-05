@@ -18,7 +18,12 @@ fi
 # Needed for the pthread library when linking with scotch
 LDFLAGS="$LDFLAGS -L$PREFIX/lib -lpthread"
 CFLAGS="$CFLAGS -Dtry_null_space -DUSE_SCHEDAFFINITY -DPORD_INTSIZE64"
-FCFLAGS="$FCFLAGS -fdefault-real-8 -fdefault-integer-8 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64"
+# Note: -fdefault-integer-8 is automatically added by CMake when intsize64=ON (see cmake/compilers.cmake)
+# We should NOT add it manually here as it interferes with the INTEGER(4) interface headers
+FCFLAGS="$FCFLAGS -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DPORD_INTSIZE64"
+
+# Note: -fallow-argument-mismatch and -Wno-argument-mismatch are now added by the patched
+# cmake/compilers.cmake for gfortran >= 10. These flags suppress MPI type mismatch warnings.
 
 # Configure using CMake
 cmake -G "Ninja" \

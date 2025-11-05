@@ -35,7 +35,9 @@ set MKL_VENDOR=MKL
 if "%int_type%" == "64" (
     echo "Using 64-bit integers"
     set CFLAGS=%CFLAGS% -DPORD_INTSIZE64
-    set FCFLAGS=%FCFLAGS% -DPORD_INTSIZE64 /integer-size:64 /4I8
+    :: Note: /integer-size:64 and /4I8 are automatically added by CMake when intsize64=ON
+    :: We should NOT add them manually here as it interferes with the INTEGER(4) interface headers
+    set FCFLAGS=%FCFLAGS% -DPORD_INTSIZE64
     set INTSIZE_BOOL=ON
     set MKL_VENDOR=MKL64
 )

@@ -1,5 +1,6 @@
 mpi:
   - nompi
+  - openmpi                  # [unix]
 
 build_type:
   - release

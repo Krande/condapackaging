@@ -49,13 +49,17 @@ export FFLAGS="-fdefault-integer-8 ${FFLAGS}"
 
 # if gfortran version > 9, we need to conditionally add -fallow-argument-mismatch
 # to avoid mismatch errors related to floats and integer types
+# This is especially important when calling MUMPS which uses explicit INTEGER(4)
+# while code_aster uses -fdefault-integer-8
 major_version=$($FC -dumpversion | awk -F. '{print $1}')
 if [[ $major_version -gt 9 ]]; then
-  echo "adding -fallow-argument-mismatch to FCFLAGS"
+  echo "adding -fallow-argument-mismatch to FCFLAGS and FFLAGS"
 
   export FCFLAGS="-fallow-argument-mismatch ${FCFLAGS}"
+  export FFLAGS="-fallow-argument-mismatch ${FFLAGS}"
 else
   echo "FCFLAGS: $FCFLAGS"
+  echo "FFLAGS: $FFLAGS"
 fi
 
 
