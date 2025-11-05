@@ -43,7 +43,7 @@ fortran_compiler_version:
   - if: linux
     then: 13
   - if: win
-    then: '2025.*'
+    then: '2025.0'
 
 clang:
   - if: win

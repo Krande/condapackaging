@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: hdf5
   version: 1.14.6
-  build_base: 0
+  build_base: 10
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
   build: ${{ (200 if build_type == 'release' else build_base|int) + int_type|int + mpi_num|int }}
   mpi_prefix: ${{ mpi or 'nompi' }}
