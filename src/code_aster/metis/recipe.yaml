@@ -9,7 +9,7 @@ context:
 
 package:
   name: ${{ name|lower }}
-  version: ${{ version }}.1
+  version: ${{ version }}
 
 source:
   - url: https://github.com/scivision/METIS/archive/refs/tags/v${{version}}.tar.gz
