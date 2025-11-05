@@ -35,8 +35,8 @@ set MKL_VENDOR=MKL
 if "%int_type%" == "64" (
     echo "Using 64-bit integers"
     set CFLAGS=%CFLAGS% -DPORD_INTSIZE64
-    :: Note: /integer-size:64 and /4I8 are automatically added by CMake when intsize64=ON
-    :: We should NOT add them manually here as it interferes with the INTEGER(4) interface headers
+    @REM Note: /integer-size:64 and /4I8 are automatically added by CMake when intsize64=ON
+    @REM We should NOT add them manually here as it interferes with the INTEGER(4) headers
     set FCFLAGS=%FCFLAGS% -DPORD_INTSIZE64
     set INTSIZE_BOOL=ON
     set MKL_VENDOR=MKL64
@@ -52,7 +52,7 @@ cmake -G "Ninja" ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
-      -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
+      -D CMAKE_VERBOSE_MAKEFILE:BOOL=OFF ^
       -D "CMAKE_EXE_LINKER_FLAGS=%CMAKE_EXE_LINKER_FLAGS%" ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.7.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
@@ -77,10 +77,5 @@ cmake --build . --config %TGT_BUILD_TYPE% --target install
 
 if errorlevel 1 exit 1
 
-if "%int_type%" == "32" (
-    python %RECIPE_DIR%/make_integers_explicit.py
-)
-
-if errorlevel 1 exit 1
 
 endlocal
