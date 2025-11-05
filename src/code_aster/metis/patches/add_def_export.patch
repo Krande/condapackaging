@@ -1,5 +1,3 @@
-Subject: [PATCH] add def export
----
 Index: CMakeLists.txt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -7,7 +5,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt	(revision e3b7cc43bc15696a06c21d19fd5376d34eb8b3ca)
-+++ b/CMakeLists.txt	(date 1720182349456)
++++ b/CMakeLists.txt	(revision 95302ab440d778d1504e00969fa9febc09acf478)
 @@ -12,6 +12,7 @@
  enable_testing()
  
@@ -23,13 +21,29 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/src/libmetis/CMakeLists.txt b/src/libmetis/CMakeLists.txt
 --- a/src/libmetis/CMakeLists.txt	(revision e3b7cc43bc15696a06c21d19fd5376d34eb8b3ca)
-+++ b/src/libmetis/CMakeLists.txt	(date 1720181919576)
-@@ -2,6 +2,8 @@
++++ b/src/libmetis/CMakeLists.txt	(revision 95302ab440d778d1504e00969fa9febc09acf478)
+@@ -2,6 +2,7 @@
  file(GLOB metis_sources *.c)
  # Build libmetis.
  add_library(metis ${METIS_LIBRARY_TYPE} ${GKlib_sources} ${metis_sources})
 +target_link_options(metis PRIVATE /DEF:src/libmetis/CMakeFiles/metis.dir/./exports.def)
-+
  target_include_directories(metis PUBLIC
  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
  $<INSTALL_INTERFACE:include>
+Index: src/GKlib/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/GKlib/CMakeLists.txt b/src/GKlib/CMakeLists.txt
+--- a/src/GKlib/CMakeLists.txt	(revision e3b7cc43bc15696a06c21d19fd5376d34eb8b3ca)
++++ b/src/GKlib/CMakeLists.txt	(revision 95302ab440d778d1504e00969fa9febc09acf478)
+@@ -6,6 +6,8 @@
+ include(GKlibSystem.cmake)
+ 
+ add_library(GKlib STATIC ${GKlib_sources})
++#target_link_options(GKlib PRIVATE /DEF:CMakeFiles/metis.dir/./exports.def)
++
+ target_link_libraries(GKlib PRIVATE $<$<BOOL:${UNIX}>:m>)
+ target_include_directories(GKlib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+ 

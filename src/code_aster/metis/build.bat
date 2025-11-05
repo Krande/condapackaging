@@ -8,11 +8,13 @@ cd build
 set CFLAGS=%CFLAGS% /nologo
 
 set TGT_BUILD_TYPE=Release
+set CMAKE_DEBUG_INFO_FORMAT=
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
     rem Embed debug info in .obj to avoid external PDB requirements (/Z7 instead of /Zi)
     set CFLAGS=%CFLAGS% /Od /Z7
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+    set CMAKE_DEBUG_INFO_FORMAT=-D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded
 )
 echo "Build type: %TGT_BUILD_TYPE%, INT_TYPE: %int_type%"
 
@@ -25,7 +27,7 @@ cmake ^
     -D CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=ON ^
     -D BUILD_TESTING:BOOL=ON ^
     -D BUILD_SHARED_LIBS=OFF ^
-    -D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded ^
+    %CMAKE_DEBUG_INFO_FORMAT% ^
     -D intsize=%int_type% ^
     -D realsize=%int_type% ^
     ..
