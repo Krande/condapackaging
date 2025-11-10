@@ -17,11 +17,14 @@ set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 
 set TGT_BUILD_TYPE=Release
+set CMAKE_DEBUG_INFO_FORMAT=
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
-    set CFLAGS=%CFLAGS% /nologo /Od /debug /Zi
-    set FCFLAGS=%FCFLAGS% /nologo /Od /debug /Zi /debug-parameters:all /traceback
+    rem Embed debug info in .obj to avoid external PDB requirements (/Z7 instead of /Zi)
+    set CFLAGS=%CFLAGS% /nologo /Od /debug /Z7
+    set FCFLAGS=%FCFLAGS% /nologo /Od /debug /Z7 /debug-parameters:all /traceback
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+    set CMAKE_DEBUG_INFO_FORMAT=-D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded
 )
 
 :: Needed for the pthread library when linking with scotch
@@ -54,6 +57,7 @@ cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D CMAKE_VERBOSE_MAKEFILE:BOOL=OFF ^
       -D "CMAKE_EXE_LINKER_FLAGS=%CMAKE_EXE_LINKER_FLAGS%" ^
+      %CMAKE_DEBUG_INFO_FORMAT% ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.7.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=%MKL_VENDOR% ^

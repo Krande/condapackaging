@@ -14,15 +14,18 @@ set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 set TGT_BUILD_TYPE=Release
+set CMAKE_DEBUG_INFO_FORMAT=
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
     if "%FC%" == "flang-new" (
         set FCFLAGS=%FCFLAGS% -g -cpp
     ) else (
-        set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
+        rem Embed debug info in .obj to avoid external PDB requirements (/Z7 instead of /Zi)
+        set FCFLAGS=%FCFLAGS% /Od /debug /Z7 /traceback
     )
-    set CFLAGS=%CFLAGS% /Od /Zi
+    set CFLAGS=%CFLAGS% /Od /Z7
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
+    set CMAKE_DEBUG_INFO_FORMAT=-D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded
 )
 
 set CFLAGS=%CFLAGS% /nologo
@@ -51,6 +54,7 @@ cmake ^
   -D BUILD_SHARED_LIBS=OFF ^
   -D INTSIZE=%int_type% ^
   -D CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
+  %CMAKE_DEBUG_INFO_FORMAT% ^
   -D MPI_THREAD_MULTIPLE=%USE_MPI% ^
   -D BUILD_PTSCOTCH=%USE_MPI% ^
   -B build ^
