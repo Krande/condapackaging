@@ -5,7 +5,7 @@ context:
   version: 1.14.6
   build_base: 10
   mpi_num: ${{ 100 if mpi == 'nompi' else 0 }}
-  build: ${{ (200 if build_type == 'release' else 0) + int_type|int + mpi_num|int + build_base|int }}
+  build: ${{ (200 if build_type == 'release' else 0) + mpi_num|int + build_base|int }}
   mpi_prefix: ${{ mpi or 'nompi' }}
 
 package:
@@ -17,11 +17,6 @@ source:
   sha256: 09ee1c671a87401a5201c06106650f62badeea5a3b3941e9b1e2e1e08317357f
 
 build:
-  script:
-    - if: win
-      then: bld.bat
-    - if: not win
-      then: build.sh
   number: ${{ build }}
   string: ${{ mpi_prefix }}_${{ build_type }}_h${{ hash }}_${{ build }}
 
@@ -62,9 +57,9 @@ tests:
       run:
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
+        - ${{ compiler('fortran') }}
         - if: not win
           then:
-            - ${{ compiler('fortran') }}
             - pkg-config
             - cmake
             - make

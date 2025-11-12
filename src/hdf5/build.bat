@@ -5,8 +5,6 @@ setlocal ENABLEDELAYEDEXPANSION
 mkdir build
 cd build
 
-:: set FC=flang-new
-
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 

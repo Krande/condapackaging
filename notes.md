@@ -44,3 +44,10 @@ The solution seems to be to add a `.gitattributes` file with the  `*.patch binar
 ## Create a conda package from a pip package
 
 install grayskull and do `grayskull pypi <pypi-package-name>`
+
+
+## Patches
+
+To make a patch of all changes since a given tag, excluding certain files or directories:
+
+`git diff 4.1.1 HEAD -- . ":(exclude)conda" ":(exclude)pixi.toml" ":(exclude)pixi.lock" > changes-since-4.1.1-filtered.patch`
