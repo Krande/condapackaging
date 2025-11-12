@@ -50,4 +50,10 @@ install grayskull and do `grayskull pypi <pypi-package-name>`
 
 To make a patch of all changes since a given tag, excluding certain files or directories:
 
-`git diff 4.1.1 HEAD -- . ":(exclude)conda" ":(exclude)pixi.toml" ":(exclude)pixi.lock" > changes-since-4.1.1-filtered.patch`
+`
+git diff 4.1.1 HEAD -- . ":(exclude)conda" ":(exclude)pixi.toml" ":(exclude)pixi.lock" ":(exclude).github" ":(exclude).idea" ":(exclude)activate.bat" ":(exclude)activate_intel.bat" ":(exclude)CMakePresets.json" ":(exclude)tests_custom" > changes-since-4.1.1-filtered.patch
+`
+
+get the output of the patch file using powershell:
+
+`Get-Content changes-since-4.1.1-filtered.patch | Select-String "^diff --git" | Select-Object -First 100`

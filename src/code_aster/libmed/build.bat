@@ -4,7 +4,6 @@ setlocal ENABLEDELAYEDEXPANSION
 
 mkdir build
 cd build
-:: LLVM Flang support will have to be patched into libmed source code
 :: Needed by IFX
 set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
 set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
@@ -19,11 +18,7 @@ if "%build_type%" == "debug" (
     set CFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set CXXFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
-    if "%FC%" == "flang-new" (
-        set FFLAGS=%FFLAGS% -g -cpp
-    ) else (
-        set FFLAGS=%FFLAGS% /Od /debug /Zi /traceback
-    )
+    set FFLAGS=%FFLAGS% /Od /debug /Zi /traceback
 )
 
 :: This updates the symbols to lowercase and adds an underscore
@@ -31,11 +26,8 @@ xcopy %RECIPE_DIR%\medfwrap_symbols.def %SRC_DIR%\src\medfwrap_symbols.def.in /Y
 
 set FFLAGS=%FFLAGS% /nologo /fpp /fixed /dll /MD /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
 
-set MED_INT_TYPE=int
-if "%int_type%" == "64" (
-    set FFLAGS=%FFLAGS% /real-size:64 /integer-size:64
-    set MED_INT_TYPE=long long
-)
+set FFLAGS=%FFLAGS% /real-size:64 /integer-size:64
+set MED_INT_TYPE=long long
 
 echo "Build type: %TGT_BUILD_TYPE%, int size: %int_type%"
 echo "FFLAGS: %FFLAGS%"
