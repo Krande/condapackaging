@@ -1,0 +1,116 @@
+Subject: [PATCH] Use F77_FUNC for Intel Fortran name mangling instead of PPRO_NT
+---
+Index: CMakeLists.txt
+===================================================================
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -87,9 +87,10 @@ IF(WIN32)
+   ADD_DEFINITIONS(-DPPRO_NT_CALL)        # For windows system functions call
+
+   IF(NOT MINGW)
+     # Needed to avoid a seg fault at runtime!
+     # The variable is not very well documented but seems to exist
+     SET(CMAKE_Fortran_FLAGS  "/iface:mixed_str_len_arg ${CMAKE_Fortran_FLAGS}")
+-    ADD_DEFINITIONS(-DPPRO_NT) # For windows medfile function nammes
++    # Use F77_FUNC macro for proper name mangling with Intel Fortran lowercase/underscore
++    # ADD_DEFINITIONS(-DPPRO_NT) # For windows medfile function names
+   ENDIF()
+
+ ELSE()
+Index: src/ci/MEDfileVersionOpen.c
+===================================================================
+--- a/src/ci/MEDfileVersionOpen.c
++++ b/src/ci/MEDfileVersionOpen.c
+@@ -20,7 +20,7 @@
+ #include <med_config.h>
+ #include <med_outils.h>
+
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+ #define F_OK 0
+ #else
+ #include <unistd.h>
+Index: src/2.3.6/cfi/exitcf.c
+===================================================================
+--- a/src/2.3.6/cfi/exitcf.c
++++ b/src/2.3.6/cfi/exitcf.c
+@@ -20,7 +20,7 @@
+ #include <med_config.h>
+ #include <stdlib.h>
+
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+ #define F_OK 0
+ #else
+ #include <unistd.h>
+Index: tools/medimport/libmedimport.c
+===================================================================
+--- a/tools/medimport/libmedimport.c
++++ b/tools/medimport/libmedimport.c
+@@ -58,7 +58,7 @@
+ #include <2.3.6/med23v30_proto.h>
+ #include "2.3.6/med23v30_misc.h"
+
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+ # include <stdlib.h>
+ #else
+ # include <libgen.h>
+@@ -107,7 +107,7 @@
+   char tmp[255];
+   char version[9];
+   int MAJ_21_22 = 0, MAJ_231_232 = 0, MAJ_236_300 = 0, MAJ_300_310 = 0, MAJ_310_320 = 0, MAJ_320_330 = 0, MAJ_400_410 = 0 ;
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+   char *drive, *dir, *ext;
+ #endif
+   char _fileout[255]="";
+@@ -124,7 +124,7 @@
+   if ( !fileout ) {
+     strcpy(tmp,filein);
+     strcat(tmp,PACKAGE_VERSION);
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+     _splitpath( tmp, drive, dir, _fileout, ext );
+ #else
+     strcpy(_fileout,basename(tmp));
+Index: tools/mdump/mdump2.c
+===================================================================
+--- a/tools/mdump/mdump2.c
++++ b/tools/mdump/mdump2.c
+@@ -80,7 +80,7 @@
+ }
+ #endif
+
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+ #define F_OK 0
+ #define snprintf _snprintf
+ #else
+Index: tools/mdump/mdump3.c
+===================================================================
+--- a/tools/mdump/mdump3.c
++++ b/tools/mdump/mdump3.c
+@@ -81,7 +81,7 @@
+ }
+ #endif
+
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+ #define F_OK 0
+ #define snprintf _snprintf
+ #else
+Index: tools/mdump/mdump4.c
+===================================================================
+--- a/tools/mdump/mdump4.c
++++ b/tools/mdump/mdump4.c
+@@ -81,7 +81,7 @@
+ }
+ #endif
+
+-#ifdef PPRO_NT
++#if defined(PPRO_NT) || defined(PPRO_NT_CALL)
+ #define F_OK 0
+ #define snprintf _snprintf
+ #else
+

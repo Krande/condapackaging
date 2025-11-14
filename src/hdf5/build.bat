@@ -9,6 +9,7 @@ cd build
 set HDF5_EXT_ZLIB=zlib.lib
 
 set TGT_BUILD_TYPE=Release
+set FCFLAGS=%FCFLAGS% /fpp /MD /names:lowercase /assume:underscore
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=RelWithDebInfo
     set CFLAGS=%CFLAGS% /Od /Zi
@@ -17,7 +18,6 @@ if "%build_type%" == "debug" (
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
 )
 
-set FFLAGS=%FCFLAGS% /fpp /MD
 set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
 set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 
@@ -29,6 +29,9 @@ cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE:STRING=%TGT_BUILD_TYPE% ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
+      -D CMAKE_Fortran_FLAGS:STRING=%FCFLAGS% ^
+      -D CMAKE_C_FLAGS:STRING=%CFLAGS% ^
+      -D CMAKE_CXX_FLAGS:STRING=%CXXFLAGS% ^
       -D HDF5_BUILD_CPP_LIB:BOOL=ON ^
       -D CMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON ^
       -D BUILD_SHARED_LIBS:BOOL=ON ^

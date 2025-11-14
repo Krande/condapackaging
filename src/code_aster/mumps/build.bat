@@ -30,7 +30,9 @@ if "%build_type%" == "debug" (
 :: Needed for the pthread library when linking with scotch
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB%
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
-set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 -DHAVE_STDATOMIC_H=0 -DHAVE_GCC_ATOMIC_BUILTINS=0
+
+:: Need to add /names:lowercase /assume:underscore so code-aster Fortran symbols match the MUMPS naming convention
+set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 /names:lowercase /assume:underscore
 
 set INTSIZE_BOOL=OFF
 set MKL_VENDOR=MKL

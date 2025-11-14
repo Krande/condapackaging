@@ -1,0 +1,107 @@
+Subject: [PATCH] Provide C wrapper for MED_VERSIONED_API3 singleton and switch Fortran driver to API3; add DEF template
+---
+Index: src/misc/MEDversionedApi3.cxx
+===================================================================
+--- a/src/misc/MEDversionedApi3.cxx
++++ b/src/misc/MEDversionedApi3.cxx
+@@ -644,4 +644,8 @@
+   void f77Api3IsSet(void * obj) {
+     static_cast<MED_VERSIONED_API3*>(obj)->f77ApiIsSet();
+   }
++
++  MED_VERSIONED_API3* MED_VERSIONED_API3_Instance() {
++    return &MED_VERSIONED_API3::Instance();
++  }
+ }
+Index: src/2.3.6/cfi/MEDversionedApiF.cxx
+===================================================================
+--- a/src/2.3.6/cfi/MEDversionedApiF.cxx
++++ b/src/2.3.6/cfi/MEDversionedApiF.cxx
+@@ -17,7 +17,7 @@
+-#include "MEDversionedApi.hxx"
++#include "MEDversionedApi3.hxx"
+@@ -34,7 +34,7 @@ using namespace std;
+-static MED_VERSIONED_API & addFortranSymbol(MED_VERSIONED_API& table) {
++static MED_VERSIONED_API3 & addFortranSymbol(MED_VERSIONED_API3& table) {
+@@ -54,4 +54,4 @@ static MED_VERSIONED_API & addFortranSymbol(MED_VERSIONED_API& table) {
+-extern "C"  { MED_VERSIONED_API & MedVersionedApiF=addFortranSymbol(MED_VERSIONED_API::Instance()); }
++extern "C"  { MED_VERSIONED_API3 & MedVersionedApi3F = addFortranSymbol(MED_VERSIONED_API3::Instance()); }
+Index: src/medC_symbols.def.in
+===================================================================
+--- /dev/null
++++ b/src/medC_symbols.def.in
+@@ -0,0 +1,60 @@
++EXPORTS
++  ; Global arrays
++  MED_GET_ENTITY_TYPE
++  MED_GET_ENTITY_TYPENAME
++  MED_GET_CELL_GEOMETRY_TYPE
++  MED_GET_CELL_GEOMETRY_TYPENAME
++  MED_GET_FACE_GEOMETRY_TYPE
++  MED_GET_FACE_GEOMETRY_TYPENAME
++  MED_GET_EDGE_GEOMETRY_TYPE
++  MED_GET_EDGE_GEOMETRY_TYPENAME
++  MED_GET_NODE_GEOMETRY_TYPE
++  MED_GET_NODE_GEOMETRY_TYPENAME
++
++  ; Driver singleton C wrapper (pointer)
++  MED_VERSIONED_API3_Instance
++
++  ; Core utility / version functions
++  exit_if
++  _MED23v30stringConvert
++  _MEDgetEntityTypeName
++  _MEDgetFieldEntityGeoTypeName
++  _MEDgetEntityListAttributeIName
++  _MEDgetEntityListAttributeINameAll
++  _MEDmodeErreurVerrouiller
++  _MEDobjetIdentifier
++  _MEDnObjets
++  _MEDnomEntite
++  _MEDnomGeometrie
++  _MEDfileVersion
++  _MEDfileVersionSetCache
++  f77Api3IsSet
++
++  ; High-level frequently used API (extend as needed)
++  MEDfileOpen
++  MEDfileClose
++  MEDfileExist
++  MEDfileCompatibility
++  MEDfileNumVersionRd
++  MEDfileStrVersionRd
++  MEDfileCommentRd
++  MEDfileCommentWr
++  MEDmeshCr
++  MEDmeshInfo
++  MEDmeshInfoByName
++  MEDmeshnEntity
++  MEDfieldCr
++  MEDfieldInfo
++  MEDfieldInfoByName
++  MEDfieldnComponent
++  MEDfieldValueWr
++  MEDfieldValueRd
++  MEDprofileWr
++  MEDprofileRd
++  MEDnProfile
++  MEDlocalizationWr
++  MEDlocalizationRd
++  MEDnLocalization
++  MEDjointCr
++  MEDjointInfo
++  MEDlinkWr
++  MEDlinkRd
++  MEDnLink
++  MEDparameterCr
++  MEDparameterInfo
++  MEDparameterValueWr
++  MEDparameterValueRd
++  MEDnParameter
++  MEDpasdetempsInfo
++  MEDchampCr
++  MEDchampLire
++  MEDchampInfo
++  MEDchampEcr
++  MEDnChamp
++  MEDgetEntityGeometryTypeIt

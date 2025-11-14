@@ -8,7 +8,9 @@ if "%LIBRARY_PREFIX%"=="" (
     SET DLL_PATH="%CONDA_PREFIX%\Library\bin\medfwrap.dll"
 )
 
-SET SYMBOL=MSEIPW
+SET SYMBOL=mseipw_
+
+dumpbin /EXPORTS %DLL_PATH%
 
 dumpbin /EXPORTS %DLL_PATH% | findstr %SYMBOL%
 

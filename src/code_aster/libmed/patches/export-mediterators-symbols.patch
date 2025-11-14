@@ -1,0 +1,108 @@
+Subject: [PATCH] Export MEDiterators global arrays for Windows DLL
+---
+Index: src/MEDiterators.c
+===================================================================
+--- a/src/MEDiterators.c
++++ b/src/MEDiterators.c
+@@ -20,9 +20,18 @@
+ #include <med_config.h>
+ #include <string.h>
+
++/* Export symbols for Windows DLL */
++#ifdef _WIN32
++#  ifdef medC_EXPORTS
++#    define MED_EXPORT __declspec(dllexport)
++#  else
++#    define MED_EXPORT __declspec(dllimport)
++#  endif
++#else
++#  define MED_EXPORT
++#endif
++
+ /*L'itération sur les */
+-
+-med_entity_type MED_GET_ENTITY_TYPE[MED_N_ENTITY_TYPES+2]={
++MED_EXPORT med_entity_type MED_GET_ENTITY_TYPE[MED_N_ENTITY_TYPES+2]={
+   MED_UNDEF_ENTITY_TYPE,
+   MED_CELL,
+   MED_DESCENDING_FACE,
+@@ -33,7 +42,7 @@
+   MED_UNDEF_ENTITY_TYPE
+ };
+
+-const char * const MED_GET_ENTITY_TYPENAME[MED_N_ENTITY_TYPES+2]={
++MED_EXPORT const char * const MED_GET_ENTITY_TYPENAME[MED_N_ENTITY_TYPES+2]={
+   "MED_UNDEF_ENTITY_TYPE",
+   "MED_CELL",
+   "MED_DESCENDING_FACE",
+@@ -55,7 +64,7 @@
+    Pour le codage interne Nbits itératif des types géométrique de MED_ALL_ENTITY_TYPE ,
+    il faut commencer à _it==0 contrairement aux autres type d'entités.
+ */
+-med_geometry_type MED_GET_CELL_GEOMETRY_TYPE[MED_N_CELL_FIXED_GEO+2]={
++MED_EXPORT med_geometry_type MED_GET_CELL_GEOMETRY_TYPE[MED_N_CELL_FIXED_GEO+2]={
+   MED_NO_GEOTYPE,
+   MED_POINT1,
+   MED_SEG2,
+@@ -81,7 +90,7 @@
+   MED_NO_GEOTYPE
+ };
+
+-const char * const MED_GET_CELL_GEOMETRY_TYPENAME[MED_N_CELL_FIXED_GEO+2]={
++MED_EXPORT const char * const MED_GET_CELL_GEOMETRY_TYPENAME[MED_N_CELL_FIXED_GEO+2]={
+   "MED_NO_GEOTYPE",
+   "MED_POINT1",
+   "MED_SEG2",
+@@ -107,7 +116,7 @@
+   "MED_NO_GEOTYPE"
+ };
+
+-med_geometry_type MED_GET_FACE_GEOMETRY_TYPE[MED_N_FACE_FIXED_GEO+2]={
++MED_EXPORT med_geometry_type MED_GET_FACE_GEOMETRY_TYPE[MED_N_FACE_FIXED_GEO+2]={
+   MED_NO_GEOTYPE,
+   MED_TRIA3,
+   MED_QUAD4,
+@@ -120,7 +129,7 @@
+   MED_NO_GEOTYPE
+ };
+
+-const char * const MED_GET_FACE_GEOMETRY_TYPENAME[MED_N_FACE_FIXED_GEO+2]={
++MED_EXPORT const char * const MED_GET_FACE_GEOMETRY_TYPENAME[MED_N_FACE_FIXED_GEO+2]={
+   "MED_NO_GEOTYPE",
+   "MED_TRIA3",
+   "MED_QUAD4",
+@@ -133,7 +142,7 @@
+   "MED_NO_GEOTYPE"
+ };
+
+-med_geometry_type MED_GET_EDGE_GEOMETRY_TYPE[MED_N_EDGE_FIXED_GEO+2]={
++MED_EXPORT med_geometry_type MED_GET_EDGE_GEOMETRY_TYPE[MED_N_EDGE_FIXED_GEO+2]={
+   MED_NO_GEOTYPE,
+   MED_SEG2,
+   MED_SEG3,
+@@ -141,7 +150,7 @@
+   MED_NO_GEOTYPE
+ };
+
+-const char * MED_GET_EDGE_GEOMETRY_TYPENAME[MED_N_EDGE_FIXED_GEO+2]={
++MED_EXPORT const char * MED_GET_EDGE_GEOMETRY_TYPENAME[MED_N_EDGE_FIXED_GEO+2]={
+   "MED_NO_GEOTYPE",
+   "MED_SEG2",
+   "MED_SEG3",
+@@ -149,13 +158,13 @@
+   "MED_NO_GEOTYPE"
+ };
+
+-med_geometry_type MED_GET_NODE_GEOMETRY_TYPE[MED_N_NODE_FIXED_GEO+2]={
++MED_EXPORT med_geometry_type MED_GET_NODE_GEOMETRY_TYPE[MED_N_NODE_FIXED_GEO+2]={
+   MED_NO_GEOTYPE,
+   MED_POINT1,
+   MED_NO_GEOTYPE
+ };
+
+-const char * MED_GET_NODE_GEOMETRY_TYPENAME[MED_N_NODE_FIXED_GEO+2]={
++MED_EXPORT const char * MED_GET_NODE_GEOMETRY_TYPENAME[MED_N_NODE_FIXED_GEO+2]={
+   "MED_NO_GEOTYPE",
+   "MED_POINT1",
+   "MED_NO_GEOTYPE"
+

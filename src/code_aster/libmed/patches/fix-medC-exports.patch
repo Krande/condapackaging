@@ -1,0 +1,31 @@
+Subject: [PATCH] Add DEF file for medC to export global arrays
+---
+Index: src/CMakeLists.txt
+===================================================================
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -82,11 +82,18 @@ SET(_export_group "medfileTargets")
+
+ ######### Shared Libraries ##########
+ IF(MEDFILE_BUILD_SHARED_LIBS)
++  # Configure the DEF file for Windows symbol exports of global arrays
++  IF(WIN32)
++    configure_file(medC_symbols.def.in medC_symbols.def COPYONLY)
++    set(MEDC_DEF "${CMAKE_CURRENT_BINARY_DIR}/medC_symbols.def")
++  ENDIF()
+   ADD_LIBRARY(medC SHARED ${medC_SOURCES})
+   SET_TARGET_PROPERTIES(medC PROPERTIES
+     SOVERSION 11
+     VERSION   11.1.1)
+   TARGET_LINK_LIBRARIES(medC ${HDF5_LIBS} ${MPI_LIBS})
+   MED_SET_DEFINITIONS(medC NOGDI)
+
++  # Use manual DEF file for Windows - disable auto-export to avoid conflicts
++  IF(WIN32 AND MEDC_DEF)
++    SET_TARGET_PROPERTIES(medC PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS OFF)
++    target_link_options(medC PRIVATE "/DEF:${MEDC_DEF}")
++  ENDIF()
+   INSTALL(TARGETS medC EXPORT ${_export_group} DESTINATION lib${LIB_SUFFIX})
+ ENDIF()
+ ENDIF()
+
