@@ -12,6 +12,10 @@ EXPORTS
 	MED_GET_N_FIXED_GEO_FOR_ENTITY_TYPE_IT
 	MED_GET_NODE_GEOMETRY_TYPE
 	MED_GET_NODE_GEOMETRY_TYPENAME
+    MED_GEOMETRIE_MAILLE_AFF
+    MED_GEOMETRIE_FACE_AFF
+    MED_GEOMETRIE_ARETE_AFF
+    MED_GEOMETRIE_NOEUD_AFF
 
 	; Functions with underscore prefix
 	_MED1cstring
@@ -46,7 +50,10 @@ EXPORTS
 	_MEDgetEntityListAttributeIName
 	_MEDgetEntityListAttributeINameAll
 	_MEDgetEntityTypeName
+	_MEDgetExternalGeometryTypeName
 	_MEDgetFieldEntityGeoTypeName
+	_MEDgetGeometricParameter
+	_MEDgetInternalGeometryTypeName
 	_MEDmeshEntityInfo236
 	_MEDmeshInfoByName236
 	_MEDmeshnEntity236
@@ -143,6 +150,7 @@ EXPORTS
 	MEDfileNumVersionRd
 	MEDfileObjectExist
 	MEDfileObjectsMount
+	MEDfileObjectsMountById
 	MEDfileObjectsUnmount
 	MEDfileOpen
 	MEDfileStrVersionRd
@@ -159,6 +167,7 @@ EXPORTS
 	MEDgetEdgeGeometryTypeIt
 	MEDgetEntityGeometryTypeIt
 	MEDgetEntityTypeName
+	MEDgetEntityTypeIt
 	MEDgetFaceGeometryTypeIt
 	MEDgetGeometryTypeName
 	MEDgetNodeGeometryTypeIt
@@ -196,6 +205,7 @@ EXPORTS
 	MEDlocalizationInfoByName
 	MEDlocalizationRd
 	MEDlocalizationWr
+	MEDmemFileOpen
 	MEDmeshAttributeRd
 	MEDmeshAttributeWr
 	MEDmeshComputationStepCr
@@ -219,6 +229,8 @@ EXPORTS
 	MEDmeshEntityNameWr
 	MEDmeshEntityNumberRd
 	MEDmeshEntityNumberWr
+	MEDmeshGeotypeName
+	MEDmeshGeotypeParameter
 	MEDmeshGlobalNumberRd
 	MEDmeshGlobalNumberWr
 	MEDmeshGridIndexCoordinateRd
@@ -244,6 +256,8 @@ EXPORTS
 	MEDmeshNodeRd
 	MEDmeshNodeWr
 	MEDmeshPolygonRd
+	MEDmeshPolygon2Rd
+	MEDmeshPolygon2Wr
 	MEDmeshPolygonWr
 	MEDmeshPolyhedronRd
 	MEDmeshPolyhedronWr

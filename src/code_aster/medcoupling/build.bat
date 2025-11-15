@@ -17,11 +17,6 @@ if "%build_type%" == "debug" (
     set CFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set CXXFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
-    if "%FC%" == "flang-new" (
-        set FFLAGS=%FFLAGS% -g -cpp
-    ) else (
-        set FFLAGS=%FFLAGS% /Od /Zi /debug /traceback
-    )
 )
 
 set MED_INT_IS_LONG=OFF
@@ -31,7 +26,6 @@ if "%int_type%" == "64" (
 )
 
 echo "Building as BUILD_TYPE: %build_type%, INT_TYPE: %int_type%, MED_INT_IS_LONG: %MED_INT_IS_LONG%"
-echo "FFLAGS: %FFLAGS%"
 
 cmake -G "Ninja" .. ^
     -Wno-dev ^
@@ -39,7 +33,7 @@ cmake -G "Ninja" .. ^
     -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
     -D CMAKE_BUILD_TYPE="%TGT_BUILD_TYPE%" ^
     -D PYTHON_ROOT_DIR="%PREFIX%" ^
-    -D CMAKE_CXX_FLAGS="/bigobj /EHs" ^
+    -D CMAKE_CXX_FLAGS="/bigobj /wd4661 /wd4244 /EHsc" ^
     -D PYTHON_EXECUTABLE:FILEPATH="%PYTHON%" ^
     -D CONFIGURATION_ROOT_DIR="%SRC_DIR%/deps/config" ^
     -D SALOME_CMAKE_DEBUG=OFF ^

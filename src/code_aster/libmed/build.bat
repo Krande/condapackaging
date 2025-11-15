@@ -11,15 +11,17 @@ set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 set TGT_BUILD_TYPE=Release
-set CFLAGS=%CFLAGS% /nologo /MD
-set CXXFLAGS=%CFLAGS% /nologo /MD /EHs
-set FCFLAGS=%FCFLAGS% /fpp /MD /names:lowercase /assume:underscore
+set CFLAGS=%CFLAGS% /nologo
+set CXXFLAGS=%CFLAGS% /nologo /EHsc
+set FCFLAGS=%FCFLAGS% /fpp /names:lowercase /assume:underscore
+set MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
 if "%build_type%" == "debug" (
     set TGT_BUILD_TYPE=Debug
     set CFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set CXXFLAGS=%CFLAGS% /Od /Zi -DSWIG_PYTHON_INTERPRETER_NO_DEBUG=1
     set LDFLAGS=%LDFLAGS% /DEBUG /INCREMENTAL:NO
     set FCFLAGS=%FCFLAGS% /Od /debug /Zi /traceback
+    set MSVC_RUNTIME_LIBRARY=MultiThreadedDebugDLL
 )
 
 :: This updates the symbols to lowercase and adds an underscore
@@ -36,7 +38,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-set FCFLAGS=%FCFLAGS% /nologo /fpp /fixed /dll /MD /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
+set FCFLAGS=%FCFLAGS% /nologo /fpp /fixed /dll /assume:byterecl,aligned_dummy_args,dummy_aliases,writeable_strings
 
 set FCFLAGS=%FCFLAGS% /real-size:64 /integer-size:64 /names:lowercase /assume:underscore
 set MED_INT_TYPE=long long
@@ -50,6 +52,7 @@ cmake -G "Ninja" ^
   -D CMAKE_INSTALL_PREFIX="%PREFIX%\Library" ^
   -D CMAKE_PROGRAM_PATH="%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin" ^
   -D CMAKE_BUILD_TYPE:STRING="%TGT_BUILD_TYPE%" ^
+  -D CMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY% ^
   -D CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
   -D CMAKE_C_FLAGS:STRING="%CFLAGS%" ^
   -D CMAKE_CXX_FLAGS:STRING="%CXXFLAGS%" ^
@@ -63,7 +66,6 @@ cmake -G "Ninja" ^
   -D MEDFILE_BUILD_PYTHON=ON ^
   -D MEDFILE_BUILD_TESTS=OFF ^
   -D MEDFILE_BUILD_SHARED_LIBS=ON ^
-  -D MEDFILE_BUILD_STATIC_LIBS=OFF ^
   -D MEDFILE_USE_UNICODE=OFF ^
   -D MED_MEDINT_TYPE="%MED_INT_TYPE%" ^
   -Wno-dev ^
