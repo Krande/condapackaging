@@ -1,0 +1,8 @@
+mpi:
+  - nompi
+  - mpich  # [not win]
+  - openmpi  # [not win]
+
+scotch_intsize:
+  - "32"
+  - "64"

@@ -4,7 +4,7 @@ schema_version: 1
 context:
   name: metis
   version: 5.1.0.4  # variant "aster4" for Code_Aster
-  build_base: 2
+  build_base: 3
   build: ${{ (200 if build_type == 'release' else 0) + int_type|int + build_base|int }}
 
 package:

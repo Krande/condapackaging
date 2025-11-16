@@ -40,6 +40,11 @@ colorama = ">=0.4.6,<0.5"
 boa = ">=0.17.0,<0.18"
 rattler-build = ">=0.49.0,<0.50"
 py-rattler-build = ">=0.47.0,<0.48"
+# Symbol inspector
+py-lief = "*"
+conda-package-handling = "*"
+zstandard = "*"
+llvm-tools = "*"
 
 [feature.cpacktest.dependencies]
 pytest = ">=8.4.2,<9"
@@ -69,7 +74,7 @@ cpack-actions = { cmd = ["cpack-actions"] }
 cpack-quetz = { cmd = ["cpack-quetz"] }
 ca-batch-prep = { cmd = ["python", ".github/actions/ca-batch-prep/set_vars.py"] }
 cpack-ctest-md-gen = { cmd = ["cpack-md-gen"] }
-
+symbol-check = { cmd = ["python", "src/cpack/cpack/symbol_checker.py"], description = "Check for symbols in built conda packages" }
 [feature.rattler.tasks]
 flang = { cmd = ["rattler-build", "build", "-r", "src/llvm/flang/recipe.yaml", "-m", "src/common_rattler.yaml"] }
 
@@ -91,11 +96,12 @@ libmed = { cmd = ["rattler-build", "build", "-r", "src/code_aster/libmed/recipe.
 medcoupling = { cmd = ["rattler-build", "build", "-r", "src/code_aster/medcoupling/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs = ["output/*/medcoupling*.conda"] }
 metis = { cmd = ["rattler-build", "build", "-r", "src/code_aster/metis/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs = ["output/*/metis*.conda"] }
 mumps = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mumps/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs = ["output/*/mumps*.conda"] }
+mumps-cf = { cmd = ["rattler-build", "build", "-r", "src/code_aster/mumps-cf/recipe.yaml", "-m", "src/common_rattler.yaml","-m","src/code_aster/mumps-cf/compiler_override.yaml"], outputs = ["output/*/mumps-seq*.conda"] }
 code_aster = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml"], outputs = ["output/*/code_aster*.conda"] }
 code_aster32d = { cmd = ["rattler-build", "build", "-r", "src/code_aster/code_aster/recipe.yaml", "-m", "src/common_rattler.yaml", '-m', 'src/.ci_nompi_debug_32.yaml', "-c", "https://repo.prefix.dev/code-aster", "-c", "conda-forge"] }
 
 # "hdf5","scotch","metis", "libmed", "medcoupling", "mfront", "mgis","code_aster"
-code-aster-all = { cmd = ["echo", "success"], depends-on = ["libmed", "mumps"] }
+code-aster-all = { cmd = ["echo", "success"], depends-on = ["hdf5","scotch","metis","libmed","medcoupling", "mumps"] }
 
 # Cadquery
 ocp = { cmd = ["rattler-build", "build", "-r", "src/cadquery/ocp/recipe.yaml", "-m", "src/common_rattler.yaml"] }

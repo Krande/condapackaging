@@ -9,7 +9,8 @@ cd build
 :: Set compilers
 set CC=cl
 set CXX=cl
-:: set FC=flang-new
+:: Prefer Intel oneAPI ifx for Fortran when available (needed for name mangling control)
+set FC=ifx
 :: Needed by IFX
 set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
 set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
@@ -31,8 +32,9 @@ if "%build_type%" == "debug" (
 set LDFLAGS=%LDFLAGS% /LIBPATH:%LIBRARY_LIB%
 set CFLAGS=%CFLAGS% /Dtry_null_space /DUSE_SCHEDAFFINITY
 
-:: Need to add /names:lowercase /assume:underscore so code-aster Fortran symbols match the MUMPS naming convention
-set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 /names:lowercase /assume:underscore
+:: Need to add name-mangling flags so code-aster Fortran symbols match the MUMPS naming convention
+:: Provide both Intel Classic (/...) and IntelLLVM (-...) spellings so either ifort or ifx will honor them
+set FCFLAGS=%FCFLAGS% /4L132 -Dtry_null_space -DUSE_SCHEDAFFINITY -DUSE_MPI3 /names:lowercase /assume:underscore -names lowercase -assume underscore
 
 set INTSIZE_BOOL=OFF
 set MKL_VENDOR=MKL
@@ -60,6 +62,12 @@ cmake -G "Ninja" ^
       -D CMAKE_VERBOSE_MAKEFILE:BOOL=OFF ^
       -D "CMAKE_EXE_LINKER_FLAGS=%CMAKE_EXE_LINKER_FLAGS%" ^
       %CMAKE_DEBUG_INFO_FORMAT% ^
+      %CMAKE_ARGS% ^
+      -D CMAKE_Fortran_COMPILER=%FC% ^
+      -D "CMAKE_Fortran_FLAGS=%FCFLAGS%" ^
+      -D "CMAKE_Fortran_FLAGS_RELEASE=%FCFLAGS%" ^
+      -D "CMAKE_Fortran_FLAGS_DEBUG=%FCFLAGS%" ^
+      -D "CMAKE_C_FLAGS=%CFLAGS%" ^
       -D MUMPS_UPSTREAM_VERSION:STRING=5.7.2 ^
       -D MKL_DIR:PATH=%LIBRARY_PREFIX%/lib ^
       -D LAPACK_VENDOR:STRING=%MKL_VENDOR% ^

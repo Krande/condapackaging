@@ -1,0 +1,11 @@
+# override the variables that differ between seq/par
+include $(RECIPE_DIR)/Makefile.conda.PAR
+
+PLAT = _seq
+LSCOTCH = -L$(PREFIX)/lib -lesmumps -lscotch -lscotcherr
+ORDERINGSF = -Dmetis -Dpord -Dscotch
+LMETIS = -L$(PREFIX)/lib -lmetis
+
+INCS = $(INCSEQ)
+LIBS = $(LIBSEQ)
+LIBSEQNEEDED = libseqneeded
